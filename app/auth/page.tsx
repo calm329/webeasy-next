@@ -19,6 +19,16 @@ async function getMedia(accessToken: string) {
     })
 }
 
+async function getData(url: string) {
+  //get user media
+  return await unirest.get(url)
+    .query({}).then(response => {
+      return response.body;
+    }).catch(error => {
+      throw error;
+    })
+}
+
 async function getAccessTokenAndUserId(code: string) {
   //transfer auth code to access token
   return await unirest.post(`${process.env.INSTAGRAM_API_AUTH_ENDPOINT}access_token`)
@@ -43,7 +53,18 @@ async function createAI(captions: string) {
     messages: [
       {
         "role": "system",
-        "content": "Create a business website landing page with sections using the provided user instagram post captions. Output using simple h1,h2 and p tags. Use tailwind for styles."
+        "content": `Create content for a website landing page with sections using the provided user instagram post captions.  output as html fragment using divs and tailwind.
+
+        Try to include, The essential components of an effective landing page that are:
+        A main headline and a supporting headline
+        A unique selling proposition
+        A description of the offering
+        The benefits of your offering
+        Social proof
+        Features
+        A reinforcement statement
+        A closing argument
+        A call to action`
       },
       {
         "role": "user",
@@ -71,17 +92,24 @@ export default async function Page({
   let aiContent = "";
   if (typeof code === "string") {
     const accessToken = (await getAccessTokenAndUserId(code)).access_token;
-    const media = await getMedia(accessToken);
-
-    //console.log(media);
-    //concatenate media caption fields into one string
+    let media = await getMedia(accessToken);
     let mediaCaption = "";
+
     if (media && media.data && media.data.length > 0) {
       media.data.forEach((item: any) => {
         mediaCaption += item.caption + "\n";
       });
-      aiContent = "" + await createAI(mediaCaption);
     }
+    if (media && media.paging && media.paging.next) {
+      media = await getData(media.paging.next);
+      if (media && media.data && media.data.length > 0) {
+        media.data.forEach((item: any) => {
+          mediaCaption += item.caption + "\n";
+        });
+      }
+    }
+    console.log(mediaCaption);
+    aiContent = "" + await createAI(mediaCaption);
 
   }
 
@@ -89,9 +117,8 @@ export default async function Page({
   return (
     <div className="bg-white px-6 py-32 lg:px-8">
       <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
-        <p className="text-base font-semibold leading-7 text-indigo-600">Your Website</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Magic</h1>
-        <p className="mt-6 text-xl leading-8" dangerouslySetInnerHTML={{ __html: aiContent }}/>
+        <p className="text-base font-semibold leading-7 text-indigo-600">WebEasy.AI</p>
+        <p className="mt-6 text-xl leading-8" dangerouslySetInnerHTML={{ __html: aiContent }} />
       </div>
     </div>
   )
