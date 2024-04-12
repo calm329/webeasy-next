@@ -42,7 +42,7 @@ export default function Privacy() {
 <p><br/></p>
 <p><strong>DoubleClick DART Cookie</strong></p>
 <p><br/></p>
-<p>Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to www.website.com and other sites on the internet. However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL &ndash; <a href="https://policies.google.com/technologies/ads"><span class="s1">https://policies.google.com/technologies/ads</span></a><span class="Apple-converted-space">&</span></p>
+<p>Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to www.website.com and other sites on the internet. However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL &ndash; <a href="https://policies.google.com/technologies/ads"><span>https://policies.google.com/technologies/ads</span></a><span>&</span></p>
 <p><br/></p>
 <p>Some of advertisers on our site may use cookies and web beacons. Our advertising partners are listed below. Each of our advertising partners has their own Privacy Policy for their policies on user data. For easier access, we hyperlinked to their Privacy Policies below.</p>
 <p><br/></p>
@@ -61,7 +61,7 @@ export default function Privacy() {
 <p><br/></p>
 <p>My Website&apos;s Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options. You may find a complete list of these Privacy Policies and their links here: Privacy Policy Links.</p>
 <p><br/></p>
-<p>You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers&apos; respective websites. <a href="https://www.privacypolicygenerator.info/privacy-policy-cookies-clauses/"><span class="s1">What Are Cookies?</span></a></p>
+<p>You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers&apos; respective websites. <a href="https://www.privacypolicygenerator.info/privacy-policy-cookies-clauses/"><span>What Are Cookies?</span></a></p>
 <p><br/></p>
 <p><strong>CCPA Privacy Policy (Do Not Sell My Personal Information)</strong></p>
 <p><br/></p>
