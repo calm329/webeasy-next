@@ -1,3 +1,5 @@
+export const maxDuration = 300;
+
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import { CheckCircleIcon, InformationCircleIcon } from '@heroicons/react/20/solid'
 import unirest from "unirest"
