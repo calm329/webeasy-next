@@ -34,11 +34,11 @@ export default function Privacy() {
     <li>Log Files</li>
 </ul>
 <p><br/></p>
-<p>My Website follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting services' analytics. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information.</p>
+<p>My Website follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting services&apos; analytics. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users&apos; movement on the website, and gathering demographic information.</p>
 <p><br/></p>
 <p><strong>Cookies and Web Beacons</strong></p>
 <p><br/></p>
-<p>Like any other website, My Website uses "cookies". These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.</p>
+<p>Like any other website, My Website uses &quot;cookies&quot;. These cookies are used to store information including visitors&apos; preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users&apos; experience by customizing our web page content based on visitors&apos; browser type and/or other information.</p>
 <p><br/></p>
 <p><strong>DoubleClick DART Cookie</strong></p>
 <p><br/></p>
@@ -53,24 +53,24 @@ export default function Privacy() {
 <p><br/></p>
 <p>You may consult this list to find the Privacy Policy for each of the advertising partners of&My Website.</p>
 <p><br/></p>
-<p>Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on&My Website, which are sent directly to users' browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.</p>
+<p>Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on&My Website, which are sent directly to users&apos; browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.</p>
 <p><br/></p>
 <p>Note that My Website has no access to or control over these cookies that are used by third-party advertisers.</p>
 <p><br/></p>
 <p><strong>Third-Party Privacy Policies</strong></p>
 <p><br/></p>
-<p>My Website's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options. You may find a complete list of these Privacy Policies and their links here: Privacy Policy Links.</p>
+<p>My Website&apos;s Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options. You may find a complete list of these Privacy Policies and their links here: Privacy Policy Links.</p>
 <p><br/></p>
-<p>You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers' respective websites. <a href="https://www.privacypolicygenerator.info/privacy-policy-cookies-clauses/"><span class="s1">What Are Cookies?</span></a></p>
+<p>You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers&apos; respective websites. <a href="https://www.privacypolicygenerator.info/privacy-policy-cookies-clauses/"><span class="s1">What Are Cookies?</span></a></p>
 <p><br/></p>
 <p><strong>CCPA Privacy Policy (Do Not Sell My Personal Information)</strong></p>
 <p><br/></p>
 <p>Under the CCPA, among other rights, California consumers have the right to:</p>
 <p><br/></p>
 <ul>
-    <li>Request that a business that collects a consumer's personal data disclose the categories and specific pieces of personal data that a business has collected about consumers.</li>
+    <li>Request that a business that collects a consumer&apos;s personal data disclose the categories and specific pieces of personal data that a business has collected about consumers.</li>
     <li>Request that a business delete any personal data about the consumer that a business has collected.</li>
-    <li>Request that a business that sells a consumer's personal data, not sell the consumer's personal data.</li>
+    <li>Request that a business that sells a consumer&apos;s personal data, not sell the consumer&apos;s personal data.</li>
 </ul>
 <p><br/></p>
 <p>If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.</p>
@@ -90,7 +90,7 @@ export default function Privacy() {
 <p><br/></p>
 <p>If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.</p>
 <p><br/></p>
-<p><strong>Children's Information</strong></p>
+<p><strong>Children&apos;s Information</strong></p>
 <p><br/></p>
 <p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.</p>
 <p><br/></p>
