@@ -1,5 +1,3 @@
-export const maxDuration = 300;
-
 import {NextApiRequest, NextApiResponse} from 'next';
 import unirest from "unirest"
 
