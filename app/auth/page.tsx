@@ -53,7 +53,7 @@ async function createAI(captions: string) {
     messages: [
       {
         "role": "system",
-        "content": `Create content for a website landing page with sections using the provided user instagram post captions.  output as html fragment using divs and tailwind.
+        "content": `Create descriptive content for a website landing page with sections using the provided user instagram post captions.  output as html fragment using divs and tailwind.
 
         Try to include, The essential components of an effective landing page that are:
         A main headline and a supporting headline
@@ -92,18 +92,20 @@ export default async function Page({
   let aiContent = "";
   if (typeof code === "string") {
     const accessToken = (await getAccessTokenAndUserId(code)).access_token;
-    let media = await getMedia(accessToken);
+    
     let mediaCaption = "";
 
+    let media = await getMedia(accessToken);
     if (media && media.data && media.data.length > 0) {
       media.data.forEach((item: any) => {
         mediaCaption += item.caption + "\n";
       });
     }
+
     if (media && media.paging && media.paging.next) {
-      media = await getData(media.paging.next);
-      if (media && media.data && media.data.length > 0) {
-        media.data.forEach((item: any) => {
+      let media2 = await getData(media.paging.next);
+      if (media2 && media2.data && media2.data.length > 0) {
+        media2.data.forEach((item: any) => {
           mediaCaption += item.caption + "\n";
         });
       }
