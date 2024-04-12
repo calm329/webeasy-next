@@ -13,6 +13,7 @@ async function getMedia(accessToken: string) {
       fields: ["id", "media_url", "permalink", "caption", "media_type", "username", "timestamp"].join(),
       access_token: accessToken
     }).then(response => {
+      //console.log(response.body);
       return response.body;
     }).catch(error => {
       throw error;
@@ -37,6 +38,7 @@ async function getAccessTokenAndUserId(code: string) {
     .field("grant_type", "authorization_code")
     .field("redirect_uri", process.env.NEXT_PUBLIC_FB_REDIRECT_URL)
     .field("code", code).then(response => {
+      //console.log(response.body);
       return response.body;
     }).catch(error => {
       throw error;
@@ -53,7 +55,7 @@ async function createAI(captions: string) {
     messages: [
       {
         "role": "system",
-        "content": `Create descriptive content for a website landing page with sections using the provided user instagram post captions.  output as html fragment using divs and tailwind.
+        "content": `You are a helpful assistant that writes website content. Your job is to create descriptive content for a website landing page with sections using the provided user instagram post captions.  output as html fragment using divs and tailwind.
 
         Try to include, The essential components of an effective landing page that are:
         A main headline and a supporting headline
@@ -92,10 +94,11 @@ export default async function Page({
   let aiContent = "";
   if (typeof code === "string") {
     const accessToken = (await getAccessTokenAndUserId(code)).access_token;
-    
+
     let mediaCaption = "";
 
     let media = await getMedia(accessToken);
+
     if (media && media.data && media.data.length > 0) {
       media.data.forEach((item: any) => {
         mediaCaption += item.caption + "\n";
@@ -110,7 +113,7 @@ export default async function Page({
         });
       }
     }
-    console.log(mediaCaption);
+    
     aiContent = "" + await createAI(mediaCaption);
 
   }
