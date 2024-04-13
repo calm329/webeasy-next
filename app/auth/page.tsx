@@ -55,18 +55,9 @@ async function createAI(captions: string) {
     messages: [
       {
         "role": "system",
-        "content": `You are a helpful assistant that writes website content. Your job is to create descriptive content for a website landing page with sections using the provided user instagram post captions.  output as html fragment using divs and tailwind.
+        "content": `You are a helpful assistant that writes website content. Generate comprehensive engaging content for a business website homepage that showcases our unique offerings and product descriptions that connects with our target audience. Use insights and themes from our Instagram posts to create a series of sections that highlight different aspects of our brand. Ensure the content is lively, informative, and visually appealing, mirroring the dynamic nature of our Instagram feed.
+        Output only html fragment with div tags and text content. Use tailwind css classes for styling.`
 
-        Try to include, The essential components of an effective landing page that are:
-        A main headline and a supporting headline
-        A unique selling proposition
-        A description of the offering
-        The benefits of your offering
-        Social proof
-        Features
-        A reinforcement statement
-        A closing argument
-        A call to action`
       },
       {
         "role": "user",
@@ -81,6 +72,7 @@ async function createAI(captions: string) {
   });
   return response.choices[0].message.content;
 }
+let iPosts: any[] = [];
 
 export default async function Page({
   params,
@@ -101,6 +93,7 @@ export default async function Page({
 
     if (media && media.data && media.data.length > 0) {
       media.data.forEach((item: any) => {
+        iPosts.push(item);
         mediaCaption += item.caption + "\n";
       });
     }
@@ -109,23 +102,57 @@ export default async function Page({
       let media2 = await getData(media.paging.next);
       if (media2 && media2.data && media2.data.length > 0) {
         media2.data.forEach((item: any) => {
+          iPosts.push(item);
           mediaCaption += item.caption + "\n";
         });
       }
     }
-    
-    aiContent = "" + await createAI(mediaCaption);
+
+    //aiContent = "" + await createAI(mediaCaption);
 
   }
 
-
+  /*
+  {
+              "id": "17946976796294774",
+              "caption": "In the fast-changing real estate industry, professionals require more comprehensive tools to stay on top of the latest market trends and insights. With TopHap, you now have access to investor-grade real estate analytics\u2014all at your fingertips! Head to www.TopHap.com\u200b to take your real estate research game to the next level. \u200b\ud83d\udcc8\n\n#tophap #tophapcommunity #tophappers #realestate #realestategoals #marketintelligence #realestateagent #realestatebroker #realestateinvestor #realestatetips #realestateadvice #realestateinvesting #realestateexperts #realestateagents #proptech",
+              "media_type": "IMAGE",
+              "media_url": "https:\/\/scontent-sjc3-1.cdninstagram.com\/v\/t51.2885-15\/321204122_467195552159579_2806292712213809583_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=18de74&_nc_ohc=UFp4tt53H1MAb5g5wHK&_nc_ht=scontent-sjc3-1.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfB89gcQZvthIqhxe0zFFh2SGExhn-Nzfisd6-j0bFVYsQ&oe=661E1D34",
+              "username": "tophapinc",
+              "timestamp": "2022-12-23T20:57:48+0000"
+          }
+  */
   return (
     <div className="bg-white px-6 py-32 lg:px-8">
-      <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
-        <p className="text-base font-semibold leading-7 text-indigo-600">WebEasy.AI</p>
-        <p className="mt-6 text-xl leading-8" dangerouslySetInnerHTML={{ __html: aiContent }} />
+      <p className="text-base font-semibold leading-7 text-indigo-600">WebEasy.AI</p>
+      <div className="mx-auto max-w-2xl text-base leading-7 text-gray-700" dangerouslySetInnerHTML={{ __html: aiContent }}/>
+
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <h2 className="sr-only">Posts</h2>
+
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          {iPosts.map((post) => (
+            <a key={post.id} className="group">
+              <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                {(post.media_type === "IMAGE") &&
+                  <img
+                    src={post.media_url}
+                    alt={post.caption}
+                    className="h-full w-full object-cover object-center group-hover:opacity-75"
+                  />}
+                {(post.media_type === "VIDEO") &&
+                  <video
+                    src={post.media_url}
+                    className="h-full w-full object-cover object-center group-hover:opacity-75"
+                    autoPlay loop muted playsInline
+                  />}
+              </div>
+              <h3 className="mt-4 text-sm text-gray-700">{post.caption}</h3>
+              {/*<p className="mt-1 text-xs font-medium text-gray-900">{post.timestamp}</p>*/}
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   )
 }
-
