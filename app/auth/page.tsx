@@ -286,7 +286,7 @@ export default async function Page({
                     </div>
                   </div>
                 </div>
-                <div className="w-full md:w-1/2 p-8"><img className="object-contain mx-auto h-3/4 md:mr-0 rounded-3xl" src={aiObj["hero"]["imageUrl"]} alt="" /></div>
+                <div className="w-full md:w-1/2 p-8"><img className="object-contain mx-auto md:mr-0 rounded-3xl" width="256" height="256" src={aiObj["hero"]["imageUrl"]} alt="" /></div>
               </div>
               <div className="p-8 md:p-12 bg-gray-100 rounded-3xl">
                 <div className="flex flex-wrap -m-8">
