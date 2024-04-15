@@ -139,13 +139,13 @@ async function getImage(imageUrl: string) {
       },
     ],
   });
-  console.log(response.choices[0].message.content);
+  //console.log(response.choices[0].message.content);
   return response.choices[0].message.content;
 }
 
 
 async function generateImage(prompt:string) {
-  console.log(prompt);
+  //console.log(prompt);
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -155,7 +155,7 @@ async function generateImage(prompt:string) {
     n: 1,
     size: "1024x1024",
   });
-  console.log(response.data);
+  //console.log(response.data);
   return response.data[0].url;
 }
 export default async function Page({
@@ -291,7 +291,7 @@ export default async function Page({
               <div className="p-8 md:p-12 bg-gray-100 rounded-3xl">
                 <div className="flex flex-wrap -m-8">
                   {aiObj["services"]["list"].map((service) => (
-                    <div className="w-full md:w-1/3 p-8">
+                    <div key={0} className="w-full md:w-1/3 p-8">
                       <div className="flex flex-wrap -m-3">
                         <div className="w-auto md:w-full lg:w-auto p-3">
                           <div className="flex items-center justify-center w-12 h-12 bg-white rounded-xl">
