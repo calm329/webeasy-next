@@ -52,7 +52,7 @@ async function getAccessTokenAndUserId(code: string) {
     .field("grant_type", "authorization_code")
     .field("redirect_uri", process.env.NEXT_PUBLIC_FB_REDIRECT_URL)
     .field("code", code).then(response => {
-      //console.log(response.body);
+      console.log(response.body);
       return response.body;
     }).catch(error => {
       throw error;
