@@ -179,6 +179,11 @@ async function getImage(imageUrl: string) {
     return response.choices[0].message.content;
   } catch (error) {
     console.log(error);
+
+    return {
+      primary: "#000000",
+      secondary: "#ffffff",
+    };
   }
 }
 
