@@ -182,7 +182,7 @@ async function getImage(imageUrl: string) {
 
     return {
       primary: "#000000",
-      secondary: "#ffffff",
+      secondary: "#333333",
     };
   }
 }
