@@ -8,14 +8,13 @@ export default function middleware(req: NextRequest) {
     .get("host")!
     .replace("localhost:3000", `${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
 
-  const subdomain = hostname.split(
-    `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
-  )[0];
+  let subdomain = hostname.split(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)[0];
 
   if (
     !fixedSubdomains.includes(subdomain) ||
     subdomain === process.env.NEXT_PUBLIC_ROOT_DOMAIN
   ) {
+    subdomain = subdomain.replaceAll("-", ".");
     return NextResponse.rewrite(new URL(`/${subdomain}`, req.url));
   }
 }
