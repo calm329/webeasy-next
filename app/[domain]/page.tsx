@@ -1,4 +1,4 @@
-import getUserData from "@/lib/actions/getUserData";
+import { getUserData } from "@/lib/fetchers";
 
 export default async function SiteHomePage({
   params,
@@ -6,9 +6,9 @@ export default async function SiteHomePage({
   params: { domain: string };
 }) {
   const domain = decodeURIComponent(params.domain);
-  const { success, data } = await getUserData(domain);
+  const data = await getUserData(domain);
 
-  if (!success || !data) {
+  if (!data) {
     return (
       <div>
         <h1>Domain: {domain}</h1>

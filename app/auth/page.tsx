@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/20/solid";
 import unirest from "unirest";
 import OpenAI from "openai";
-import createNewUser from "@/lib/actions/createNewUser";
+import { createNewUser } from "@/lib/actions";
 
 async function getMedia(accessToken: string) {
   //get user media
