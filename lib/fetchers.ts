@@ -14,6 +14,6 @@ export async function getUserData(domain: string) {
     {
       revalidate: 900,
       tags: [`${domain}-metadata`],
-    }
+    },
   )();
 }

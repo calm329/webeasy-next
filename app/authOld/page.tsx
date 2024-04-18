@@ -1,48 +1,67 @@
 export const maxDuration = 300;
 
-import { ChevronRightIcon } from '@heroicons/react/20/solid'
-import { CheckCircleIcon, InformationCircleIcon } from '@heroicons/react/20/solid'
-import unirest from "unirest"
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import {
+  CheckCircleIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/20/solid";
+import unirest from "unirest";
 import OpenAI from "openai";
-
 
 async function getMedia(accessToken: string) {
   //get user media
-  return await unirest.get(`${process.env.INSTAGRAM_API_ENDPOINT}me/media`)
+  return await unirest
+    .get(`${process.env.INSTAGRAM_API_ENDPOINT}me/media`)
     .query({
-      fields: ["id", "media_url", "permalink", "caption", "media_type", "username", "timestamp"].join(),
-      access_token: accessToken
-    }).then(response => {
+      fields: [
+        "id",
+        "media_url",
+        "permalink",
+        "caption",
+        "media_type",
+        "username",
+        "timestamp",
+      ].join(),
+      access_token: accessToken,
+    })
+    .then((response) => {
       //console.log(response.body);
       return response.body;
-    }).catch(error => {
-      throw error;
     })
+    .catch((error) => {
+      throw error;
+    });
 }
 
 async function getData(url: string) {
   //get user media
-  return await unirest.get(url)
-    .query({}).then(response => {
+  return await unirest
+    .get(url)
+    .query({})
+    .then((response) => {
       return response.body;
-    }).catch(error => {
-      throw error;
     })
+    .catch((error) => {
+      throw error;
+    });
 }
 
 async function getAccessTokenAndUserId(code: string) {
   //transfer auth code to access token
-  return await unirest.post(`${process.env.INSTAGRAM_API_AUTH_ENDPOINT}access_token`)
+  return await unirest
+    .post(`${process.env.INSTAGRAM_API_AUTH_ENDPOINT}access_token`)
     .field("client_id", process.env.NEXT_PUBLIC_FB_CLIENT_ID)
     .field("client_secret", process.env.INSTAGRAM_API_SECRET)
     .field("grant_type", "authorization_code")
     .field("redirect_uri", process.env.NEXT_PUBLIC_FB_REDIRECT_URL)
-    .field("code", code).then(response => {
+    .field("code", code)
+    .then((response) => {
       //console.log(response.body);
       return response.body;
-    }).catch(error => {
-      throw error;
     })
+    .catch((error) => {
+      throw error;
+    });
 }
 
 async function createAI(captions: string) {
@@ -54,15 +73,14 @@ async function createAI(captions: string) {
     model: "gpt-4",
     messages: [
       {
-        "role": "system",
-        "content": `You are a helpful assistant that writes website content in a friendly simple marketing tone. Generate comprehensive engaging content for a business website homepage that showcases our unique offerings and product descriptions that connects with our target audience. Use insights and themes from our Instagram posts to create a series of sections that highlight different aspects of our brand. Ensure the content is lively, informative, and visually appealing, mirroring the dynamic nature of our Instagram feed.
-        Output only html fragment with div tags and text content. Pay attention to the meaning in the hashtags to get more insight. Use tailwind css classes for styling.`
-
+        role: "system",
+        content: `You are a helpful assistant that writes website content in a friendly simple marketing tone. Generate comprehensive engaging content for a business website homepage that showcases our unique offerings and product descriptions that connects with our target audience. Use insights and themes from our Instagram posts to create a series of sections that highlight different aspects of our brand. Ensure the content is lively, informative, and visually appealing, mirroring the dynamic nature of our Instagram feed.
+        Output only html fragment with div tags and text content. Pay attention to the meaning in the hashtags to get more insight. Use tailwind css classes for styling.`,
       },
       {
-        "role": "user",
-        "content": captions
-      }
+        role: "user",
+        content: captions,
+      },
     ],
     temperature: 1,
     max_tokens: 1024,
@@ -78,11 +96,10 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: { slug: string }
-  searchParams: { [code: string]: string | string[] | undefined }
+  params: { slug: string };
+  searchParams: { [code: string]: string | string[] | undefined };
 }) {
-
-  const code = searchParams['code'];
+  const code = searchParams["code"];
   let aiContent = "";
   if (typeof code === "string") {
     const accessToken = (await getAccessTokenAndUserId(code)).access_token;
@@ -108,20 +125,16 @@ export default async function Page({
       }
     }
     //console.log(mediaCaption);
-    aiContent = "" + await createAI(mediaCaption);
-
+    aiContent = "" + (await createAI(mediaCaption));
   }
 
-  const jsonTemplate =
-  {
-    "hero":
-    {
-      "heading": "*insert heading here*",
-      "subheading": "*insert subheading here*",
-      "cta": "*insert call to action here*"
-    }
+  const jsonTemplate = {
+    hero: {
+      heading: "*insert heading here*",
+      subheading: "*insert subheading here*",
+      cta: "*insert call to action here*",
+    },
   };
-
 
   /*
   {
@@ -135,8 +148,13 @@ export default async function Page({
   */
   return (
     <div className="bg-white px-6 py-32 lg:px-8">
-      <p className="text-base font-semibold leading-7 text-indigo-600">WebEasy.AI</p>
-      <div className="mx-auto max-w-2xl text-base leading-7 text-gray-700" dangerouslySetInnerHTML={{ __html: aiContent }} />
+      <p className="text-base font-semibold leading-7 text-indigo-600">
+        WebEasy.AI
+      </p>
+      <div
+        className="mx-auto max-w-2xl text-base leading-7 text-gray-700"
+        dangerouslySetInnerHTML={{ __html: aiContent }}
+      />
 
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Posts</h2>
@@ -144,18 +162,23 @@ export default async function Page({
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {iPosts.map((post) => (
             <a key={post.id} className="group">
-              <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                {(post.media_type === "VIDEO") ?
+              <div className="aspect-h-1 aspect-w-1 xl:aspect-h-8 xl:aspect-w-7 w-full overflow-hidden rounded-lg bg-gray-200">
+                {post.media_type === "VIDEO" ? (
                   <video
                     src={post.media_url}
                     className="h-full w-full object-cover object-center group-hover:opacity-75"
-                    autoPlay loop muted playsInline
-                  /> :
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                  />
+                ) : (
                   <img
                     src={post.media_url}
                     alt={post.caption}
                     className="h-full w-full object-cover object-center group-hover:opacity-75"
-                  />}
+                  />
+                )}
               </div>
               <h3 className="mt-4 text-sm text-gray-700">{post.caption}</h3>
               {/*<p className="mt-1 text-xs font-medium text-gray-900">{post.timestamp}</p>*/}
@@ -164,5 +187,5 @@ export default async function Page({
         </div>
       </div>
     </div>
-  )
+  );
 }
