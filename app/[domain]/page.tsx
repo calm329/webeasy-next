@@ -3,6 +3,7 @@ import ServiceCard from "@/components/card/service-card";
 import CTA from "@/components/cta";
 import { ServiceIcon } from "@/components/icons";
 import TopBar from "@/components/top-bar";
+import Uploader from "@/components/uploader";
 import { getUserData } from "@/lib/fetchers";
 import Image from "next/image";
 import Link from "next/link";
@@ -114,6 +115,7 @@ export default async function SiteHomePage({
           ))}
         </div>
       </div>
+      <Uploader />
     </div>
   );
 }
