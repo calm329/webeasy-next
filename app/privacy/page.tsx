@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Privacy() {
   return (
     <div>
@@ -144,9 +146,9 @@ export default function Privacy() {
         visitors may choose to decline the use of DART cookies by visiting the
         Google ad and content network Privacy Policy at the following URL
         &ndash;{" "}
-        <a href="https://policies.google.com/technologies/ads">
+        <Link href="https://policies.google.com/technologies/ads">
           <span>https://policies.google.com/technologies/ads</span>
-        </a>
+        </Link>
         <span>&</span>
       </p>
       <p>
@@ -164,9 +166,9 @@ export default function Privacy() {
       <ul>
         <li>
           Google:{" "}
-          <a href="https://policies.google.com/technologies/ads">
+          <Link href="https://policies.google.com/technologies/ads">
             <span>https://policies.google.com/technologies/ads</span>
-          </a>
+          </Link>
         </li>
       </ul>
       <p>
@@ -223,9 +225,9 @@ export default function Privacy() {
         options. To know more detailed information about cookie management with
         specific web browsers, it can be found at the browsers&apos; respective
         websites.{" "}
-        <a href="https://www.privacypolicygenerator.info/privacy-policy-cookies-clauses/">
+        <Link href="https://www.privacypolicygenerator.info/privacy-policy-cookies-clauses/">
           <span>What Are Cookies?</span>
-        </a>
+        </Link>
       </p>
       <p>
         <br />

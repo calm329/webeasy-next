@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { hostname } from "os";
 
 export default function middleware(req: NextRequest) {
   const fixedSubdomains = ["www", "dev", process.env.NEXT_PUBLIC_ROOT_DOMAIN];
@@ -10,10 +9,7 @@ export default function middleware(req: NextRequest) {
 
   let subdomain = hostname.split(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)[0];
 
-  if (
-    !fixedSubdomains.includes(subdomain) ||
-    subdomain === process.env.NEXT_PUBLIC_ROOT_DOMAIN
-  ) {
+  if (!fixedSubdomains.includes(subdomain)) {
     subdomain = subdomain.replaceAll("-", ".");
     return NextResponse.rewrite(new URL(`/${subdomain}`, req.url));
   }
