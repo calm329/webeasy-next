@@ -115,7 +115,7 @@ export default async function SiteHomePage({
           ))}
         </div>
       </div>
-      <Uploader />
+      {/* <Uploader /> */}
     </div>
   );
 }
