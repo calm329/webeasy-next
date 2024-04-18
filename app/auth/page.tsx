@@ -259,7 +259,7 @@ export default async function Page({
       const { success, data } = await createNewUser(
         iPosts[0]?.username || "default",
         JSON.stringify(iPosts),
-        JSON.stringify(aiObj)
+        JSON.stringify(aiObj),
       );
 
       console.log(success, data);
@@ -309,13 +309,13 @@ export default async function Page({
   */
   return (
     <div>
-      <section className="py-6 bg-white">
+      <section className="bg-white py-6">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between px-6 py-3.5 bg-gray-100 border border-gray-100 rounded-full">
+          <div className="flex items-center justify-between rounded-full border border-gray-100 bg-gray-100 px-6 py-3.5">
             <div className="w-auto">
               <div className="flex flex-wrap items-center">
                 <div
-                  className="w-auto text-xl text-black-300 font-medium"
+                  className="text-black-300 w-auto text-xl font-medium"
                   style={{ color: aiObj["colors"]["primary"] }}
                 >
                   <a href="#">{aiObj["businessName"]}</a>
@@ -325,10 +325,10 @@ export default async function Page({
             <div className="w-auto">
               <div className="flex flex-wrap items-center">
                 <div className="w-auto lg:block">
-                  <div className="flex flex-wrap -m-2">
-                    <div className="w-full md:w-auto p-2">
+                  <div className="-m-2 flex flex-wrap">
+                    <div className="w-full p-2 md:w-auto">
                       <a
-                        className="block w-full px-4 py-2.5 text-sm text-center text-white font-bold bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-200 rounded-full"
+                        className="block w-full rounded-full bg-blue-500 px-4 py-2.5 text-center text-sm font-bold text-white hover:bg-blue-600 focus:ring-4 focus:ring-blue-200"
                         style={{
                           backgroundColor: aiObj["colors"]["secondary"],
                         }}
@@ -344,15 +344,15 @@ export default async function Page({
           </div>
         </div>
       </section>
-      <section className="py-10 bg-gray-50 overflow-hidden">
+      <section className="overflow-hidden bg-gray-50 py-10">
         <div className="container mx-auto px-4">
-          <div className="py-16 px-8 bg-white rounded-3xl">
-            <div className="max-w-7xl mx-auto">
-              <div className="flex flex-wrap -m-8 mb-10">
-                <div className="w-full md:w-1/2 p-8">
+          <div className="rounded-3xl bg-white px-8 py-16">
+            <div className="mx-auto max-w-7xl">
+              <div className="-m-8 mb-10 flex flex-wrap">
+                <div className="w-full p-8 md:w-1/2">
                   <div className="md:max-w-lg">
                     <h2
-                      className={`font-heading mb-6 text-4xl md:text-5xl text-gray-300 font-black tracking-tight`}
+                      className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl`}
                       style={{ color: aiObj["colors"]["primary"] }}
                     >
                       {aiObj["hero"]["heading"]}
@@ -360,10 +360,10 @@ export default async function Page({
                     <p className="mb-8 text-xl font-bold">
                       {aiObj["hero"]["subheading"]}
                     </p>
-                    <div className="flex flex-wrap -m-2">
-                      <div className="w-full md:w-auto p-2">
+                    <div className="-m-2 flex flex-wrap">
+                      <div className="w-full p-2 md:w-auto">
                         <a
-                          className="block w-full px-8 py-3.5 text-lg text-center text-white font-bold bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-200 rounded-full"
+                          className="block w-full rounded-full bg-blue-500 px-8 py-3.5 text-center text-lg font-bold text-white hover:bg-blue-600 focus:ring-4 focus:ring-blue-200"
                           style={{
                             backgroundColor: aiObj["colors"]["secondary"],
                           }}
@@ -375,9 +375,9 @@ export default async function Page({
                     </div>
                   </div>
                 </div>
-                <div className="w-full md:w-1/2 p-8">
+                <div className="w-full p-8 md:w-1/2">
                   <img
-                    className="object-contain mx-auto md:mr-0 rounded-3xl"
+                    className="mx-auto rounded-3xl object-contain md:mr-0"
                     width="256"
                     height="256"
                     src={aiObj["hero"]["imageUrl"]}
@@ -385,13 +385,13 @@ export default async function Page({
                   />
                 </div>
               </div>
-              <div className="p-8 md:p-12 bg-gray-100 rounded-3xl">
-                <div className="flex flex-wrap -m-8">
+              <div className="rounded-3xl bg-gray-100 p-8 md:p-12">
+                <div className="-m-8 flex flex-wrap">
                   {aiObj["services"]["list"].map((service) => (
-                    <div key={0} className="w-full md:w-1/3 p-8">
-                      <div className="flex flex-wrap -m-3">
-                        <div className="w-auto md:w-full lg:w-auto p-3">
-                          <div className="flex items-center justify-center w-12 h-12 bg-white rounded-xl">
+                    <div key={0} className="w-full p-8 md:w-1/3">
+                      <div className="-m-3 flex flex-wrap">
+                        <div className="w-auto p-3 md:w-full lg:w-auto">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white">
                             <svg
                               width={24}
                               height={24}
@@ -415,10 +415,10 @@ export default async function Page({
                           </div>
                         </div>
                         <div className="flex-1 p-3">
-                          <h3 className="font-heading mb-2 text-xl text-gray-900 font-black">
+                          <h3 className="font-heading mb-2 text-xl font-black text-gray-900">
                             {service["name"]}
                           </h3>
-                          <p className="text-sm text-gray-700 font-bold">
+                          <p className="text-sm font-bold text-gray-700">
                             {service["description"]}
                           </p>
                         </div>
@@ -440,7 +440,7 @@ export default async function Page({
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {iPosts.map((post) => (
             <a key={post.id} className="group">
-              <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <div className="aspect-h-1 aspect-w-1 xl:aspect-h-8 xl:aspect-w-7 w-full overflow-hidden rounded-lg bg-gray-200">
                 {post.media_type === "VIDEO" ? (
                   <video
                     src={post.media_url}

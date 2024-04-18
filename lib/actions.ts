@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 export async function createNewUser(
   username: string,
   posts: string,
-  aiResult: string
+  aiResult: string,
 ) {
   try {
     const user = await prisma.user.create({
