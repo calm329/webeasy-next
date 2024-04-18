@@ -1,4 +1,4 @@
-// export const runtime = "edge";
+export const maxDuration = 300;
 
 import { NextRequest, NextResponse } from "next/server";
 import unirest from "unirest";
