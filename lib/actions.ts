@@ -1,10 +1,8 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
-const prisma = new PrismaClient();
-
-export default async function createNewUser(
+export async function createNewUser(
   username: string,
   posts: string,
   aiResult: string
