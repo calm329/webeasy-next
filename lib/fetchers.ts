@@ -4,9 +4,9 @@ import prisma from "@/lib/prisma";
 export async function getUserData(domain: string) {
   return await unstable_cache(
     async () => {
-      return prisma.user.findUnique({
+      return prisma.site.findFirst({
         where: {
-          username: domain,
+          userId: domain,
         },
       });
     },
