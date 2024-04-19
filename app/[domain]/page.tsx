@@ -1,6 +1,7 @@
 import PostCard from "@/components/card/post-card";
 import ServiceCard from "@/components/card/service-card";
 import CTA from "@/components/cta";
+import DynamicForm from "@/components/form/dynamic-form";
 import { ServiceIcon } from "@/components/icons";
 import TopBar from "@/components/top-bar";
 import Uploader from "@/components/uploader";
@@ -115,6 +116,7 @@ export default async function SiteHomePage({
           ))}
         </div>
       </div>
+      <DynamicForm />
       {/* <Uploader /> */}
     </div>
   );
