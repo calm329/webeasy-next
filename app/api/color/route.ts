@@ -1,4 +1,4 @@
-export const maxDuration = 300;
+export const runtime = "edge";
 
 import OpenAI from "openai";
 import { NextRequest, NextResponse } from "next/server";

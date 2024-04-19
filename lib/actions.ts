@@ -2,15 +2,30 @@
 
 import prisma from "@/lib/prisma";
 
-export async function createNewUser(
-  username: string,
+export async function createNewSite(
+  userId: string,
   posts: string,
   aiResult: string,
 ) {
   try {
-    const user = await prisma.user.create({
+    // check if user has already created a site (this assumes only one site per user)
+    const site = await prisma.site.findFirst({
+      where: {
+        userId,
+      },
+    });
+
+    if (site) {
+      return {
+        success: false,
+        error: "duplicate_site",
+        data: null,
+      };
+    }
+
+    const newSite = await prisma.site.create({
       data: {
-        username,
+        userId,
         posts,
         aiResult,
       },
@@ -19,8 +34,8 @@ export async function createNewUser(
     return {
       success: true,
       data: {
-        posts: user.posts,
-        aiResult: user.aiResult,
+        posts: newSite.posts,
+        aiResult: newSite.aiResult,
       },
     };
   } catch (error) {
@@ -28,6 +43,7 @@ export async function createNewUser(
 
     return {
       success: false,
+      error: "internal_server_error",
       data: null,
     };
   }
