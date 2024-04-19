@@ -3,6 +3,7 @@
 import PostCard from "@/components/card/post-card";
 import ServiceCard from "@/components/card/service-card";
 import CTA from "@/components/cta";
+import Loader from "@/components/loader";
 import TopBar from "@/components/top-bar";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -40,21 +41,28 @@ export default function Page({
   // }, []);
 
   useEffect(() => {
-    fetch("/api/auth?code=" + code).then(async (response) => {
-      try {
-        const data = await response.json();
+    fetch("/api/auth?code=" + code)
+      .then(async (response) => {
+        try {
+          const data = await response.json();
 
-        if (data.mediaCaption) setMediaCaption(data.mediaCaption);
-        if (Object.keys(data.imageIds).length) setImageIds(data.imageIds);
-        if (data.posts.length) setIPosts(data.posts);
-      } catch (error) {
+          if (data.mediaCaption) setMediaCaption(data.mediaCaption);
+          if (Object.keys(data.imageIds).length) setImageIds(data.imageIds);
+          if (data.posts.length) setIPosts(data.posts);
+        } catch (error) {
+          console.log(error);
+        }
+      })
+      .catch((error) => {
         console.log(error);
-      }
-    });
+        setMediaCaption(error);
+      });
   }, []);
 
   useEffect(() => {
     if (!mediaCaption) return;
+
+    console.log(status);
 
     setStatus("Generating Content");
 
@@ -98,20 +106,8 @@ export default function Page({
 
   if (status != "done")
     return (
-      <div className="mt-10 flex items-center justify-center gap-7">
-        <div className="flex items-center justify-center">
-          <div
-            className="text-surface inline-block h-16 w-16 animate-spin rounded-full border-[7px] border-solid border-current border-e-transparent align-[-0.125em] text-neutral-500 motion-reduce:animate-[spin_1.5s_linear_infinite]"
-            role="status"
-          >
-            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-              Loading...
-            </span>
-          </div>
-        </div>
-        <h1 className="text-6xl font-semibold leading-[0px] text-neutral-500">
-          {status}
-        </h1>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <Loader text={status} />
       </div>
     );
 

@@ -1,24 +1,20 @@
-import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import { AuthOptions } from "next-auth";
 import Instagram from "next-auth/providers/instagram";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import prisma from "./prisma";
 
-const prisma = new PrismaClient();
-
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
-  providers: [Instagram],
+export const authOptions: AuthOptions = {
+  providers: [
+    Instagram({
+      clientId: process.env.INSTAGRAM_ID,
+      clientSecret: process.env.INSTAGRAM_SECRET,
+    }),
+  ],
+  adapter: PrismaAdapter(prisma) as any,
   callbacks: {
-    async jwt({ user, token }) {
-      if (user) {
-        token.user = user;
-      }
-      return token;
-    },
-    async session({ session, token }: any) {
-      session.user = token.user;
-      return session;
+    async signIn({ user, account }) {
+      console.log(user);
+      return true;
     },
   },
-  debug: process.env.NODE_ENV === "development",
-});
+};

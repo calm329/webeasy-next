@@ -67,13 +67,21 @@ DynamicForm.defaultProps = {
       },
     },
     {
-      name: "email",
-      type: "email",
-      label: "Email",
-      placeholder: "Enter your email",
+      name: "businessName",
+      type: "text",
+      label: "Update Business Name",
+      placeholder: "Enter your business name",
       validation: {
         required: true,
-        pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$",
+      },
+    },
+    {
+      name: "ctaLink",
+      type: "text",
+      label: "Update Call to Action URL",
+      placeholder: "Enter a link",
+      validation: {
+        required: true,
       },
     },
   ],
