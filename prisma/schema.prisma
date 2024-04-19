@@ -21,8 +21,10 @@ datasource db {
 
 model User {
   id            String          @id @default(cuid())
-  name          String?
+  name          String?         @unique
   image         String?
+  emailVerified Boolean?
+  email         String?         @unique
   sites         Site[]
   accounts      Account[]
   sessions      Session[]
@@ -35,6 +37,7 @@ model User {
 
 model Account {
   userId            String
+  user_id           BigInt
   type              String
   provider          String
   providerAccountId String
@@ -89,6 +92,7 @@ model Authenticator {
 
 model Site {
   id        String   @id @default(cuid())
+  subdomain String   @unique
   userId    String
   posts     String
   aiResult  String

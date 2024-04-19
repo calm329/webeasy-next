@@ -1,6 +1,6 @@
 import { GridBoxIcon } from "@/components/icons";
-import { signIn } from "@/lib/auth";
 import tailwindIcon from "@/public/tailwind.svg";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
