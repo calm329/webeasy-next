@@ -67,13 +67,18 @@ export default function Page({
     if (data) {
       setStatus("Done");
 
-      setAiContent(JSON.parse(data.aiResult));
+      const _aiContent = JSON.parse(data.aiResult);
+
+      setAiContent(_aiContent);
       setIPosts(JSON.parse(data.posts));
       setLogo(data.logo || "");
 
       const _brandCustomizeFields = brandCustomizeFields;
 
       _brandCustomizeFields[0].defaultValue = data.logo;
+      _brandCustomizeFields[1].defaultValue = _aiContent?.businessName;
+      _brandCustomizeFields[2].defaultValue = _aiContent?.hero?.ctaLink || "";
+
       setBrandCustomizeFields(_brandCustomizeFields);
 
       return;
@@ -82,7 +87,7 @@ export default function Page({
     let _imageIds = {};
     let _iPosts = [];
     let _mediaCaption = "";
-    let _aiContent = {};
+    let _aiContent: any = {};
 
     // get user media
     {
@@ -134,9 +139,8 @@ export default function Page({
 
         const _brandCustomizeFields = brandCustomizeFields;
 
-        _brandCustomizeFields[1].defaultValue = _aiContent["businessName"];
-        _brandCustomizeFields[2].defaultValue =
-          _aiContent["hero"]["ctaLink"] || "";
+        _brandCustomizeFields[1].defaultValue = _aiContent?.businessName;
+        _brandCustomizeFields[2].defaultValue = _aiContent?.hero?.ctaLink || "";
 
         setBrandCustomizeFields(_brandCustomizeFields);
 
@@ -171,17 +175,6 @@ export default function Page({
   useEffect(() => {
     getData();
   }, []);
-
-  useEffect(() => {
-    if (!aiContent || Object.keys(aiContent).length === 0) return;
-
-    const _brandCustomizeFields = brandCustomizeFields;
-
-    _brandCustomizeFields[1].defaultValue = aiContent["businessName"];
-    _brandCustomizeFields[2].defaultValue = aiContent["hero"]["ctaLink"] || "";
-
-    setBrandCustomizeFields(_brandCustomizeFields);
-  }, [aiContent]);
 
   return status === "Done" ? (
     <div className="relative flex size-full">
