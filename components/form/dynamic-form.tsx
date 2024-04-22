@@ -12,11 +12,15 @@ export default function DynamicForm({
   fields,
   handler,
   handleChange,
+  handleBack,
+  handleNext,
 }: {
   title: string;
   fields: any[];
   handler: (formData, keys) => void;
   handleChange: (name: string, value: string) => void;
+  handleBack?: () => void;
+  handleNext?: () => void;
 }) {
   const [loading, setLoading] = useState(false);
   const zodSchema = generateZodSchema(fields);
@@ -38,6 +42,8 @@ export default function DynamicForm({
         data,
         fields.map((f) => f.name as string),
       );
+
+      handleNext && handleNext();
     } catch (error) {
       console.log(error);
     } finally {
@@ -49,7 +55,7 @@ export default function DynamicForm({
     for (const f of fields) {
       setValue(f.name, f.defaultValue);
     }
-  }, [fields]);
+  }, []);
 
   return (
     <>
@@ -111,14 +117,29 @@ export default function DynamicForm({
             )}
           />
         ))}
-        <div className="!mt-8 flex w-full items-center justify-center">
+        <div
+          className={cn("!mt-8 flex w-full items-center", {
+            "justify-between": handleBack,
+            "justify-center": !handleBack,
+          })}
+        >
+          {handleBack && (
+            <Button
+              type="button"
+              color="primary"
+              disabled={loading}
+              onClick={handleBack}
+            >
+              Back
+            </Button>
+          )}
           <Button
             type="submit"
             color="primary"
             disabled={loading}
             isLoading={loading}
           >
-            Submit
+            Next
           </Button>
         </div>
       </form>

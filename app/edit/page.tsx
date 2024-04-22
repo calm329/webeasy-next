@@ -8,9 +8,13 @@ import Loader from "@/components/loader";
 import TopBar from "@/components/top-bar";
 import { createNewSite, updateSite } from "@/lib/actions";
 import { getUserData } from "@/lib/fetchers";
+import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { FaChevronUp } from "react-icons/fa6";
+import BrandDesktopForm from "@/components/form/brand-desktop-form";
+import BrandMobileForm from "@/components/form/brand-mobile-form";
 
 export default function Page({
   params,
@@ -260,14 +264,14 @@ export default function Page({
           </div>
         </section>
       </div>
-      <div className="sticky top-0 h-full w-[500px] p-4">
-        <DynamicForm
-          title="Brand Customization"
-          fields={brandCustomizeFields}
-          handler={updateSite}
-          handleChange={handleChange}
-        />
-      </div>
+      <BrandDesktopForm
+        brandCustomizeFields={brandCustomizeFields}
+        handleChange={handleChange}
+      />
+      <BrandMobileForm
+        brandCustomizeFields={brandCustomizeFields}
+        handleChange={handleChange}
+      />
     </div>
   ) : (
     <div className="absolute inset-0 flex items-center justify-center">
