@@ -1,12 +1,9 @@
 import PostCard from "@/components/card/post-card";
 import ServiceCard from "@/components/card/service-card";
 import CTA from "@/components/cta";
-import { ServiceIcon } from "@/components/icons";
 import TopBar from "@/components/top-bar";
-import Uploader from "@/components/uploader";
 import { getUserData } from "@/lib/fetchers";
 import Image from "next/image";
-import Link from "next/link";
 
 export default async function SiteHomePage({
   params,
@@ -95,9 +92,6 @@ export default async function SiteHomePage({
           </div>
         </div>
       </section>
-      {/*<p className="text-base font-semibold leading-7 text-indigo-600">WebEasy.AI</p>
-      <div className="mx-auto max-w-2xl text-base leading-7 text-gray-700" dangerouslySetInnerHTML={{ __html: aiContent }} />*/}
-
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Posts</h2>
 
@@ -115,7 +109,6 @@ export default async function SiteHomePage({
           ))}
         </div>
       </div>
-      {/* <Uploader /> */}
     </div>
   );
 }
