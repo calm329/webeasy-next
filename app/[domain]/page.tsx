@@ -22,14 +22,15 @@ export default async function SiteHomePage({
     );
   }
 
-  let posts = JSON.parse(data?.posts || "[]");
-  let aiResult = JSON.parse(data?.aiResult || "{}");
+  let posts = JSON.parse(data.posts || "[]");
+  let aiResult = JSON.parse(data.aiResult || "{}");
 
   return (
     <div>
       <section className="bg-white py-6">
         <div className="container mx-auto px-4">
           <TopBar
+            logo={data.logo || ""}
             businessName={aiResult["businessName"]}
             colors={aiResult["colors"]}
             cta={{
