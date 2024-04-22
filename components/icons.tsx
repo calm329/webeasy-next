@@ -1,5 +1,5 @@
+import { IconSvgProps } from "@/types";
 import * as React from "react";
-import { IconSvgProps } from "@/lib/types";
 
 export const GridBoxIcon: React.FC<IconSvgProps> = ({
   size,

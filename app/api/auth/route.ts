@@ -1,5 +1,8 @@
 export const maxDuration = 300;
+// export const runtime = "edge";
 
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import unirest from "unirest";
 
@@ -40,33 +43,34 @@ async function getMedia(accessToken: string) {
     });
 }
 
-async function getAccessTokenAndUserId(code: string) {
-  //transfer auth code to access token
-  return await unirest
-    .post(`${process.env.INSTAGRAM_API_AUTH_ENDPOINT}access_token`)
-    .field("client_id", process.env.NEXT_PUBLIC_FB_CLIENT_ID)
-    .field("client_secret", process.env.INSTAGRAM_API_SECRET)
-    .field("grant_type", "authorization_code")
-    .field("redirect_uri", process.env.NEXT_PUBLIC_FB_REDIRECT_URL)
-    .field("code", code)
-    .then((response) => {
-      return response.body;
-    })
-    .catch((error) => {
-      throw error;
-    });
-}
+// async function getAccessTokenAndUserId(code: string) {
+//   //transfer auth code to access token
+//   return await unirest
+//     .post(`${process.env.INSTAGRAM_API_AUTH_ENDPOINT}access_token`)
+//     .field("client_id", process.env.NEXT_PUBLIC_FB_CLIENT_ID)
+//     .field("client_secret", process.env.INSTAGRAM_API_SECRET)
+//     .field("grant_type", "authorization_code")
+//     .field("redirect_uri", process.env.NEXT_PUBLIC_FB_REDIRECT_URL)
+//     .field("code", code)
+//     .then((response) => {
+//       return response.body;
+//     })
+//     .catch((error) => {
+//       throw error;
+//     });
+// }
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const code = searchParams.get("code");
+  try {
+    const session = await getServerSession(authOptions);
 
-  if (typeof code === "string") {
-    const accessToken = (await getAccessTokenAndUserId(code)).access_token;
+    if (!session || !session.accessToken) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
 
     let mediaCaption = "";
 
-    let media = await getMedia(accessToken);
+    let media = await getMedia(session.accessToken);
     let imageIds = {};
 
     let iPosts: any[] = [];
@@ -94,6 +98,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       { mediaCaption, imageIds, posts: iPosts },
       { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 401 },
     );
   }
 }

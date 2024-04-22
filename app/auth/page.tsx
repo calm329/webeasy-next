@@ -5,6 +5,8 @@ import ServiceCard from "@/components/card/service-card";
 import CTA from "@/components/cta";
 import Loader from "@/components/loader";
 import TopBar from "@/components/top-bar";
+import { createNewSite } from "@/lib/actions";
+import { getUserData } from "@/lib/fetchers";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -15,103 +17,89 @@ export default function Page({
   params: { slug: string };
   searchParams: { [code: string]: string | string[] | undefined };
 }) {
-  const code = searchParams["code"];
-
   const [status, setStatus] = useState("Loading Instagram");
-  const [imageIds, setImageIds] = useState<any>({});
   const [iPosts, setIPosts] = useState<any[]>([]);
-  const [mediaCaption, setMediaCaption] = useState("");
   const [aiContent, setAiContent] = useState({});
-  // useEffect(() => {
 
-  //     const fetchDate = async () => {
-  //         try {
-  //             const response1 = await fetch("/api/auth?code=" + code);
-  //             const data1 = await response1.json();
+  const getData = async () => {
+    // check if user data exists
+    const data = await getUserData();
 
-  //             if (data1.mediaCaption) setMediaCaption(data1.mediaCaption);
-  //             if (Object.keys(data1.imageIds).length) setImageIds(data1.imageIds);
-  //             if (data1.posts.length) setIPosts(data1.posts);
+    if (data) {
+      setStatus("Done");
 
-  //             setStatus("Generating Content");
-  //         } catch (error) {
-  //             console.log(error);
-  //         };
-  //     };
-  // }, []);
+      setAiContent(JSON.parse(data.aiResult));
+      setIPosts(JSON.parse(data.posts));
+
+      return;
+    }
+
+    let _imageIds = {};
+    let _iPosts = [];
+    let _mediaCaption = "";
+    let _aiContent = {};
+
+    // get user media
+    {
+      const response = await fetch("/api/auth");
+      const data = await response.json();
+
+      if (data.mediaCaption) _mediaCaption = data.mediaCaption;
+      if (Object.keys(data.imageIds).length) _imageIds = data.imageIds;
+      if (data.posts.length) _iPosts = data.posts;
+
+      setStatus("Generating Content");
+    }
+
+    // generate content from user media using openai
+    {
+      const response = await fetch("/api/content", {
+        method: "POST",
+        body: JSON.stringify({ mediaCaption: _mediaCaption }),
+      });
+
+      const data = await response.json();
+
+      if (data.content) {
+        _aiContent = JSON.parse(data.content);
+        _aiContent["hero"]["imageUrl"] =
+          _imageIds[_aiContent["hero"]["imageId"]];
+
+        setStatus("Choosing Colors");
+      }
+    }
+
+    // generate colors from content using openai
+    {
+      const response = await fetch("/api/color", {
+        method: "POST",
+        body: JSON.stringify({ imageUrl: _aiContent["hero"]["imageUrl"] }),
+      });
+
+      const data = await response.json();
+
+      if (data.colors) {
+        const _aiColors = JSON.parse(data.colors);
+        _aiContent = { ..._aiContent, colors: _aiColors };
+
+        setStatus("Done");
+
+        setAiContent(_aiContent);
+        setIPosts(_iPosts);
+
+        await createNewSite(
+          JSON.stringify(_aiContent),
+          JSON.stringify(_iPosts),
+        );
+      }
+    }
+  };
 
   useEffect(() => {
-    fetch("/api/auth?code=" + code)
-      .then(async (response) => {
-        try {
-          const data = await response.json();
-
-          if (data.mediaCaption) setMediaCaption(data.mediaCaption);
-          if (Object.keys(data.imageIds).length) setImageIds(data.imageIds);
-          if (data.posts.length) setIPosts(data.posts);
-        } catch (error) {
-          console.log(error);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setMediaCaption(error);
-      });
+    getData();
   }, []);
 
-  useEffect(() => {
-    if (!mediaCaption) return;
-
-    console.log(status);
-
-    setStatus("Generating Content");
-
-    fetch("/api/content", {
-      method: "POST",
-      body: JSON.stringify({ mediaCaption }),
-    }).then(async (response) => {
-      try {
-        const data = await response.json();
-
-        if (data.aiContent) {
-          const _aiContent = JSON.parse(data.aiContent);
-          const postImageUrl = imageIds[_aiContent["hero"]["imageId"]];
-          _aiContent["hero"]["imageUrl"] = postImageUrl;
-
-          setStatus("Choosing Colors");
-
-          fetch("/api/color", {
-            method: "POST",
-            body: JSON.stringify({ postImageUrl }),
-          }).then(async (colorsResponse) => {
-            try {
-              const colorsData = await colorsResponse.json();
-
-              if (colorsData.colors)
-                _aiContent["colors"] = JSON.parse(colorsData.colors);
-
-              setAiContent(_aiContent);
-
-              setStatus("done");
-            } catch (error) {
-              console.log(error);
-            }
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    });
-  }, [mediaCaption]);
-
-  if (status != "done")
-    return (
-      <div className="absolute inset-0 flex items-center justify-center">
-        <Loader text={status} />
-      </div>
-    );
-
-  return (
+  return status === "Done" ? (
     <div>
       <section className="bg-white py-6">
         <div className="container mx-auto px-4">
@@ -178,9 +166,6 @@ export default function Page({
           </div>
         </div>
       </section>
-      {/*<p className="text-base font-semibold leading-7 text-indigo-600">WebEasy.AI</p>
-          <div className="mx-auto max-w-2xl text-base leading-7 text-gray-700" dangerouslySetInnerHTML={{ __html: aiContent }} />*/}
-
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Posts</h2>
 
@@ -198,6 +183,10 @@ export default function Page({
           ))}
         </div>
       </div>
+    </div>
+  ) : (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <Loader text={status} />
     </div>
   );
 }
