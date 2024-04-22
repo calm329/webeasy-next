@@ -57,8 +57,7 @@ export async function createNewSite(aiResult: string, posts: string) {
 }
 
 export async function updateSite(
-  formData: FormData,
-  site: string,
+  data: { [key: string]: string },
   keys: string[],
 ) {
   const session = await getServerSession();
@@ -67,5 +66,66 @@ export async function updateSite(
     return {
       error: "Not authenticated",
     };
+  }
+
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        name: session.user.name,
+      },
+    });
+
+    if (!user) {
+      return {
+        error: "User not found",
+      };
+    }
+
+    const site = await prisma.site.findFirst({
+      where: {
+        subdomain: session.user.name || "",
+        userId: user.id,
+      },
+    });
+
+    if (!site) {
+      return {
+        error: "Site not found",
+      };
+    }
+
+    let newData: any = {
+      aiResult: site.aiResult,
+    };
+
+    for (const key of keys) {
+      if (key === "ctaLink") {
+        newData["aiResult"] = JSON.stringify({
+          ...JSON.parse(newData["aiResult"]),
+          hero: {
+            ...JSON.parse(newData["aiResult"]).hero,
+            ctaLink: data[key],
+          },
+        });
+      } else if (key === "businessName") {
+        newData["aiResult"] = JSON.stringify({
+          ...JSON.parse(newData["aiResult"]),
+          businessName: data[key],
+        });
+      } else {
+        newData[key] = data[key];
+      }
+    }
+
+    const response = await prisma.site.update({
+      where: {
+        id: site.id,
+      },
+      data: newData,
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
   }
 }
