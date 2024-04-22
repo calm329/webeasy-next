@@ -35,6 +35,7 @@ export default function PostCard({
             src={media_url}
             alt={caption}
             fill
+            sizes="100%"
             style={{ objectFit: "cover", objectPosition: "center" }}
             className="group-hover:opacity-75"
           />

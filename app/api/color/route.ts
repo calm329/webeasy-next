@@ -1,12 +1,19 @@
+export const maxDuration = 300;
 export const runtime = "edge";
 
 import OpenAI from "openai";
 import { NextRequest, NextResponse } from "next/server";
 
-async function getImage(imageUrl: string) {
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+export async function POST(request: NextRequest) {
+  const { imageUrl } = await request.json();
+
+  if (!imageUrl) {
+    return NextResponse.json({ error: "No image url" }, { status: 400 });
+  }
 
   try {
     const response = await openai.chat.completions.create({
@@ -34,20 +41,15 @@ async function getImage(imageUrl: string) {
       ],
     });
 
-    return response.choices[0].message.content;
+    return NextResponse.json({ colors: response.choices[0].message.content });
   } catch (error) {
     console.log(error);
 
-    return {
-      primary: "#000000",
-      secondary: "#333333",
-    };
+    return NextResponse.json({
+      colors: JSON.stringify({
+        primary: "#000000",
+        secondary: "#333333",
+      }),
+    });
   }
-}
-
-export async function POST(request: NextRequest) {
-  const data = await request.json();
-  const colors = await getImage(data.postImageUrl);
-
-  return NextResponse.json({ colors });
 }
