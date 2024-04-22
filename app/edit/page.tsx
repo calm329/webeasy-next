@@ -71,6 +71,11 @@ export default function Page({
       setIPosts(JSON.parse(data.posts));
       setLogo(data.logo || "");
 
+      const _brandCustomizeFields = brandCustomizeFields;
+
+      _brandCustomizeFields[0].defaultValue = data.logo;
+      setBrandCustomizeFields(_brandCustomizeFields);
+
       return;
     }
 
@@ -127,6 +132,14 @@ export default function Page({
         setAiContent(_aiContent);
         setIPosts(_iPosts);
 
+        const _brandCustomizeFields = brandCustomizeFields;
+
+        _brandCustomizeFields[1].defaultValue = _aiContent["businessName"];
+        _brandCustomizeFields[2].defaultValue =
+          _aiContent["hero"]["ctaLink"] || "";
+
+        setBrandCustomizeFields(_brandCustomizeFields);
+
         await createNewSite(
           JSON.stringify(_aiContent),
           JSON.stringify(_iPosts),
@@ -169,13 +182,6 @@ export default function Page({
 
     setBrandCustomizeFields(_brandCustomizeFields);
   }, [aiContent]);
-
-  useEffect(() => {
-    const _brandCustomizeFields = brandCustomizeFields;
-
-    _brandCustomizeFields[0].defaultValue = logo;
-    setBrandCustomizeFields(_brandCustomizeFields);
-  }, [logo]);
 
   return status === "Done" ? (
     <div className="relative flex size-full">

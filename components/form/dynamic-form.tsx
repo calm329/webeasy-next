@@ -92,7 +92,6 @@ export default function DynamicForm({
                     {...field}
                     type={fff.type === "email" ? "email" : "text"}
                     label={fff.label}
-                    defaultValue={fff.defaultValue as string}
                     placeholder={fff.placeholder}
                     isInvalid={!!errors[fff.name]}
                     errorMessage={
