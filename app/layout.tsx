@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/react";
+import TailwindIndicator from "@/components/tailwind-indicator";
 
 export const metadata: Metadata = {
   title: "WebEasy.AI",
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className={cn("font-sans antialiased", fontSans.className)}>
         <Providers>{children}</Providers>
         <Analytics />
+        <TailwindIndicator />
       </body>
     </html>
   );
