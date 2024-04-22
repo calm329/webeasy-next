@@ -42,7 +42,7 @@ export default function Page({
       name: "businessName",
       type: "text",
       label: "Business Name:",
-      defaultValue: "asdf",
+      defaultValue: "",
       placeholder: "Enter your business name",
       validation: {
         required: true,
