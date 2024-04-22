@@ -55,7 +55,7 @@ export default function DynamicForm({
     for (const f of fields) {
       setValue(f.name, f.defaultValue);
     }
-  }, []);
+  }, [fields]);
 
   return (
     <>
