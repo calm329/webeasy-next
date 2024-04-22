@@ -94,6 +94,7 @@ model Site {
   id        String   @id @default(cuid())
   subdomain String   @unique
   userId    String
+  logo      String?
   posts     String
   aiResult  String
   createdAt DateTime @default(now())
