@@ -35,7 +35,6 @@ export default function DynamicForm({
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setLoading(true);
-    console.log(data);
 
     try {
       await handler(
@@ -43,9 +42,9 @@ export default function DynamicForm({
         fields.map((f) => f.name as string),
       );
 
-      handleNext && handleNext();
+      handleNext?.();
     } catch (error) {
-      console.log(error);
+      console.error("Form submission error:", error);
     } finally {
       setLoading(false);
     }
@@ -60,88 +59,101 @@ export default function DynamicForm({
   return (
     <>
       {title && (
-        <h2 className="w-full text-center text-2xl font-bold text-primary-500">
-          {title}
-        </h2>
+        <h2 className="w-full text-center text-2xl font-bold">{title}</h2>
       )}
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={cn("space-y-2", { "mt-5": !!title })}
-      >
-        {fields.map((fff) => (
-          <Controller
-            key={fff.name}
-            name={fff.name}
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-2">
+        {fields.map((field) => (
+          <FormField
+            key={field.name}
+            field={field}
             control={control}
-            render={({ field }) => (
-              <div className="flex w-full flex-col">
-                {fff.type === "image" ? (
-                  <div>
-                    <Uploader
-                      defaultValue={fff.defaultValue}
-                      name={fff.name}
-                      label={fff.label}
-                      onChange={(value) => {
-                        handleChange(fff.name, value);
-                        field.onChange(value);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <Input
-                    {...field}
-                    type={fff.type === "email" ? "email" : "text"}
-                    label={fff.label}
-                    placeholder={fff.placeholder}
-                    isInvalid={!!errors[fff.name]}
-                    errorMessage={
-                      errors[fff.name]
-                        ? errors[fff.name]!.message?.toString()
-                        : ""
-                    }
-                    onChange={(e) => {
-                      handleChange(fff.name, e.target.value);
-                      field.onChange(e);
-                    }}
-                    labelPlacement="outside-left"
-                    className="w-full"
-                    classNames={{
-                      base: "w-full gap-2",
-                      mainWrapper: "w-full",
-                      label: "whitespace-nowrap",
-                    }}
-                  />
-                )}
-              </div>
-            )}
+            errors={errors}
+            handleChange={handleChange}
           />
         ))}
-        <div
-          className={cn("!mt-8 flex w-full items-center", {
-            "justify-between": handleBack,
-            "justify-center": !handleBack,
-          })}
-        >
-          {handleBack && (
-            <Button
-              type="button"
-              color="primary"
-              disabled={loading}
-              onClick={handleBack}
-            >
-              Back
-            </Button>
-          )}
-          <Button
-            type="submit"
-            color="primary"
-            disabled={loading}
-            isLoading={loading}
-          >
-            Next
-          </Button>
-        </div>
+        <FormNavigation handleBack={handleBack} loading={loading} />
       </form>
     </>
+  );
+}
+
+function FormField({ field, control, errors, handleChange }) {
+  const fff = field;
+
+  return (
+    <Controller
+      key={field.name}
+      name={field.name}
+      control={control}
+      render={({ field }) => (
+        <div className="flex w-full flex-col">
+          {fff.type === "image" ? (
+            <div>
+              <Uploader
+                defaultValue={fff.defaultValue}
+                name={fff.name}
+                label={fff.label}
+                onChange={(value) => {
+                  handleChange(fff.name, value);
+                  field.onChange(value);
+                }}
+              />
+            </div>
+          ) : (
+            <Input
+              {...field}
+              type={fff.type === "email" ? "email" : "text"}
+              label={`${fff.label}:`}
+              placeholder={fff.placeholder}
+              isInvalid={!!errors[fff.name]}
+              errorMessage={
+                errors[fff.name] ? errors[fff.name]!.message?.toString() : ""
+              }
+              onChange={(e) => {
+                handleChange(fff.name, e.target.value);
+                field.onChange(e);
+              }}
+              labelPlacement="outside-left"
+              className="w-full"
+              classNames={{
+                base: "w-full gap-2",
+                mainWrapper: "w-full",
+                label: "whitespace-nowrap",
+              }}
+            />
+          )}
+        </div>
+      )}
+    />
+  );
+}
+
+function FormNavigation({ handleBack, loading }) {
+  return (
+    <div
+      className={cn("!mt-8 flex w-full items-center", {
+        "justify-between": handleBack,
+        "justify-center": !handleBack,
+      })}
+    >
+      {handleBack && (
+        <Button
+          type="button"
+          color="primary"
+          disabled={loading}
+          onClick={handleBack}
+        >
+          Back
+        </Button>
+      )}
+      <Button
+        type="submit"
+        color="primary"
+        disabled={loading}
+        isLoading={loading}
+      >
+        Next
+      </Button>
+    </div>
   );
 }

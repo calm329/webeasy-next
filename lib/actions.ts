@@ -95,27 +95,24 @@ export async function updateSite(
     }
 
     let newData: any = {
-      aiResult: site.aiResult,
+      aiResult: JSON.parse(site.aiResult),
     };
 
     for (const key of keys) {
       if (key === "ctaLink") {
-        newData["aiResult"] = JSON.stringify({
-          ...JSON.parse(newData["aiResult"]),
-          hero: {
-            ...JSON.parse(newData["aiResult"]).hero,
-            ctaLink: data[key],
-          },
-        });
+        // update ctaLink
+        newData["aiResult"]["hero"]["ctaLink"] = data[key];
       } else if (key === "businessName") {
-        newData["aiResult"] = JSON.stringify({
-          ...JSON.parse(newData["aiResult"]),
-          businessName: data[key],
-        });
+        // update businessName
+        newData["aiResult"]["businessName"] = data[key];
       } else {
+        // update other keys
         newData[key] = data[key];
       }
     }
+
+    // stringify the aiResult object
+    newData.aiResult = JSON.stringify(newData.aiResult);
 
     const response = await prisma.site.update({
       where: {

@@ -31,7 +31,7 @@ export default function Page({
     {
       name: "logo",
       type: "image",
-      label: "Logo Image:",
+      label: "Logo Image",
       defaultValue: "",
       placeholder: "Enter your first name",
       validation: {
@@ -41,7 +41,7 @@ export default function Page({
     {
       name: "businessName",
       type: "text",
-      label: "Business Name:",
+      label: "Business Name",
       defaultValue: "",
       placeholder: "Enter your business name",
       validation: {
@@ -51,7 +51,7 @@ export default function Page({
     {
       name: "ctaLink",
       type: "text",
-      label: "CTA URL:",
+      label: "CTA URL",
       defaultValue: "",
       placeholder: "Enter a link",
       validation: {
@@ -60,32 +60,44 @@ export default function Page({
     },
   ]);
 
-  const getData = async () => {
+  const updateDefaultValues = async (data) => {
+    const _brandCustomizeFields = brandCustomizeFields;
+
+    "logo" in data && (_brandCustomizeFields[0].defaultValue = data.logo);
+    "businessName" in data &&
+      (_brandCustomizeFields[1].defaultValue = data.businessName);
+    "ctaLink" in data && (_brandCustomizeFields[2].defaultValue = data.ctaLink);
+
+    setBrandCustomizeFields(_brandCustomizeFields);
+  };
+
+  const getData = async (flag: "init" | "regenerate" | "refresh" = "init") => {
+    setStatus("Loading Instagram");
+
     // check if user data exists
-    const data = await getUserData();
+    const userData = flag === "init" ? await getUserData() : null;
 
-    if (data) {
-      setStatus("Done");
-
-      const _aiContent = JSON.parse(data.aiResult);
+    if (userData) {
+      const _aiContent = JSON.parse(userData.aiResult);
 
       setAiContent(_aiContent);
-      setIPosts(JSON.parse(data.posts));
-      setLogo(data.logo || "");
+      setIPosts(JSON.parse(userData.posts));
+      setLogo(userData.logo || "");
 
-      const _brandCustomizeFields = brandCustomizeFields;
+      // update default values
+      updateDefaultValues({
+        logo: userData.logo,
+        businessName: _aiContent?.businessName,
+        ctaLink: _aiContent?.hero?.ctaLink,
+      });
 
-      _brandCustomizeFields[0].defaultValue = data.logo;
-      _brandCustomizeFields[1].defaultValue = _aiContent?.businessName;
-      _brandCustomizeFields[2].defaultValue = _aiContent?.hero?.ctaLink || "";
-
-      setBrandCustomizeFields(_brandCustomizeFields);
+      setStatus("Done");
 
       return;
     }
 
     let _imageIds = {};
-    let _iPosts = [];
+    let _iPosts: any[] = [];
     let _mediaCaption = "";
     let _aiContent: any = {};
 
@@ -98,11 +110,11 @@ export default function Page({
       if (Object.keys(data.imageIds).length) _imageIds = data.imageIds;
       if (data.posts.length) _iPosts = data.posts;
 
-      setStatus("Generating Content");
+      setStatus(flag === "refresh" ? "Done" : "Generating Content");
     }
 
     // generate content from user media using openai
-    {
+    if (flag !== "refresh") {
       const response = await fetch("/api/content", {
         method: "POST",
         body: JSON.stringify({ mediaCaption: _mediaCaption }),
@@ -114,13 +126,13 @@ export default function Page({
         _aiContent = JSON.parse(data.content);
         _aiContent["hero"]["imageUrl"] =
           _imageIds[_aiContent["hero"]["imageId"]];
-
-        setStatus("Choosing Colors");
       }
+
+      setStatus("Choosing Colors");
     }
 
     // generate colors from content using openai
-    {
+    if (flag !== "refresh") {
       const response = await fetch("/api/color", {
         method: "POST",
         body: JSON.stringify({ imageUrl: _aiContent["hero"]["imageUrl"] }),
@@ -132,28 +144,38 @@ export default function Page({
         const _aiColors = JSON.parse(data.colors);
         _aiContent = { ..._aiContent, colors: _aiColors };
 
-        setStatus("Done");
-
         setAiContent(_aiContent);
         setIPosts(_iPosts);
 
-        const _brandCustomizeFields = brandCustomizeFields;
+        // update default values
+        updateDefaultValues({
+          businessName: _aiContent?.businessName,
+          ctaLink: _aiContent?.hero?.ctaLink,
+        });
+      }
 
-        _brandCustomizeFields[1].defaultValue = _aiContent?.businessName;
-        _brandCustomizeFields[2].defaultValue = _aiContent?.hero?.ctaLink || "";
+      setStatus("Done");
+    }
 
-        setBrandCustomizeFields(_brandCustomizeFields);
-
+    if (flag === "init") {
+      if (Object.keys(_aiContent).length && _iPosts.length)
         await createNewSite(
           JSON.stringify(_aiContent),
           JSON.stringify(_iPosts),
         );
-      }
+    } else {
+      if (Object.keys(_aiContent).length || _iPosts.length)
+        await updateSite(
+          {
+            aiResult: JSON.stringify(_aiContent),
+            posts: JSON.stringify(_iPosts),
+          },
+          ["aiResult", "posts"],
+        );
     }
   };
 
   const handleChange = useDebouncedCallback((name: string, value: string) => {
-    console.log(name, value, aiContent["hero"]["ctaLink"]);
     if (name === "logo") {
       setLogo(value);
     } else if (name === "businessName") {
@@ -179,6 +201,18 @@ export default function Page({
   return status === "Done" ? (
     <div className="relative flex size-full">
       <div className="h-full w-full">
+        <div className="flex w-full justify-end bg-gray-100">
+          <Button
+            variant="light"
+            size="sm"
+            onClick={() => getData("regenerate")}
+          >
+            Regenerate the content
+          </Button>
+          <Button variant="light" size="sm" onClick={() => getData("refresh")}>
+            Refresh Instagram feed
+          </Button>
+        </div>
         <section className="bg-white py-6">
           <div className="container mx-auto px-4">
             <TopBar
