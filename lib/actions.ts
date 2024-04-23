@@ -27,12 +27,26 @@ export async function createNewSite(aiResult: string, posts: string) {
       };
     }
 
+    // find default template (basic template)
+    const defaultTemplate = await prisma.template.findFirst({
+      where: {
+        name: "Basic template",
+      },
+    });
+
+    if (!defaultTemplate) {
+      return {
+        error: "Default template not found",
+      };
+    }
+
     const response = await prisma.site.create({
       data: {
         subdomain: user.name || "",
         posts,
         aiResult,
         userId: user.id,
+        templateId: defaultTemplate.id,
       },
     });
 
