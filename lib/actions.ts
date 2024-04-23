@@ -112,7 +112,10 @@ export async function updateSite(
     }
 
     // stringify the aiResult object
-    newData.aiResult = JSON.stringify(newData.aiResult);
+    newData.aiResult =
+      typeof newData.aiResult === "string"
+        ? newData.aiResult
+        : JSON.stringify(newData.aiResult);
 
     const response = await prisma.site.update({
       where: {
@@ -120,6 +123,10 @@ export async function updateSite(
       },
       data: newData,
     });
+
+    await revalidateTag(
+      `${user.name}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
+    );
 
     return response;
   } catch (error) {

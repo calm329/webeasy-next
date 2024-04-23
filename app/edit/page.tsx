@@ -143,19 +143,19 @@ export default function Page({
       if (data.colors) {
         const _aiColors = JSON.parse(data.colors);
         _aiContent = { ..._aiContent, colors: _aiColors };
-
-        setAiContent(_aiContent);
-        setIPosts(_iPosts);
-
-        // update default values
-        updateDefaultValues({
-          businessName: _aiContent?.businessName,
-          ctaLink: _aiContent?.hero?.ctaLink,
-        });
       }
 
       setStatus("Done");
     }
+
+    Object.keys(_aiContent).length && setAiContent(_aiContent);
+    setIPosts(_iPosts);
+
+    // update default values
+    updateDefaultValues({
+      businessName: _aiContent?.businessName,
+      ctaLink: _aiContent?.hero?.ctaLink,
+    });
 
     if (flag === "init") {
       if (Object.keys(_aiContent).length && _iPosts.length)
@@ -170,7 +170,7 @@ export default function Page({
             aiResult: JSON.stringify(_aiContent),
             posts: JSON.stringify(_iPosts),
           },
-          ["aiResult", "posts"],
+          Object.keys(_aiContent).length ? ["aiResult", "posts"] : ["posts"],
         );
     }
   };
