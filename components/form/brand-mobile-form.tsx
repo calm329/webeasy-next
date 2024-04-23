@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { FaChevronUp, FaTimes } from "react-icons/fa"; // Consolidate imports from 'react-icons'
 import DynamicForm from "./dynamic-form";
-import { updateSite } from "@/lib/actions";
+// import { updateSite } from "@/lib/actions";
 
 export default function BrandMobileForm({
   brandCustomizeFields,
@@ -37,7 +37,7 @@ export default function BrandMobileForm({
         <DynamicForm
           title="Brand Customization"
           fields={fields}
-          handler={updateSite}
+          handler={() => {}} // updateSite}
           handleChange={handleChange}
           handleNext={() =>
             setCurrentIndex((prev) =>

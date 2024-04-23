@@ -4,7 +4,7 @@ import BrandDesktopForm from "@/components/form/brand-desktop-form";
 import BrandMobileForm from "@/components/form/brand-mobile-form";
 import Loader from "@/components/loader";
 import BasicTemplate from "@/components/templates/basic-template";
-import { createNewSite, updateSite } from "@/lib/actions";
+// import { createNewSite, updateSite } from "@/lib/actions";
 import { getUserData } from "@/lib/fetchers";
 import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -97,7 +97,7 @@ export default function Page({
 
     // get user media
     {
-      const response = await fetch("/api/auth");
+      const response = await fetch(`/api/auth?code=${searchParams.code}`);
       const data = await response.json();
 
       if (data.mediaCaption) _mediaCaption = data.mediaCaption;
@@ -151,22 +151,22 @@ export default function Page({
       ctaLink: _aiContent?.hero?.ctaLink,
     });
 
-    if (flag === "init") {
-      if (Object.keys(_aiContent).length && _iPosts.length)
-        await createNewSite(
-          JSON.stringify(_aiContent),
-          JSON.stringify(_iPosts),
-        );
-    } else {
-      if (Object.keys(_aiContent).length || _iPosts.length)
-        await updateSite(
-          {
-            aiResult: JSON.stringify(_aiContent),
-            posts: JSON.stringify(_iPosts),
-          },
-          Object.keys(_aiContent).length ? ["aiResult", "posts"] : ["posts"],
-        );
-    }
+    // if (flag === "init") {
+    //   if (Object.keys(_aiContent).length && _iPosts.length)
+    //     await createNewSite(
+    //       JSON.stringify(_aiContent),
+    //       JSON.stringify(_iPosts),
+    //     );
+    // } else {
+    //   if (Object.keys(_aiContent).length || _iPosts.length)
+    //     await updateSite(
+    //       {
+    //         aiResult: JSON.stringify(_aiContent),
+    //         posts: JSON.stringify(_iPosts),
+    //       },
+    //       Object.keys(_aiContent).length ? ["aiResult", "posts"] : ["posts"],
+    //     );
+    // }
   };
 
   const handleChange = useDebouncedCallback((name: string, value: string) => {
