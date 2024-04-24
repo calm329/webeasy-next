@@ -24,7 +24,7 @@
     "@vercel/blob": "^0.23.2",
     "@vercel/postgres": "^0.8.0",
     "ai": "^3.0.24",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "clsx": "^2.1.0",
     "framer-motion": "^11.1.5",
     "nanoid": "^5.0.7",

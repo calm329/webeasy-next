@@ -1,4 +1,4 @@
-import { bcrypt } from "bcrypt";
+import bcrypt from "bcryptjs";
 import { AuthOptions } from "next-auth";
 import Instagram from "next-auth/providers/instagram";
 import { PrismaAdapter } from "@auth/prisma-adapter";

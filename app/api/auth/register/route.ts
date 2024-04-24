@@ -1,20 +1,23 @@
-import { bcrypt } from "bcrypt";
+import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export default async function POST(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const { name, email, password } = await req.json();
 
   if (!name || !email || !password) {
     return NextResponse.json({ error: "Invalid parameters" }, { status: 400 });
   }
 
+  const salt = await bcrypt.genSalt(12);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
   try {
     const user = await prisma.user.create({
       data: {
         name,
         email,
-        password: await bcrypt.hash(password, 10),
+        password: hashedPassword,
       },
     });
 
