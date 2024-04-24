@@ -36,3 +36,14 @@ export function generateZodSchema(fields: any) {
 
   return z.object({ ...schema });
 }
+
+export async function fetchData(endpoint, options = {}) {
+  try {
+    const response = await fetch(endpoint, options);
+    if (!response.ok) throw new Error("Network response was not ok.");
+    return await response.json();
+  } catch (error) {
+    console.error("There was a problem with your fetch operation:", error);
+    throw new Error("Failed to fetch data.");
+  }
+}

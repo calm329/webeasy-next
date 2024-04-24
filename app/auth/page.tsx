@@ -6,9 +6,24 @@ import Loader from "@/components/loader";
 import BasicTemplate from "@/components/templates/basic-template";
 // import { createNewSite, updateSite } from "@/lib/actions";
 import { getUserData } from "@/lib/fetchers";
+import { FormField } from "@/types";
 import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+
+interface AppState {
+  status: string;
+  iPosts: any[];
+  aiContent: any;
+  logo: string;
+}
+
+const initialState: AppState = {
+  status: "Loading Instagram",
+  iPosts: [],
+  aiContent: {},
+  logo: "",
+};
 
 export default function Page({
   params,
@@ -17,56 +32,55 @@ export default function Page({
   params: { slug: string };
   searchParams: { [code: string]: string | string[] | undefined };
 }) {
-  const [status, setStatus] = useState("Loading Instagram");
-  const [iPosts, setIPosts] = useState<any[]>([]);
-  const [aiContent, setAiContent] = useState({});
-  const [logo, setLogo] = useState("");
-  const [brandCustomizeFields, setBrandCustomizeFields] = useState<any[]>([
-    {
-      name: "logo",
-      type: "image",
-      label: "Logo Image",
-      defaultValue: "",
-      placeholder: "Enter your first name",
-      validation: {
-        required: true,
+  const [appState, setAppState] = useState<AppState>(initialState);
+  const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
+    [
+      {
+        name: "logo",
+        type: "image",
+        label: "Logo Image",
+        defaultValue: "",
+        placeholder: "Enter your first name",
+        validation: {
+          required: true,
+        },
       },
-    },
-    {
-      name: "businessName",
-      type: "text",
-      label: "Business Name",
-      defaultValue: "",
-      placeholder: "Enter your business name",
-      validation: {
-        required: true,
+      {
+        name: "businessName",
+        type: "text",
+        label: "Business Name",
+        defaultValue: "",
+        placeholder: "Enter your business name",
+        validation: {
+          required: true,
+        },
       },
-    },
-    {
-      name: "ctaLink",
-      type: "text",
-      label: "CTA URL",
-      defaultValue: "",
-      placeholder: "Enter a link",
-      validation: {
-        required: true,
+      {
+        name: "ctaLink",
+        type: "text",
+        label: "CTA URL",
+        defaultValue: "",
+        placeholder: "Enter a link",
+        validation: {
+          required: true,
+        },
       },
-    },
-  ]);
+    ],
+  );
 
-  const updateDefaultValues = async (data) => {
-    const _brandCustomizeFields = brandCustomizeFields;
-
-    "logo" in data && (_brandCustomizeFields[0].defaultValue = data.logo);
-    "businessName" in data &&
-      (_brandCustomizeFields[1].defaultValue = data.businessName);
-    "ctaLink" in data && (_brandCustomizeFields[2].defaultValue = data.ctaLink);
-
-    setBrandCustomizeFields(_brandCustomizeFields);
+  const updateDefaultValues = (
+    data: Partial<{ logo: string; businessName: string; ctaLink: string }>,
+  ) => {
+    setBrandCustomizeFields((currentFields) =>
+      currentFields.map((field) => ({
+        ...field,
+        defaultValue: data[field.name] ?? field.defaultValue,
+      })),
+    );
   };
 
   const getData = async (flag: "init" | "regenerate" | "refresh" = "init") => {
-    setStatus("Loading Instagram");
+    setAppState((state) => ({ ...state, status: "Loading Instagram" }));
 
     // check if user data exists
     const userData = flag === "init" ? await getUserData() : null;
@@ -74,18 +88,20 @@ export default function Page({
     if (userData) {
       const _aiContent = JSON.parse(userData.aiResult);
 
-      setAiContent(_aiContent);
-      setIPosts(JSON.parse(userData.posts));
-      setLogo(userData.logo || "");
+      setAppState((state) => ({
+        ...state,
+        status: "Done",
+        aiContent: _aiContent,
+        iPosts: JSON.parse(userData.posts),
+        logo: userData.logo || state.logo,
+      }));
 
       // update default values
       updateDefaultValues({
-        logo: userData.logo,
+        logo: userData.logo || undefined,
         businessName: _aiContent?.businessName,
         ctaLink: _aiContent?.hero?.ctaLink,
       });
-
-      setStatus("Done");
 
       return;
     }
@@ -97,7 +113,10 @@ export default function Page({
 
     // get user media
     {
-      const response = await fetch(`/api/auth?code=${searchParams.code}`);
+      // get access token from code
+      await fetch(`/api/instagram/access_token/get?code=${searchParams.code}`);
+
+      const response = await fetch(`/api/instagram/media`);
       const data = await response.json();
 
       if (data.mediaCaption) _mediaCaption = data.mediaCaption;
