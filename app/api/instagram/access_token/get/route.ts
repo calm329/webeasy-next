@@ -1,7 +1,21 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code") || "";
+
+  if (!code) {
+    const access_token = cookies().get("acces_token")?.value || "";
+
+    if (access_token) {
+      return NextResponse.json(
+        { acces_token: access_token },
+        { status: 200, headers: { "Content-Type": "application/json" } },
+      );
+    } else {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
+  }
 
   try {
     const res = await fetch(
@@ -22,6 +36,8 @@ export async function GET(req: NextRequest) {
     );
 
     const { acces_token, user_id } = await res.json();
+
+    cookies().set("acces_token", acces_token);
 
     return NextResponse.json(
       { acces_token, user_id },

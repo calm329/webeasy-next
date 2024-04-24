@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import unirest from "unirest";
 
@@ -39,7 +40,10 @@ async function getMedia(access_token: string) {
 }
 
 export async function GET(req: NextRequest) {
-  const access_token = req.nextUrl.searchParams.get("access_token") || "";
+  const access_token =
+    req.nextUrl.searchParams.get("access_token") ||
+    cookies().get("acces_token")?.value ||
+    "";
 
   try {
     let mediaCaption = "";
