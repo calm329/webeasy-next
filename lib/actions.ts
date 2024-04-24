@@ -3,32 +3,6 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidateTag } from "next/cache";
-import bcrypt from "bcrypt";
-
-export async function createNewUser(email: string, password: string) {
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const response = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-      },
-    });
-
-    return response;
-  } catch (error) {
-    if (error.code === "P2002") {
-      return {
-        error: `Email ${email} already exists`,
-      };
-    } else {
-      return {
-        error: error.message,
-      };
-    }
-  }
-}
 
 // export async function createNewSite(aiResult: string, posts: string) {
 //   const session = await getServerSession();

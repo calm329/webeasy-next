@@ -1,10 +1,8 @@
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { AuthOptions } from "next-auth";
-import Instagram from "next-auth/providers/instagram";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "./prisma";
 import Credentials from "next-auth/providers/credentials";
-import { createNewUser } from "./actions";
+import prisma from "./prisma";
 
 export const authOptions: AuthOptions = {
   providers: [

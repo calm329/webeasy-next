@@ -38,7 +38,7 @@ async function getMedia(access_token: string) {
     });
 }
 
-export default async function GET(req: NextRequest) {
+export async function GET(req: NextRequest) {
   const access_token = req.nextUrl.searchParams.get("access_token") || "";
 
   try {
