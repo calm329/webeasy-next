@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@nextui-org/react";
-
 export default function Error({
   error,
   reset,
@@ -21,15 +19,16 @@ export default function Error({
         <p className="my-12 text-lg text-gray-500 md:text-xl lg:text-2xl">
           Whoops, something went wrong on our servers.
         </p>
-        <Button
-          color="primary"
+        <button
+          type="button"
           onClick={
             // Attempt to recover by trying to re-render the segment
             () => reset()
           }
+          className="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Try again
-        </Button>
+        </button>
       </div>
       <div className="flex w-1/2 justify-center p-4 lg:h-full lg:items-end">
         <svg

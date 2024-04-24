@@ -1,10 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { CiMail } from "react-icons/ci";
-import { FiUser } from "react-icons/fi";
-import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -68,63 +64,68 @@ export default function RegisterForm() {
 
   return (
     <>
-      <form className="mt-5 space-y-2" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          {...register("name")}
-          label="Name"
-          variant="bordered"
-          endContent={
-            <FiUser className="pointer-events-none flex-shrink-0 text-2xl text-default-400" />
-          }
-          isInvalid={!!errors.name}
-          color={errors.name ? "danger" : "default"}
-          errorMessage={errors.name && errors.name.message}
-          className="w-full"
-        />
-        <Input
-          {...register("email")}
-          label="Email"
-          variant="bordered"
-          endContent={
-            <CiMail className="pointer-events-none flex-shrink-0 text-2xl text-default-400" />
-          }
-          isInvalid={!!errors.email}
-          color={errors.email ? "danger" : "default"}
-          errorMessage={errors.email && errors.email.message}
-          className="w-full"
-        />
-        <Input
-          {...register("password")}
-          label="Password"
-          variant="bordered"
-          endContent={
-            <button
-              className="focus:outline-none"
-              type="button"
-              onClick={() => setIsVisible(!isVisible)}
-            >
-              {isVisible ? (
-                <IoMdEyeOff className="pointer-events-none text-2xl text-default-400" />
-              ) : (
-                <IoMdEye className="pointer-events-none text-2xl text-default-400" />
-              )}
-            </button>
-          }
-          type={isVisible ? "text" : "password"}
-          isInvalid={!!errors.password}
-          color={errors.password ? "danger" : "default"}
-          errorMessage={errors.password && errors.password.message}
-          className="w-full"
-        />
-        <Button
-          color="primary"
-          type="submit"
-          className="w-full"
-          disabled={loading}
-          isLoading={loading}
-        >
-          Sign Up
-        </Button>
+      <form className="mt-10 space-y-2" onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium leading-6 text-gray-900"
+          >
+            Full Name
+          </label>
+          <div className="mt-2">
+            <input
+              {...register("name")}
+              type="text"
+              autoComplete="name"
+              required
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium leading-6 text-gray-900"
+          >
+            Email address
+          </label>
+          <div className="mt-2">
+            <input
+              {...register("email")}
+              type="email"
+              autoComplete="email"
+              required
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium leading-6 text-gray-900"
+          >
+            Password
+          </label>
+          <div className="mt-2">
+            <input
+              {...register("password")}
+              type="password"
+              autoComplete="current-password"
+              required
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
+        <div className="!mt-6">
+          <button
+            type="submit"
+            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Sign up
+          </button>
+        </div>
       </form>
     </>
   );
