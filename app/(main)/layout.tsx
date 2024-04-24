@@ -1,6 +1,6 @@
 import SiteHeader from "@/components/header";
 
-export default function AuthLayout({
+export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

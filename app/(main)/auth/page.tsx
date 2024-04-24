@@ -5,9 +5,9 @@ import BrandMobileForm from "@/components/form/brand-mobile-form";
 import Loader from "@/components/loader";
 import BasicTemplate from "@/components/templates/basic-template";
 // import { createNewSite, updateSite } from "@/lib/actions";
-import { getUserData } from "@/lib/fetchers";
+import { fetchData } from "@/lib/utils";
 import { FormField } from "@/types";
-import { Button } from "@nextui-org/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -25,13 +25,9 @@ const initialState: AppState = {
   logo: "",
 };
 
-export default function Page({
-  params,
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams: { [code: string]: string | string[] | undefined };
-}) {
+export default function Page() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
@@ -83,91 +79,96 @@ export default function Page({
     setAppState((state) => ({ ...state, status: "Loading Instagram" }));
 
     // check if user data exists
-    const userData = flag === "init" ? await getUserData() : null;
+    // const userData = flag === "init" ? await getUserData() : null;
 
-    if (userData) {
-      const _aiContent = JSON.parse(userData.aiResult);
+    // if (userData) {
+    //   const aiContent = JSON.parse(userData.aiResult);
 
-      setAppState((state) => ({
-        ...state,
-        status: "Done",
-        aiContent: _aiContent,
-        iPosts: JSON.parse(userData.posts),
-        logo: userData.logo || state.logo,
-      }));
+    //   setAppState((state) => ({
+    //     ...state,
+    //     status: "Done",
+    //     aiContent: aiContent,
+    //     iPosts: JSON.parse(userData.posts),
+    //     logo: userData.logo || state.logo,
+    //   }));
 
-      // update default values
-      updateDefaultValues({
-        logo: userData.logo || undefined,
-        businessName: _aiContent?.businessName,
-        ctaLink: _aiContent?.hero?.ctaLink,
-      });
+    //   // update default values
+    //   updateDefaultValues({
+    //     logo: userData.logo || undefined,
+    //     businessName: aiContent?.businessName,
+    //     ctaLink: aiContent?.hero?.ctaLink,
+    //   });
 
-      return;
-    }
+    //   return;
+    // }
 
-    let _imageIds = {};
-    let _iPosts: any[] = [];
-    let _mediaCaption = "";
-    let _aiContent: any = {};
+    let imageIds = {};
+    let iPosts: any[] = [];
+    let mediaCaption = "";
+    let aiContent: any = {};
 
     // get user media
     {
-      // get access token from code
-      await fetch(`/api/instagram/access_token/get?code=${searchParams.code}`);
+      const data = await fetchData(
+        `/api/instagram/media?code=${searchParams.get("code")}`,
+      );
 
-      const response = await fetch(`/api/instagram/media`);
-      const data = await response.json();
+      mediaCaption = data?.mediaCaption || mediaCaption;
+      imageIds = data?.imageIds || imageIds;
+      iPosts = data?.posts || iPosts;
 
-      if (data.mediaCaption) _mediaCaption = data.mediaCaption;
-      if (Object.keys(data.imageIds).length) _imageIds = data.imageIds;
-      if (data.posts.length) _iPosts = data.posts;
-
-      setStatus(flag === "refresh" ? "Done" : "Generating Content");
+      setAppState((state) => ({
+        ...state,
+        status: flag === "refresh" ? "Done" : "Generating Content",
+      }));
     }
 
     // generate content from user media using openai
     if (flag !== "refresh") {
-      const response = await fetch("/api/content", {
+      const { content } = await fetchData("/api/content", {
         method: "POST",
-        body: JSON.stringify({ mediaCaption: _mediaCaption }),
+        body: JSON.stringify({ mediaCaption }),
       });
 
-      const data = await response.json();
-
-      if (data.content) {
-        _aiContent = JSON.parse(data.content);
-        _aiContent["hero"]["imageUrl"] =
-          _imageIds[_aiContent["hero"]["imageId"]];
+      if (content) {
+        aiContent = JSON.parse(content);
+        aiContent["hero"]["imageUrl"] = imageIds[aiContent["hero"]["imageId"]];
       }
 
-      setStatus("Choosing Colors");
+      setAppState((state) => ({
+        ...state,
+        status: "Choosing Colors",
+      }));
     }
 
     // generate colors from content using openai
     if (flag !== "refresh") {
-      const response = await fetch("/api/color", {
+      const { colors } = await fetchData("/api/color", {
         method: "POST",
-        body: JSON.stringify({ imageUrl: _aiContent["hero"]["imageUrl"] }),
+        body: JSON.stringify({ imageUrl: aiContent["hero"]["imageUrl"] }),
       });
 
-      const data = await response.json();
-
-      if (data.colors) {
-        const _aiColors = JSON.parse(data.colors);
-        _aiContent = { ..._aiContent, colors: _aiColors };
+      if (colors) {
+        const aiColors = JSON.parse(colors);
+        aiContent = { ...aiContent, colors: aiColors };
       }
 
-      setStatus("Done");
+      setAppState((state) => ({
+        ...state,
+        status: "Done",
+      }));
     }
 
-    Object.keys(_aiContent).length && setAiContent(_aiContent);
-    setIPosts(_iPosts);
+    setAppState((state) => ({
+      ...state,
+      aiContent: Object.keys(aiContent).length ? aiContent : state.aiContent,
+      iPosts: iPosts,
+    }));
 
     // update default values
     updateDefaultValues({
-      businessName: _aiContent?.businessName,
-      ctaLink: _aiContent?.hero?.ctaLink,
+      businessName: aiContent?.businessName,
+      ctaLink: aiContent?.hero?.ctaLink,
     });
 
     // if (flag === "init") {
@@ -190,20 +191,26 @@ export default function Page({
 
   const handleChange = useDebouncedCallback((name: string, value: string) => {
     if (name === "logo") {
-      setLogo(value);
+      setAppState((state) => ({ ...state, logo: value }));
     } else if (name === "businessName") {
-      setAiContent({
-        ...aiContent,
-        ["businessName"]: value,
-      });
-    } else if (name === "ctaLink") {
-      setAiContent({
-        ...aiContent,
-        ["hero"]: {
-          ...aiContent["hero"],
-          ["ctaLink"]: value,
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["businessName"]: value,
         },
-      });
+      }));
+    } else if (name === "ctaLink") {
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["hero"]: {
+            ...state.aiContent["hero"],
+            ["ctaLink"]: value,
+          },
+        },
+      }));
     }
   }, 300);
 
@@ -211,11 +218,11 @@ export default function Page({
     getData();
   }, []);
 
-  return status === "Done" ? (
+  return appState.status === "Done" ? (
     <div className="relative flex size-full">
       <div className="h-full w-full">
         <div className="flex w-full justify-end bg-gray-100">
-          <Button
+          {/* <Button
             variant="light"
             size="sm"
             onClick={() => getData("regenerate")}
@@ -224,23 +231,23 @@ export default function Page({
           </Button>
           <Button variant="light" size="sm" onClick={() => getData("refresh")}>
             Refresh Instagram feed
-          </Button>
+          </Button> */}
         </div>
         <BasicTemplate
-          logo={logo}
-          businessName={aiContent["businessName"]}
+          logo={appState.logo}
+          businessName={appState.aiContent["businessName"]}
           hero={{
-            heading: aiContent["hero"]["heading"],
-            subheading: aiContent["hero"]["subheading"],
-            imageUrl: aiContent["hero"]["imageUrl"],
+            heading: appState.aiContent["hero"]["heading"],
+            subheading: appState.aiContent["hero"]["subheading"],
+            imageUrl: appState.aiContent["hero"]["imageUrl"],
           }}
-          colors={aiContent["colors"]}
+          colors={appState.aiContent["colors"]}
           cta={{
-            text: aiContent["hero"]["cta"],
-            link: aiContent["hero"]["ctaLink"] || "#",
+            text: appState.aiContent["hero"]["cta"],
+            link: appState.aiContent["hero"]["ctaLink"] || "#",
           }}
-          services={aiContent["services"]["list"]}
-          posts={iPosts}
+          services={appState.aiContent["services"]["list"]}
+          posts={appState.iPosts}
         />
       </div>
       <BrandDesktopForm
@@ -254,7 +261,7 @@ export default function Page({
     </div>
   ) : (
     <div className="absolute inset-0 flex items-center justify-center">
-      <Loader text={status} />
+      <Loader text={appState.status} />
     </div>
   );
 }
