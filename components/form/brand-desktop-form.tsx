@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DynamicForm from "./dynamic-form";
-import { updateSite } from "@/lib/actions";
+// import { updateSite } from "@/lib/actions";
 
 export default function BrandDesktopForm({
   brandCustomizeFields,
@@ -14,7 +14,7 @@ export default function BrandDesktopForm({
       <DynamicForm
         title="Brand Customization"
         fields={brandCustomizeFields}
-        handler={updateSite}
+        handler={() => {}} // updateSite}
         handleChange={handleChange}
       />
     </div>

@@ -4,128 +4,146 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidateTag } from "next/cache";
 
-export async function createNewSite(aiResult: string, posts: string) {
-  const session = await getServerSession();
+// export async function createNewSite(aiResult: string, posts: string) {
+//   const session = await getServerSession();
 
-  if (!session) {
-    return {
-      error: "Not authenticated",
-    };
-  }
+//   if (!session) {
+//     return {
+//       error: "Not authenticated",
+//     };
+//   }
 
-  try {
-    // get user from database using session
-    const user = await prisma.user.findFirst({
-      where: {
-        name: session.user.name,
-      },
-    });
+//   try {
+//     // get user from database using session
+//     const user = await prisma.user.findFirst({
+//       where: {
+//         name: session.user?.name,
+//       },
+//     });
 
-    if (!user) {
-      return {
-        error: "User not found",
-      };
-    }
+//     if (!user) {
+//       return {
+//         error: "User not found",
+//       };
+//     }
 
-    const response = await prisma.site.create({
-      data: {
-        subdomain: user.name || "",
-        posts,
-        aiResult,
-        userId: user.id,
-      },
-    });
+//     // find default template (basic template)
+//     const defaultTemplate = await prisma.template.findFirst({
+//       where: {
+//         name: "Basic template",
+//       },
+//     });
 
-    await revalidateTag(
-      `${user.name}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
-    );
+//     if (!defaultTemplate) {
+//       return {
+//         error: "Default template not found",
+//       };
+//     }
 
-    return response;
-  } catch (error: any) {
-    console.log(error);
+//     const response = await prisma.site.create({
+//       data: {
+//         subdomain: user.name || "",
+//         posts,
+//         aiResult,
+//         userId: user.id,
+//         templateId: defaultTemplate.id,
+//       },
+//     });
 
-    if (error.code === "P2002") {
-      return {
-        error: `This subdomain is already taken`,
-      };
-    } else {
-      return {
-        error: error.message,
-      };
-    }
-  }
-}
+//     await revalidateTag(
+//       `${user.name}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
+//     );
 
-export async function updateSite(
-  data: { [key: string]: string },
-  keys: string[],
-) {
-  const session = await getServerSession();
+//     return response;
+//   } catch (error: any) {
+//     console.log(error);
 
-  if (!session) {
-    return {
-      error: "Not authenticated",
-    };
-  }
+//     if (error.code === "P2002") {
+//       return {
+//         error: `This subdomain is already taken`,
+//       };
+//     } else {
+//       return {
+//         error: error.message,
+//       };
+//     }
+//   }
+// }
 
-  try {
-    const user = await prisma.user.findFirst({
-      where: {
-        name: session.user.name,
-      },
-    });
+// export async function updateSite(
+//   data: { [key: string]: string },
+//   keys: string[],
+// ) {
+//   const session = await getServerSession();
 
-    if (!user) {
-      return {
-        error: "User not found",
-      };
-    }
+//   if (!session) {
+//     return {
+//       error: "Not authenticated",
+//     };
+//   }
 
-    const site = await prisma.site.findFirst({
-      where: {
-        subdomain: session.user.name || "",
-        userId: user.id,
-      },
-    });
+//   try {
+//     const user = await prisma.user.findFirst({
+//       where: {
+//         name: session.user?.name,
+//       },
+//     });
 
-    if (!site) {
-      return {
-        error: "Site not found",
-      };
-    }
+//     if (!user) {
+//       return {
+//         error: "User not found",
+//       };
+//     }
 
-    let newData: any = {
-      aiResult: site.aiResult,
-    };
+//     const site = await prisma.site.findFirst({
+//       where: {
+//         subdomain: session.user?.name || "",
+//         userId: user.id,
+//       },
+//     });
 
-    for (const key of keys) {
-      if (key === "ctaLink") {
-        newData["aiResult"] = JSON.stringify({
-          ...JSON.parse(newData["aiResult"]),
-          hero: {
-            ...JSON.parse(newData["aiResult"]).hero,
-            ctaLink: data[key],
-          },
-        });
-      } else if (key === "businessName") {
-        newData["aiResult"] = JSON.stringify({
-          ...JSON.parse(newData["aiResult"]),
-          businessName: data[key],
-        });
-      } else {
-        newData[key] = data[key];
-      }
-    }
+//     if (!site) {
+//       return {
+//         error: "Site not found",
+//       };
+//     }
 
-    const response = await prisma.site.update({
-      where: {
-        id: site.id,
-      },
-      data: newData,
-    });
+//     let newData: any = {
+//       aiResult: JSON.parse(site.aiResult),
+//     };
 
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-}
+//     for (const key of keys) {
+//       if (key === "ctaLink") {
+//         // update ctaLink
+//         newData["aiResult"]["hero"]["ctaLink"] = data[key];
+//       } else if (key === "businessName") {
+//         // update businessName
+//         newData["aiResult"]["businessName"] = data[key];
+//       } else {
+//         // update other keys
+//         newData[key] = data[key];
+//       }
+//     }
+
+//     // stringify the aiResult object
+//     newData.aiResult =
+//       typeof newData.aiResult === "string"
+//         ? newData.aiResult
+//         : JSON.stringify(newData.aiResult);
+
+//     const response = await prisma.site.update({
+//       where: {
+//         id: site.id,
+//       },
+//       data: newData,
+//     });
+
+//     await revalidateTag(
+//       `${user.name}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
+//     );
+
+//     return response;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }

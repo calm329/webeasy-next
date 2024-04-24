@@ -1,45 +1,53 @@
-import { AuthOptions } from "next-auth";
-import Instagram from "next-auth/providers/instagram";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import bcrypt from "bcryptjs";
+import { AuthOptions } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import prisma from "./prisma";
 
 export const authOptions: AuthOptions = {
   providers: [
-    Instagram({
-      clientId: process.env.INSTAGRAM_CLIENT_ID,
-      clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
-      authorization:
-        "https://api.instagram.com/oauth/authorize?scope=user_profile,user_media",
-      async profile(profile) {
+    Credentials({
+      id: "email",
+      name: "email",
+      type: "credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials, req) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        const user = await prisma.user.findFirst({
+          where: {
+            email: credentials.email,
+          },
+        });
+
+        if (!user) throw Error("Email or Password doesn't match!");
+
+        if (!user.password) {
+          throw Error("Please sign in with Google");
+        }
+
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password,
+        );
+
+        if (!isValid) throw Error("Email or Password doesn't match!");
+
         return {
-          id: profile.id,
-          name: profile.username,
-          email: null,
-          image: null,
+          id: user.id,
+          name: user.name,
+          email: user.email,
         };
       },
     }),
   ],
   adapter: PrismaAdapter(prisma) as any,
-  callbacks: {
-    async session({ token, session }) {
-      if (token && "accessToken" in token) {
-        session.accessToken = token.accessToken;
-      }
-
-      return session;
-    },
-    async jwt({ token, account, user }) {
-      if (account) {
-        return {
-          ...token,
-          accessToken: account.access_token,
-        };
-      }
-
-      return token;
-    },
-  },
+  callbacks: {},
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
