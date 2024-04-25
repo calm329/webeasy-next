@@ -118,7 +118,7 @@ export default function Page({
         posts: _posts,
       } = await fetchData(`/api/instagram/media?code=${searchParams["code"]}`);
 
-      if (!_mediaCaption || !_imageIds || !_posts) return;
+      if (!_mediaCaption) return;
 
       mediaCaption = _mediaCaption || mediaCaption;
       imageIds = _imageIds || imageIds;
