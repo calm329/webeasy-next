@@ -18,7 +18,7 @@ interface AppState {
 }
 
 const initialState: AppState = {
-  status: "Loading Instagram",
+  status: "",
   iPosts: [],
   aiContent: {},
   logo: "",
@@ -112,13 +112,17 @@ export default function Page({
 
     // get user media
     {
-      const data = await fetchData(
-        `/api/instagram/media?code=${searchParams["code"]}`,
-      );
+      const {
+        mediaCaption: _mediaCaption,
+        imageIds: _imageIds,
+        posts: _posts,
+      } = await fetchData(`/api/instagram/media?code=${searchParams["code"]}`);
 
-      mediaCaption = data?.mediaCaption || mediaCaption;
-      imageIds = data?.imageIds || imageIds;
-      iPosts = data?.posts || iPosts;
+      if (!_mediaCaption || !_imageIds || !_posts) return;
+
+      mediaCaption = _mediaCaption || mediaCaption;
+      imageIds = _imageIds || imageIds;
+      iPosts = _posts || iPosts;
 
       setAppState((state) => ({
         ...state,
@@ -136,7 +140,7 @@ export default function Page({
       if (content) {
         aiContent = JSON.parse(content);
         aiContent["hero"]["imageUrl"] = imageIds[aiContent["hero"]["imageId"]];
-      }
+      } else return;
 
       setAppState((state) => ({
         ...state,
@@ -154,7 +158,7 @@ export default function Page({
       if (colors) {
         const aiColors = JSON.parse(colors);
         aiContent = { ...aiContent, colors: aiColors };
-      }
+      } else return;
 
       setAppState((state) => ({
         ...state,
@@ -218,6 +222,7 @@ export default function Page({
   }, 300);
 
   useEffect(() => {
+    console.log(appState, "appState");
     getData();
   }, []);
 
