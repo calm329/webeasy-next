@@ -1,5 +1,38 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import unirest from "unirest";
+
+async function getAccessTokenAndUserId(code?: string) {
+  return await unirest
+    .post(`${process.env.INSTAGRAM_API_AUTH_ENDPOINT}access_token`)
+    .field("client_id", process.env.NEXT_PUBLIC_FB_CLIENT_ID)
+    .field("client_secret", process.env.INSTAGRAM_API_SECRET)
+    .field("grant_type", "authorization_code")
+    .field("redirect_uri", process.env.NEXT_PUBLIC_FB_REDIRECT_URL)
+    .field("code", code)
+    .then((response) => {
+      return response.body;
+    })
+    .catch((error) => {
+      console.log(error, "get access token error");
+    });
+}
+
+async function getLongLivedAccessToken(access_token: string) {
+  return await unirest
+    .get(`${process.env.INSTAGRAM_API_ENDPOINT}access_token`)
+    .query({
+      grant_type: "ig_exchange_token",
+      client_secret: process.env.INSTAGRAM_API_SECRET,
+      access_token,
+    })
+    .then((response) => {
+      return response.body;
+    })
+    .catch((error) => {
+      console.log(error, "get long lived access token error");
+    });
+}
 
 async function getData(url: string) {
   //get user media
@@ -39,9 +72,22 @@ async function getMedia(access_token: string) {
 }
 
 export async function GET(req: NextRequest) {
-  const access_token = req.nextUrl.searchParams.get("access_token") || "";
+  const code = req.nextUrl.searchParams.get("code") || "";
 
   try {
+    let access_token = cookies().get("acces_token")?.value || "";
+
+    if (!access_token && code) {
+      const { access_token: shortLivedToken } =
+        await getAccessTokenAndUserId(code);
+      const { access_token: longLivedToken } =
+        await getLongLivedAccessToken(shortLivedToken);
+      access_token = longLivedToken;
+      access_token && cookies().set("acces_token", access_token);
+    } else if (!access_token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
+
     let mediaCaption = "";
 
     let media = await getMedia(access_token);

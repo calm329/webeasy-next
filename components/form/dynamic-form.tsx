@@ -2,10 +2,9 @@
 
 import { cn, generateZodSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Uploader from "./uploader";
-import { useEffect, useState } from "react";
 
 export default function DynamicForm({
   title,
@@ -78,7 +77,7 @@ export default function DynamicForm({
 }
 
 function FormField({ field, control, errors, handleChange }) {
-  const fff = field;
+  const f = field;
 
   return (
     <Controller
@@ -87,40 +86,40 @@ function FormField({ field, control, errors, handleChange }) {
       control={control}
       render={({ field }) => (
         <div className="flex w-full flex-col">
-          {fff.type === "image" ? (
+          {f.type === "image" ? (
             <div>
               <Uploader
-                defaultValue={fff.defaultValue}
-                name={fff.name}
-                label={fff.label}
+                defaultValue={f.defaultValue}
+                name={f.name}
+                label={f.label}
                 onChange={(value) => {
-                  handleChange(fff.name, value);
+                  handleChange(f.name, value);
                   field.onChange(value);
                 }}
               />
             </div>
           ) : (
-            <Input
-              {...field}
-              type={fff.type === "email" ? "email" : "text"}
-              label={`${fff.label}:`}
-              placeholder={fff.placeholder}
-              isInvalid={!!errors[fff.name]}
-              errorMessage={
-                errors[fff.name] ? errors[fff.name]!.message?.toString() : ""
-              }
-              onChange={(e) => {
-                handleChange(fff.name, e.target.value);
-                field.onChange(e);
-              }}
-              labelPlacement="outside-left"
-              className="w-full"
-              classNames={{
-                base: "w-full gap-2",
-                mainWrapper: "w-full",
-                label: "whitespace-nowrap",
-              }}
-            />
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                {f.label}
+              </label>
+              <div className="mt-2">
+                <input
+                  {...field}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  placeholder={f.placeholder}
+                  aria-invalid={errors[field.name] ? "true" : "false"}
+                  aria-describedby={field.name}
+                  onChange={(e) => {
+                    handleChange(f.name, e.target.value);
+                    field.onChange(e.target.value);
+                  }}
+                />
+              </div>
+            </div>
           )}
         </div>
       )}
@@ -137,23 +136,20 @@ function FormNavigation({ handleBack, loading }) {
       })}
     >
       {handleBack && (
-        <Button
+        <button
           type="button"
-          color="primary"
-          disabled={loading}
+          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           onClick={handleBack}
         >
           Back
-        </Button>
+        </button>
       )}
-      <Button
-        type="submit"
-        color="primary"
-        disabled={loading}
-        isLoading={loading}
+      <button
+        type="button"
+        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
       >
         Next
-      </Button>
+      </button>
     </div>
   );
 }

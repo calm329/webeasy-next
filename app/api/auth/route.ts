@@ -63,6 +63,7 @@ async function getAccessTokenAndUserId(code: string) {
 
 export async function GET(request: NextRequest) {
   try {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     // const session = await getServerSession(authOptions);
 
     // console.log(session);

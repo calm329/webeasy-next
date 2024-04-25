@@ -2,10 +2,10 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export default async function middleware(req: NextRequest) {
-  const session = await getToken({ req });
-  if (!session && req.nextUrl.pathname === "/edit") {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+  // const session = await getToken({ req });
+  // if (!session && req.nextUrl.pathname === "/edit") {
+  //   return NextResponse.redirect(new URL("/", req.url));
+  // }
 
   const fixedSubdomains = ["www", "dev", process.env.NEXT_PUBLIC_ROOT_DOMAIN];
 
