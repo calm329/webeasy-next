@@ -4,10 +4,16 @@ import BrandDesktopForm from "@/components/form/brand-desktop-form";
 import BrandMobileForm from "@/components/form/brand-mobile-form";
 import Loader from "@/components/loader";
 import BasicTemplate from "@/components/templates/basic-template";
+import {
+  checkSiteAvailability,
+  createNewSite,
+  updateSite,
+} from "@/lib/actions";
+import { getSiteData } from "@/lib/fetchers";
 // import { createNewSite, updateSite } from "@/lib/actions";
-import { fetchData } from "@/lib/utils";
+import { fetchData, getUsernameFromPosts } from "@/lib/utils";
 import { FormField } from "@/types";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -19,13 +25,15 @@ interface AppState {
 }
 
 const initialState: AppState = {
-  status: "",
+  status: "Loading Instagram",
   iPosts: [],
   aiContent: {},
   logo: "",
 };
 
 export default function Page() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
@@ -75,31 +83,43 @@ export default function Page() {
   };
 
   const getData = async (flag: "init" | "regenerate" | "refresh" = "init") => {
+    const { subdomain: siteAvailable } = await checkSiteAvailability({
+      userId: searchParams.get("user_id") || "",
+    });
+
     setAppState((state) => ({ ...state, status: "Loading Instagram" }));
 
     // check if user data exists
     // const userData = flag === "init" ? await getUserData() : null;
 
-    // if (userData) {
-    //   const aiContent = JSON.parse(userData.aiResult);
+    if (siteAvailable && flag === "init") {
+      const siteData = await getSiteData(siteAvailable);
 
-    //   setAppState((state) => ({
-    //     ...state,
-    //     status: "Done",
-    //     aiContent: aiContent,
-    //     iPosts: JSON.parse(userData.posts),
-    //     logo: userData.logo || state.logo,
-    //   }));
+      if (!siteData) {
+        return;
+      }
 
-    //   // update default values
-    //   updateDefaultValues({
-    //     logo: userData.logo || undefined,
-    //     businessName: aiContent?.businessName,
-    //     ctaLink: aiContent?.hero?.ctaLink,
-    //   });
+      const aiContent = JSON.parse(siteData.aiResult);
 
-    //   return;
-    // }
+      console.log(aiContent);
+
+      setAppState((state) => ({
+        ...state,
+        status: "Done",
+        aiContent: aiContent,
+        iPosts: JSON.parse(siteData.posts),
+        logo: siteData.logo || state.logo,
+      }));
+
+      // update default values
+      updateDefaultValues({
+        logo: siteData.logo || undefined,
+        businessName: aiContent?.businessName,
+        ctaLink: aiContent?.hero?.ctaLink,
+      });
+
+      return;
+    }
 
     let imageIds: any = {};
     let iPosts: any[] = [];
@@ -113,9 +133,7 @@ export default function Page() {
         imageIds: _imageIds,
         posts: _posts,
       } = await fetchData(
-        `/api/instagram/media?code=${new URLSearchParams(
-          window.location.search,
-        ).get("code")}`,
+        `/api/instagram/media?access_token=${searchParams.get("access_token")}&user_id=${searchParams.get("user_id")}`,
       );
 
       if (!_mediaCaption || !_imageIds || !_posts) {
@@ -174,6 +192,24 @@ export default function Page() {
       iPosts: iPosts,
     }));
 
+    if (!siteAvailable && flag === "init") {
+      await createNewSite({
+        aiResult: JSON.stringify(aiContent),
+        posts: JSON.stringify(iPosts),
+        accessToken: searchParams.get("access_token") || "",
+        userId: searchParams.get("user_id") || "",
+      });
+    } else if (siteAvailable) {
+      await updateSite(
+        siteAvailable,
+        {
+          aiResult: JSON.stringify(aiContent),
+          posts: JSON.stringify(iPosts),
+        },
+        ["aiResult", "posts"],
+      );
+    }
+
     // update default values
     updateDefaultValues({
       businessName: aiContent?.businessName,
@@ -224,24 +260,56 @@ export default function Page() {
   }, 300);
 
   useEffect(() => {
-    console.log(appState, "appState");
-    getData();
+    const getInstaCredentials = async () => {
+      const { access_token, user_id } = await fetchData(
+        `/api/instagram/access_token?code=${searchParams.get("code")}`,
+      );
+
+      if (access_token && user_id) {
+        const newURLSearchParams = new URLSearchParams(searchParams);
+
+        newURLSearchParams.delete("code");
+        newURLSearchParams.set("access_token", access_token);
+        newURLSearchParams.set("user_id", user_id);
+
+        router.replace(`?${newURLSearchParams.toString()}`);
+      }
+    };
+
+    if (searchParams.get("code") && !searchParams.get("access_token")) {
+      getInstaCredentials();
+    }
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("access_token") && searchParams.get("user_id")) {
+      console.log(appState, "appState");
+      getData();
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    console.log(appState, "appState");
+  }, [appState]);
 
   return appState.status === "Done" ? (
     <div className="relative flex size-full">
       <div className="h-full w-full">
-        <div className="flex w-full justify-end bg-gray-100">
-          {/* <Button
-            variant="light"
-            size="sm"
+        <div className="flex w-full justify-end gap-2 bg-gray-100 p-2">
+          <button
+            type="button"
+            className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
             onClick={() => getData("regenerate")}
           >
             Regenerate the content
-          </Button>
-          <Button variant="light" size="sm" onClick={() => getData("refresh")}>
+          </button>
+          <button
+            type="button"
+            className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            onClick={() => getData("refresh")}
+          >
             Refresh Instagram feed
-          </Button> */}
+          </button>
         </div>
         <BasicTemplate
           logo={appState.logo}
@@ -261,10 +329,12 @@ export default function Page() {
         />
       </div>
       <BrandDesktopForm
+        subdomain={getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""}
         brandCustomizeFields={brandCustomizeFields}
         handleChange={handleChange}
       />
       <BrandMobileForm
+        subdomain={getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""}
         brandCustomizeFields={brandCustomizeFields}
         handleChange={handleChange}
       />

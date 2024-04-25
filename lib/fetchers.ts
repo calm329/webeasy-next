@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
 
-export async function getUserData(subdomain?: string) {
+export async function getSiteData(subdomain?: string) {
   // const session = await getServerSession(authOptions);
 
   // if (!session && !subdomain) {
@@ -20,10 +20,10 @@ export async function getUserData(subdomain?: string) {
         },
       });
     },
-    [`${subdomain}-metadata`],
+    [`${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
     {
       revalidate: 900,
-      tags: [`${subdomain}-metadata`],
+      tags: [`${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
     },
   )();
 }

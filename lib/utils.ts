@@ -37,6 +37,16 @@ export function generateZodSchema(fields: any) {
   return z.object({ ...schema });
 }
 
+export function getUsernameFromPosts(posts: string) {
+  try {
+    const data = JSON.parse(posts);
+
+    if (data && data.length) return data[0].username;
+  } catch (error) {
+    return null;
+  }
+}
+
 export async function fetchData(endpoint: string, options = {}) {
   try {
     const response = await fetch(endpoint, options);
