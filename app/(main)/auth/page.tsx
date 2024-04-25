@@ -73,7 +73,8 @@ export default function Page({
     setBrandCustomizeFields((currentFields) =>
       currentFields.map((field) => ({
         ...field,
-        defaultValue: data[field.name] ?? field.defaultValue,
+        defaultValue:
+          data[field.name as keyof typeof data] ?? field.defaultValue,
       })),
     );
   };
@@ -105,7 +106,7 @@ export default function Page({
     //   return;
     // }
 
-    let imageIds = {};
+    let imageIds: any = {};
     let iPosts: any[] = [];
     let mediaCaption = "";
     let aiContent: any = {};
@@ -118,7 +119,9 @@ export default function Page({
         posts: _posts,
       } = await fetchData(`/api/instagram/media?code=${searchParams["code"]}`);
 
-      if (!_mediaCaption) return;
+      if (!_mediaCaption || !_imageIds || !_posts) {
+        return;
+      }
 
       mediaCaption = _mediaCaption || mediaCaption;
       imageIds = _imageIds || imageIds;
@@ -140,7 +143,7 @@ export default function Page({
       if (content) {
         aiContent = JSON.parse(content);
         aiContent["hero"]["imageUrl"] = imageIds[aiContent["hero"]["imageId"]];
-      } else return;
+      } // else return;
 
       setAppState((state) => ({
         ...state,
@@ -158,7 +161,7 @@ export default function Page({
       if (colors) {
         const aiColors = JSON.parse(colors);
         aiContent = { ...aiContent, colors: aiColors };
-      } else return;
+      } // else return;
 
       setAppState((state) => ({
         ...state,

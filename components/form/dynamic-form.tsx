@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Uploader from "./uploader";
+import { type FormField } from "@/types";
 
 export default function DynamicForm({
   title,
@@ -16,7 +17,7 @@ export default function DynamicForm({
 }: {
   title: string;
   fields: any[];
-  handler: (formData, keys) => void;
+  handler: (formData: any, keys: string[]) => void;
   handleChange: (name: string, value: string) => void;
   handleBack?: () => void;
   handleNext?: () => void;
@@ -76,8 +77,18 @@ export default function DynamicForm({
   );
 }
 
-function FormField({ field, control, errors, handleChange }) {
-  const f = field;
+function FormField({
+  field,
+  control,
+  errors,
+  handleChange,
+}: {
+  field: FormField;
+  control: any;
+  errors: any;
+  handleChange: (name: string, value: string) => void;
+}) {
+  const f: FormField = field;
 
   return (
     <Controller
@@ -90,7 +101,7 @@ function FormField({ field, control, errors, handleChange }) {
             <div>
               <Uploader
                 defaultValue={f.defaultValue}
-                name={f.name}
+                name={f.name as "image" | "logo"}
                 label={f.label}
                 onChange={(value) => {
                   handleChange(f.name, value);
@@ -127,7 +138,13 @@ function FormField({ field, control, errors, handleChange }) {
   );
 }
 
-function FormNavigation({ handleBack, loading }) {
+function FormNavigation({
+  handleBack,
+  loading,
+}: {
+  handleBack?: () => void;
+  loading: boolean;
+}) {
   return (
     <div
       className={cn("!mt-8 flex w-full items-center", {
