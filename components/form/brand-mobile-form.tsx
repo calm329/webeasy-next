@@ -33,7 +33,11 @@ export default function BrandMobileForm({
     <div className="fixed bottom-0 h-auto w-full bg-white lg:hidden">
       <button
         // size="sm"
-        className={showForm ? "absolute right-2 top-2" : "w-full"}
+        className={
+          showForm
+            ? "absolute right-2 top-2"
+            : "flex w-full items-center justify-center"
+        }
         // radius={showForm ? "full" : "none"}
         // isIconOnly={showForm}
         onClick={() => setShowForm(!showForm)}
