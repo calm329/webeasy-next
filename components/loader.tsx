@@ -1,9 +1,10 @@
-import { Spinner } from "@nextui-org/react";
+import { ImSpinner2 } from "react-icons/im";
 
 export default function Loader({ text }: { text: string }) {
   return (
-    <div className="flex items-center text-sm lowercase">
-      <Spinner color="primary" size="sm" /> &nbsp; {text}
+    <div className="flex items-center justify-center lowercase">
+      <ImSpinner2 className="animate-spin text-lg text-indigo-600" /> &nbsp;{" "}
+      {text}
     </div>
   );
 }
