@@ -44,6 +44,5 @@ export async function fetchData(endpoint, options = {}) {
     return await response.json();
   } catch (error) {
     console.error("There was a problem with your fetch operation:", error);
-    throw new Error("Failed to fetch data.");
   }
 }
