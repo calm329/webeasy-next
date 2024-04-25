@@ -11,10 +11,10 @@ async function getData(url: string) {
   return await unirest
     .get(url)
     .query({})
-    .then((response) => {
+    .then((response: any) => {
       return response.body;
     })
-    .catch((error) => {
+    .catch((error: any) => {
       throw error;
     });
 }
@@ -35,10 +35,10 @@ async function getMedia(accessToken: string) {
       ].join(),
       access_token: accessToken,
     })
-    .then((response) => {
+    .then((response: any) => {
       return response.body;
     })
-    .catch((error) => {
+    .catch((error: any) => {
       throw error;
     });
 }
@@ -52,11 +52,11 @@ async function getAccessTokenAndUserId(code: string) {
     .field("grant_type", "authorization_code")
     .field("redirect_uri", process.env.NEXT_PUBLIC_FB_REDIRECT_URL)
     .field("code", code)
-    .then((response) => {
+    .then((response: any) => {
       console.log(response.body);
       return response.body;
     })
-    .catch((error) => {
+    .catch((error: any) => {
       console.log(error);
     });
 }
@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
     let mediaCaption = "";
 
     let media = await getMedia(access_token);
-    let imageIds = {};
+    let imageIds: any = {};
 
     let iPosts: any[] = [];
     if (media && media.data && media.data.length > 0) {
