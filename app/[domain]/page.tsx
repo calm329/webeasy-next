@@ -1,5 +1,5 @@
 import BasicTemplate from "@/components/templates/basic-template";
-import { getUserData } from "@/lib/fetchers";
+import { getSiteData } from "@/lib/fetchers";
 
 export default async function SiteHomePage({
   params,
@@ -7,7 +7,7 @@ export default async function SiteHomePage({
   params: { domain: string };
 }) {
   const domain = decodeURIComponent(params.domain);
-  const data = await getUserData(domain);
+  const data = await getSiteData(domain);
 
   if (!data) {
     return (
