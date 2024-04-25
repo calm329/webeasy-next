@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { FaChevronUp, FaTimes } from "react-icons/fa"; // Consolidate imports from 'react-icons'
 import DynamicForm from "./dynamic-form";
+import { FormField } from "@/types";
 // import { updateSite } from "@/lib/actions";
 
 export default function BrandMobileForm({
   brandCustomizeFields,
   handleChange,
+}: {
+  brandCustomizeFields: FormField[];
+  handleChange: (name: string, value: string) => void;
 }) {
   const [showForm, setShowForm] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
