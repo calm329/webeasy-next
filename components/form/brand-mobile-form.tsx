@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { FaChevronUp, FaTimes } from "react-icons/fa"; // Consolidate imports from 'react-icons'
 import DynamicForm from "./dynamic-form";
 import { FormField } from "@/types";
+import { updateSite } from "@/lib/actions";
+import { toast } from "sonner";
 // import { updateSite } from "@/lib/actions";
 
 export default function BrandMobileForm({
+  subdomain,
   brandCustomizeFields,
   handleChange,
 }: {
+  subdomain: string;
   brandCustomizeFields: FormField[];
   handleChange: (name: string, value: string) => void;
 }) {
@@ -29,7 +33,11 @@ export default function BrandMobileForm({
     <div className="fixed bottom-0 h-auto w-full bg-white lg:hidden">
       <button
         // size="sm"
-        className={showForm ? "absolute right-2 top-2" : "w-full"}
+        className={
+          showForm
+            ? "absolute right-2 top-2"
+            : "flex w-full items-center justify-center"
+        }
         // radius={showForm ? "full" : "none"}
         // isIconOnly={showForm}
         onClick={() => setShowForm(!showForm)}
@@ -40,7 +48,13 @@ export default function BrandMobileForm({
         <DynamicForm
           title="Brand Customization"
           fields={fields}
-          handler={() => {}} // updateSite}
+          handler={async (data: any, keys: string[]) => {
+            try {
+              await updateSite(subdomain, data, keys);
+            } catch (error) {
+              toast.success("Your brand customization has been saved");
+            }
+          }} // updateSite}
           handleChange={handleChange}
           handleNext={() =>
             setCurrentIndex((prev) =>

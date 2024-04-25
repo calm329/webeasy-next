@@ -20,7 +20,7 @@ export default function PostCard({
 }: PostCardProps) {
   return (
     <Link href={permalink} className="group">
-      <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-200">
+      <div className="aspect-h-1 aspect-w-1 xl:aspect-h-8 xl:aspect-w-7 w-full overflow-hidden rounded-lg bg-gray-200">
         {media_type === "VIDEO" ? (
           <video
             src={media_url}

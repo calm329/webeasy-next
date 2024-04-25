@@ -1,11 +1,14 @@
 import { useState } from "react";
 import DynamicForm from "./dynamic-form";
-// import { updateSite } from "@/lib/actions";
+import { updateSite } from "@/lib/actions";
+import { toast } from "sonner";
 
 export default function BrandDesktopForm({
+  subdomain,
   brandCustomizeFields,
   handleChange,
 }: {
+  subdomain: string;
   brandCustomizeFields: any[];
   handleChange: (name: string, value: string) => void;
 }) {
@@ -14,7 +17,13 @@ export default function BrandDesktopForm({
       <DynamicForm
         title="Brand Customization"
         fields={brandCustomizeFields}
-        handler={() => {}} // updateSite}
+        handler={async (data: any, keys: string[]) => {
+          try {
+            await updateSite(subdomain, data, keys);
+          } catch (error) {
+            toast.success("Your brand customization has been saved");
+          }
+        }} // updateSite}
         handleChange={handleChange}
       />
     </div>
