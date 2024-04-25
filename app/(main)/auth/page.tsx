@@ -7,6 +7,7 @@ import BasicTemplate from "@/components/templates/basic-template";
 // import { createNewSite, updateSite } from "@/lib/actions";
 import { fetchData } from "@/lib/utils";
 import { FormField } from "@/types";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -24,13 +25,7 @@ const initialState: AppState = {
   logo: "",
 };
 
-export default function Page({
-  params,
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams: { [code: string]: string | string[] | undefined };
-}) {
+export default function Page() {
   const [appState, setAppState] = useState<AppState>(initialState);
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
@@ -117,7 +112,11 @@ export default function Page({
         mediaCaption: _mediaCaption,
         imageIds: _imageIds,
         posts: _posts,
-      } = await fetchData(`/api/instagram/media?code=${searchParams["code"]}`);
+      } = await fetchData(
+        `/api/instagram/media?code=${new URLSearchParams(
+          window.location.search,
+        ).get("code")}`,
+      );
 
       if (!_mediaCaption || !_imageIds || !_posts) {
         return;
