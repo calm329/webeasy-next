@@ -7,7 +7,6 @@ import BasicTemplate from "@/components/templates/basic-template";
 // import { createNewSite, updateSite } from "@/lib/actions";
 import { fetchData } from "@/lib/utils";
 import { FormField } from "@/types";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -25,9 +24,13 @@ const initialState: AppState = {
   logo: "",
 };
 
-export default function Page() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+export default function Page({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { [code: string]: string | string[] | undefined };
+}) {
   const [appState, setAppState] = useState<AppState>(initialState);
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
@@ -110,7 +113,7 @@ export default function Page() {
     // get user media
     {
       const data = await fetchData(
-        `/api/instagram/media?code=${searchParams.get("code")}`,
+        `/api/instagram/media?code=${searchParams["code"]}`,
       );
 
       mediaCaption = data?.mediaCaption || mediaCaption;
