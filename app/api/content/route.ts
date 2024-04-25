@@ -10,6 +10,7 @@ const openai = new OpenAI({
 
 export async function POST(request: NextRequest) {
   const { mediaCaption } = await request.json();
+  console.log(mediaCaption, "mediaCaption");
 
   if (!mediaCaption) {
     return NextResponse.json({ error: "No data" }, { status: 400 });
