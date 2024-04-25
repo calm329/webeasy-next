@@ -1,5 +1,4 @@
-import { Button } from "@nextui-org/react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaChevronUp, FaTimes } from "react-icons/fa"; // Consolidate imports from 'react-icons'
 import DynamicForm from "./dynamic-form";
 // import { updateSite } from "@/lib/actions";
@@ -24,15 +23,15 @@ export default function BrandMobileForm({
 
   return (
     <div className="fixed bottom-0 h-auto w-full bg-white lg:hidden">
-      <Button
-        size="sm"
+      <button
+        // size="sm"
         className={showForm ? "absolute right-2 top-2" : "w-full"}
-        radius={showForm ? "full" : "none"}
-        isIconOnly={showForm}
+        // radius={showForm ? "full" : "none"}
+        // isIconOnly={showForm}
         onClick={() => setShowForm(!showForm)}
       >
         {showForm ? <FaTimes /> : <FaChevronUp />}
-      </Button>
+      </button>
       <div className={formContainerClass}>
         <DynamicForm
           title="Brand Customization"

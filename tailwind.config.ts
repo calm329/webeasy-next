@@ -1,17 +1,18 @@
-import { nextui } from "@nextui-org/react";
 import defaultTheme from "tailwindcss/defaultTheme";
+import { type Config } from "tailwindcss";
+import formPlugin from "@tailwindcss/forms";
+import aspectRatioPlugin from "@tailwindcss/aspect-ratio";
 
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+        sans: ["var(--font-sans)"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -20,5 +21,5 @@ module.exports = {
       },
     },
   },
-  plugins: [nextui()],
-};
+  plugins: [formPlugin, aspectRatioPlugin],
+} satisfies Config;

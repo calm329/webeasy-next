@@ -1,7 +1,7 @@
 "use client";
 
-import { Spinner } from "@nextui-org/react";
 import { ChangeEvent, useCallback, useMemo, useState } from "react";
+import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
 
 export default function Uploader() {
@@ -194,7 +194,7 @@ export default function Uploader() {
         } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
       >
         {saving ? (
-          <Spinner color="default" size="sm" />
+          <ImSpinner2 className="animate-spin text-sm text-indigo-600" />
         ) : (
           <p className="text-sm">Confirm upload</p>
         )}
