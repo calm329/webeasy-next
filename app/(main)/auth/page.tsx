@@ -13,6 +13,7 @@ import { getSiteData } from "@/lib/fetchers";
 // import { createNewSite, updateSite } from "@/lib/actions";
 import { fetchData, getUsernameFromPosts } from "@/lib/utils";
 import { FormField } from "@/types";
+import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -22,6 +23,7 @@ interface AppState {
   iPosts: any[];
   aiContent: any;
   logo: string;
+  editable: boolean;
 }
 
 const initialState: AppState = {
@@ -29,10 +31,12 @@ const initialState: AppState = {
   iPosts: [],
   aiContent: {},
   logo: "",
+  editable: false,
 };
 
 export default function Page() {
   const router = useRouter();
+  const { data: session, status, update } = useSession();
   const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
@@ -83,11 +87,15 @@ export default function Page() {
   };
 
   const getData = async (flag: "init" | "regenerate" | "refresh" = "init") => {
-    const { subdomain: siteAvailable } = await checkSiteAvailability({
+    const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
       userId: searchParams.get("user_id") || "",
     });
 
-    setAppState((state) => ({ ...state, status: "Loading Instagram" }));
+    setAppState((state) => ({
+      ...state,
+      status: "Loading Instagram",
+      editable,
+    }));
 
     // check if user data exists
     // const userData = flag === "init" ? await getUserData() : null;
@@ -289,6 +297,22 @@ export default function Page() {
   }, [searchParams]);
 
   useEffect(() => {
+    async function checkSiteEditable() {
+      const { subdomain: siteAvailable, editable } =
+        await checkSiteAvailability({
+          userId: searchParams.get("user_id") || "",
+        });
+
+      setAppState((state) => ({
+        ...state,
+        editable: editable,
+      }));
+    }
+
+    checkSiteEditable();
+  }, [session]);
+
+  useEffect(() => {
     console.log(appState, "appState");
   }, [appState]);
 
@@ -328,16 +352,24 @@ export default function Page() {
           posts={appState.iPosts}
         />
       </div>
-      <BrandDesktopForm
-        subdomain={getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""}
-        brandCustomizeFields={brandCustomizeFields}
-        handleChange={handleChange}
-      />
-      <BrandMobileForm
-        subdomain={getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""}
-        brandCustomizeFields={brandCustomizeFields}
-        handleChange={handleChange}
-      />
+      {appState.editable && (
+        <>
+          <BrandDesktopForm
+            subdomain={
+              getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
+            }
+            brandCustomizeFields={brandCustomizeFields}
+            handleChange={handleChange}
+          />
+          <BrandMobileForm
+            subdomain={
+              getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
+            }
+            brandCustomizeFields={brandCustomizeFields}
+            handleChange={handleChange}
+          />
+        </>
+      )}
     </div>
   ) : (
     <div className="absolute inset-0 flex items-center justify-center">

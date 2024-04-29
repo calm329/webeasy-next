@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -45,6 +46,12 @@ export default function RegisterForm() {
       if (response.status === 200) {
         toast.success("Signup successful", {
           position: "top-right",
+        });
+
+        signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
         });
       } else {
         const { error } = await response.json();

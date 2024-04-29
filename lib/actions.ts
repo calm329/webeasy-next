@@ -26,12 +26,6 @@ export async function createNewSite({
         email: session.user?.email,
       },
     });
-
-    if (!user) {
-      return {
-        error: "User not found",
-      };
-    }
   }
 
   // find default template (basic template)
@@ -85,6 +79,18 @@ export async function createNewSite({
 export async function checkSiteAvailability(
   data: Partial<{ userId: string; token: string }>,
 ) {
+  const session = await getServerSession();
+
+  let user;
+
+  if (session) {
+    user = await prisma.user.findFirst({
+      where: {
+        email: session.user?.email,
+      },
+    });
+  }
+
   const accessToken = await prisma.accessToken.findFirst({
     where: data,
     include: {
@@ -93,77 +99,16 @@ export async function checkSiteAvailability(
   });
 
   if (accessToken) {
-    return { subdomain: accessToken.site.subdomain };
+    return {
+      subdomain: accessToken.site.subdomain,
+      editable: accessToken.site.userId
+        ? accessToken.site.userId === user?.id
+        : true,
+    };
   } else {
-    return { subdomain: null };
+    return { subdomain: null, editable: true };
   }
 }
-
-// export async function createNewSite(aiResult: string, posts: string) {
-//   const session = await getServerSession();
-
-//   if (!session) {
-//     return {
-//       error: "Not authenticated",
-//     };
-//   }
-
-//   try {
-//     // get user from database using session
-//     const user = await prisma.user.findFirst({
-//       where: {
-//         name: session.user?.name,
-//       },
-//     });
-
-//     if (!user) {
-//       return {
-//         error: "User not found",
-//       };
-//     }
-
-//     // find default template (basic template)
-//     const defaultTemplate = await prisma.template.findFirst({
-//       where: {
-//         name: "Basic template",
-//       },
-//     });
-
-//     if (!defaultTemplate) {
-//       return {
-//         error: "Default template not found",
-//       };
-//     }
-
-//     const response = await prisma.site.create({
-//       data: {
-//         subdomain: user.name || "",
-//         posts,
-//         aiResult,
-//         userId: user.id,
-//         templateId: defaultTemplate.id,
-//       },
-//     });
-
-//     await revalidateTag(
-//       `${user.name}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
-//     );
-
-//     return response;
-//   } catch (error: any) {
-//     console.log(error);
-
-//     if (error.code === "P2002") {
-//       return {
-//         error: `This subdomain is already taken`,
-//       };
-//     } else {
-//       return {
-//         error: error.message,
-//       };
-//     }
-//   }
-// }
 
 export async function updateSite(
   subdomain: string,
@@ -179,17 +124,15 @@ export async function updateSite(
   // }
 
   try {
-    // const user = await prisma.user.findFirst({
-    //   where: {
-    //     name: session.user?.name,
-    //   },
-    // });
+    let user;
 
-    // if (!user) {
-    //   return {
-    //     error: "User not found",
-    //   };
-    // }
+    if (session) {
+      user = await prisma.user.findFirst({
+        where: {
+          email: session.user?.email,
+        },
+      });
+    }
 
     const site = await prisma.site.findFirst({
       where: {
@@ -200,6 +143,12 @@ export async function updateSite(
     if (!site) {
       return {
         error: "Site not found",
+      };
+    }
+
+    if (user && site.userId !== user.id) {
+      return {
+        error: "You are not authorized to update this site",
       };
     }
 
@@ -225,6 +174,10 @@ export async function updateSite(
       typeof newData.aiResult === "string"
         ? newData.aiResult
         : JSON.stringify(newData.aiResult);
+
+    if (user) {
+      newData["userId"] = user.id;
+    }
 
     const response = await prisma.site.update({
       where: {
