@@ -1,7 +1,7 @@
 import Link from "next/link";
 import CTA from "./cta";
 import { Dispatch, SetStateAction } from "react";
-import { TFields } from "@/types";
+import { TFields, TSection } from "@/types";
 
 type TopBarProps = {
   logo: string;
@@ -17,10 +17,21 @@ type TopBarProps = {
   };
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function TopBar(props: TopBarProps) {
-  const { logo, businessName, colors, cta, editable, setFocusedField } = props;
+  const {
+    logo,
+    businessName,
+    colors,
+    cta,
+    editable,
+    setFocusedField,
+    setIsOpen,
+    setSection,
+  } = props;
   return (
     <div className="flex items-center justify-between rounded-full border border-gray-100 bg-gray-100 px-6 py-3.5">
       <div className="w-auto">
@@ -35,26 +46,35 @@ export default function TopBar(props: TopBarProps) {
                 src={logo}
                 alt="logo"
                 className={`h-8 w-auto ${editable && "border border-transparent hover:border-indigo-500 "} `}
-                onClick={() => setFocusedField && setFocusedField("logo")}
+                onClick={() => {
+                  if (setIsOpen && setSection && setFocusedField) {
+                    setSection("Banner");
+                    setIsOpen(true);
+                    setFocusedField("logo");
+                  }
+                }}
               />
             ) : (
               logo && <img src={logo} alt="logo" className={`h-8 w-auto `} />
             )}
-            {editable?
-            <Link
-              href="#"
-              className={` ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
-              onClick={() => setFocusedField && setFocusedField("businessName")}
-            >
-              {businessName}
+            {editable ? (
+              <Link
+                href="#"
+                className={` ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
+                onClick={() =>
+                 { if (setIsOpen && setSection && setFocusedField) {
+                    setSection("Banner");
+                    setIsOpen(true);
+                    setFocusedField("businessName");
+                  }
+                 }
+                }
+              >
+                {businessName}
               </Link>
-          :
-            <Link
-              href="#"
-            >
-              {businessName}
-            </Link>
-            }
+            ) : (
+              <Link href="#">{businessName}</Link>
+            )}
           </div>
         </div>
       </div>
@@ -62,30 +82,33 @@ export default function TopBar(props: TopBarProps) {
         <div className="flex flex-wrap items-center">
           <div className="w-auto lg:block">
             <div className="-m-2 flex flex-wrap">
-              {editable?
-              <div
-                className={`w-full p-2 md:w-auto ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
-                onClick={() => setFocusedField && setFocusedField("cta")}
-              >
-                <CTA
-                  text={cta.text}
-                  bgColor={colors.secondary}
-                  link={editable ? "#" : cta.link}
-                  external={cta.external}
-                />
+              {editable ? (
+                <div
+                  className={`w-full p-2 md:w-auto ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
+                  onClick={() => { if (setIsOpen && setSection && setFocusedField) {
+                    setSection("Banner");
+                    setIsOpen(true);
+                    setFocusedField("cta");
+                  }
+                 }}
+                >
+                  <CTA
+                    text={cta.text}
+                    bgColor={colors.secondary}
+                    link={editable ? "#" : cta.link}
+                    external={cta.external}
+                  />
                 </div>
-              :
-              <div
-                className={`w-full p-2 md:w-auto`}
-          
-              >
-                <CTA
-                  text={cta.text}
-                  bgColor={colors.secondary}
-                  link={editable ? "#" : cta.link}
-                  external={cta.external}
-                />
-              </div>}
+              ) : (
+                <div className={`w-full p-2 md:w-auto`}>
+                  <CTA
+                    text={cta.text}
+                    bgColor={colors.secondary}
+                    link={editable ? "#" : cta.link}
+                    external={cta.external}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
