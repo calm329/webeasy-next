@@ -13,7 +13,7 @@ import {
 import { getSiteData } from "@/lib/fetchers";
 // import { createNewSite, updateSite } from "@/lib/actions";
 import { fetchData, getUsernameFromPosts } from "@/lib/utils";
-import { FormField } from "@/types";
+import { FormField, TSection } from "@/types";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const [section, setSection] = useState(1);
+  const [section, setSection] = useState<TSection>("Header");
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
       {

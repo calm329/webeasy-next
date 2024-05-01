@@ -4,6 +4,7 @@ import ServiceCard from "../card/service-card";
 import CTA from "../cta";
 import TopBar from "../top-bar";
 import { Dispatch, SetStateAction } from "react";
+import { TSection } from "@/types";
 
 type BasicTemplateProps = {
   logo?: string;
@@ -25,7 +26,7 @@ type BasicTemplateProps = {
   posts: any[];
   open?:boolean,
   setIsOpen?:Dispatch<SetStateAction<boolean>>
-  setSection?:Dispatch<SetStateAction<number>>
+  setSection?:Dispatch<SetStateAction<TSection>>
   editable?:boolean
 };
 
@@ -46,7 +47,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
   return (
     <>
       <section className="bg-white py-6">
-        <div className={`container mx-auto px-4 ${editable && "border border-transparent hover:border-indigo-500 rounded-lg"}`} onClick={()=>{if(editable && setIsOpen && setSection){setIsOpen(true);setSection(1)}}}>
+        <div className={`container mx-auto px-4 ${editable && "border border-transparent hover:border-indigo-500 rounded-lg"}`} onClick={()=>{if(editable && setIsOpen && setSection){setIsOpen(true);setSection("Header")}}}>
           <TopBar
             logo={logo || ""}
             businessName={businessName}
@@ -60,7 +61,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
         <div className="container mx-auto px-4">
           <div className="rounded-3xl bg-white px-8 py-16">
             <div className="mx-auto max-w-7xl">
-              <div className={`-m-8 mb-10 flex flex-wrap  ${editable && "border border-transparent hover:border-indigo-500 rounded-lg"}`} onClick={()=>{if(editable &&setIsOpen && setSection){setIsOpen(true); setSection(2)}}}>
+              <div className={`-m-8 mb-10 flex flex-wrap  ${editable && "border border-transparent hover:border-indigo-500 rounded-lg"}`} onClick={()=>{if(editable &&setIsOpen && setSection){setIsOpen(true); setSection("Banner")}}}>
                 <div className="w-full p-8 md:w-1/2">
                   <div className="md:max-w-lg">
                     <h2

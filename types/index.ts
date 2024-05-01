@@ -17,3 +17,6 @@ export type FormField = {
     pattern?: string;
   };
 };
+
+
+export type TSection ="Header"|"Banner"
