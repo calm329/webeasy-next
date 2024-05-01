@@ -1,6 +1,6 @@
 import { GridBoxIcon } from "@/components/icons";
 import InstagramLogin from "@/components/instagram-login";
-import tailwindIcon from "@/public/tailwind.svg";
+import tailwindIcon from "@/public/WebEasy-logo-dark.svg";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,9 +9,9 @@ export default function Example() {
   return (
     <div className="relative isolate overflow-hidden bg-white">
       <GridBoxIcon className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]" />
-      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
-        <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
-          <Image src={tailwindIcon} alt="Your Company" className="h-11" />
+      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 ">
+          {/* <Image src={tailwindIcon} alt="Your Company" className="h-11 ml-auto" /> */}
           <div className="mt-24 sm:mt-32 lg:mt-16">
             <Link href="#" className="inline-flex space-x-6">
               <span className="rounded-full bg-indigo-600/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-600/10">
