@@ -4,7 +4,7 @@ import ServiceCard from "../card/service-card";
 import CTA from "../cta";
 import TopBar from "../top-bar";
 import { Dispatch, SetStateAction } from "react";
-import { TSection } from "@/types";
+import { TFields, TSection } from "@/types";
 
 type BasicTemplateProps = {
   logo?: string;
@@ -27,7 +27,8 @@ type BasicTemplateProps = {
   open?:boolean,
   setIsOpen?:Dispatch<SetStateAction<boolean>>
   setSection?:Dispatch<SetStateAction<TSection>>
-  editable?:boolean
+  editable?:boolean;
+  setFocusedField?:Dispatch<SetStateAction<TFields>>
 };
 
 export default function BasicTemplate(props: BasicTemplateProps) {
@@ -41,19 +42,21 @@ export default function BasicTemplate(props: BasicTemplateProps) {
     posts,
     setIsOpen,
     setSection,
-    editable
+    editable,
+    setFocusedField
   } = props
   // console.log("onshow",open)
   return (
     <>
       <section className="bg-white py-6">
-        <div className={`container mx-auto px-4 ${editable && "border border-transparent hover:border-indigo-500 rounded-lg"}`} onClick={()=>{if(editable && setIsOpen && setSection){setIsOpen(true);setSection("Banner")}}}>
+        <div className={`container mx-auto px-4 ${editable && "border border-transparent hover:border-indigo-500 rounded-lg"}`} onClick={()=>{if(editable && setIsOpen && setSection ){setIsOpen(true);setSection("Banner")}}}>
           <TopBar
             logo={logo || ""}
             businessName={businessName}
             colors={colors}
             cta={cta}
             editable={true}
+            setFocusedField={setFocusedField}
           />
         </div>
       </section>
@@ -67,12 +70,13 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     <h2
                       className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "border border-transparent hover:border-indigo-500 rounded"}`}
                       style={{ color: colors.primary }}
+                      onClick={()=>setFocusedField &&setFocusedField("heading")}
                     >
                       {hero.heading}
                     </h2>
-                    <p className={`mb-8 text-xl font-bold ${editable && "border border-transparent hover:border-indigo-500 rounded"}`}>{hero.subheading}</p>
+                    <p className={`mb-8 text-xl font-bold ${editable && "border border-transparent hover:border-indigo-500 rounded"}`} onClick={()=>setFocusedField &&setFocusedField("subheading")}>{hero.subheading}</p>
                     <div className="-m-2 flex flex-wrap">
-                      <div className={`w-full p-2 md:w-auto ${editable && "border border-transparent hover:border-indigo-500 rounded"}`}>
+                      <div className={`w-full p-2 md:w-auto ${editable && "border border-transparent hover:border-indigo-500 rounded"}`} onClick={()=>setFocusedField &&setFocusedField("cta")}>
                         <CTA
                           text={cta.text}
                           bgColor={colors.secondary}
@@ -89,6 +93,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     height={256}
                     alt="Hero Image"
                     className={`mx-auto rounded-3xl object-contain md:mr-0 ${editable && "border border-transparent hover:border-indigo-500 rounded"}`}
+                    onClick={()=>setFocusedField && setFocusedField("imageUrl")}
                   />
                 </div>
               </div>
