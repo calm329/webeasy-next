@@ -37,10 +37,10 @@ function SlideOver(props: TProps) {
   return (
     <div className="pointer-events-none fixed inset-y-0 right-0 z-10 flex max-w-full pl-10 sm:pl-16">
       <div
-        className={`pointer-events-auto w-screen max-w-md ${open ? "translate-x-0" : "translate-x-full"} transform transition duration-500 ease-in-out sm:duration-700`}
+        className={`pointer-events-auto w-screen max-w-sm ${open ? "translate-x-0" : "translate-x-full"} transform transition duration-500 ease-in-out sm:duration-700`}
       >
         <div
-          className="flex h-full flex-col justify-between divide-y divide-gray-200 border  bg-white shadow-xl"
+          className="flex h-fit pb-10 flex-col justify-between divide-y divide-gray-200 border  bg-white shadow-xl rounded-xl mt-2"
           // onSubmit={handleSubmit(onSubmit)}
         >
           <div className=" overflow-y-auto">
@@ -80,7 +80,7 @@ function SlideOver(props: TProps) {
             </div>
             <div className="flex flex-1 flex-col justify-between">
               <div className="divide-y divide-gray-200 px-4 sm:px-6">
-                {section === "Header" && (
+                {section === "Banner" && (
                   <DynamicForm
                     // title={`Section ${section}`}
                     fields={brandCustomizeFields}
@@ -96,7 +96,7 @@ function SlideOver(props: TProps) {
                     handleChange={handleChange}
                   />
                 )}
-                {section === "Banner" && (
+                {section === "Hero" && (
                   <DynamicForm
                     // title={`Section ${section}`}
                     fields={heroCustomizeFields}

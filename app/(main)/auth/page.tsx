@@ -41,7 +41,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const [section, setSection] = useState<TSection>("Header");
+  const [section, setSection] = useState<TSection>("Banner");
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
       {
