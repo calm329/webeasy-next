@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomDrawer } from "@/components/drawer";
 import BrandDesktopForm from "@/components/form/brand-desktop-form";
 import BrandMobileForm from "@/components/form/brand-mobile-form";
 import Loader from "@/components/loader";
@@ -423,6 +424,21 @@ export default function Page() {
     console.log(appState, "appState");
   }, [appState]);
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up event listener on unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return appState.status === "Done" ? (
     <div className="relative flex size-full">
       <div className="h-full w-full">
@@ -467,6 +483,7 @@ export default function Page() {
       </div>
       {appState.editable && (
         <>
+        {windowWidth > 800?
           <SlideOver
             open={isSideBarOpen}
             setIsOpen={setIsSideBarOpen}
@@ -479,7 +496,18 @@ export default function Page() {
             brandCustomizeFields={brandCustomizeFields}
             heroCustomizeFields={heroCustomizeFields}
             focusedField = {focusedField }
-          />
+          />:
+          <CustomDrawer 
+            open={isSideBarOpen}
+            setIsOpen={setIsSideBarOpen}
+            section={section}
+            handleChange={handleChange}
+            subdomain={
+              getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
+            }
+            brandCustomizeFields={brandCustomizeFields}
+            heroCustomizeFields={heroCustomizeFields}
+            focusedField = {focusedField }/>}
           {/* <BrandDesktopForm
             subdomain={
               getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
