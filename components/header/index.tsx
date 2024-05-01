@@ -26,7 +26,7 @@ export default function Example() {
       >
         <div className="flex items-center gap-x-12">
           <a href="#" className="-m-1.5 p-1.5">
-            <Image src={"/WebEasy-logo-dark.svg"} alt={"Logo"} width={100} height={100}/>
+            <Image src={"/WebEasy-logo-dark.svg"} alt={"Logo"} width={150} height={100}/>
           </a>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
