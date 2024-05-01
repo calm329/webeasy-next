@@ -5,7 +5,7 @@ import BrandDesktopForm from "@/components/form/brand-desktop-form";
 import BrandMobileForm from "@/components/form/brand-mobile-form";
 import Loader from "@/components/loader";
 import SlideOver from "@/components/slide-over";
-import BasicTemplate from "@/components/templates/basic-template";
+import BasicTemplate from "@/components/templates/basic-template-csr";
 import {
   checkSiteAvailability,
   createNewSite,
