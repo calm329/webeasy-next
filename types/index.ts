@@ -19,4 +19,4 @@ export type FormField = {
 };
 
 
-export type TSection ="Header"|"Banner"
+export type TSection ="Hero"|"Banner"
