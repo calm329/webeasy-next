@@ -1,6 +1,7 @@
 "use client";
 
 import { CustomDrawer } from "@/components/drawer";
+import { useMediaQuery } from 'usehooks-ts'
 import BrandDesktopForm from "@/components/form/brand-desktop-form";
 import BrandMobileForm from "@/components/form/brand-mobile-form";
 import Loader from "@/components/loader";
@@ -444,20 +445,7 @@ export default function Page() {
     console.log(appState, "appState");
   }, [appState]);
 
-  const [windowWidth, setWindowWidth] = useState(0);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up event listener on unmount
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  const matches = useMediaQuery('(min-width: 768px)')
 
   return appState.status === "Done" ? (
     <div className="relative flex size-full">
@@ -503,7 +491,7 @@ export default function Page() {
       </div>
       {appState.editable && (
         <>
-        {windowWidth > 800?
+        {matches?
           <SlideOver
             open={isSideBarOpen}
             setIsOpen={setIsSideBarOpen}

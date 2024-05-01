@@ -42,7 +42,7 @@ export default function DynamicForm(props:TProps ) {
     setLoading(true);
 
     try {
-      handler(
+      await handler(
         data,
         fields.map((f) => f.name as string),
       );
@@ -50,6 +50,7 @@ export default function DynamicForm(props:TProps ) {
       handleNext?.();
     } catch (error) {
       console.error("Form submission error:", error);
+      
     } finally {
       setLoading(false);
     }
@@ -200,8 +201,7 @@ function FormNavigation({
         type="submit"
         className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ml-auto"
       >
-        Save
-        
+        {loading?"Loading":"Save"}
       </button>
     </div>
   );
