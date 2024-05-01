@@ -1,7 +1,7 @@
 import { AppState } from "@/app/(main)/auth/page";
 import { updateSite } from "@/lib/actions";
 import { generateZodSchema, getUsernameFromPosts } from "@/lib/utils";
-import { FormField, TSection } from "@/types";
+import { FormField, TFields, TSection } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -20,6 +20,7 @@ type TProps = {
   subdomain: string;
   brandCustomizeFields: FormField[];
   heroCustomizeFields: FormField[];
+  focusedField:TFields
 };
 
 function SlideOver(props: TProps) {
@@ -32,6 +33,7 @@ function SlideOver(props: TProps) {
     subdomain,
     heroCustomizeFields,
     brandCustomizeFields,
+    focusedField
   } = props;
   console.log("slideOver",section)
   return (
@@ -83,6 +85,7 @@ function SlideOver(props: TProps) {
                 {section === "Banner" && (
                   <DynamicForm
                     // title={`Section ${section}`}
+                    focusedField={focusedField}
                     fields={brandCustomizeFields}
                     handler={async (data: any, keys: string[]) => {
                       try {
@@ -99,6 +102,7 @@ function SlideOver(props: TProps) {
                 {section === "Hero" && (
                   <DynamicForm
                     // title={`Section ${section}`}
+                    focusedField={focusedField}
                     fields={heroCustomizeFields}
                     handler={async (data: any, keys: string[]) => {
                       try {

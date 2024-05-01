@@ -1,5 +1,7 @@
 import Link from "next/link";
 import CTA from "./cta";
+import { Dispatch, SetStateAction } from "react";
+import { TFields } from "@/types";
 
 type TopBarProps = {
   logo: string;
@@ -14,6 +16,7 @@ type TopBarProps = {
     external?: boolean;
   };
   editable?: boolean;
+  setFocusedField?:Dispatch<SetStateAction<TFields>>
 };
 
 export default function TopBar(props: TopBarProps) {
@@ -22,7 +25,8 @@ export default function TopBar(props: TopBarProps) {
     businessName,
     colors,
     cta,
-    editable
+    editable,
+    setFocusedField
   } = props;
   return (
     <div className="flex items-center justify-between rounded-full border border-gray-100 bg-gray-100 px-6 py-3.5">
@@ -33,8 +37,8 @@ export default function TopBar(props: TopBarProps) {
             style={{ color: colors.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {logo && <img src={logo} alt="logo" className={`h-8 w-auto ${editable && "border border-transparent hover:border-indigo-500 "} `} />}
-            <Link href="#" className={` ${editable && "border border-transparent hover:border-indigo-500 rounded"}`}>{businessName}</Link>
+            {logo && <img src={logo} alt="logo" className={`h-8 w-auto ${editable && "border border-transparent hover:border-indigo-500 "} `} onClick={()=>setFocusedField &&setFocusedField("logo")}/>}
+            <Link href="#" className={` ${editable && "border border-transparent hover:border-indigo-500 rounded"}`} onClick={()=>setFocusedField &&setFocusedField("businessName")}>{businessName}</Link>
           </div>
         </div>
       </div>
@@ -42,7 +46,7 @@ export default function TopBar(props: TopBarProps) {
         <div className="flex flex-wrap items-center">
           <div className="w-auto lg:block">
             <div className="-m-2 flex flex-wrap">
-              <div className={`w-full p-2 md:w-auto ${editable && "border border-transparent hover:border-indigo-500 rounded"}`} >
+              <div className={`w-full p-2 md:w-auto ${editable && "border border-transparent hover:border-indigo-500 rounded"}`} onClick={()=>setFocusedField &&setFocusedField("ctaLink")}>
                 <CTA
                   text={cta.text}
                   bgColor={colors.secondary}

@@ -2,26 +2,31 @@
 
 import { cn, generateZodSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Uploader from "./uploader";
-import { type FormField } from "@/types";
+import { TFields, type FormField } from "@/types";
 
-export default function DynamicForm({
-  title,
-  fields,
-  handler,
-  handleChange,
-  handleBack,
-  handleNext,
-}: {
-  title?: string;
-  fields: any[];
-  handler: (formData: any, keys: string[]) => void;
-  handleChange: (name: string, value: string) => void;
-  handleBack?: () => void;
-  handleNext?: () => void;
-}) {
+type TProps = {
+    title?: string;
+    fields: any[];
+    handler: (formData: any, keys: string[]) => void;
+    handleChange: (name: string, value: string) => void;
+    handleBack?: () => void;
+    handleNext?: () => void;
+    focusedField?: TFields
+  }
+
+export default function DynamicForm(props:TProps ) {
+  const {
+    title,
+    fields,
+    handler,
+    handleChange,
+    handleBack,
+    handleNext,
+    focusedField
+  } = props;
   const [loading, setLoading] = useState(false);
   const zodSchema = generateZodSchema(fields);
   const {
@@ -37,7 +42,7 @@ export default function DynamicForm({
     setLoading(true);
 
     try {
-      await handler(
+      handler(
         data,
         fields.map((f) => f.name as string),
       );
@@ -55,7 +60,7 @@ export default function DynamicForm({
       setValue(f.name, f.defaultValue);
     }
   }, [fields]);
-
+  console.log("forms",fields)
   return (
     <>
       {title && (
@@ -63,12 +68,14 @@ export default function DynamicForm({
       )}
       <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-2">
         {fields.map((field) => (
+          
           <FormField
             key={field.name}
             field={field}
             control={control}
             errors={errors}
             handleChange={handleChange}
+            focusedField={focusedField??null}
           />
         ))}
         <FormNavigation handleBack={handleBack} loading={loading} />
@@ -77,19 +84,33 @@ export default function DynamicForm({
   );
 }
 
-function FormField({
-  field,
-  control,
-  errors,
-  handleChange,
-}: {
-  field: FormField;
-  control: any;
-  errors: any;
-  handleChange: (name: string, value: string) => void;
-}) {
-  const f: FormField = field;
+type TFormFieldProps =
+  {
+    field: FormField;
+    control: any;
+    errors: any;
+    handleChange: (name: string, value: string) => void;
+    focusedField:TFields
+  }
 
+
+function FormField(props: TFormFieldProps) {
+  const {
+    field,
+    control,
+    errors,
+    handleChange,
+    focusedField
+  } = props;
+  const f: FormField = field;
+  console.log("isFocused",field.name, focusedField);
+  const inputRef= useRef<HTMLInputElement>(null);
+  useEffect(()=>{
+    if(field.name===focusedField){
+      console.log("hi")
+      inputRef.current?.focus()
+    }
+  },[focusedField])
   return (
     <Controller
       key={field.name}
@@ -133,6 +154,7 @@ function FormField({
                     handleChange(f.name, e.target.value);
                     field.onChange(e.target.value);
                   }}
+                  ref={inputRef}
                 />
                 {errors[field.name] && (
                   <p className="mt-2 text-sm text-red-600" id="email-error">

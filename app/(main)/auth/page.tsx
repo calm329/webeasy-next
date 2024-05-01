@@ -13,7 +13,7 @@ import {
 import { getSiteData } from "@/lib/fetchers";
 // import { createNewSite, updateSite } from "@/lib/actions";
 import { fetchData, getUsernameFromPosts } from "@/lib/utils";
-import { FormField, TSection } from "@/types";
+import { FormField, TFields, TSection } from "@/types";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -41,6 +41,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [focusedField,setFocusedField] = useState<TFields>(null)
   const [section, setSection] = useState<TSection>("Banner");
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
@@ -53,6 +54,7 @@ export default function Page() {
         validation: {
           required: true,
         },
+       
       },
       {
         name: "businessName",
@@ -291,23 +293,6 @@ export default function Page() {
       subheading: aiContent?.hero?.subheading,
       cta: aiContent?.hero?.cta,
     });
-
-    // if (flag === "init") {
-    //   if (Object.keys(_aiContent).length && _iPosts.length)
-    //     await createNewSite(
-    //       JSON.stringify(_aiContent),
-    //       JSON.stringify(_iPosts),
-    //     );
-    // } else {
-    //   if (Object.keys(_aiContent).length || _iPosts.length)
-    //     await updateSite(
-    //       {
-    //         aiResult: JSON.stringify(_aiContent),
-    //         posts: JSON.stringify(_iPosts),
-    //       },
-    //       Object.keys(_aiContent).length ? ["aiResult", "posts"] : ["posts"],
-    //     );
-    // }
   };
 
   const handleChange = useDebouncedCallback((name: string, value: string) => {
@@ -477,6 +462,7 @@ export default function Page() {
           }}
           services={appState.aiContent["services"]["list"]}
           posts={appState.iPosts}
+          setFocusedField = {setFocusedField}
         />
       </div>
       {appState.editable && (
@@ -492,6 +478,7 @@ export default function Page() {
             }
             brandCustomizeFields={brandCustomizeFields}
             heroCustomizeFields={heroCustomizeFields}
+            focusedField = {focusedField }
           />
           {/* <BrandDesktopForm
             subdomain={
