@@ -26,6 +26,7 @@ type BasicTemplateProps = {
   open?:boolean,
   setIsOpen?:Dispatch<SetStateAction<boolean>>
   setSection?:Dispatch<SetStateAction<number>>
+  editable?:boolean
 };
 
 export default function BasicTemplate(props: BasicTemplateProps) {
@@ -38,19 +39,20 @@ export default function BasicTemplate(props: BasicTemplateProps) {
     services,
     posts,
     setIsOpen,
-    open,
-    setSection
+    setSection,
+    editable
   } = props
   // console.log("onshow",open)
   return (
     <>
       <section className="bg-white py-6">
-        <div className="container mx-auto px-4 hover:border hover:border-red-500" onClick={()=>{if(setIsOpen && setSection){setIsOpen(true);setSection(1)}}}>
+        <div className={`container mx-auto px-4 ${editable && "border border-transparent hover:border-indigo-500 rounded-lg"}`} onClick={()=>{if(editable && setIsOpen && setSection){setIsOpen(true);setSection(1)}}}>
           <TopBar
             logo={logo || ""}
             businessName={businessName}
             colors={colors}
             cta={cta}
+            editable={true}
           />
         </div>
       </section>
@@ -58,18 +60,18 @@ export default function BasicTemplate(props: BasicTemplateProps) {
         <div className="container mx-auto px-4">
           <div className="rounded-3xl bg-white px-8 py-16">
             <div className="mx-auto max-w-7xl">
-              <div className="-m-8 mb-10 flex flex-wrap hover:border hover:border-blue-500" onClick={()=>{if(setIsOpen && setSection){setIsOpen(true); setSection(2)}}}>
+              <div className={`-m-8 mb-10 flex flex-wrap  ${editable && "border border-transparent hover:border-indigo-500 rounded-lg"}`} onClick={()=>{if(editable &&setIsOpen && setSection){setIsOpen(true); setSection(2)}}}>
                 <div className="w-full p-8 md:w-1/2">
                   <div className="md:max-w-lg">
                     <h2
-                      className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl`}
+                      className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "border border-transparent hover:border-indigo-500 rounded"}`}
                       style={{ color: colors.primary }}
                     >
                       {hero.heading}
                     </h2>
-                    <p className="mb-8 text-xl font-bold">{hero.subheading}</p>
+                    <p className={`mb-8 text-xl font-bold ${editable && "border border-transparent hover:border-indigo-500 rounded"}`}>{hero.subheading}</p>
                     <div className="-m-2 flex flex-wrap">
-                      <div className="w-full p-2 md:w-auto">
+                      <div className={`w-full p-2 md:w-auto ${editable && "border border-transparent hover:border-indigo-500 rounded"}`}>
                         <CTA
                           text={cta.text}
                           bgColor={colors.secondary}
@@ -79,13 +81,13 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     </div>
                   </div>
                 </div>
-                <div className="w-full p-8 md:w-1/2">
+                <div className={`w-full p-8 md:w-1/2  `}>
                   <Image
                     src={hero.imageUrl}
                     width={256}
                     height={256}
                     alt="Hero Image"
-                    className="mx-auto rounded-3xl object-contain md:mr-0"
+                    className={`mx-auto rounded-3xl object-contain md:mr-0 ${editable && "border border-transparent hover:border-indigo-500 rounded"}`}
                   />
                 </div>
               </div>
