@@ -16,18 +16,11 @@ type TopBarProps = {
     external?: boolean;
   };
   editable?: boolean;
-  setFocusedField?:Dispatch<SetStateAction<TFields>>
+  setFocusedField?: Dispatch<SetStateAction<TFields>>;
 };
 
 export default function TopBar(props: TopBarProps) {
-  const {
-    logo,
-    businessName,
-    colors,
-    cta,
-    editable,
-    setFocusedField
-  } = props;
+  const { logo, businessName, colors, cta, editable, setFocusedField } = props;
   return (
     <div className="flex items-center justify-between rounded-full border border-gray-100 bg-gray-100 px-6 py-3.5">
       <div className="w-auto">
@@ -37,8 +30,31 @@ export default function TopBar(props: TopBarProps) {
             style={{ color: colors.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {logo && <img src={logo} alt="logo" className={`h-8 w-auto ${editable && "border border-transparent hover:border-indigo-500 "} `} onClick={()=>setFocusedField &&setFocusedField("logo")}/>}
-            <Link href="#" className={` ${editable && "border border-transparent hover:border-indigo-500 rounded"}`} onClick={()=>setFocusedField &&setFocusedField("businessName")}>{businessName}</Link>
+            {logo && editable ? (
+              <img
+                src={logo}
+                alt="logo"
+                className={`h-8 w-auto ${editable && "border border-transparent hover:border-indigo-500 "} `}
+                onClick={() => setFocusedField && setFocusedField("logo")}
+              />
+            ) : (
+              logo && <img src={logo} alt="logo" className={`h-8 w-auto `} />
+            )}
+            {editable?
+            <Link
+              href="#"
+              className={` ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
+              onClick={() => setFocusedField && setFocusedField("businessName")}
+            >
+              {businessName}
+              </Link>
+          :
+            <Link
+              href="#"
+            >
+              {businessName}
+            </Link>
+            }
           </div>
         </div>
       </div>
@@ -46,14 +62,30 @@ export default function TopBar(props: TopBarProps) {
         <div className="flex flex-wrap items-center">
           <div className="w-auto lg:block">
             <div className="-m-2 flex flex-wrap">
-              <div className={`w-full p-2 md:w-auto ${editable && "border border-transparent hover:border-indigo-500 rounded"}`} onClick={()=>setFocusedField &&setFocusedField("cta")}>
+              {editable?
+              <div
+                className={`w-full p-2 md:w-auto ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
+                onClick={() => setFocusedField && setFocusedField("cta")}
+              >
                 <CTA
                   text={cta.text}
                   bgColor={colors.secondary}
-                  link={editable?"#":cta.link}
+                  link={editable ? "#" : cta.link}
                   external={cta.external}
                 />
-              </div>
+                </div>
+              :
+              <div
+                className={`w-full p-2 md:w-auto`}
+          
+              >
+                <CTA
+                  text={cta.text}
+                  bgColor={colors.secondary}
+                  link={editable ? "#" : cta.link}
+                  external={cta.external}
+                />
+              </div>}
             </div>
           </div>
         </div>

@@ -44,8 +44,6 @@ export default function BasicTemplate(props: BasicTemplateProps) {
             businessName={businessName}
             colors={colors}
             cta={cta}
-            editable={true}
-         
           />
         </div>
       </section>
