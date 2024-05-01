@@ -30,7 +30,7 @@ function SlideOver(props: TProps) {
   } = props;
   
   return (
-    <div className="pointer-events-none fixed inset-y-0 right-0 z-10 flex max-w-full pl-10 sm:pl-16">
+    <div className="pointer-events-none fixed  right-0 z-10 flex max-w-full pl-10 sm:pl-16">
       <div
         className={`pointer-events-auto w-screen max-w-sm ${open ? "translate-x-0" : "translate-x-full"} transform transition duration-500 ease-in-out sm:duration-700`}
       >
