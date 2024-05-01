@@ -78,7 +78,7 @@ export default function Example() {
               <span className="sr-only">Your Company</span>
               <img
                 className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                src="/WebEasy-logo-dark.svg"
                 alt=""
               />
             </a>
@@ -105,14 +105,18 @@ export default function Example() {
                 ))}
               </div>
               <div className="py-6">
-                <AuthModal>
-                  <a
-                    href="#"
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Sign in
-                  </a>
-                </AuthModal>
+              {status === "authenticated" ? (
+            <AccountMenu />
+                ) : (
+                  <AuthModal>
+                    <a
+                      href="#"
+                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Sign in
+                    </a>
+                  </AuthModal>
+                )}
               </div>
             </div>
           </div>
