@@ -24,7 +24,7 @@ export default async function SiteHomePage({
 
   return (
     <div>
-      <SlideOver/>
+      {/* <SlideOver/> */}
       <BasicTemplate
         logo={data.logo || undefined}
         businessName={aiResult["businessName"]}
