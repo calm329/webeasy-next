@@ -140,10 +140,11 @@ const CustomizePanel = (props:TProps) => {
                       handler={async (data: any, keys: string[]) => {
                         try {
                           await updateSite(subdomain, data, keys);
-                        } catch (error) {
                           toast.success(
                             "Your brand customization has been saved",
                           );
+                        } catch (error) {
+                         
                         }
                       }} // updateSite}
                       handleChange={handleChange}
@@ -157,10 +158,11 @@ const CustomizePanel = (props:TProps) => {
                       handler={async (data: any, keys: string[]) => {
                         try {
                           await updateSite(subdomain, data, keys);
-                        } catch (error) {
                           toast.success(
                             "Your brand customization has been saved",
                           );
+                        } catch (error) {
+                          
                         }
                       }} // updateSite}
                       handleChange={handleChange}
