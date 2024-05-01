@@ -444,7 +444,7 @@ export default function Page() {
     console.log(appState, "appState");
   }, [appState]);
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
