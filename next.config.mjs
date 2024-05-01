@@ -10,6 +10,7 @@ const nextConfig = {
         hostname: "*.cdninstagram.com",
       },
     ],
+    domains: ['xhq5zxhb2o7dgubv.public.blob.vercel-storage.com'],
   },
 };
 

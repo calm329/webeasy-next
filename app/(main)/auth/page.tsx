@@ -19,7 +19,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-interface AppState {
+export interface AppState {
   status: string;
   iPosts: any[];
   aiContent: any;
@@ -40,6 +40,8 @@ export default function Page() {
   const { data: session, status, update } = useSession();
   const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
+  const [isSideBarOpen,setIsSideBarOpen] = useState(true)
+  const [section,setSection] = useState(1)
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
       {
@@ -336,8 +338,11 @@ export default function Page() {
             Refresh Instagram feed
           </button>
         </div>
-        <SlideOver/>
+        <SlideOver open={isSideBarOpen} setIsOpen={setIsSideBarOpen} data={appState} section={section}/>
         <BasicTemplate
+          open={isSideBarOpen}
+          setSection= {setSection}
+          setIsOpen={setIsSideBarOpen}
           logo={appState.logo}
           businessName={appState.aiContent["businessName"]}
           hero={{
