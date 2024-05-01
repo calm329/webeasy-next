@@ -68,9 +68,19 @@ export default function Page() {
         },
       },
       {
+        name: "cta",
+        type: "text",
+        label: "Call To Action Text",
+        defaultValue: "",
+        placeholder: "Enter Call To Action Text",
+        validation: {
+          required: true,
+        },
+      },
+      {
         name: "ctaLink",
         type: "text",
-        label: "CTA URL",
+        label: "Call To Action Link",
         defaultValue: "",
         placeholder: "Enter a link",
         validation: {
@@ -114,9 +124,19 @@ export default function Page() {
     {
       name: "cta",
       type: "text",
-      label: "CTA",
+      label: "Call To Action Text",
       defaultValue: "",
-      placeholder: "Enter a CTA",
+      placeholder: "Enter Call To Action Text",
+      validation: {
+        required: true,
+      },
+    },
+    {
+      name: "ctaLink",
+      type: "text",
+      label: "Call To Action Link",
+      defaultValue: "",
+      placeholder: "Enter a link",
       validation: {
         required: true,
       },

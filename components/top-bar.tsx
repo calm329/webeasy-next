@@ -50,7 +50,7 @@ export default function TopBar(props: TopBarProps) {
                 <CTA
                   text={cta.text}
                   bgColor={colors.secondary}
-                  link={cta.link}
+                  link={editable?"#":cta.link}
                   external={cta.external}
                 />
               </div>
