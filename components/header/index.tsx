@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import AuthModal from "../modal/auth-modal";
 import AccountMenu from "./account-menu";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -25,12 +26,7 @@ export default function Example() {
       >
         <div className="flex items-center gap-x-12">
           <a href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-            <img
-              className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt=""
-            />
+            <Image src={"/WebEasy-logo-dark.svg"} alt={"Logo"} width={100} height={100}/>
           </a>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (

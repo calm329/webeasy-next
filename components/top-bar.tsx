@@ -13,14 +13,17 @@ type TopBarProps = {
     link: string;
     external?: boolean;
   };
+  editable?: boolean;
 };
 
-export default function TopBar({
-  logo,
-  businessName,
-  colors,
-  cta,
-}: TopBarProps) {
+export default function TopBar(props: TopBarProps) {
+  const {
+    logo,
+    businessName,
+    colors,
+    cta,
+    editable
+  } = props;
   return (
     <div className="flex items-center justify-between rounded-full border border-gray-100 bg-gray-100 px-6 py-3.5">
       <div className="w-auto">
@@ -30,8 +33,8 @@ export default function TopBar({
             style={{ color: colors.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {logo && <img src={logo} alt="logo" className="h-8 w-auto" />}
-            <Link href="#">{businessName}</Link>
+            {logo && <img src={logo} alt="logo" className={`h-8 w-auto ${editable && "border border-transparent hover:border-indigo-500 "} `} />}
+            <Link href="#" className={` ${editable && "border border-transparent hover:border-indigo-500 rounded"}`}>{businessName}</Link>
           </div>
         </div>
       </div>
@@ -39,7 +42,7 @@ export default function TopBar({
         <div className="flex flex-wrap items-center">
           <div className="w-auto lg:block">
             <div className="-m-2 flex flex-wrap">
-              <div className="w-full p-2 md:w-auto">
+              <div className={`w-full p-2 md:w-auto ${editable && "border border-transparent hover:border-indigo-500 rounded"}`} >
                 <CTA
                   text={cta.text}
                   bgColor={colors.secondary}
