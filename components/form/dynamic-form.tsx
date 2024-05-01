@@ -15,7 +15,7 @@ export default function DynamicForm({
   handleBack,
   handleNext,
 }: {
-  title: string;
+  title?: string;
   fields: any[];
   handler: (formData: any, keys: string[]) => void;
   handleChange: (name: string, value: string) => void;

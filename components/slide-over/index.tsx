@@ -1,17 +1,38 @@
 import { AppState } from "@/app/(main)/auth/page";
+import { updateSite } from "@/lib/actions";
+import { generateZodSchema, getUsernameFromPosts } from "@/lib/utils";
+import { FormField } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { DebouncedState, useDebouncedCallback } from "use-debounce";
+import { infer, object, string, z } from "zod";
+import DynamicForm from "../form/dynamic-form";
 
 type TProps = {
   open: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   data: AppState;
   section: number;
+  handleChange: DebouncedState<(name: string, value: string) => void>;
+  subdomain: string;
+  brandCustomizeFields: FormField[];
+  heroCustomizeFields: FormField[];
 };
 
 function SlideOver(props: TProps) {
-  const { open, setIsOpen, data, section } = props;
-  // console.log("open", data)
+  const {
+    open,
+    setIsOpen,
+    data,
+    section,
+    handleChange,
+    subdomain,
+    heroCustomizeFields,
+    brandCustomizeFields,
+  } = props;
   return (
     <div
       className={`relative z-10 ${!open && "hidden"}`}
@@ -27,8 +48,11 @@ function SlideOver(props: TProps) {
             <div
               className={`pointer-events-auto w-screen max-w-md ${open ? "translate-x-0" : "translate-x-full"} transform transition duration-500 ease-in-out sm:duration-700`}
             >
-              <form className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl">
-                <div className="h-0 flex-1 overflow-y-auto">
+              <div
+                className="flex h-full flex-col justify-between divide-y divide-gray-200 border  bg-white shadow-xl"
+                // onSubmit={handleSubmit(onSubmit)}
+              >
+                <div className=" overflow-y-auto">
                   <div className="bg-indigo-700 px-4 py-6 sm:px-6">
                     <div className="flex items-center justify-between">
                       <h2
@@ -49,13 +73,13 @@ function SlideOver(props: TProps) {
                             className="h-6 w-6"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            strokeWidth="1.5"
                             stroke="currentColor"
                             aria-hidden="true"
                           >
                             <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                               d="M6 18L18 6M6 6l12 12"
                             />
                           </svg>
@@ -66,89 +90,41 @@ function SlideOver(props: TProps) {
                   <div className="flex flex-1 flex-col justify-between">
                     <div className="divide-y divide-gray-200 px-4 sm:px-6">
                       {section === 1 && (
-                        <div className="space-y-6 pb-5 pt-6">
-                          <Image src={data?.logo} alt="Logo" height={100} width={100}/>
-
-                          <div>
-                            <label
-                              htmlFor="project-name"
-                              className="block text-sm font-medium leading-6 text-gray-900"
-                            >
-                              Business Name
-                            </label>
-                            <div className="mt-2">
-                              <input
-                                type="text"
-                                name="project-name"
-                                id="project-name"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                value={data.aiContent.businessName}
-                              />
-                            </div>
-                          </div>
-                        </div>
+                        <DynamicForm
+                          // title={`Section ${section}`}
+                          fields={brandCustomizeFields}
+                          handler={async (data: any, keys: string[]) => {
+                            try {
+                              await updateSite(subdomain, data, keys);
+                            } catch (error) {
+                              toast.success(
+                                "Your brand customization has been saved",
+                              );
+                            }
+                          }} // updateSite}
+                          handleChange={handleChange}
+                        />
                       )}
-                       {section === 2 && (
-                        <div className="space-y-6 pb-5 pt-6">
-                          <Image src={data?.aiContent?.hero.imageUrl} alt="Logo" height={100} width={100}/>
-
-                          <div>
-                            <label
-                              htmlFor="project-name"
-                              className="block text-sm font-medium leading-6 text-gray-900"
-                            >
-                              Heading
-                            </label>
-                            <div className="mt-2">
-                              <input
-                                type="text"
-                                name="project-name"
-                                id="project-name"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                value={data.aiContent.hero.heading}
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="project-name"
-                              className="block text-sm font-medium leading-6 text-gray-900"
-                            >
-                              Sub-Heading
-                            </label>
-                            <div className="mt-2">
-                              <input
-                                type="text"
-                                name="project-name"
-                                id="project-name"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                value={data.aiContent.hero.subheading}
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="project-name"
-                              className="block text-sm font-medium leading-6 text-gray-900"
-                            >
-                              CTA
-                            </label>
-                            <div className="mt-2">
-                              <input
-                                type="text"
-                                name="project-name"
-                                id="project-name"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                value={data.aiContent.hero.cta}
-                              />
-                            </div>
-                          </div>
-                        </div>
+                      {section === 2 && (
+                        <DynamicForm
+                          // title={`Section ${section}`}
+                          fields={heroCustomizeFields}
+                          handler={async (data: any, keys: string[]) => {
+                            try {
+                              await updateSite(subdomain, data, keys);
+                            } catch (error) {
+                              toast.success(
+                                "Your brand customization has been saved",
+                              );
+                            }
+                          }} // updateSite}
+                          handleChange={handleChange}
+                        />
                       )}
                     </div>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

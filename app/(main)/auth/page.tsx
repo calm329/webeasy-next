@@ -40,8 +40,8 @@ export default function Page() {
   const { data: session, status, update } = useSession();
   const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
-  const [isSideBarOpen,setIsSideBarOpen] = useState(false)
-  const [section,setSection] = useState(1)
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [section, setSection] = useState(1);
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
       {
@@ -77,10 +77,68 @@ export default function Page() {
     ],
   );
 
+  const [heroCustomizeFields, setHeroCustomizeFields] = useState<FormField[]>([
+    {
+      name: "imageUrl",
+      type: "image",
+      label: "Banner Image",
+      defaultValue: "",
+      placeholder: "Select Banner Image",
+      validation: {
+        required: true,
+      },
+    },
+    {
+      name: "heading",
+      type: "text",
+      label: "Heading",
+      defaultValue: "",
+      placeholder: "Enter a Heading",
+      validation: {
+        required: true,
+      },
+    },
+    {
+      name: "subheading",
+      type: "text",
+      label: "Sub-Heading",
+      defaultValue: "",
+      placeholder: "Enter a Sub-Heading",
+      validation: {
+        required: true,
+      },
+    },
+    {
+      name: "cta",
+      type: "text",
+      label: "CTA",
+      defaultValue: "",
+      placeholder: "Enter a CTA",
+      validation: {
+        required: true,
+      },
+    },
+  ]);
+
   const updateDefaultValues = (
-    data: Partial<{ logo: string; businessName: string; ctaLink: string }>,
+    data: Partial<{
+      logo: string;
+      businessName: string;
+      ctaLink: string;
+      heading: string;
+      subheading: string;
+      imageUrl: string;
+      cta: string;
+    }>,
   ) => {
     setBrandCustomizeFields((currentFields) =>
+      currentFields.map((field) => ({
+        ...field,
+        defaultValue:
+          data[field.name as keyof typeof data] ?? field.defaultValue,
+      })),
+    );
+    setHeroCustomizeFields((currentFields) =>
       currentFields.map((field) => ({
         ...field,
         defaultValue:
@@ -127,6 +185,10 @@ export default function Page() {
         logo: siteData.logo || undefined,
         businessName: aiContent?.businessName,
         ctaLink: aiContent?.hero?.ctaLink,
+        heading: aiContent?.hero?.heading,
+        subheading: aiContent?.hero?.subheading,
+        imageUrl: aiContent?.hero?.imageUrl,
+        cta: aiContent?.hero?.cta,
       });
 
       return;
@@ -220,11 +282,14 @@ export default function Page() {
         ["aiResult", "posts"],
       );
     }
-
+    console.log("updated", aiContent);
     // update default values
     updateDefaultValues({
       businessName: aiContent?.businessName,
       ctaLink: aiContent?.hero?.ctaLink,
+      heading: aiContent?.hero?.heading,
+      subheading: aiContent?.hero?.subheading,
+      cta: aiContent?.hero?.cta,
     });
 
     // if (flag === "init") {
@@ -246,27 +311,81 @@ export default function Page() {
   };
 
   const handleChange = useDebouncedCallback((name: string, value: string) => {
-    if (name === "logo") {
-      setAppState((state) => ({ ...state, logo: value }));
-    } else if (name === "businessName") {
-      setAppState((state) => ({
-        ...state,
-        aiContent: {
-          ...state.aiContent,
-          ["businessName"]: value,
-        },
-      }));
-    } else if (name === "ctaLink") {
-      setAppState((state) => ({
-        ...state,
-        aiContent: {
-          ...state.aiContent,
-          ["hero"]: {
-            ...state.aiContent["hero"],
-            ["ctaLink"]: value,
+    switch (name) {
+      case "logo":
+        setAppState((state) => ({ ...state, logo: value }));
+        break;
+      case "businessName":
+        setAppState((state) => ({
+          ...state,
+          aiContent: {
+            ...state.aiContent,
+            ["businessName"]: value,
           },
-        },
-      }));
+        }));
+        break;
+      case "ctaLink":
+        setAppState((state) => ({
+          ...state,
+          aiContent: {
+            ...state.aiContent,
+            ["hero"]: {
+              ...state.aiContent["hero"],
+              ["ctaLink"]: value,
+            },
+          },
+        }));
+        break;
+      case "heading":
+        setAppState((state) => ({
+          ...state,
+          aiContent: {
+            ...state.aiContent,
+            ["hero"]: {
+              ...state.aiContent["hero"],
+              ["heading"]: value,
+            },
+          },
+        }));
+        break;
+      case "subheading":
+        setAppState((state) => ({
+          ...state,
+          aiContent: {
+            ...state.aiContent,
+            ["hero"]: {
+              ...state.aiContent["hero"],
+              ["subheading"]: value,
+            },
+          },
+        }));
+        break;
+      case "imageUrl":
+        setAppState((state) => ({
+          ...state,
+          aiContent: {
+            ...state.aiContent,
+            ["hero"]: {
+              ...state.aiContent["hero"],
+              ["imageUrl"]: value,
+            },
+          },
+        }));
+        break;
+      case "cta":
+        setAppState((state) => ({
+          ...state,
+          aiContent: {
+            ...state.aiContent,
+            ["hero"]: {
+              ...state.aiContent["hero"],
+              ["cta"]: value,
+            },
+          },
+        }));
+        break;
+      default:
+        break;
     }
   }, 300);
 
@@ -338,10 +457,10 @@ export default function Page() {
             Refresh Instagram feed
           </button>
         </div>
-        <SlideOver open={isSideBarOpen} setIsOpen={setIsSideBarOpen} data={appState} section={section}/>
+
         <BasicTemplate
           open={isSideBarOpen}
-          setSection= {setSection}
+          setSection={setSection}
           setIsOpen={setIsSideBarOpen}
           logo={appState.logo}
           businessName={appState.aiContent["businessName"]}
@@ -361,7 +480,19 @@ export default function Page() {
       </div>
       {appState.editable && (
         <>
-          <BrandDesktopForm
+          <SlideOver
+            open={isSideBarOpen}
+            setIsOpen={setIsSideBarOpen}
+            data={appState}
+            section={section}
+            handleChange={handleChange}
+            subdomain={
+              getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
+            }
+            brandCustomizeFields={brandCustomizeFields}
+            heroCustomizeFields={heroCustomizeFields}
+          />
+          {/* <BrandDesktopForm
             subdomain={
               getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
             }
@@ -374,7 +505,7 @@ export default function Page() {
             }
             brandCustomizeFields={brandCustomizeFields}
             handleChange={handleChange}
-          />
+          /> */}
         </>
       )}
     </div>

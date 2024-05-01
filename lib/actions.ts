@@ -165,7 +165,7 @@ export async function updateSite(
         newData["aiResult"]["businessName"] = data[key];
       } else {
         // update other keys
-        newData[key] = data[key];
+        newData["aiResult"]["hero"][key] = data[key];
       }
     }
 
