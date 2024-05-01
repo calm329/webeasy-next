@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Uploader from "./uploader";
 import { TFields, type FormField } from "@/types";
+import Loader from "../loader";
+import { ImSpinner2 } from "react-icons/im";
 
 type TProps = {
     title?: string;
@@ -199,9 +201,10 @@ function FormNavigation({
       )}
       <button
         type="submit"
-        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ml-auto"
+        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ml-auto flex gap-2"
+        disabled={loading}
       >
-        {loading?"Loading":"Save"}
+        {loading&&<ImSpinner2 className="animate-spin text-lg text-indigo-600" />}Save
       </button>
     </div>
   );
