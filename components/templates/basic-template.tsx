@@ -80,7 +80,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                         <CTA
                           text={cta.text}
                           bgColor={colors.secondary}
-                          link={cta.link}
+                          link={editable?"#":cta.link}
                         />
                       </div>
                     </div>
