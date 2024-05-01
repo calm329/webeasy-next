@@ -40,7 +40,7 @@ export default function Page() {
   const { data: session, status, update } = useSession();
   const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
-  const [isSideBarOpen,setIsSideBarOpen] = useState(true)
+  const [isSideBarOpen,setIsSideBarOpen] = useState(false)
   const [section,setSection] = useState(1)
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
