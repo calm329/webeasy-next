@@ -46,7 +46,7 @@ export default function TopBar(props: TopBarProps) {
         <div className="flex flex-wrap items-center">
           <div className="w-auto lg:block">
             <div className="-m-2 flex flex-wrap">
-              <div className={`w-full p-2 md:w-auto ${editable && "border border-transparent hover:border-indigo-500 rounded"}`} onClick={()=>setFocusedField &&setFocusedField("ctaLink")}>
+              <div className={`w-full p-2 md:w-auto ${editable && "border border-transparent hover:border-indigo-500 rounded"}`} onClick={()=>setFocusedField &&setFocusedField("cta")}>
                 <CTA
                   text={cta.text}
                   bgColor={colors.secondary}
