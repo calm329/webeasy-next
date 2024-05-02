@@ -117,12 +117,6 @@ export async function updateSite(
 ) {
   const session = await getServerSession();
 
-  // if (!session) {
-  //   return {
-  //     error: "Not authenticated",
-  //   };
-  // }
-
   try {
     let user;
 

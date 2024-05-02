@@ -2,15 +2,8 @@
 
 import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./auth";
 
 export async function getSiteData(subdomain?: string) {
-  // const session = await getServerSession(authOptions);
-
-  // if (!session && !subdomain) {
-  //   return null;
-  // }
 
   return await unstable_cache(
     async () => {

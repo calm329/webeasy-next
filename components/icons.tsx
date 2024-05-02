@@ -7,7 +7,7 @@ export const GridBoxIcon: React.FC<IconSvgProps> = ({
   height,
   ...props
 }) => (
-  <svg width={size || width} height={size || height} {...props}>
+  <svg width={size ?? width} height={size ?? height} {...props}>
     <defs>
       <pattern
         id="0787a7c5-978c-4f66-83c7-11c213f99cb7"
@@ -37,8 +37,8 @@ export const ServiceIcon: React.FC<IconSvgProps> = ({
 }) => (
   <svg
     fill="none"
-    width={size || width}
-    height={size || height}
+    width={size ?? width}
+    height={size ?? height}
     viewBox="0 0 24 24"
     {...props}
   >

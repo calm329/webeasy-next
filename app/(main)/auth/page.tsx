@@ -1,9 +1,6 @@
 "use client";
-
 import { CustomDrawer } from "@/components/drawer";
 import { useMediaQuery } from "usehooks-ts";
-import BrandDesktopForm from "@/components/form/brand-desktop-form";
-import BrandMobileForm from "@/components/form/brand-mobile-form";
 import Loader from "@/components/loader";
 import SlideOver from "@/components/slide-over";
 import BasicTemplate from "@/components/templates/basic-template-csr";
@@ -13,7 +10,6 @@ import {
   updateSite,
 } from "@/lib/actions";
 import { getSiteData } from "@/lib/fetchers";
-// import { createNewSite, updateSite } from "@/lib/actions";
 import { fetchData, getUsernameFromPosts } from "@/lib/utils";
 import { FormField, TFields, TSection } from "@/types";
 import { useSession } from "next-auth/react";
@@ -37,9 +33,19 @@ const initialState: AppState = {
   editable: false,
 };
 
+type TData =Partial<{
+  logo: string;
+  businessName: string;
+  ctaLink: string;
+  heading: string;
+  subheading: string;
+  imageUrl: string;
+  cta: string;
+}>
+
 export default function Page() {
   const router = useRouter();
-  const { data: session, status, update } = useSession();
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -144,15 +150,7 @@ export default function Page() {
   ]);
 
   const updateDefaultValues = (
-    data: Partial<{
-      logo: string;
-      businessName: string;
-      ctaLink: string;
-      heading: string;
-      subheading: string;
-      imageUrl: string;
-      cta: string;
-    }>,
+    data: TData,
   ) => {
     setBrandCustomizeFields((currentFields) =>
       currentFields.map((field) => ({
@@ -468,7 +466,6 @@ export default function Page() {
 
         <BasicTemplate
           editable={appState.editable}
-          open={isSideBarOpen}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
           logo={appState.logo}
@@ -494,7 +491,6 @@ export default function Page() {
             <SlideOver
               open={isSideBarOpen}
               setIsOpen={setIsSideBarOpen}
-              data={appState}
               section={section}
               handleChange={handleChange}
               subdomain={
@@ -518,20 +514,6 @@ export default function Page() {
               focusedField={focusedField}
             />
           )}
-          {/* <BrandDesktopForm
-            subdomain={
-              getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
-            }
-            brandCustomizeFields={brandCustomizeFields}
-            handleChange={handleChange}
-          />
-          <BrandMobileForm
-            subdomain={
-              getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
-            }
-            brandCustomizeFields={brandCustomizeFields}
-            handleChange={handleChange}
-          /> */}
         </>
       )}
     </div>

@@ -4,9 +4,9 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, ReactElement, useState } from "react";
 import SigninForm from "../form/signin-form";
 import RegisterForm from "../form/signup-form";
-import { FaApple } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
+import { FaApple,FaFacebook } from "react-icons/fa";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AuthModal({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState("signin");
@@ -48,7 +48,7 @@ export default function AuthModal({ children }: { children: React.ReactNode }) {
                   <div className="sm:mx-auto sm:w-full sm:max-w-md">
                     <Image
                       className="mx-auto h-10 w-auto"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                      src="/WebEasy-logo-dark.svg"
                       alt="Your Company"
                       height={40}
                       width={200}
@@ -76,7 +76,7 @@ export default function AuthModal({ children }: { children: React.ReactNode }) {
                     </div>
 
                     <div className="mt-6 grid grid-cols-2 gap-4">
-                      <a
+                      <Link
                         href="#"
                         className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                       >
@@ -84,9 +84,9 @@ export default function AuthModal({ children }: { children: React.ReactNode }) {
                         <span className="text-sm font-semibold leading-6">
                           Facebook
                         </span>
-                      </a>
+                      </Link>
 
-                      <a
+                      <Link
                         href="#"
                         className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                       >
@@ -94,30 +94,30 @@ export default function AuthModal({ children }: { children: React.ReactNode }) {
                         <span className="text-sm font-semibold leading-6">
                           Apple
                         </span>
-                      </a>
+                      </Link>
                     </div>
                     <div className="flex justify-center">
                       {state === "signin" ? (
                         <p className="mt-10 text-center text-sm text-gray-500">
                           Don&apos;t have an account?{" "}
-                          <a
+                          <Link
                             href="#"
                             onClick={() => setState("signup")}
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                           >
                             Register Now
-                          </a>
+                          </Link>
                         </p>
                       ) : (
                         <p className="mt-10 text-center text-sm text-gray-500">
                           Already have an account?{" "}
-                          <a
+                          <Link
                             href="#"
                             onClick={() => setState("signin")}
                             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                           >
                             Sign in
-                          </a>
+                          </Link>
                         </p>
                       )}
                     </div>

@@ -1,8 +1,4 @@
 import { GridBoxIcon } from "@/components/icons";
-import InstagramLogin from "@/components/instagram-login";
-import tailwindIcon from "@/public/WebEasy-logo-dark.svg";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Example() {
@@ -29,20 +25,6 @@ export default function Example() {
             Connect you instagram profile and we will create a website for you.
           </p>
           <div className="mt-10 flex items-center gap-x-6">
-            {/* <form
-              action={async () => {
-                "use server";
-                await signIn("instagram");
-              }}
-            >
-              <button
-                type="submit"
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Connect Instagram
-              </button>
-            </form> */}
-            {/* <InstagramLogin /> */}
             <Link
               id="instagram-login-button"
               href={`${process.env.INSTAGRAM_API_AUTH_ENDPOINT}authorize?client_id=${process.env.NEXT_PUBLIC_FB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_FB_REDIRECT_URL}&scope=user_profile,user_media&response_type=code`}

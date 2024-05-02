@@ -7,6 +7,7 @@ import AuthModal from "../modal/auth-modal";
 import AccountMenu from "./account-menu";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -25,14 +26,14 @@ export default function Example() {
         aria-label="Global"
       >
         <div className="flex items-center gap-x-12">
-          <a href="#" className="-m-1.5 p-1.5">
+          <Link href="#" className="-m-1.5 p-1.5">
             <Image
               src={"/WebEasy-logo-dark.svg"}
               alt={"Logo"}
               width={150}
               height={100}
             />
-          </a>
+          </Link>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
               <a
@@ -60,12 +61,12 @@ export default function Example() {
             <AccountMenu />
           ) : (
             <AuthModal>
-              <a
+              <Link
                 href="#"
                 className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign in
-              </a>
+              </Link>
             </AuthModal>
           )}
         </div>
@@ -79,7 +80,7 @@ export default function Example() {
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
+            <Link href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <Image
                 className="h-8 w-auto"
@@ -88,7 +89,7 @@ export default function Example() {
                 height={32}
                 width={200}
               />
-            </a>
+            </Link>
             <button
               type="button"
               className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -116,12 +117,12 @@ export default function Example() {
                   <AccountMenu />
                 ) : (
                   <AuthModal>
-                    <a
+                    <Link
                       href="#"
                       className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Sign in
-                    </a>
+                    </Link>
                   </AuthModal>
                 )}
               </div>

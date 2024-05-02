@@ -6,11 +6,12 @@ type ServiceCardProps = {
   color: string;
 };
 
-export default function ServiceCard({
-  name,
-  description,
-  color,
-}: ServiceCardProps) {
+export default function ServiceCard(props: ServiceCardProps) {
+  const {
+    name,
+    description,
+    color,
+  } = props;
   return (
     <div className="w-full p-8 md:w-1/3">
       <div className="-m-3 flex flex-wrap">
