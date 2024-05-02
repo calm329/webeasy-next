@@ -56,6 +56,7 @@ export function CustomDrawer(props: TProps) {
             heroCustomizeFields={heroCustomizeFields}
             brandCustomizeFields={brandCustomizeFields}
             focusedField={focusedField}
+            isMobile={true}
           />
           {/* <DrawerFooter>
             <Button>Submit</Button>
