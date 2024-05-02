@@ -73,7 +73,12 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                       className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
                       style={{ color: colors.primary }}
                       onClick={() => {
-                        if (editable && setIsOpen && setSection && setFocusedField) {
+                        if (
+                          editable &&
+                          setIsOpen &&
+                          setSection &&
+                          setFocusedField
+                        ) {
                           setSection("Hero");
                           setIsOpen(true);
                           setFocusedField("heading");
@@ -85,7 +90,12 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     <p
                       className={`mb-8 text-xl font-bold ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
                       onClick={() => {
-                        if (editable && setIsOpen && setSection && setFocusedField) {
+                        if (
+                          editable &&
+                          setIsOpen &&
+                          setSection &&
+                          setFocusedField
+                        ) {
                           setSection("Hero");
                           setIsOpen(true);
                           setFocusedField("subheading");
@@ -97,12 +107,18 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     <div className="-m-2 flex flex-wrap">
                       <div
                         className={`w-full p-2 md:w-auto ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
-                        onClick={()=> { if (editable &&setIsOpen && setSection && setFocusedField) {
-                          setSection("Hero");
-                          setIsOpen(true);
-                          setFocusedField("cta");
-                        }
-                       }}
+                        onClick={() => {
+                          if (
+                            editable &&
+                            setIsOpen &&
+                            setSection &&
+                            setFocusedField
+                          ) {
+                            setSection("Hero");
+                            setIsOpen(true);
+                            setFocusedField("cta");
+                          }
+                        }}
                       >
                         <CTA
                           text={cta.text}
@@ -120,12 +136,18 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     height={256}
                     alt="Hero Image"
                     className={`mx-auto rounded-3xl object-contain md:mr-0 ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
-                    onClick={()=> { if (editable &&setIsOpen && setSection && setFocusedField) {
-                      setSection("Hero");
-                      setIsOpen(true);
-                      setFocusedField("imageUrl");
-                    }
-                   }}
+                    onClick={() => {
+                      if (
+                        editable &&
+                        setIsOpen &&
+                        setSection &&
+                        setFocusedField
+                      ) {
+                        setSection("Hero");
+                        setIsOpen(true);
+                        setFocusedField("imageUrl");
+                      }
+                    }}
                   />
                 </div>
               </div>

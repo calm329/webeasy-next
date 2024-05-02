@@ -10,16 +10,16 @@ import Loader from "../loader";
 import { ImSpinner2 } from "react-icons/im";
 
 type TProps = {
-    title?: string;
-    fields: any[];
-    handler: (formData: any, keys: string[]) => void;
-    handleChange: (name: string, value: string) => void;
-    handleBack?: () => void;
-    handleNext?: () => void;
-    focusedField?: TFields
-  }
+  title?: string;
+  fields: any[];
+  handler: (formData: any, keys: string[]) => void;
+  handleChange: (name: string, value: string) => void;
+  handleBack?: () => void;
+  handleNext?: () => void;
+  focusedField?: TFields;
+};
 
-export default function DynamicForm(props:TProps ) {
+export default function DynamicForm(props: TProps) {
   const {
     title,
     fields,
@@ -27,7 +27,7 @@ export default function DynamicForm(props:TProps ) {
     handleChange,
     handleBack,
     handleNext,
-    focusedField
+    focusedField,
   } = props;
   const [loading, setLoading] = useState(false);
   const zodSchema = generateZodSchema(fields);
@@ -52,7 +52,6 @@ export default function DynamicForm(props:TProps ) {
       handleNext?.();
     } catch (error) {
       console.error("Form submission error:", error);
-      
     } finally {
       setLoading(false);
     }
@@ -63,7 +62,7 @@ export default function DynamicForm(props:TProps ) {
       setValue(f.name, f.defaultValue);
     }
   }, [fields]);
-  console.log("forms",fields)
+  console.log("forms", fields);
   return (
     <>
       {title && (
@@ -71,14 +70,13 @@ export default function DynamicForm(props:TProps ) {
       )}
       <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-2">
         {fields.map((field) => (
-          
           <FormField
             key={field.name}
             field={field}
             control={control}
             errors={errors}
             handleChange={handleChange}
-            focusedField={focusedField??null}
+            focusedField={focusedField ?? null}
           />
         ))}
         <FormNavigation handleBack={handleBack} loading={loading} />
@@ -87,35 +85,27 @@ export default function DynamicForm(props:TProps ) {
   );
 }
 
-type TFormFieldProps =
-  {
-    field: FormField;
-    control: any;
-    errors: any;
-    handleChange: (name: string, value: string) => void;
-    focusedField:TFields
-  }
-
+type TFormFieldProps = {
+  field: FormField;
+  control: any;
+  errors: any;
+  handleChange: (name: string, value: string) => void;
+  focusedField: TFields;
+};
 
 function FormField(props: TFormFieldProps) {
-  const {
-    field,
-    control,
-    errors,
-    handleChange,
-    focusedField
-  } = props;
+  const { field, control, errors, handleChange, focusedField } = props;
   const f: FormField = field;
-  console.log("isFocused",field.name, focusedField);
-  const inputRef= useRef<HTMLInputElement>(null);
-  useEffect(()=>{
-    if(field.name===focusedField){
-      console.log("hi")
-      inputRef.current?.focus()
+  console.log("isFocused", field.name, focusedField);
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (field.name === focusedField) {
+      console.log("hi");
+      inputRef.current?.focus();
     }
-  },[focusedField])
-  return (
-    field.name===focusedField || (focusedField === "cta" && field.name==="ctaLink") ?
+  }, [focusedField]);
+  return field.name === focusedField ||
+    (focusedField === "cta" && field.name === "ctaLink") ? (
     <Controller
       key={field.name}
       name={field.name}
@@ -170,9 +160,8 @@ function FormField(props: TFormFieldProps) {
           )}
         </div>
       )}
-    />:
-    null
-  );
+    />
+  ) : null;
 }
 
 function FormNavigation({
@@ -201,10 +190,11 @@ function FormNavigation({
       )}
       <button
         type="submit"
-        className={`rounded-md  px-3 py-2 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ml-auto flex gap-2 ${loading?"bg-indigo-500":"bg-indigo-600 hover:bg-indigo-500"}`}
+        className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500"}`}
         disabled={loading}
       >
-        {loading&&<ImSpinner2 className="animate-spin text-lg text-white" />}Save
+        {loading && <ImSpinner2 className="animate-spin text-lg text-white" />}
+        Save
       </button>
     </div>
   );
