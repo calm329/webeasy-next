@@ -1,6 +1,6 @@
 import React from "react";
 
-const productTemplate = () => {
+const ProductTemplate = () => {
   return (
     <div className="bg-white">
       <div className="relative z-40 lg:hidden" role="dialog" aria-modal="true">
@@ -535,7 +535,7 @@ const productTemplate = () => {
                   <div className="hidden h-full lg:flex">
                     <div className="ml-8">
                       <div className="flex h-full justify-center space-x-8">
-                        <div className="flex">
+                        <div className="flex group">
                           <div className="relative flex">
                             <button
                               type="button"
@@ -546,7 +546,7 @@ const productTemplate = () => {
                             </button>
                           </div>
 
-                          <div className="absolute inset-x-0 top-full z-10 text-gray-500 sm:text-sm">
+                          <div className="group-hover:block hidden absolute inset-x-0 top-full z-10 text-gray-500 sm:text-sm">
                             <div
                               className="absolute inset-0 top-1/2 bg-white shadow"
                               aria-hidden="true"
@@ -757,7 +757,7 @@ const productTemplate = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="flex">
+                        <div className="flex group">
                           <div className="relative flex">
                             <button
                               type="button"
@@ -768,7 +768,7 @@ const productTemplate = () => {
                             </button>
                           </div>
 
-                          <div className="absolute inset-x-0 top-full z-10 text-gray-500 sm:text-sm">
+                          <div className="group-hover:block hidden absolute inset-x-0 top-full z-10 text-gray-500 sm:text-sm">
                             <div
                               className="absolute inset-0 top-1/2 bg-white shadow"
                               aria-hidden="true"
@@ -2075,4 +2075,4 @@ const productTemplate = () => {
   );
 };
 
-export default productTemplate;
+export default ProductTemplate;
