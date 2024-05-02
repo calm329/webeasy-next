@@ -190,7 +190,7 @@ function FormNavigation({
       )}
       <button
         type="submit"
-        className={`ml-auto  flex gap-2 rounded-md border-2 border-transparent px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:border-indigo-600 hover:bg-indigo-500 "}`}
+        className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
         disabled={loading}
       >
         {loading && <ImSpinner2 className="animate-spin text-lg text-white" />}
