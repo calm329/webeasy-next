@@ -61,14 +61,13 @@ export default function TopBar(props: TopBarProps) {
               <Link
                 href="#"
                 className={` ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
-                onClick={() =>
-                 { if (setIsOpen && setSection && setFocusedField) {
+                onClick={() => {
+                  if (setIsOpen && setSection && setFocusedField) {
                     setSection("Banner");
                     setIsOpen(true);
                     setFocusedField("businessName");
                   }
-                 }
-                }
+                }}
               >
                 {businessName}
               </Link>
@@ -85,12 +84,13 @@ export default function TopBar(props: TopBarProps) {
               {editable ? (
                 <div
                   className={`w-full p-2 md:w-auto ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
-                  onClick={() => { if (setIsOpen && setSection && setFocusedField) {
-                    setSection("Banner");
-                    setIsOpen(true);
-                    setFocusedField("cta");
-                  }
-                 }}
+                  onClick={() => {
+                    if (setIsOpen && setSection && setFocusedField) {
+                      setSection("Banner");
+                      setIsOpen(true);
+                      setFocusedField("cta");
+                    }
+                  }}
                 >
                   <CTA
                     text={cta.text}

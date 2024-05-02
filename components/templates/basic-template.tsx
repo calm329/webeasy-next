@@ -25,20 +25,12 @@ type BasicTemplateProps = {
 };
 
 export default function BasicTemplate(props: BasicTemplateProps) {
-  const {
-    logo,
-    businessName,
-    hero,
-    colors,
-    cta,
-    services,
-    posts,
-  } = props
+  const { logo, businessName, hero, colors, cta, services, posts } = props;
   // console.log("onshow",open)
   return (
     <>
       <section className="bg-white py-6">
-        <div className={`container mx-auto px-4`} >
+        <div className={`container mx-auto px-4`}>
           <TopBar
             logo={logo || ""}
             businessName={businessName}
@@ -57,13 +49,14 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     <h2
                       className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl `}
                       style={{ color: colors.primary }}
-                   
                     >
                       {hero.heading}
                     </h2>
-                    <p className={`mb-8 text-xl font-bold `} >{hero.subheading}</p>
+                    <p className={`mb-8 text-xl font-bold `}>
+                      {hero.subheading}
+                    </p>
                     <div className="-m-2 flex flex-wrap">
-                      <div className={`w-full p-2 md:w-auto `} >
+                      <div className={`w-full p-2 md:w-auto `}>
                         <CTA
                           text={cta.text}
                           bgColor={colors.secondary}
@@ -80,7 +73,6 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     height={256}
                     alt="Hero Image"
                     className={`mx-auto rounded-3xl object-contain md:mr-0`}
-             
                   />
                 </div>
               </div>

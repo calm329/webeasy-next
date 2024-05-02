@@ -19,14 +19,19 @@ export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="relative z-10 border-b-1 bg-white">
+    <header className="border-b-1 relative z-10 bg-white">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
       >
         <div className="flex items-center gap-x-12">
           <a href="#" className="-m-1.5 p-1.5">
-            <Image src={"/WebEasy-logo-dark.svg"} alt={"Logo"} width={150} height={100}/>
+            <Image
+              src={"/WebEasy-logo-dark.svg"}
+              alt={"Logo"}
+              width={150}
+              height={100}
+            />
           </a>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
@@ -76,11 +81,7 @@ export default function Example() {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img
-                className="h-8 w-auto"
-                src="/WebEasy-logo-dark.svg"
-                alt=""
-              />
+              <img className="h-8 w-auto" src="/WebEasy-logo-dark.svg" alt="" />
             </a>
             <button
               type="button"
@@ -105,8 +106,8 @@ export default function Example() {
                 ))}
               </div>
               <div className="py-6">
-              {status === "authenticated" ? (
-            <AccountMenu />
+                {status === "authenticated" ? (
+                  <AccountMenu />
                 ) : (
                   <AuthModal>
                     <a

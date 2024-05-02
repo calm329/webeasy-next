@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomDrawer } from "@/components/drawer";
-import { useMediaQuery } from 'usehooks-ts'
+import { useMediaQuery } from "usehooks-ts";
 import BrandDesktopForm from "@/components/form/brand-desktop-form";
 import BrandMobileForm from "@/components/form/brand-mobile-form";
 import Loader from "@/components/loader";
@@ -43,7 +43,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const [appState, setAppState] = useState<AppState>(initialState);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const [focusedField,setFocusedField] = useState<TFields>(null)
+  const [focusedField, setFocusedField] = useState<TFields>(null);
   const [section, setSection] = useState<TSection>("Banner");
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
@@ -56,7 +56,6 @@ export default function Page() {
         validation: {
           required: true,
         },
-       
       },
       {
         name: "businessName",
@@ -445,7 +444,7 @@ export default function Page() {
     console.log(appState, "appState");
   }, [appState]);
 
-  const matches = useMediaQuery('(min-width: 768px)')
+  const matches = useMediaQuery("(min-width: 768px)");
 
   return appState.status === "Done" ? (
     <div className="relative flex size-full">
@@ -486,36 +485,39 @@ export default function Page() {
           }}
           services={appState.aiContent["services"]["list"]}
           posts={appState.iPosts}
-          setFocusedField = {setFocusedField}
+          setFocusedField={setFocusedField}
         />
       </div>
       {appState.editable && (
         <>
-        {matches?
-          <SlideOver
-            open={isSideBarOpen}
-            setIsOpen={setIsSideBarOpen}
-            data={appState}
-            section={section}
-            handleChange={handleChange}
-            subdomain={
-              getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
-            }
-            brandCustomizeFields={brandCustomizeFields}
-            heroCustomizeFields={heroCustomizeFields}
-            focusedField = {focusedField }
-          />:
-          <CustomDrawer 
-            open={isSideBarOpen}
-            setIsOpen={setIsSideBarOpen}
-            section={section}
-            handleChange={handleChange}
-            subdomain={
-              getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
-            }
-            brandCustomizeFields={brandCustomizeFields}
-            heroCustomizeFields={heroCustomizeFields}
-            focusedField = {focusedField }/>}
+          {matches ? (
+            <SlideOver
+              open={isSideBarOpen}
+              setIsOpen={setIsSideBarOpen}
+              data={appState}
+              section={section}
+              handleChange={handleChange}
+              subdomain={
+                getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
+              }
+              brandCustomizeFields={brandCustomizeFields}
+              heroCustomizeFields={heroCustomizeFields}
+              focusedField={focusedField}
+            />
+          ) : (
+            <CustomDrawer
+              open={isSideBarOpen}
+              setIsOpen={setIsSideBarOpen}
+              section={section}
+              handleChange={handleChange}
+              subdomain={
+                getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
+              }
+              brandCustomizeFields={brandCustomizeFields}
+              heroCustomizeFields={heroCustomizeFields}
+              focusedField={focusedField}
+            />
+          )}
           {/* <BrandDesktopForm
             subdomain={
               getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""

@@ -17,7 +17,7 @@ import {
 import { FormField, TFields, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
 type TProps = {
-  open:boolean
+  open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
@@ -38,7 +38,7 @@ export function CustomDrawer(props: TProps) {
     focusedField,
   } = props;
   return (
-    <Drawer open={open} onClose={()=>setIsOpen(false)}> 
+    <Drawer open={open} onClose={() => setIsOpen(false)}>
       {/* <DrawerTrigger asChild>
         <Button variant="outline">Open Drawer</Button>
       </DrawerTrigger> */}

@@ -18,7 +18,14 @@ export type FormField = {
   };
 };
 
+export type TSection = "Hero" | "Banner";
 
-export type TSection ="Hero"|"Banner"
-
-export type TFields = "logo"|"businessName"|"ctaLink"|"imageUrl"|"heading"|"subheading"|"cta" | null
+export type TFields =
+  | "logo"
+  | "businessName"
+  | "ctaLink"
+  | "imageUrl"
+  | "heading"
+  | "subheading"
+  | "cta"
+  | null;
