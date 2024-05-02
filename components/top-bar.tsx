@@ -45,7 +45,7 @@ export default function TopBar(props: TopBarProps) {
               <img
                 src={logo}
                 alt="logo"
-                className={`h-8 w-auto ${editable && "border border-transparent hover:border-indigo-500 "} `}
+                className={`h-8 w-auto ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
                 onClick={() => {
                   if (setIsOpen && setSection && setFocusedField) {
                     setSection("Banner");
@@ -60,7 +60,7 @@ export default function TopBar(props: TopBarProps) {
             {editable ? (
               <Link
                 href="#"
-                className={` ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
+                className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                 onClick={() => {
                   if (setIsOpen && setSection && setFocusedField) {
                     setSection("Banner");
@@ -83,7 +83,7 @@ export default function TopBar(props: TopBarProps) {
             <div className="-m-2 flex flex-wrap">
               {editable ? (
                 <div
-                  className={`w-full p-2 md:w-auto ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
+                  className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                   onClick={() => {
                     if (setIsOpen && setSection && setFocusedField) {
                       setSection("Banner");

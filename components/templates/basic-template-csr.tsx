@@ -70,7 +70,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 <div className="w-full p-8 md:w-1/2">
                   <div className="md:max-w-lg">
                     <h2
-                      className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
+                      className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                       style={{ color: colors.primary }}
                       onClick={() => {
                         if (
@@ -88,7 +88,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                       {hero.heading}
                     </h2>
                     <p
-                      className={`mb-8 text-xl font-bold ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
+                      className={`mb-8 text-xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                       onClick={() => {
                         if (
                           editable &&
@@ -106,7 +106,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     </p>
                     <div className="-m-2 flex flex-wrap">
                       <div
-                        className={`w-full p-2 md:w-auto ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
+                        className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                         onClick={() => {
                           if (
                             editable &&
@@ -135,7 +135,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     width={256}
                     height={256}
                     alt="Hero Image"
-                    className={`mx-auto rounded-3xl object-contain md:mr-0 ${editable && "rounded border border-transparent hover:border-indigo-500"}`}
+                    className={`mx-auto rounded-3xl object-contain md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                     onClick={() => {
                       if (
                         editable &&
