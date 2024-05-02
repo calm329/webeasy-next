@@ -1,4 +1,3 @@
-import { AppState } from "@/app/(main)/auth/page";
 import { FormField, TFields, TSection } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 import { DebouncedState } from "use-debounce";
@@ -7,7 +6,6 @@ import CustomizePanel from "../customize-panel";
 type TProps = {
   open: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  data: AppState;
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   subdomain: string;
@@ -20,7 +18,6 @@ function SlideOver(props: TProps) {
   const {
     open,
     setIsOpen,
-    data,
     section,
     handleChange,
     subdomain,

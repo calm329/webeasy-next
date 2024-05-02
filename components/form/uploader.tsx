@@ -1,21 +1,18 @@
 "use client";
-
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-export default function Uploader({
-  defaultValue,
-  name,
-  label,
-  onChange,
-}: {
+type TProps = {
   defaultValue?: string | null;
   name: "image" | "logo";
   label?: string;
   onChange?: (value: string) => void;
-}) {
+};
+
+export default function Uploader(props: TProps) {
+  const { defaultValue, name, label, onChange } = props;
   const aspectRatio = name === "image" ? "aspect-video" : "aspect-square";
 
   const inputRef = useRef<HTMLInputElement>(null);

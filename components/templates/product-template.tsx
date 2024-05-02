@@ -1,10 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const ProductTemplate = () => {
   return (
     <div className="bg-white">
-      <div className="relative z-40 lg:hidden" role="dialog" aria-modal="true">
+      <dialog className="relative z-40 lg:hidden" aria-modal="true">
         <div className="fixed inset-0 bg-black bg-opacity-25"></div>
 
         <div className="fixed inset-0 z-40 flex">
@@ -78,24 +79,24 @@ const ProductTemplate = () => {
                         Featured
                       </p>
                       <ul
-                        role="list"
+                       
                         aria-labelledby="mobile-featured-heading-0"
                         className="mt-6 space-y-6"
                       >
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Sleep
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Swimwear
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Underwear
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -107,34 +108,34 @@ const ProductTemplate = () => {
                         Categories
                       </p>
                       <ul
-                        role="list"
+                        
                         aria-labelledby="mobile-categories-heading"
                         className="mt-6 space-y-6"
                       >
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Basic Tees
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Artwork Tees
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Bottoms
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Underwear
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Accessories
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -148,29 +149,29 @@ const ProductTemplate = () => {
                         Collection
                       </p>
                       <ul
-                        role="list"
+                        
                         aria-labelledby="mobile-collection-heading"
                         className="mt-6 space-y-6"
                       >
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Everything
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Core
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             New Arrivals
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Sale
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -183,34 +184,34 @@ const ProductTemplate = () => {
                         Brands
                       </p>
                       <ul
-                        role="list"
+                        
                         aria-labelledby="mobile-brand-heading"
                         className="mt-6 space-y-6"
                       >
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Full Nelson
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             My Way
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Re-Arranged
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Counterfeit
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Significant Other
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -235,24 +236,24 @@ const ProductTemplate = () => {
                         Featured
                       </p>
                       <ul
-                        role="list"
+                        
                         aria-labelledby="mobile-featured-heading-1"
                         className="mt-6 space-y-6"
                       >
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Casual
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Boxers
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Outdoor
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -264,34 +265,34 @@ const ProductTemplate = () => {
                         Categories
                       </p>
                       <ul
-                        role="list"
+                        
                         aria-labelledby="mobile-categories-heading"
                         className="mt-6 space-y-6"
                       >
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Artwork Tees
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Pants
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Accessories
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Boxers
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Basic Tees
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -305,29 +306,29 @@ const ProductTemplate = () => {
                         Collection
                       </p>
                       <ul
-                        role="list"
+                        
                         aria-labelledby="mobile-collection-heading"
                         className="mt-6 space-y-6"
                       >
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Everything
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Core
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             New Arrivals
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Sale
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -340,34 +341,34 @@ const ProductTemplate = () => {
                         Brands
                       </p>
                       <ul
-                        role="list"
+                        
                         aria-labelledby="mobile-brand-heading"
                         className="mt-6 space-y-6"
                       >
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Significant Other
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             My Way
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Counterfeit
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Re-Arranged
-                          </a>
+                          </Link>
                         </li>
                         <li className="flex">
-                          <a href="#" className="text-gray-500">
+                          <Link href="#" className="text-gray-500">
                             Full Nelson
-                          </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -378,39 +379,39 @@ const ProductTemplate = () => {
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               <div className="flow-root">
-                <a
+                <Link
                   href="#"
                   className="-m-2 block p-2 font-medium text-gray-900"
                 >
                   Company
-                </a>
+                </Link>
               </div>
               <div className="flow-root">
-                <a
+                <Link
                   href="#"
                   className="-m-2 block p-2 font-medium text-gray-900"
                 >
                   Stores
-                </a>
+                </Link>
               </div>
             </div>
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
               <div className="flow-root">
-                <a
+                <Link
                   href="#"
                   className="-m-2 block p-2 font-medium text-gray-900"
                 >
                   Create an account
-                </a>
+                </Link>
               </div>
               <div className="flow-root">
-                <a
+                <Link
                   href="#"
                   className="-m-2 block p-2 font-medium text-gray-900"
                 >
                   Sign in
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -440,9 +441,9 @@ const ProductTemplate = () => {
                         aria-hidden="true"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         />
                       </svg>
                     </div>
@@ -452,19 +453,19 @@ const ProductTemplate = () => {
             </div>
           </div>
         </div>
-      </div>
+      </dialog>
 
       <main className="pt-10 sm:pt-16">
         <nav aria-label="Breadcrumb">
           <ol
-            role="list"
+            
             className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
           >
             <li>
               <div className="flex items-center">
-                <a href="#" className="mr-2 text-sm font-medium text-gray-900">
+                <Link href="#" className="mr-2 text-sm font-medium text-gray-900">
                   Men
-                </a>
+                </Link>
                 <svg
                   width="16"
                   height="20"
@@ -479,9 +480,9 @@ const ProductTemplate = () => {
             </li>
             <li>
               <div className="flex items-center">
-                <a href="#" className="mr-2 text-sm font-medium text-gray-900">
+                <Link href="#" className="mr-2 text-sm font-medium text-gray-900">
                   Clothing
-                </a>
+                </Link>
                 <svg
                   width="16"
                   height="20"
@@ -496,13 +497,13 @@ const ProductTemplate = () => {
             </li>
 
             <li className="text-sm">
-              <a
+              <Link
                 href="#"
                 aria-current="page"
                 className="font-medium text-gray-500 hover:text-gray-600"
               >
                 Basic Tee 6-Pack
-              </a>
+              </Link>
             </li>
           </ol>
         </nav>
@@ -570,9 +571,9 @@ const ProductTemplate = () => {
                     aria-hidden="true"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     />
                   </svg>
                   <svg
@@ -582,9 +583,9 @@ const ProductTemplate = () => {
                     aria-hidden="true"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     />
                   </svg>
                   <svg
@@ -594,9 +595,9 @@ const ProductTemplate = () => {
                     aria-hidden="true"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     />
                   </svg>
                   <svg
@@ -606,9 +607,9 @@ const ProductTemplate = () => {
                     aria-hidden="true"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     />
                   </svg>
                   <svg
@@ -618,19 +619,19 @@ const ProductTemplate = () => {
                     aria-hidden="true"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     />
                   </svg>
                 </div>
                 <p className="sr-only">4 out of 5 stars</p>
-                <a
+                <Link
                   href="#"
                   className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   117 reviews
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -639,7 +640,7 @@ const ProductTemplate = () => {
                 <h3 className="text-sm font-medium text-gray-900">Color</h3>
 
                 <fieldset className="mt-4">
-                  <legend className="sr-only">Choose a color</legend>
+                  <legend className="sr-only">Choose Link color</legend>
                   <div className="flex items-center space-x-3">
                     <label className="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 ring-gray-400 focus:outline-none">
                       <input
@@ -698,16 +699,16 @@ const ProductTemplate = () => {
               <div className="mt-10">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                  <a
+                  <Link
                     href="#"
                     className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
                   >
                     Size guide
-                  </a>
+                  </Link>
                 </div>
 
                 <fieldset className="mt-4">
-                  <legend className="sr-only">Choose a size</legend>
+                  <legend className="sr-only">Choose Link size</legend>
                   <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
                     <label className="group relative flex cursor-not-allowed items-center justify-center rounded-md border bg-gray-50 px-4 py-3 text-sm font-medium uppercase text-gray-200 hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
                       <input
@@ -734,7 +735,7 @@ const ProductTemplate = () => {
                             y1="100"
                             x2="100"
                             y2="0"
-                            vector-effect="non-scaling-stroke"
+                            vectorEffect="non-scaling-stroke"
                           />
                         </svg>
                       </span>
@@ -872,7 +873,7 @@ const ProductTemplate = () => {
                 <p className="text-base text-gray-900">
                   The Basic Tee 6-Pack allows you to fully express your vibrant
                   personality with three grayscale options. Feeling adventurous?
-                  Put on a heather gray tee. Want to be a trendsetter? Try our
+                  Put on Link heather gray tee. Want to be Link trendsetter? Try our
                   exclusive colorway: &quot;Black&quot;. Need to add an extra
                   pop of color to your outfit? Our white tee has you covered.
                 </p>
@@ -883,7 +884,7 @@ const ProductTemplate = () => {
               <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
 
               <div className="mt-4">
-                <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
+                <ul  className="list-disc space-y-2 pl-4 text-sm">
                   <li className="text-gray-400">
                     <span className="text-gray-600">
                       Hand cut and sewn locally
@@ -946,7 +947,7 @@ const ProductTemplate = () => {
 
                     <div className="mt-3 space-y-6 text-sm text-gray-600">
                       <p>
-                        I&apos;ve searched my entire life for a t-shirt that
+                        I&apos;ve searched my entire life for Link t-shirt that
                         reflects every color in the visible spectrum. Scientists
                         said it couldn&apos;t be done, but when I look at this
                         shirt, I see white light bouncing right back into my
@@ -976,9 +977,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -988,9 +989,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1000,9 +1001,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1012,9 +1013,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1024,9 +1025,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                       </div>
@@ -1072,9 +1073,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1084,9 +1085,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1096,9 +1097,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1108,9 +1109,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1120,9 +1121,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                       </div>
@@ -1165,9 +1166,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1177,9 +1178,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1189,9 +1190,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1201,9 +1202,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                         <svg
@@ -1213,9 +1214,9 @@ const ProductTemplate = () => {
                           aria-hidden="true"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           />
                         </svg>
                       </div>
@@ -1252,13 +1253,9 @@ const ProductTemplate = () => {
                 <div className="mt-4 flex justify-between">
                   <div>
                     <h3 className="text-sm text-gray-700">
-                      <a href="#">
-                        <span
-                          aria-hidden="true"
-                          className="absolute inset-0"
-                        ></span>
+                      <Link href="#">
                         Basic Tee
-                      </a>
+                      </Link>
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">Black</p>
                   </div>

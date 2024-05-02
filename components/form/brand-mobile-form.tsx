@@ -6,15 +6,13 @@ import { updateSite } from "@/lib/actions";
 import { toast } from "sonner";
 // import { updateSite } from "@/lib/actions";
 
-export default function BrandMobileForm({
-  subdomain,
-  brandCustomizeFields,
-  handleChange,
-}: {
+type TProps = {
   subdomain: string;
   brandCustomizeFields: FormField[];
   handleChange: (name: string, value: string) => void;
-}) {
+};
+export default function BrandMobileForm(props: TProps) {
+  const { subdomain, brandCustomizeFields, handleChange } = props;
   const [showForm, setShowForm] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fields, setFields] = useState([brandCustomizeFields[0]]);
@@ -32,14 +30,11 @@ export default function BrandMobileForm({
   return (
     <div className="fixed bottom-0 h-auto w-full bg-white lg:hidden">
       <button
-        // size="sm"
         className={
           showForm
             ? "absolute right-2 top-2"
             : "flex w-full items-center justify-center"
         }
-        // radius={showForm ? "full" : "none"}
-        // isIconOnly={showForm}
         onClick={() => setShowForm(!showForm)}
       >
         {showForm ? <FaTimes /> : <FaChevronUp />}
@@ -51,10 +46,11 @@ export default function BrandMobileForm({
           handler={async (data: any, keys: string[]) => {
             try {
               await updateSite(subdomain, data, keys);
-            } catch (error) {
               toast.success("Your brand customization has been saved");
+            } catch (error) {
+              toast.error("Something went wrong");
             }
-          }} // updateSite}
+          }}
           handleChange={handleChange}
           handleNext={() =>
             setCurrentIndex((prev) =>

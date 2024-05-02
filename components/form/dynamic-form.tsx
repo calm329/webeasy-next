@@ -1,12 +1,10 @@
 "use client";
-
 import { cn, generateZodSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Uploader from "./uploader";
 import { TFields, type FormField } from "@/types";
-import Loader from "../loader";
 import { ImSpinner2 } from "react-icons/im";
 
 type TProps = {
@@ -62,7 +60,6 @@ export default function DynamicForm(props: TProps) {
       setValue(f.name, f.defaultValue);
     }
   }, [fields]);
-  console.log("forms", fields);
   return (
     <>
       {title && (
@@ -96,7 +93,6 @@ type TFormFieldProps = {
 function FormField(props: TFormFieldProps) {
   const { field, control, errors, handleChange, focusedField } = props;
   const f: FormField = field;
-  console.log("isFocused", field.name, focusedField);
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (field.name === focusedField) {
@@ -164,14 +160,16 @@ function FormField(props: TFormFieldProps) {
   ) : null;
 }
 
-function FormNavigation({
-  handleBack,
-  loading,
-}: {
+type TFromNavigationProps={
   handleBack?: () => void;
   loading: boolean;
-}) {
-  console.log("loading", loading);
+}
+
+function FormNavigation(props:TFromNavigationProps) {
+  const {
+    handleBack,
+    loading,
+  } = props;
   return (
     <div
       className={cn("!mt-8 flex w-full items-center", {

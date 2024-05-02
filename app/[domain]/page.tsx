@@ -1,12 +1,14 @@
-import SlideOver from "@/components/slide-over";
 import BasicTemplate from "@/components/templates/basic-template";
 import { getSiteData } from "@/lib/fetchers";
 
-export default async function SiteHomePage({
-  params,
-}: {
+type TProps ={
   params: { domain: string };
-}) {
+}
+
+export default async function SiteHomePage(props: TProps) {
+  const {
+    params,
+  } = props;
   const domain = decodeURIComponent(params.domain);
   const data = await getSiteData(domain);
 
@@ -24,9 +26,8 @@ export default async function SiteHomePage({
 
   return (
     <div>
-      {/* <SlideOver/> */}
       <BasicTemplate
-        logo={data.logo || undefined}
+        logo={data.logo??undefined}
         businessName={aiResult["businessName"]}
         hero={{
           heading: aiResult["hero"]["heading"],

@@ -24,7 +24,6 @@ type BasicTemplateProps = {
   };
   services: any[];
   posts: any[];
-  open?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;

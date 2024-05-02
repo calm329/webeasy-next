@@ -10,14 +10,15 @@ type PostCardProps = {
   timestamp: string;
 };
 
-export default function PostCard({
-  id,
-  permalink,
-  media_url,
-  media_type,
-  caption,
-  timestamp,
-}: PostCardProps) {
+export default function PostCard(props: PostCardProps) {
+  const {
+    id,
+    permalink,
+    media_url,
+    media_type,
+    caption,
+    timestamp,
+  } = props;
   return (
     <Link href={permalink} className="group">
       <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">

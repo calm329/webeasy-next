@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import DynamicForm from "../form/dynamic-form";
-import { AppState } from "@/app/(main)/auth/page";
 import { FormField, TFields, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
 import { updateSite } from "@/lib/actions";
