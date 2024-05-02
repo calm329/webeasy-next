@@ -2,13 +2,20 @@
 
 import { FormField } from "@/types";
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Dispatch, Fragment, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  Fragment,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import DynamicForm from "../form/dynamic-form";
-import { updateSite } from "@/lib/actions";
+import { checkSiteAvailability, updateSite } from "@/lib/actions";
 import { toast } from "sonner";
 import { DebouncedState } from "use-debounce";
 import { getUsernameFromPosts } from "@/lib/utils";
 import { AppState } from "@/app/(main)/auth/page";
+import { getSiteData } from "@/lib/fetchers";
 
 type TProps = {
   open: boolean;
@@ -18,6 +25,7 @@ type TProps = {
 };
 export default function CustomizeMetaModal(props: TProps) {
   const { open, setOpen, handleChange, appState } = props;
+  // const searchParams = useSearchParams();
   const [metaFields, setMetaFields] = useState<FormField[]>([
     {
       name: "title",
@@ -40,6 +48,28 @@ export default function CustomizeMetaModal(props: TProps) {
       },
     },
   ]);
+
+  // const getMetaData = async() => {
+  //   try {
+  //     const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
+  //       userId: searchParams.get("user_id") || "",
+  //     });
+  //     if(siteAvailable){
+  //       const siteData = await getSiteData(siteAvailable);
+
+  //       if (!siteData) {
+  //         return;
+  //       }
+
+  //       const aiContent = JSON.parse(siteData.title);
+  //     }
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // useEffect(() => {});
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" open={open} className="relative z-10" onClose={setOpen}>
@@ -74,8 +104,7 @@ export default function CustomizeMetaModal(props: TProps) {
                 </div>
                 <div>
                   <DynamicForm
-                    // title={`Section ${section}`}
-                    // focusedField={focusedField}
+                    focusedField={"title"}
                     fields={metaFields}
                     handler={async (data: any, keys: string[]) => {
                       try {
@@ -86,9 +115,7 @@ export default function CustomizeMetaModal(props: TProps) {
                           data,
                           keys,
                         );
-                        toast.success(
-                          "Your brand customization has been saved",
-                        );
+                        toast.success("Your Meta Data has been saved");
                       } catch (error) {}
                     }} // updateSite}
                     handleChange={handleChange}

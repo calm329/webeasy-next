@@ -104,7 +104,8 @@ function FormField(props: TFormFieldProps) {
     }
   }, [focusedField]);
   return field.name === focusedField ||
-    (focusedField === "cta" && field.name === "ctaLink") ? (
+    (focusedField === "cta" && field.name === "ctaLink") ||
+    (focusedField === "title" && field.name === "description") ? (
     <Controller
       key={field.name}
       name={field.name}

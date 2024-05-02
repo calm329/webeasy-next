@@ -6,7 +6,7 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 
 export type FormField = {
   name: string;
-  type: "text" | "email" | "image"|"textarea";
+  type: "text" | "email" | "image" | "textarea";
   label: string;
   defaultValue: string;
   placeholder: string;
@@ -28,4 +28,5 @@ export type TFields =
   | "heading"
   | "subheading"
   | "cta"
+  | "title"
   | null;

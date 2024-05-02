@@ -151,19 +151,28 @@ export async function updateSite(
     };
 
     for (const key of keys) {
-      if (key === "aiResult") {
-        newData["aiResult"] = data[key];
-      } else if (key === "posts") {
-        newData["posts"] = data[key];
-      } else if (key === "ctaLink") {
-        // update ctaLink
-        newData["aiResult"]["hero"]["ctaLink"] = data[key];
-      } else if (key === "businessName") {
-        // update businessName
-        newData["aiResult"]["businessName"] = data[key];
-      } else {
-        // update other keys
-        newData["aiResult"]["hero"][key] = data[key];
+      switch (key) {
+        case "title":
+          newData["title"] = data[key];
+          break;
+        case "description":
+          newData["description"] = data[key];
+          break;
+        case "aiResult":
+          newData["aiResult"] = data[key];
+          break;
+        case "posts":
+          newData["posts"] = data[key];
+          break;
+        case "ctaLink":
+          newData["aiResult"]["hero"]["ctaLink"] = data[key];
+          break;
+        case "businessName":
+          newData["aiResult"]["businessName"] = data[key];
+          break;
+        default:
+          newData["aiResult"]["hero"][key] = data[key];
+          break;
       }
     }
 
