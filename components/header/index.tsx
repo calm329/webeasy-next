@@ -12,6 +12,7 @@ import SettingMenu from "./settings-menu";
 import { getUsernameFromPosts } from "@/lib/utils";
 import { AppState } from "@/app/(main)/auth/page";
 import { DebouncedState } from "use-debounce";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -85,7 +86,8 @@ export default function SiteHeader(props: TProps) {
               target="_blank"
               className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
             >
-              Review
+              <FaExternalLinkAlt />
+              Preview
             </Link>
           </div>
         )}
