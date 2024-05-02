@@ -151,7 +151,11 @@ export async function updateSite(
     };
 
     for (const key of keys) {
-      if (key === "ctaLink") {
+      if (key === "aiResult") {
+        newData["aiResult"] = data[key];
+      } else if (key === "posts") {
+        newData["posts"] = data[key];
+      } else if (key === "ctaLink") {
         // update ctaLink
         newData["aiResult"]["hero"]["ctaLink"] = data[key];
       } else if (key === "businessName") {
