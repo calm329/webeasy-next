@@ -13,6 +13,7 @@ import { getUsernameFromPosts } from "@/lib/utils";
 import { AppState } from "@/app/(main)/auth/page";
 import { DebouncedState } from "use-debounce";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { useMediaQuery } from "usehooks-ts";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -32,13 +33,13 @@ export default function SiteHeader(props: TProps) {
   const { showNavigation, isAuth, getData, appState, handleChange } = props;
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const matches = useMediaQuery("(max-width: 500px)");
   return (
     <header
       className={`${isAuth ? "fixed w-full" : "relative"} border-b-1  z-10 bg-white`}
     >
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        className={`mx-auto flex max-w-7xl items-center ${!isAuth && "justify-between"} p-6  lg:px-8`}
         aria-label="Global"
       >
         <div className="flex items-center gap-x-12">
@@ -46,6 +47,7 @@ export default function SiteHeader(props: TProps) {
             <Image
               src={"/WebEasy-logo-dark.svg"}
               alt={"Logo"}
+              className={`${!isAuth && "h-full w-full"}`}
               width={150}
               height={100}
             />
@@ -63,37 +65,37 @@ export default function SiteHeader(props: TProps) {
               ))}
           </div>
         </div>
-        <div className="flex lg:hidden">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </div>
-
-        {isAuth && (
-          <div className="flex gap-5">
-            {getData && appState && (
-              <SettingMenu
-                getData={getData}
-                handleChange={handleChange ?? undefined}
-                appState={appState}
-              />
-            )}
-            <Link
-              href={`https://${getUsernameFromPosts(JSON.stringify(appState?.iPosts))}.webeasy.ai`}
-              target="_blank"
-              className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
+        <div className="flex w-full justify-end gap-5">
+          {isAuth && (
+            <div className="flex gap-5">
+              {getData && appState && (
+                <SettingMenu
+                  getData={getData}
+                  handleChange={handleChange ?? undefined}
+                  appState={appState}
+                />
+              )}
+              <Link
+                href={`https://${getUsernameFromPosts(JSON.stringify(appState?.iPosts))}.webeasy.ai`}
+                target="_blank"
+                className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
+              >
+                <FaExternalLinkAlt />
+                {matches ? "" : "Preview"}
+              </Link>
+            </div>
+          )}
+          <div className="flex lg:hidden">
+            <button
+              type="button"
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+              onClick={() => setMobileMenuOpen(true)}
             >
-              <FaExternalLinkAlt />
-              Preview
-            </Link>
+              <span className="sr-only">Open main menu</span>
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            </button>
           </div>
-        )}
-
+        </div>
         {showNavigation && (
           <div className="hidden lg:flex">
             {status === "authenticated" ? (

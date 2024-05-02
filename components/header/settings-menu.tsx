@@ -6,6 +6,7 @@ import { IoMdSettings } from "react-icons/io";
 import CustomizeMetaModal from "../modal/customize-meta";
 import { DebouncedState } from "use-debounce";
 import { AppState } from "@/app/(main)/auth/page";
+import { useMediaQuery } from "usehooks-ts";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -21,6 +22,7 @@ export default function SettingMenu(props: TProps) {
   const { getData, handleChange, appState } = props;
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
+  const matches = useMediaQuery("(max-width: 500px)");
   return (
     <>
       {handleChange && (
@@ -35,7 +37,7 @@ export default function SettingMenu(props: TProps) {
         <div>
           <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 ">
             <IoMdSettings />
-            Settings
+            {matches ? "" : "Settings"}
             <ChevronDownIcon
               className="-mr-1 h-5 w-5 text-white"
               aria-hidden="true"
