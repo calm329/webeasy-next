@@ -453,7 +453,7 @@ const ProductTemplate = () => {
         </div>
       </div>
 
-      <header className="relative">
+      {/* <header className="relative">
         <nav aria-label="Top">
           <div className="bg-gray-900">
             <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -1138,7 +1138,7 @@ const ProductTemplate = () => {
             </div>
           </div>
         </nav>
-      </header>
+      </header> */}
 
       <main className="pt-10 sm:pt-16">
         <nav aria-label="Breadcrumb">
@@ -1940,7 +1940,7 @@ const ProductTemplate = () => {
         </section>
       </main>
 
-      <footer
+      {/* <footer
         aria-labelledby="footer-heading"
         className="border-t border-gray-200 bg-white"
       >
@@ -2070,7 +2070,7 @@ const ProductTemplate = () => {
             </p>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 };
