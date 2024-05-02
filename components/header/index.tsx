@@ -8,6 +8,10 @@ import AccountMenu from "./account-menu";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import SettingMenu from "./settings-menu";
+import { getUsernameFromPosts } from "@/lib/utils";
+import { AppState } from "@/app/(main)/auth/page";
+import { DebouncedState } from "use-debounce";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -15,7 +19,16 @@ const navigation = [
   { name: "Settings", href: "#" },
 ];
 
-export default function Example() {
+type TProps = {
+  showNavigation: boolean;
+  isAuth?: boolean;
+  getData?: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
+  appState?: AppState;
+  handleChange?: DebouncedState<(name: string, value: string) => void>;
+};
+
+export default function SiteHeader(props: TProps) {
+  const { showNavigation, isAuth, getData, appState, handleChange } = props;
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -35,15 +48,16 @@ export default function Example() {
             />
           </Link>
           <div className="hidden lg:flex lg:gap-x-12">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                {item.name}
-              </a>
-            ))}
+            {showNavigation &&
+              navigation.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-sm font-semibold leading-6 text-gray-900"
+                >
+                  {item.name}
+                </a>
+              ))}
           </div>
         </div>
         <div className="flex lg:hidden">
@@ -56,20 +70,42 @@ export default function Example() {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-        <div className="hidden lg:flex">
-          {status === "authenticated" ? (
-            <AccountMenu />
-          ) : (
-            <AuthModal>
-              <Link
-                href="#"
-                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign in
-              </Link>
-            </AuthModal>
-          )}
-        </div>
+
+        {isAuth && (
+          <div className="flex gap-5">
+            {getData && appState && (
+              <SettingMenu
+                getData={getData}
+                handleChange={handleChange ?? undefined}
+                appState={appState}
+              />
+            )}
+            <Link
+              href={`https://${getUsernameFromPosts(JSON.stringify(appState?.iPosts))}.webeasy.ai`}
+              target="_blank"
+              className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
+            >
+              Review
+            </Link>
+          </div>
+        )}
+
+        {showNavigation && (
+          <div className="hidden lg:flex">
+            {status === "authenticated" ? (
+              <AccountMenu />
+            ) : (
+              <AuthModal>
+                <Link
+                  href="#"
+                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Sign in
+                </Link>
+              </AuthModal>
+            )}
+          </div>
+        )}
       </nav>
       <Dialog
         as="div"

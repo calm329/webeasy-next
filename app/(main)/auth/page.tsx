@@ -16,6 +16,7 @@ import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import SiteHeader from "@/components/header";
 
 export interface AppState {
   status: string;
@@ -442,82 +443,93 @@ export default function Page() {
 
   const matches = useMediaQuery("(min-width: 768px)");
 
-  return appState.status === "Done" ? (
-    <div className="relative flex size-full">
-      <div className="h-full w-full">
-        <div className="flex w-full justify-end gap-2 bg-gray-100 p-2">
-          <button
-            type="button"
-            className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            onClick={() => getData("regenerate")}
-          >
-            Regenerate the content
-          </button>
-          <button
-            type="button"
-            className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            onClick={() => getData("refresh")}
-          >
-            Refresh Instagram feed
-          </button>
-        </div>
+  return (
+    <>
+      <SiteHeader
+        showNavigation={false}
+        isAuth={true}
+        getData={getData}
+        appState={appState}
+        handleChange={handleChange}
+      />
+      {appState.status === "Done" ? (
+        <div className="relative flex size-full">
+          <div className="h-full w-full">
+            {/* <div className="flex w-full justify-end gap-2 bg-gray-100 p-2">
+              <button
+                type="button"
+                className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                onClick={() => getData("regenerate")}
+              >
+                Regenerate the content
+              </button>
+              <button
+                type="button"
+                className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                onClick={() => getData("refresh")}
+              >
+                Refresh Instagram feed
+              </button>
+            </div> */}
 
-        <BasicTemplate
-          editable={appState.editable}
-          setSection={setSection}
-          setIsOpen={setIsSideBarOpen}
-          logo={appState.logo}
-          businessName={appState.aiContent["businessName"]}
-          hero={{
-            heading: appState.aiContent["hero"]["heading"],
-            subheading: appState.aiContent["hero"]["subheading"],
-            imageUrl: appState.aiContent["hero"]["imageUrl"],
-          }}
-          colors={appState.aiContent["colors"]}
-          cta={{
-            text: appState.aiContent["hero"]["cta"],
-            link: appState.aiContent["hero"]["ctaLink"] || "#",
-          }}
-          services={appState.aiContent["services"]["list"]}
-          posts={appState.iPosts}
-          setFocusedField={setFocusedField}
-        />
-      </div>
-      {appState.editable && (
-        <>
-          {matches ? (
-            <SlideOver
-              open={isSideBarOpen}
+            <BasicTemplate
+              editable={appState.editable}
+              setSection={setSection}
               setIsOpen={setIsSideBarOpen}
-              section={section}
-              handleChange={handleChange}
-              subdomain={
-                getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
-              }
-              brandCustomizeFields={brandCustomizeFields}
-              heroCustomizeFields={heroCustomizeFields}
-              focusedField={focusedField}
+              logo={appState.logo}
+              businessName={appState.aiContent["businessName"]}
+              hero={{
+                heading: appState.aiContent["hero"]["heading"],
+                subheading: appState.aiContent["hero"]["subheading"],
+                imageUrl: appState.aiContent["hero"]["imageUrl"],
+              }}
+              colors={appState.aiContent["colors"]}
+              cta={{
+                text: appState.aiContent["hero"]["cta"],
+                link: appState.aiContent["hero"]["ctaLink"] || "#",
+              }}
+              services={appState.aiContent["services"]["list"]}
+              posts={appState.iPosts}
+              setFocusedField={setFocusedField}
             />
-          ) : (
-            <CustomDrawer
-              open={isSideBarOpen}
-              setIsOpen={setIsSideBarOpen}
-              section={section}
-              handleChange={handleChange}
-              subdomain={
-                getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
-              }
-              brandCustomizeFields={brandCustomizeFields}
-              heroCustomizeFields={heroCustomizeFields}
-              focusedField={focusedField}
-            />
+          </div>
+          {appState.editable && (
+            <>
+              {matches ? (
+                <SlideOver
+                  open={isSideBarOpen}
+                  setIsOpen={setIsSideBarOpen}
+                  section={section}
+                  handleChange={handleChange}
+                  subdomain={
+                    getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
+                  }
+                  brandCustomizeFields={brandCustomizeFields}
+                  heroCustomizeFields={heroCustomizeFields}
+                  focusedField={focusedField}
+                />
+              ) : (
+                <CustomDrawer
+                  open={isSideBarOpen}
+                  setIsOpen={setIsSideBarOpen}
+                  section={section}
+                  handleChange={handleChange}
+                  subdomain={
+                    getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
+                  }
+                  brandCustomizeFields={brandCustomizeFields}
+                  heroCustomizeFields={heroCustomizeFields}
+                  focusedField={focusedField}
+                />
+              )}
+            </>
           )}
-        </>
+        </div>
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Loader text={appState.status} />
+        </div>
       )}
-    </div>
-  ) : (
-    <div className="absolute inset-0 flex items-center justify-center">
-      <Loader text={appState.status} />
-    </div>
+    </>
   );
 }
