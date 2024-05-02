@@ -94,10 +94,13 @@ function FormField(props: TFormFieldProps) {
   const { field, control, errors, handleChange, focusedField } = props;
   const f: FormField = field;
   const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   useEffect(() => {
     if (field.name === focusedField) {
       console.log("hi");
       inputRef.current?.focus();
+      textareaRef.current?.focus()
     }
   }, [focusedField]);
   return field.name === focusedField ||
@@ -134,6 +137,20 @@ function FormField(props: TFormFieldProps) {
                 {f.label}
               </label>
               <div className="mt-2">
+              {f.type === "textarea"?
+              <textarea
+                {...field}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                placeholder={f.placeholder}
+                aria-invalid={errors[field.name] ? "true" : "false"}
+                aria-describedby={field.name}
+                onChange={(e) => {
+                  handleChange(f.name, e.target.value);
+                  field.onChange(e.target.value);
+                }}
+                ref={textareaRef}
+              />
+              :
                 <input
                   {...field}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -145,7 +162,7 @@ function FormField(props: TFormFieldProps) {
                     field.onChange(e.target.value);
                   }}
                   ref={inputRef}
-                />
+                />}
                 {errors[field.name] && (
                   <p className="mt-2 text-sm text-red-600" id="email-error">
                     {errors[field.name].message}

@@ -119,7 +119,7 @@ export default function Page() {
     },
     {
       name: "subheading",
-      type: "text",
+      type: "textarea",
       label: "Sub-Heading",
       defaultValue: "",
       placeholder: "Enter a Sub-Heading",
