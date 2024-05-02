@@ -453,7 +453,7 @@ export default function Page() {
         handleChange={handleChange}
       />
       {appState.status === "Done" ? (
-        <div className="relative flex size-full">
+        <div className="relative flex size-full pt-20">
           <div className="h-full w-full">
             {/* <div className="flex w-full justify-end gap-2 bg-gray-100 p-2">
               <button
