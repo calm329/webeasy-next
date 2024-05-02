@@ -201,10 +201,10 @@ function FormNavigation({
       )}
       <button
         type="submit"
-        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ml-auto flex gap-2"
+        className={`rounded-md  px-3 py-2 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ml-auto flex gap-2 ${loading?"bg-indigo-500":"bg-indigo-600 hover:bg-indigo-500"}`}
         disabled={loading}
       >
-        {loading&&<ImSpinner2 className="animate-spin text-lg text-indigo-600" />}Save
+        {loading&&<ImSpinner2 className="animate-spin text-lg text-white" />}Save
       </button>
     </div>
   );
