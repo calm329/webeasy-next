@@ -34,7 +34,9 @@ export default function SiteHeader(props: TProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="border-b-1 relative z-10 bg-white">
+    <header
+      className={`${isAuth ? "fixed w-full" : "relative"} border-b-1  z-10 bg-white`}
+    >
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
