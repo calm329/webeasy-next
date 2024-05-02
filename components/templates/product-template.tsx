@@ -1624,9 +1624,9 @@ const ProductTemplate = () => {
 
                     <div className="mt-3 space-y-6 text-sm text-gray-600">
                       <p>
-                        I've searched my entire life for a t-shirt that reflects
+                        I&apos;ve searched my entire life for a t-shirt that reflects
                         every color in the visible spectrum. Scientists said it
-                        couldn't be done, but when I look at this shirt, I see
+                        couldn&apos;t be done, but when I look at this shirt, I see
                         white light bouncing right back into my eyes.
                         Incredible!
                       </p>
