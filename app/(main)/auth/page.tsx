@@ -468,7 +468,7 @@ export default function Page() {
         </div>
 
         <BasicTemplate
-          editable={true}
+          editable={appState.editable}
           open={isSideBarOpen}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
