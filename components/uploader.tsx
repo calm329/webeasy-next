@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
@@ -166,10 +167,12 @@ export default function Uploader() {
           </div>
           {data.image && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={data.image}
               alt="Preview"
               className="h-full w-full rounded-md object-cover"
+              height={400}
+              width={400}
             />
           )}
         </label>

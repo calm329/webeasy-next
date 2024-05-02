@@ -1,10 +1,8 @@
-import ProductTemplate from '@/components/templates/product-template'
-import React from 'react'
+import ProductTemplate from "@/components/templates/product-template";
+import React from "react";
 
 const page = () => {
-  return (
-    <ProductTemplate/>
-  )
-}
+  return <ProductTemplate />;
+};
 
-export default page
+export default page;

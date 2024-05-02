@@ -22,8 +22,8 @@ export default function Example() {
             Instantly create your website from your Amazon Product
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Enter your amazon&apos;s product url below and we will create a website
-            for you.
+            Enter your amazon&apos;s product url below and we will create a
+            website for you.
           </p>
           <div className="mt-10 flex items-center gap-x-6">
             <div className="flex gap-2">

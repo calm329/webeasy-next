@@ -2,6 +2,7 @@ import Link from "next/link";
 import CTA from "./cta";
 import { Dispatch, SetStateAction } from "react";
 import { TFields, TSection } from "@/types";
+import Image from "next/image";
 
 type TopBarProps = {
   logo: string;
@@ -42,7 +43,7 @@ export default function TopBar(props: TopBarProps) {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {logo && editable ? (
-              <img
+              <Image
                 src={logo}
                 alt="logo"
                 className={`h-8 w-auto ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
@@ -53,9 +54,19 @@ export default function TopBar(props: TopBarProps) {
                     setFocusedField("logo");
                   }
                 }}
+                height={32}
+                width={200}
               />
             ) : (
-              logo && <img src={logo} alt="logo" className={`h-8 w-auto `} />
+              logo && (
+                <Image
+                  src={logo}
+                  alt="logo"
+                  className={`h-8 w-auto `}
+                  height={32}
+                  width={200}
+                />
+              )
             )}
             {editable ? (
               <Link
