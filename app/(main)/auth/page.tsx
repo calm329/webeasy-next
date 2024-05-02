@@ -33,7 +33,7 @@ const initialState: AppState = {
   editable: false,
 };
 
-type TData =Partial<{
+type TData = Partial<{
   logo: string;
   businessName: string;
   ctaLink: string;
@@ -41,7 +41,7 @@ type TData =Partial<{
   subheading: string;
   imageUrl: string;
   cta: string;
-}>
+}>;
 
 export default function Page() {
   const router = useRouter();
@@ -149,9 +149,7 @@ export default function Page() {
     },
   ]);
 
-  const updateDefaultValues = (
-    data: TData,
-  ) => {
+  const updateDefaultValues = (data: TData) => {
     setBrandCustomizeFields((currentFields) =>
       currentFields.map((field) => ({
         ...field,
