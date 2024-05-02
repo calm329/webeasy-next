@@ -6,6 +6,7 @@ import SigninForm from "../form/signin-form";
 import RegisterForm from "../form/signup-form";
 import { FaApple } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
+import Image from "next/image";
 
 export default function AuthModal({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState("signin");
@@ -45,10 +46,12 @@ export default function AuthModal({ children }: { children: React.ReactNode }) {
               >
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
                   <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                    <img
+                    <Image
                       className="mx-auto h-10 w-auto"
                       src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                       alt="Your Company"
+                      height={40}
+                      width={200}
                     />
                     <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                       {state === "signin"

@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -139,10 +140,12 @@ export default function Uploader({
         </div>
         {data[name] && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={data[name] as string}
             alt="Preview"
             className="h-full w-full rounded-md object-cover"
+            height={400}
+            width={400}
           />
         )}
       </label>

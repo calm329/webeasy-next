@@ -81,7 +81,13 @@ export default function Example() {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img className="h-8 w-auto" src="/WebEasy-logo-dark.svg" alt="" />
+              <Image
+                className="h-8 w-auto"
+                src="/WebEasy-logo-dark.svg"
+                alt=""
+                height={32}
+                width={200}
+              />
             </a>
             <button
               type="button"
