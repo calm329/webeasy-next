@@ -97,7 +97,7 @@ export default function SiteHeader(props: TProps) {
           </div>
         </div>
         {showNavigation && (
-          <div className="hidden lg:flex">
+          <div className="hidden w-36 lg:flex">
             {status === "authenticated" ? (
               <AccountMenu />
             ) : (
