@@ -11,7 +11,7 @@ import {
 } from "@/lib/actions";
 import { getSiteData } from "@/lib/fetchers";
 import { fetchData, getUsernameFromPosts } from "@/lib/utils";
-import { FormField, TFields, TSection } from "@/types";
+import { FormField, TFields, TMeta, TSection } from "@/types";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -52,6 +52,7 @@ export default function Page() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<TFields>(null);
   const [section, setSection] = useState<TSection>("Banner");
+  const [meta, setMeta] = useState<TMeta>(null);
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
       {
@@ -187,7 +188,11 @@ export default function Page() {
       if (!siteData) {
         return;
       }
-
+      console.log("updated meta", {
+        title: siteData.title,
+        description: siteData.description,
+      });
+      setMeta({ title: siteData.title, description: siteData.description });
       const aiContent = JSON.parse(siteData.aiResult);
 
       console.log(aiContent);
@@ -453,6 +458,7 @@ export default function Page() {
             getData={getData}
             appState={appState}
             handleChange={handleChange}
+            meta={meta}
           />
           <div className="relative flex size-full pt-20">
             <div className="h-full w-full">

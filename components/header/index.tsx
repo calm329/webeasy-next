@@ -14,6 +14,7 @@ import { AppState } from "@/app/(main)/auth/page";
 import { DebouncedState } from "use-debounce";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useMediaQuery } from "usehooks-ts";
+import { TMeta } from "@/types";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -27,10 +28,12 @@ type TProps = {
   getData?: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
   appState?: AppState;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
+  meta?: TMeta;
 };
 
 export default function SiteHeader(props: TProps) {
-  const { showNavigation, isAuth, getData, appState, handleChange } = props;
+  const { showNavigation, isAuth, getData, appState, handleChange, meta } =
+    props;
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const matches = useMediaQuery("(max-width: 500px)");
@@ -73,6 +76,7 @@ export default function SiteHeader(props: TProps) {
                   getData={getData}
                   handleChange={handleChange ?? undefined}
                   appState={appState}
+                  meta={meta}
                 />
               )}
               <Link
