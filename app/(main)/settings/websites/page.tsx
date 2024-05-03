@@ -112,7 +112,7 @@ export default function MyWebsites() {
           ) : (
             <>
               {selectedSection === "Instagram" && (
-                <div>
+                <div className="flex flex-wrap">
                   {sites?.map((site) => (
                     <div
                       key={site.id}
