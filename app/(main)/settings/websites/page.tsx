@@ -107,7 +107,7 @@ export default function MyWebsites() {
           </div>
           {isLoading ? (
             <div className="flex h-96 items-center justify-center ">
-              <Loader text="Fetch Websites Data" />
+              <Loader text="Fetching Websites Data" />
             </div>
           ) : (
             <>
