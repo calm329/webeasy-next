@@ -19,7 +19,7 @@ import { TMeta } from "@/types";
 const navigation = [
   { name: "Customization", href: "#" },
   { name: "Analytics", href: "#" },
-  { name: "Settings", href: "#" },
+  { name: "Settings", href: "/settings" },
 ];
 
 type TProps = {
