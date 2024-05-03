@@ -75,7 +75,7 @@ export default function SettingMenu(props: TProps) {
                     )}
                     onClick={() => setOpen(true)}
                   >
-                    Customize meta
+                    SEO Configuration
                   </button>
                 )}
               </Menu.Item>
