@@ -31,13 +31,13 @@ type TSites = Array<{
   subdomain: string;
   title: string;
   description: string;
-  userId: string;
+  userId: string | null;
   templateId: string;
-  logo: string;
+  logo: string | null;
   posts: any;
   aiResult: any;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }> | null;
 
 export default function MyWebsites() {
@@ -52,7 +52,9 @@ export default function MyWebsites() {
       setIsLoading(true);
       const siteData = await getSitesByUserId();
       console.log("sites", siteData);
+
       setSites(siteData);
+
       setIsLoading(false);
     } catch (error) {}
   };
