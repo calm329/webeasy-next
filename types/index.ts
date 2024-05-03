@@ -30,3 +30,8 @@ export type TFields =
   | "cta"
   | "title"
   | null;
+
+export type TMeta = {
+  title: string;
+  description: string;
+} | null;

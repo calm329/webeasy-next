@@ -1,6 +1,6 @@
 "use client";
 
-import { FormField } from "@/types";
+import { FormField, TMeta } from "@/types";
 import { Dialog, Transition } from "@headlessui/react";
 import React, {
   Dispatch,
@@ -15,17 +15,17 @@ import { toast } from "sonner";
 import { DebouncedState } from "use-debounce";
 import { getUsernameFromPosts } from "@/lib/utils";
 import { AppState } from "@/app/(main)/auth/page";
-import { getSiteData } from "@/lib/fetchers";
 
 type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
+  meta?: TMeta;
+  getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 export default function CustomizeMetaModal(props: TProps) {
-  const { open, setOpen, handleChange, appState } = props;
-  // const searchParams = useSearchParams();
+  const { open, setOpen, handleChange, appState, meta, getData } = props;
   const [metaFields, setMetaFields] = useState<FormField[]>([
     {
       name: "title",
@@ -49,27 +49,15 @@ export default function CustomizeMetaModal(props: TProps) {
     },
   ]);
 
-  // const getMetaData = async() => {
-  //   try {
-  //     const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
-  //       userId: searchParams.get("user_id") || "",
-  //     });
-  //     if(siteAvailable){
-  //       const siteData = await getSiteData(siteAvailable);
-
-  //       if (!siteData) {
-  //         return;
-  //       }
-
-  //       const aiContent = JSON.parse(siteData.title);
-  //     }
-
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {});
+  useEffect(() => {
+    console.log("MetaData", meta);
+    if (meta) {
+      const tempFields = metaFields;
+      tempFields[0].defaultValue = meta.title;
+      tempFields[1].defaultValue = meta.description;
+      setMetaFields([...tempFields]);
+    }
+  }, [meta, open]);
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" open={open} className="relative z-10" onClose={setOpen}>
@@ -115,6 +103,7 @@ export default function CustomizeMetaModal(props: TProps) {
                           data,
                           keys,
                         );
+                        getData();
                         toast.success("Your Meta Data has been saved");
                       } catch (error) {}
                     }} // updateSite}

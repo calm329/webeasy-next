@@ -7,6 +7,7 @@ import CustomizeMetaModal from "../modal/customize-meta";
 import { DebouncedState } from "use-debounce";
 import { AppState } from "@/app/(main)/auth/page";
 import { useMediaQuery } from "usehooks-ts";
+import { TMeta } from "@/types";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -16,10 +17,11 @@ type TProps = {
   getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
+  meta?: TMeta;
 };
 
 export default function SettingMenu(props: TProps) {
-  const { getData, handleChange, appState } = props;
+  const { getData, handleChange, appState, meta } = props;
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const matches = useMediaQuery("(max-width: 500px)");
@@ -31,6 +33,8 @@ export default function SettingMenu(props: TProps) {
           open={open}
           handleChange={handleChange}
           appState={appState}
+          meta={meta}
+          getData={getData}
         />
       )}
       <Menu as="div" className="relative inline-block text-left">
