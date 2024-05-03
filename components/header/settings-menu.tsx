@@ -8,6 +8,7 @@ import { DebouncedState } from "use-debounce";
 import { AppState } from "@/app/(main)/auth/page";
 import { useMediaQuery } from "usehooks-ts";
 import { TMeta } from "@/types";
+import ColorModal from "../modal/color-modal";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -24,6 +25,7 @@ export default function SettingMenu(props: TProps) {
   const { getData, handleChange, appState, meta } = props;
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
+  const [isColorOpen, setIsColorOpen] = useState(false);
   const matches = useMediaQuery("(max-width: 500px)");
   return (
     <>
@@ -34,6 +36,15 @@ export default function SettingMenu(props: TProps) {
           handleChange={handleChange}
           appState={appState}
           meta={meta}
+          getData={getData}
+        />
+      )}
+      {handleChange && (
+        <ColorModal
+          setOpen={setIsColorOpen}
+          open={isColorOpen}
+          handleChange={handleChange}
+          appState={appState}
           getData={getData}
         />
       )}
@@ -76,6 +87,19 @@ export default function SettingMenu(props: TProps) {
                     onClick={() => setOpen(true)}
                   >
                     SEO Configuration
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={classNames(
+                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                    )}
+                    onClick={() => setIsColorOpen(true)}
+                  >
+                    Customize Colors
                   </button>
                 )}
               </Menu.Item>

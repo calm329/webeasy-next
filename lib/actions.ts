@@ -170,6 +170,12 @@ export async function updateSite(
         case "businessName":
           newData["aiResult"]["businessName"] = data[key];
           break;
+        case "primary":
+          newData["aiResult"]["colors"]["primary"] = data[key];
+          break;
+        case "secondary":
+          newData["aiResult"]["colors"]["secondary"] = data[key];
+          break;
         default:
           newData["aiResult"]["hero"][key] = data[key];
           break;
