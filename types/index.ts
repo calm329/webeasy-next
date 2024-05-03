@@ -35,3 +35,5 @@ export type TMeta = {
   title: string;
   description: string;
 } | null;
+
+export type TTabs = "General" | "Security";
