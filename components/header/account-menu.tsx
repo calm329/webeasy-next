@@ -3,6 +3,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useMediaQuery } from "usehooks-ts";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -10,7 +11,7 @@ function classNames(...classes: string[]) {
 
 export default function AccountMenu() {
   const { data: session } = useSession();
-
+  const match = useMediaQuery("(max-width:1024px)");
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -32,7 +33,9 @@ export default function AccountMenu() {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items
+          className={`absolute ${match ? "left-0" : "right-0"}  z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+        >
           <div className="px-4 py-3">
             <p className="text-sm">Signed in as</p>
             <p className="truncate text-sm font-medium text-gray-900">
@@ -90,7 +93,9 @@ export default function AccountMenu() {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full px-4 py-2 text-left text-sm",
                     )}
-                    onClick={() => signOut({ callbackUrl: "/",redirect:true })}
+                    onClick={() =>
+                      signOut({ callbackUrl: "/", redirect: true })
+                    }
                   >
                     Sign out
                   </button>

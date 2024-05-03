@@ -87,7 +87,7 @@ export default function CustomizeMetaModal(props: TProps) {
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
                 <div className="sm:mx-auto sm:w-full sm:max-w-md">
                   <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    Customize Meta
+                    SEO Configuration
                   </h2>
                 </div>
                 <div>
