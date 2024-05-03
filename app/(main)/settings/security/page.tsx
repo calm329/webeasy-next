@@ -15,7 +15,7 @@ export default function Security() {
             Security
           </h2>
           <p className="mt-1 text-sm leading-6 text-gray-500">
-            This information is confidential so please don't share it.
+            This information is confidential so please don&apos;t share it.
           </p>
           <div className="flex flex-col gap-10">
             <dl className="mt-6 justify-center space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
