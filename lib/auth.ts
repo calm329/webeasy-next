@@ -5,6 +5,9 @@ import Credentials from "next-auth/providers/credentials";
 import prisma from "./prisma";
 
 export const authOptions: AuthOptions = {
+  pages: {
+    signIn: "/",
+  },
   providers: [
     Credentials({
       id: "email",
