@@ -29,6 +29,8 @@ export type TFields =
   | "subheading"
   | "cta"
   | "title"
+  | "primary"
+  | "secondary"
   | null;
 
 export type TMeta = {
