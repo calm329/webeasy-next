@@ -65,3 +65,27 @@ export async function getAccessTokenByUserId(siteId: string) {
     },
   )();
 }
+
+export async function getUserById() {
+  const session = await getServerSession();
+
+  let user: any;
+
+  if (session) {
+    user = await prisma.user.findFirst({
+      where: {
+        email: session.user?.email,
+      },
+    });
+  }
+  return await unstable_cache(
+    async () => {
+      return user;
+    },
+    [`${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
+    {
+      revalidate: 900,
+      tags: [`${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
+    },
+  )();
+}
