@@ -68,7 +68,7 @@ export async function getAccessTokenByUserId(siteId: string) {
 
 export async function getUserById() {
   const session = await getServerSession();
-
+  console.log("session: " + session?.user);
   let user: any;
 
   if (session) {
@@ -78,14 +78,15 @@ export async function getUserById() {
       },
     });
   }
-  return await unstable_cache(
-    async () => {
-      return user;
-    },
-    [`${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
-    {
-      revalidate: 900,
-      tags: [`${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
-    },
-  )();
+  console.log("email: " + user?.email);
+  // return await unstable_cache(
+  //   async () => {
+  return user;
+  //   },
+  //   [`${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
+  //   {
+  //     revalidate: 900,
+  //     tags: [`${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
+  //   },
+  // )();
 }

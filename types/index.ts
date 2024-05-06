@@ -31,6 +31,9 @@ export type TFields =
   | "title"
   | "primary"
   | "secondary"
+  | "name"
+  | "avatar"
+  | "email"
   | null;
 
 export type TMeta = {

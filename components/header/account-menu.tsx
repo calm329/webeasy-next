@@ -1,9 +1,12 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useMediaQuery } from "usehooks-ts";
+import Image from "next/image";
+import { TUser } from "@/app/(main)/settings/page";
+import { getUserById } from "@/lib/fetchers";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -11,12 +14,48 @@ function classNames(...classes: string[]) {
 
 export default function AccountMenu() {
   const { data: session } = useSession();
+  const [user, setUser] = useState<TUser>(null);
+  const [loading, setLoading] = useState(false);
+  const getUserData = async () => {
+    setLoading(true);
+    try {
+      const user = await getUserById();
+      console.log("user", user);
+      setUser({ ...user });
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // if (session?.user?.email) {
+    getUserData();
+    // }
+  }, []);
   const match = useMediaQuery("(max-width:1024px)");
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50">
-          Account
+        <Menu.Button className="inline-flex w-full justify-center gap-5 gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50">
+          {user?.image ? (
+            <Image
+              src={user?.image}
+              className=" text-gray-900"
+              alt=""
+              width={100}
+              height={100}
+            />
+          ) : (
+            <Image
+              src={"/Default_pfp.png"}
+              className=" text-gray-900"
+              alt=""
+              width={100}
+              height={100}
+            />
+          )}
           <ChevronDownIcon
             className="-mr-1 h-5 w-5 text-gray-400"
             aria-hidden="true"
