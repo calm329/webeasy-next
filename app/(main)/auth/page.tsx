@@ -1,5 +1,5 @@
 "use client";
-import { CustomDrawer } from "@/components/drawer";
+import { CustomDrawer } from "@/components/drawer/custom-drawer";
 import { useMediaQuery } from "usehooks-ts";
 import Loader from "@/components/loader";
 import SlideOver from "@/components/slide-over";

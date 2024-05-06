@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import Loader from "@/components/loader";
 import { FormField, TFields } from "@/types";
 import UserModal from "@/components/modal/user-modal";
+import { UserDrawer } from "@/components/drawer/user-drawer";
+import { useMediaQuery } from "usehooks-ts";
 
 export type TUser = {
   id: string;
@@ -42,15 +44,24 @@ export default function General() {
     getUserData();
     // }
   }, []);
-
+  const matches = useMediaQuery("(max-width: 1024px)");
   return (
     <>
-      <UserModal
-        open={open}
-        setOpen={setOpen}
-        user={user}
-        getUserData={getUserData}
-      />
+      {matches ? (
+        <UserDrawer
+          open={open}
+          setOpen={setOpen}
+          user={user}
+          getUserData={getUserData}
+        />
+      ) : (
+        <UserModal
+          open={open}
+          setOpen={setOpen}
+          user={user}
+          getUserData={getUserData}
+        />
+      )}
       <main className="px-4 py-10 sm:px-6 lg:flex-auto lg:px-0 lg:py-10">
         <div className="mx-auto max-w-2xl space-y-16 max-lg:m-0 max-lg:max-w-full sm:space-y-20 lg:mx-0 lg:max-w-none">
           <div>
@@ -75,7 +86,7 @@ export default function General() {
                     {user?.image ? (
                       <Image
                         src={user?.image}
-                        className="text-gray-900"
+                        className="aspect-1 h-12 w-12 rounded-full object-cover text-gray-900"
                         alt=""
                         width={100}
                         height={100}
@@ -83,7 +94,7 @@ export default function General() {
                     ) : (
                       <Image
                         src={"/Default_pfp.svg"}
-                        className="text-gray-900"
+                        className="aspect-1 h-12 w-12 rounded-full object-cover text-gray-900"
                         alt=""
                         width={100}
                         height={100}

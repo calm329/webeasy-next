@@ -13,6 +13,7 @@ import DynamicForm from "../form/dynamic-form";
 import { toast } from "sonner";
 import { TUser } from "@/app/(main)/settings/page";
 import { useSession } from "next-auth/react";
+import UpdateUser from "../form/update-user";
 
 type TProps = {
   open: TFields;
@@ -23,49 +24,7 @@ type TProps = {
 export default function UserModal(props: TProps) {
   const { open, setOpen, user, getUserData } = props;
   const { data: session, update } = useSession();
-  const [userFields, setUserFields] = useState<FormField[]>([
-    {
-      name: "avatar",
-      type: "image",
-      label: "User Avatar",
-      defaultValue: "",
-      placeholder: "Enter your avatar",
-      validation: {
-        required: true,
-      },
-    },
-    {
-      name: "name",
-      type: "text",
-      label: "User Name",
-      defaultValue: "",
-      placeholder: "Enter your name",
-      validation: {
-        required: true,
-      },
-    },
-    {
-      name: "email",
-      type: "email",
-      label: "Email Address",
-      defaultValue: "",
-      placeholder: "Enter your email address",
-      validation: {
-        required: true,
-      },
-    },
-  ]);
-  useEffect(() => {
-    if (user) {
-      const tempUserFields = userFields;
-      if (user.image) {
-        tempUserFields[0].defaultValue = user.image;
-      }
-      tempUserFields[1].defaultValue = user.name;
-      tempUserFields[2].defaultValue = user.email;
-      setUserFields([...tempUserFields]);
-    }
-  }, [user]);
+
   return (
     <Transition.Root show={!!open} as={Fragment}>
       <Dialog
@@ -97,47 +56,13 @@ export default function UserModal(props: TProps) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
-                <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                  <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    Update User {open}
-                  </h2>
-                </div>
-                <div>
-                  <DynamicForm
-                    focusedField={open}
-                    fields={userFields}
-                    handler={async (data: any, keys: string[]) => {
-                      console.log("data", data);
-                      try {
-                        const response = await fetch("/api/auth/update-user", {
-                          method: "PATCH",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify(data),
-                        });
-
-                        if (response.status === 200) {
-                          toast.success(`User ${open} Updated successfully`);
-                          setOpen(null);
-                          getUserData();
-                        } else {
-                          const { error } = await response.json();
-                          toast.error(error);
-                        }
-                      } catch (error) {
-                        console.error("Error:", error);
-                        toast.error("Something went wrong", {
-                          position: "top-right",
-                        });
-                      }
-                    }}
-                    handleChange={(name, value) => {
-                      console.log("hi", name, value);
-                    }}
-                  />
-                </div>
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all max-md:w-full sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
+                <UpdateUser
+                  getUserData={getUserData}
+                  open={open}
+                  setOpen={setOpen}
+                  user={user}
+                />
               </Dialog.Panel>
             </Transition.Child>
           </div>
