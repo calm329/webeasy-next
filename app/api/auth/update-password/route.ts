@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function PATCH(req: NextRequest) {
   const { currentPassword, newPassword } = await req.json();
@@ -10,7 +11,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Invalid parameters" }, { status: 400 });
   }
 
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   let userData: any;
 
