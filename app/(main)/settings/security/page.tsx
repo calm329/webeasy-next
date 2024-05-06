@@ -86,7 +86,7 @@ export default function Security() {
           <div className="flex flex-col gap-10">
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="mt-6 justify-center space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6"
+              className="mt-6 justify-center space-y-6  border-t border-gray-200 text-sm leading-6"
             >
               <div className="items-center gap-2 pt-6 sm:flex">
                 <label

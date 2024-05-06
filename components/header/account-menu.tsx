@@ -42,7 +42,7 @@ export default function AccountMenu() {
           {user?.image ? (
             <Image
               src={user?.image}
-              className=" text-gray-900"
+              className=" rounded-full text-gray-900"
               alt=""
               width={100}
               height={100}
@@ -50,7 +50,7 @@ export default function AccountMenu() {
           ) : (
             <Image
               src={"/Default_pfp.png"}
-              className=" text-gray-900"
+              className=" rounded-full text-gray-900"
               alt=""
               width={100}
               height={100}
