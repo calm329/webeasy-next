@@ -42,7 +42,7 @@ export default function AccountMenu() {
           {user?.image ? (
             <Image
               src={user?.image}
-              className=" rounded-full text-gray-900"
+              className=" aspect-1 rounded-full object-cover text-gray-900"
               alt=""
               width={100}
               height={100}
