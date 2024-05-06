@@ -74,7 +74,7 @@ export default function Security() {
 
   return (
     <main className="px-4 py-10 sm:px-6 lg:flex-auto lg:px-0 lg:py-10">
-      <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
+      <div className="mx-auto max-w-2xl space-y-16 max-lg:m-0 max-lg:max-w-full sm:space-y-20 lg:mx-0 lg:max-w-none">
         <div>
           <h2 className="text-base font-semibold leading-7 text-gray-900">
             Security
@@ -95,7 +95,7 @@ export default function Security() {
                 >
                   Current Password :
                 </label>
-                <dd className="mt-1 flex max-w-80 flex-col justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                <dd className="mt-1 flex max-w-80 flex-col justify-between gap-x-6 max-lg:max-w-full sm:mt-0 sm:flex-auto">
                   <input
                     {...register("currentPassword")}
                     name="currentPassword"
@@ -117,7 +117,7 @@ export default function Security() {
                 >
                   New Password :
                 </label>
-                <dd className="mt-1 flex max-w-80 flex-col justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                <dd className="mt-1 flex max-w-80 flex-col justify-between gap-x-6 max-lg:max-w-full sm:mt-0 sm:flex-auto">
                   <input
                     {...register("newPassword")}
                     name="newPassword"
@@ -136,7 +136,7 @@ export default function Security() {
               <div className="pt-5">
                 <button
                   type="submit"
-                  className={`mx-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
+                  className={`mx-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 max-lg:ml-auto max-lg:mr-0"}`}
                   disabled={loading}
                 >
                   {loading && (
