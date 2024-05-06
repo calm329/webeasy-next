@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
 import SiteHeader from "../../../components/header/index";
 import {
@@ -12,7 +12,9 @@ import {
   GlobeAltIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import PrivateRoute from "@/components/private-route";
 
 const navigation = [
   { name: "Home", href: "#" },
@@ -37,7 +39,7 @@ function classNames(...classes: any[]) {
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   return (
-    <>
+    <PrivateRoute>
       <SiteHeader showNavigation={true} />
       <div className="mx-auto max-w-7xl lg:flex lg:gap-x-16 lg:px-8">
         <h1 className="sr-only text-black">User Settings</h1>
@@ -74,6 +76,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </aside>
         {children}
       </div>
-    </>
+    </PrivateRoute>
   );
 }
