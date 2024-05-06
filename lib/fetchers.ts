@@ -24,15 +24,14 @@ export async function getSiteData(subdomain?: string) {
 export async function getSitesByUserId() {
   const session = await getServerSession();
 
-  let user: any;
-
-  if (session) {
-    user = await prisma.user.findFirst({
-      where: {
-        email: session.user?.email,
-      },
-    });
+  if (!session) {
+    return [];
   }
+  const user = await prisma.user.findFirst({
+    where: {
+      email: session?.user?.email,
+    },
+  });
   return await unstable_cache(
     async () => {
       return prisma.site.findMany({
