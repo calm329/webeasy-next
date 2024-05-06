@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { revalidateTag } from "next/cache";
 import { getUsernameFromPosts } from "./utils";
+import { authOptions } from "./auth";
 
 export async function createNewSite({
   aiResult,
@@ -16,7 +17,7 @@ export async function createNewSite({
   accessToken: string;
   userId: string;
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   let user;
 
@@ -79,7 +80,7 @@ export async function createNewSite({
 export async function checkSiteAvailability(
   data: Partial<{ userId: string; token: string }>,
 ) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   let user;
 
@@ -115,7 +116,7 @@ export async function updateSite(
   data: { [key: string]: string },
   keys: string[],
 ) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   try {
     let user;

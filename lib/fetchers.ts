@@ -3,6 +3,7 @@
 import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
+import { authOptions } from "./auth";
 
 export async function getSiteData(subdomain?: string) {
   return await unstable_cache(
@@ -22,7 +23,7 @@ export async function getSiteData(subdomain?: string) {
 }
 
 export async function getSitesByUserId() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     return [];
@@ -66,7 +67,7 @@ export async function getAccessTokenByUserId(siteId: string) {
 }
 
 export async function getUserById() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   console.log("session: " + session?.user);
   let user: any;
 
