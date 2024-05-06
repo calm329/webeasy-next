@@ -1,12 +1,15 @@
-import { Fragment, useEffect, useState } from "react";
+"use client";
+
+import { TUser } from "@/app/(main)/settings/page";
+import { getUserById } from "@/lib/fetchers";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import { useMediaQuery } from "usehooks-ts";
 import Image from "next/image";
-import { TUser } from "@/app/(main)/settings/page";
-import { getUserById } from "@/lib/fetchers";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Fragment, useEffect, useState } from "react";
+import { useMediaQuery } from "usehooks-ts";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -42,18 +45,18 @@ export default function AccountMenu() {
           {user?.image ? (
             <Image
               src={user?.image}
-              className=" aspect-1 rounded-full object-cover text-gray-900"
+              className=" aspect-1 h-[45px] w-[45px] rounded-full object-cover text-gray-900"
               alt=""
-              width={100}
-              height={100}
+              width={50}
+              height={50}
             />
           ) : (
             <Image
               src={"/Default_pfp.png"}
-              className=" rounded-full text-gray-900"
+              className="aspect-1 h-[45px] w-[45px] rounded-full object-cover text-gray-900"
               alt=""
-              width={100}
-              height={100}
+              width={50}
+              height={50}
             />
           )}
           <ChevronDownIcon
@@ -73,7 +76,9 @@ export default function AccountMenu() {
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items
-          className={`absolute ${match ? "left-0" : "right-0"}  z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+          className={`absolute ${
+            match ? "left-0" : "right-0"
+          }  z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
         >
           <div className="px-4 py-3">
             <p className="text-sm">Signed in as</p>
@@ -123,24 +128,21 @@ export default function AccountMenu() {
             </Menu.Item>
           </div>
           <div className="py-1">
-            <form method="POST" action="#">
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    type="submit"
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full px-4 py-2 text-left text-sm",
-                    )}
-                    onClick={() =>
-                      signOut({ callbackUrl: "/", redirect: true })
-                    }
-                  >
-                    Sign out
-                  </button>
-                )}
-              </Menu.Item>
-            </form>
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  className={classNames(
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block w-full px-4 py-2 text-left text-sm",
+                  )}
+                  onClick={async () => {
+                    signOut({ callbackUrl: "/" });
+                  }}
+                >
+                  Sign out
+                </button>
+              )}
+            </Menu.Item>
           </div>
         </Menu.Items>
       </Transition>
