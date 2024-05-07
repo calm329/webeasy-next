@@ -101,17 +101,31 @@ function FormField(props: TFormFieldProps) {
       inputRef.current?.focus();
       textareaRef.current?.focus();
     }
-    window.addEventListener("keyboardDidShow", function () {
-      if (field.name === focusedField) {
-        inputRef.current?.scrollIntoView({ behavior: "smooth" });
-        textareaRef.current?.scrollIntoView({ behavior: "smooth" });
-      }
+    // window.addEventListener("keyboardDidShow", function () {
+    //   setTimeout(()=>{
+    //     if (field.name === focusedField) {
+    //       inputRef.current?.scrollIntoView({ behavior: "smooth" });
+    //       textareaRef.current?.scrollIntoView({ behavior: "smooth" });
+    //     }
+    //   },300)
+    // });
+    inputRef.current?.addEventListener("focus", () => {
+      // Timeout to ensure the keyboard is already shown
+      setTimeout(() => {
+        inputRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }, 300); // Adjust the timeout as needed
     });
-    return window.removeEventListener("keyboardDidShow", function () {
-      if (field.name === focusedField) {
-        inputRef.current?.scrollIntoView({ behavior: "smooth" });
-        textareaRef.current?.scrollIntoView({ behavior: "smooth" });
-      }
+    return inputRef.current?.removeEventListener("focus", () => {
+      // Timeout to ensure the keyboard is already shown
+      setTimeout(() => {
+        inputRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }, 300); // Adjust the timeout as needed
     });
   }, [focusedField]);
   return field.name === focusedField ||
