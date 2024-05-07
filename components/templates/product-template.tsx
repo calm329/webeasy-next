@@ -79,7 +79,6 @@ const ProductTemplate = () => {
                         Featured
                       </p>
                       <ul
-                       
                         aria-labelledby="mobile-featured-heading-0"
                         className="mt-6 space-y-6"
                       >
@@ -108,7 +107,6 @@ const ProductTemplate = () => {
                         Categories
                       </p>
                       <ul
-                        
                         aria-labelledby="mobile-categories-heading"
                         className="mt-6 space-y-6"
                       >
@@ -149,7 +147,6 @@ const ProductTemplate = () => {
                         Collection
                       </p>
                       <ul
-                        
                         aria-labelledby="mobile-collection-heading"
                         className="mt-6 space-y-6"
                       >
@@ -184,7 +181,6 @@ const ProductTemplate = () => {
                         Brands
                       </p>
                       <ul
-                        
                         aria-labelledby="mobile-brand-heading"
                         className="mt-6 space-y-6"
                       >
@@ -236,7 +232,6 @@ const ProductTemplate = () => {
                         Featured
                       </p>
                       <ul
-                        
                         aria-labelledby="mobile-featured-heading-1"
                         className="mt-6 space-y-6"
                       >
@@ -265,7 +260,6 @@ const ProductTemplate = () => {
                         Categories
                       </p>
                       <ul
-                        
                         aria-labelledby="mobile-categories-heading"
                         className="mt-6 space-y-6"
                       >
@@ -306,7 +300,6 @@ const ProductTemplate = () => {
                         Collection
                       </p>
                       <ul
-                        
                         aria-labelledby="mobile-collection-heading"
                         className="mt-6 space-y-6"
                       >
@@ -341,7 +334,6 @@ const ProductTemplate = () => {
                         Brands
                       </p>
                       <ul
-                        
                         aria-labelledby="mobile-brand-heading"
                         className="mt-6 space-y-6"
                       >
@@ -457,13 +449,13 @@ const ProductTemplate = () => {
 
       <main className="pt-10 sm:pt-16">
         <nav aria-label="Breadcrumb">
-          <ol
-            
-            className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
-          >
+          <ol className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <li>
               <div className="flex items-center">
-                <Link href="#" className="mr-2 text-sm font-medium text-gray-900">
+                <Link
+                  href="#"
+                  className="mr-2 text-sm font-medium text-gray-900"
+                >
                   Men
                 </Link>
                 <svg
@@ -480,7 +472,10 @@ const ProductTemplate = () => {
             </li>
             <li>
               <div className="flex items-center">
-                <Link href="#" className="mr-2 text-sm font-medium text-gray-900">
+                <Link
+                  href="#"
+                  className="mr-2 text-sm font-medium text-gray-900"
+                >
                   Clothing
                 </Link>
                 <svg
@@ -873,9 +868,10 @@ const ProductTemplate = () => {
                 <p className="text-base text-gray-900">
                   The Basic Tee 6-Pack allows you to fully express your vibrant
                   personality with three grayscale options. Feeling adventurous?
-                  Put on Link heather gray tee. Want to be Link trendsetter? Try our
-                  exclusive colorway: &quot;Black&quot;. Need to add an extra
-                  pop of color to your outfit? Our white tee has you covered.
+                  Put on Link heather gray tee. Want to be Link trendsetter? Try
+                  our exclusive colorway: &quot;Black&quot;. Need to add an
+                  extra pop of color to your outfit? Our white tee has you
+                  covered.
                 </p>
               </div>
             </div>
@@ -884,7 +880,7 @@ const ProductTemplate = () => {
               <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
 
               <div className="mt-4">
-                <ul  className="list-disc space-y-2 pl-4 text-sm">
+                <ul className="list-disc space-y-2 pl-4 text-sm">
                   <li className="text-gray-400">
                     <span className="text-gray-600">
                       Hand cut and sewn locally
@@ -1253,9 +1249,7 @@ const ProductTemplate = () => {
                 <div className="mt-4 flex justify-between">
                   <div>
                     <h3 className="text-sm text-gray-700">
-                      <Link href="#">
-                        Basic Tee
-                      </Link>
+                      <Link href="#">Basic Tee</Link>
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">Black</p>
                   </div>
