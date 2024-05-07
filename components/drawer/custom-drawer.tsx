@@ -29,7 +29,6 @@ export function CustomDrawer(props: TProps) {
       <DrawerContent className="border border-white">
         <div className="mx-auto w-full max-w-sm pb-10">
           <CustomizePanel
-            open={open}
             setIsOpen={setIsOpen}
             section={section}
             handleChange={handleChange}
