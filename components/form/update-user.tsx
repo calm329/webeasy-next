@@ -65,7 +65,7 @@ const UpdateUser = (props: TProps) => {
           </h2>
         </div>
       )}
-      <div>
+      <div className="max-sm:px-5">
         <DynamicForm
           focusedField={open}
           fields={userFields}
