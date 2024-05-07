@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { DebouncedState } from "use-debounce";
 import { getUsernameFromPosts } from "@/lib/utils";
 import { AppState } from "@/app/(main)/auth/page";
+import CustomizeColor from "../customize-color/index";
 
 type TProps = {
   open: boolean;
@@ -82,31 +83,13 @@ export default function ColorModal(props: TProps) {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
-                <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                  <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    SEO Configuration
-                  </h2>
-                </div>
-                <div>
-                  <DynamicForm
-                    focusedField={"primary"}
-                    fields={colorFields}
-                    handler={async (data: any, keys: string[]) => {
-                      try {
-                        await updateSite(
-                          getUsernameFromPosts(
-                            JSON.stringify(appState.iPosts),
-                          ) || "",
-                          data,
-                          keys,
-                        );
-                        getData();
-                        toast.success("Your Colors has been saved");
-                      } catch (error) {}
-                    }} // updateSite}
-                    handleChange={handleChange}
-                  />
-                </div>
+                <CustomizeColor
+                  appState={appState}
+                  getData={getData}
+                  handleChange={handleChange}
+                  open={open}
+                  setOpen={setOpen}
+                />
               </Dialog.Panel>
             </Transition.Child>
           </div>
