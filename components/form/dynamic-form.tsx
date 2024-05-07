@@ -15,6 +15,7 @@ type TProps = {
   handleBack?: () => void;
   handleNext?: () => void;
   focusedField?: TFields;
+  open?: boolean;
 };
 
 export default function DynamicForm(props: TProps) {
@@ -26,6 +27,7 @@ export default function DynamicForm(props: TProps) {
     handleBack,
     handleNext,
     focusedField,
+    open,
   } = props;
   const [loading, setLoading] = useState(false);
   const zodSchema = generateZodSchema(fields);
@@ -74,6 +76,7 @@ export default function DynamicForm(props: TProps) {
             errors={errors}
             handleChange={handleChange}
             focusedField={focusedField ?? null}
+            open={open}
           />
         ))}
         <FormNavigation handleBack={handleBack} loading={loading} />
@@ -88,26 +91,21 @@ type TFormFieldProps = {
   errors: any;
   handleChange: (name: string, value: string) => void;
   focusedField: TFields;
+  open?: boolean;
 };
 
 function FormField(props: TFormFieldProps) {
-  const { field, control, errors, handleChange, focusedField } = props;
+  const { field, control, errors, handleChange, focusedField, open } = props;
   const f: FormField = field;
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (field.name === focusedField) {
+    if (open && field.name === focusedField) {
       inputRef.current?.focus();
       textareaRef.current?.focus();
-      setTimeout(() => {
-        if (field.name === focusedField) {
-          inputRef.current?.scrollIntoView({ behavior: "smooth" });
-          textareaRef.current?.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 300);
     }
-  }, [focusedField]);
+  }, [focusedField, open]);
   return field.name === focusedField ||
     (focusedField === "cta" && field.name === "ctaLink") ||
     (focusedField === "title" && field.name === "description") ||
