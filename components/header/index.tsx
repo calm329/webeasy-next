@@ -154,8 +154,8 @@ export default function SiteHeader(props: TProps) {
         open={mobileMenuOpen}
         onClose={setMobileMenuOpen}
       >
-        <div className="fixed inset-0 z-20 bg-gray-800 opacity-30" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-30 w-80 overflow-y-auto bg-white px-6 py-6 sm:ring-1 sm:ring-gray-900/10">
+        <div className="fixed inset-0 z-20  backdrop-blur" />
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-30 w-80 overflow-y-auto bg-white px-6 py-6  sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
