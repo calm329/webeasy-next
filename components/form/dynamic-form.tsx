@@ -15,7 +15,6 @@ type TProps = {
   handleBack?: () => void;
   handleNext?: () => void;
   focusedField?: TFields;
-  open?: boolean;
 };
 
 export default function DynamicForm(props: TProps) {
@@ -27,7 +26,6 @@ export default function DynamicForm(props: TProps) {
     handleBack,
     handleNext,
     focusedField,
-    open,
   } = props;
   const [loading, setLoading] = useState(false);
   const zodSchema = generateZodSchema(fields);
@@ -76,7 +74,6 @@ export default function DynamicForm(props: TProps) {
             errors={errors}
             handleChange={handleChange}
             focusedField={focusedField ?? null}
-            open={open}
           />
         ))}
         <FormNavigation handleBack={handleBack} loading={loading} />
@@ -100,13 +97,6 @@ function FormField(props: TFormFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    console.log("hidden", open);
-    if (open && field.name === focusedField) {
-      inputRef.current?.focus();
-      textareaRef.current?.focus();
-    }
-  }, [focusedField, open]);
   return field.name === focusedField ||
     (focusedField === "cta" && field.name === "ctaLink") ||
     (focusedField === "title" && field.name === "description") ||
@@ -154,7 +144,6 @@ function FormField(props: TFormFieldProps) {
                       handleChange(f.name, e.target.value);
                       field.onChange(e.target.value);
                     }}
-                    ref={textareaRef}
                   />
                 ) : (
                   <input
@@ -167,7 +156,6 @@ function FormField(props: TFormFieldProps) {
                       handleChange(f.name, e.target.value);
                       field.onChange(e.target.value);
                     }}
-                    ref={inputRef}
                   />
                 )}
                 {errors[field.name] && (

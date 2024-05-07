@@ -13,7 +13,6 @@ type TProps = {
   heroCustomizeFields: FormField[];
   focusedField: TFields;
   isMobile?: boolean;
-  open: boolean;
 };
 const CustomizePanel = (props: TProps) => {
   const {
@@ -25,7 +24,6 @@ const CustomizePanel = (props: TProps) => {
     brandCustomizeFields,
     focusedField,
     isMobile,
-    open,
   } = props;
   const [isContent, setIsContent] = useState(true);
   return (
@@ -141,7 +139,6 @@ const CustomizePanel = (props: TProps) => {
             {section === "Banner" && (
               <DynamicForm
                 // title={`Section ${section}`}
-                open={open}
                 focusedField={focusedField}
                 fields={brandCustomizeFields}
                 handler={async (data: any, keys: string[]) => {
@@ -155,7 +152,6 @@ const CustomizePanel = (props: TProps) => {
             )}
             {section === "Hero" && (
               <DynamicForm
-                open={open}
                 // title={`Section ${section}`}
                 focusedField={focusedField}
                 fields={heroCustomizeFields}
