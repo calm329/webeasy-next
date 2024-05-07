@@ -14,7 +14,7 @@ type TProps = {
 export function UserDrawer(props: TProps) {
   const { open, setOpen, getUserData, user } = props;
   return (
-    <Drawer open={!!open} onClose={() => setOpen(null)}>
+    <Drawer open={!!open} onOpenChange={(state) => !state && setOpen(null)}>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm pb-10">
           <UpdateUser

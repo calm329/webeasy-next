@@ -65,7 +65,7 @@ export default function DynamicForm(props: TProps) {
       {title && (
         <h2 className="w-full text-center text-2xl font-bold">{title}</h2>
       )}
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-2">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-2 ">
         {fields.map((field) => (
           <FormField
             key={field.name}
@@ -98,7 +98,6 @@ function FormField(props: TFormFieldProps) {
 
   useEffect(() => {
     if (field.name === focusedField) {
-      console.log("hi");
       inputRef.current?.focus();
       textareaRef.current?.focus();
     }
