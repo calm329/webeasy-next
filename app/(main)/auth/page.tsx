@@ -231,7 +231,9 @@ export default function Page() {
         imageIds: _imageIds,
         posts: _posts,
       } = await fetchData(
-        `/api/instagram/media?access_token=${searchParams.get("access_token")}&user_id=${searchParams.get("user_id")}`,
+        `/api/instagram/media?access_token=${searchParams.get(
+          "access_token",
+        )}&user_id=${searchParams.get("user_id")}`,
       );
 
       if (!_mediaCaption || !_imageIds || !_posts) {
@@ -250,10 +252,25 @@ export default function Page() {
 
     // generate content from user media using openai
     if (flag !== "refresh") {
-      const { content } = await fetchData("/api/content", {
+      const response = await fetch("/api/content", {
         method: "POST",
         body: JSON.stringify({ mediaCaption }),
       });
+
+      let content = "";
+
+      const reader = response.body?.getReader();
+      if (!reader) return;
+
+      const decoder = new TextDecoder();
+      let done = false;
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+        console.log(chunkValue);
+        if (chunkValue && chunkValue !== "###") content += chunkValue;
+      }
 
       if (content) {
         aiContent = JSON.parse(content);
