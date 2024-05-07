@@ -100,23 +100,13 @@ function FormField(props: TFormFieldProps) {
     if (field.name === focusedField) {
       inputRef.current?.focus();
       textareaRef.current?.focus();
+      setTimeout(() => {
+        if (field.name === focusedField) {
+          inputRef.current?.scrollIntoView({ behavior: "smooth" });
+          textareaRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 300);
     }
-    window.addEventListener("keyboardDidShow", function () {
-      setTimeout(() => {
-        if (field.name === focusedField) {
-          inputRef.current?.scrollIntoView({ behavior: "smooth" });
-          textareaRef.current?.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 300);
-    });
-    return window.addEventListener("keyboardDidShow", function () {
-      setTimeout(() => {
-        if (field.name === focusedField) {
-          inputRef.current?.scrollIntoView({ behavior: "smooth" });
-          textareaRef.current?.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 300);
-    });
   }, [focusedField]);
   return field.name === focusedField ||
     (focusedField === "cta" && field.name === "ctaLink") ||
