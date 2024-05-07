@@ -33,6 +33,7 @@ function SlideOver(props: TProps) {
       >
         <div className="mt-2 flex h-fit flex-col justify-between divide-y divide-gray-200 rounded-xl  border bg-white pb-10 shadow-xl">
           <CustomizePanel
+            open={open}
             setIsOpen={setIsOpen}
             section={section}
             handleChange={handleChange}
