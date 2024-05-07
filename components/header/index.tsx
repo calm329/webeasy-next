@@ -57,7 +57,7 @@ export default function SiteHeader(props: TProps) {
   }, [status]);
   return (
     <header
-      className={`${isAuth ? "fixed w-full" : "relative"} border-b-1 z-10 bg-white`}
+      className={`${isAuth ? " w-full" : "relative"} border-b-1 z-10 bg-white`}
     >
       <nav
         className={`mx-auto flex max-w-7xl items-center ${!isAuth && "justify-between"} p-6  lg:px-8`}
