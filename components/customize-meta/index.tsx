@@ -45,7 +45,8 @@ const CustomizeMeta = (props: TProps) => {
       tempFields[1].defaultValue = appState?.meta?.description;
       setMetaFields([...tempFields]);
     }
-  }, [open]);
+  }, []);
+
   const isMobile = useMediaQuery("(max-width: 1024px)");
   return (
     <>

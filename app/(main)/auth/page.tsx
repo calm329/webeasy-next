@@ -428,13 +428,19 @@ export default function Page() {
       case "title":
         setAppState((state) => ({
           ...state,
-          title: value,
+          meta: {
+            ...state.meta,
+            title: value,
+          },
         }));
         break;
       case "description":
         setAppState((state) => ({
           ...state,
-          description: value,
+          meta: {
+            ...state.meta,
+            description: value,
+          },
         }));
         break;
       case "secondary":
