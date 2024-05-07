@@ -1,16 +1,26 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, ReactElement, useState } from "react";
+import React, {
+  Dispatch,
+  Fragment,
+  ReactElement,
+  SetStateAction,
+  useState,
+} from "react";
 import SigninForm from "../form/signin-form";
 import RegisterForm from "../form/signup-form";
-import { FaApple,FaFacebook } from "react-icons/fa";
+import { FaApple, FaFacebook } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
+type TProps = {
+  children: React.ReactNode;
+};
 
-export default function AuthModal({ children }: { children: React.ReactNode }) {
+export default function AuthModal(props: TProps) {
   const [state, setState] = useState("signin");
   const [open, setOpen] = useState(false);
+  const { children } = props;
 
   const enhancedChild = React.cloneElement(children as ReactElement, {
     onClick: () => setOpen(true),
@@ -20,7 +30,7 @@ export default function AuthModal({ children }: { children: React.ReactNode }) {
     <>
       {enhancedChild}
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={setOpen}>
+        <Dialog as="div" className="relative z-30" onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

@@ -44,7 +44,7 @@ export default function AccountMenu(props: TProps) {
             />
           )}
           <ChevronDownIcon
-            className="-mr-1 h-5 w-5 text-gray-400"
+            className="-mr-1 mt-2.5 h-5 w-5 text-gray-400"
             aria-hidden="true"
           />
         </Menu.Button>
