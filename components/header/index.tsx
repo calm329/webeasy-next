@@ -107,9 +107,17 @@ export default function SiteHeader(props: TProps) {
                 {matches ? "" : "Preview"}
               </Link>
             </div>
-            <div className="max-lg:hidden">
-              <AccountMenu user={user} />
-            </div>
+            {status === "authenticated" ? (
+              <div className="max-lg:hidden">
+                <AccountMenu user={user} />
+              </div>
+            ) : (
+              <AuthModal>
+                <button className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  Sign in
+                </button>
+              </AuthModal>
+            )}
           </>
         )}
         <div
@@ -119,7 +127,9 @@ export default function SiteHeader(props: TProps) {
             <AccountMenu user={user} />
           ) : (
             <AuthModal>
-              <button className=" font-bold text-black  ">Sign in</button>
+              <button className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Sign in
+              </button>
             </AuthModal>
           )}
         </div>
