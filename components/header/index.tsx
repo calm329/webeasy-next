@@ -69,7 +69,7 @@ export default function SiteHeader(props: TProps) {
             <Image
               src={"/WebEasy-logo-dark.svg"}
               alt={"Logo"}
-              className={`${!isAuth && "h-10 w-[30rem] max-sm:w-full"}`}
+              className={`${!isAuth && "h-10  max-sm:w-full"}`}
               width={200}
               height={100}
             />
@@ -88,26 +88,33 @@ export default function SiteHeader(props: TProps) {
           </div>
         </div>
         {isAuth && (
-          <div className="flex w-full justify-end gap-5">
-            {getData && appState && (
-              <SettingMenu
-                getData={getData}
-                handleChange={handleChange ?? undefined}
-                appState={appState}
-                meta={meta}
-              />
-            )}
-            <Link
-              href={`https://${getUsernameFromPosts(JSON.stringify(appState?.iPosts))}.webeasy.ai`}
-              target="_blank"
-              className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm  hover:bg-gray-100"
-            >
-              <FaExternalLinkAlt />
-              {matches ? "" : "Preview"}
-            </Link>
-          </div>
+          <>
+            <div className="ml-auto flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2">
+              {getData && appState && (
+                <SettingMenu
+                  getData={getData}
+                  handleChange={handleChange ?? undefined}
+                  appState={appState}
+                  meta={meta}
+                />
+              )}
+              <Link
+                href={`https://${getUsernameFromPosts(JSON.stringify(appState?.iPosts))}.webeasy.ai`}
+                target="_blank"
+                className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm  hover:bg-gray-100"
+              >
+                <FaExternalLinkAlt />
+                {matches ? "" : "Preview"}
+              </Link>
+            </div>
+            <div className="max-lg:hidden">
+              <AccountMenu user={user} />
+            </div>
+          </>
         )}
-        <div className="flex w-full justify-end gap-5  max-lg:hidden">
+        <div
+          className={`flex ${isAuth && "hidden"} justify-end gap-5  max-lg:hidden`}
+        >
           {status === "authenticated" ? (
             <AccountMenu user={user} />
           ) : (
@@ -116,7 +123,9 @@ export default function SiteHeader(props: TProps) {
             </AuthModal>
           )}
         </div>
-        <div className="flex w-full justify-end gap-5  lg:hidden">
+        <div
+          className={`flex ${isAuth ? "ml-4 w-auto" : "w-full"} justify-end gap-5  lg:hidden`}
+        >
           <div className="flex">
             <button
               type="button"
