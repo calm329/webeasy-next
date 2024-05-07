@@ -101,6 +101,7 @@ function FormField(props: TFormFieldProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
+    console.log("hidden", open);
     if (open && field.name === focusedField) {
       inputRef.current?.focus();
       textareaRef.current?.focus();

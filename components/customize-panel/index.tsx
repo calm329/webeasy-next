@@ -155,6 +155,7 @@ const CustomizePanel = (props: TProps) => {
             )}
             {section === "Hero" && (
               <DynamicForm
+                open={open}
                 // title={`Section ${section}`}
                 focusedField={focusedField}
                 fields={heroCustomizeFields}
