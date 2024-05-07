@@ -38,6 +38,7 @@ export default function SiteHeader(props: TProps) {
     props;
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const matches = useMediaQuery("(max-width: 500px)");
   const [user, setUser] = useState<TUser>(null);
   const [loading, setLoading] = useState(false);
@@ -112,11 +113,15 @@ export default function SiteHeader(props: TProps) {
                 <AccountMenu user={user} />
               </div>
             ) : (
-              <AuthModal>
-                <button className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                  Sign in
-                </button>
-              </AuthModal>
+              <button
+                className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={() => {
+                  setShowAuthModal(true);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Sign in
+              </button>
             )}
           </>
         )}
@@ -126,11 +131,15 @@ export default function SiteHeader(props: TProps) {
           {status === "authenticated" ? (
             <AccountMenu user={user} />
           ) : (
-            <AuthModal>
-              <button className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                Sign in
-              </button>
-            </AuthModal>
+            <button
+              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={() => {
+                setShowAuthModal(true);
+                setMobileMenuOpen(false);
+              }}
+            >
+              Sign in
+            </button>
           )}
         </div>
         <div
@@ -148,6 +157,7 @@ export default function SiteHeader(props: TProps) {
           </div>
         </div>
       </nav>
+      <AuthModal open={showAuthModal} setOpen={setShowAuthModal} />
       <Dialog
         as="div"
         className="lg:hidden"
@@ -268,11 +278,15 @@ export default function SiteHeader(props: TProps) {
                 </>
               ) : (
                 <div className="pt-5">
-                  <AuthModal>
-                    <button className="-mx-3 block w-full rounded-lg px-3  py-2  text-start text-base leading-7 text-gray-900 hover:bg-gray-50">
-                      Sign in
-                    </button>
-                  </AuthModal>
+                  <button
+                    className="-mx-3 block w-full rounded-lg px-3  py-2  text-start text-base leading-7 text-gray-900 hover:bg-gray-50"
+                    onClick={() => {
+                      setShowAuthModal(true);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Sign in
+                  </button>
                 </div>
               )}
             </div>
