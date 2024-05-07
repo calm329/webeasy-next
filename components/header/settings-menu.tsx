@@ -3,12 +3,13 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { signOut, useSession } from "next-auth/react";
 import { IoMdSettings } from "react-icons/io";
-import CustomizeMetaModal from "../modal/customize-meta";
+import CustomizeMetaModal from "../modal/meta-modal";
 import { DebouncedState } from "use-debounce";
 import { AppState } from "@/app/(main)/auth/page";
 import { useMediaQuery } from "usehooks-ts";
 import { TMeta } from "@/types";
 import ColorModal from "../modal/color-modal";
+import { MetaDrawer } from "../drawer/meta-drawer";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -27,18 +28,29 @@ export default function SettingMenu(props: TProps) {
   const [open, setOpen] = useState(false);
   const [isColorOpen, setIsColorOpen] = useState(false);
   const matches = useMediaQuery("(max-width: 500px)");
+  const isMobile = useMediaQuery("(max-width: 1024px)");
   return (
     <>
-      {handleChange && (
-        <CustomizeMetaModal
-          setOpen={setOpen}
-          open={open}
-          handleChange={handleChange}
-          appState={appState}
-          meta={meta}
-          getData={getData}
-        />
-      )}
+      {handleChange &&
+        (isMobile ? (
+          <MetaDrawer
+            setOpen={setOpen}
+            open={open}
+            handleChange={handleChange}
+            appState={appState}
+            meta={meta}
+            getData={getData}
+          />
+        ) : (
+          <CustomizeMetaModal
+            setOpen={setOpen}
+            open={open}
+            handleChange={handleChange}
+            appState={appState}
+            meta={meta}
+            getData={getData}
+          />
+        ))}
       {handleChange && (
         <ColorModal
           setOpen={setIsColorOpen}
