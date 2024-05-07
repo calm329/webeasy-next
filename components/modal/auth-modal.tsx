@@ -14,21 +14,22 @@ import { FaApple, FaFacebook } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
 type TProps = {
-  children: React.ReactNode;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  open: boolean;
 };
 
 export default function AuthModal(props: TProps) {
   const [state, setState] = useState("signin");
-  const [open, setOpen] = useState(false);
-  const { children } = props;
+  // const [open, setOpen] = useState(false);
+  const { setOpen, open } = props;
 
-  const enhancedChild = React.cloneElement(children as ReactElement, {
-    onClick: () => setOpen(true),
-  });
+  // const enhancedChild = React.cloneElement(children as ReactElement, {
+  //   onClick: () => setOpen(true),
+  // });
 
   return (
     <>
-      {enhancedChild}
+      {/* {enhancedChild} */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-30" onClose={setOpen}>
           <Transition.Child
@@ -69,7 +70,11 @@ export default function AuthModal(props: TProps) {
                         : "Sign up for an account"}
                     </h2>
                   </div>
-                  {state === "signin" ? <SigninForm /> : <RegisterForm />}
+                  {state === "signin" ? (
+                    <SigninForm setIsOpen={setOpen} />
+                  ) : (
+                    <RegisterForm />
+                  )}
                   <div>
                     <div className="relative mt-10">
                       <div

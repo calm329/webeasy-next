@@ -1,12 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
+import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
 import { z } from "zod";
 
-export default function SigninForm() {
+type TProps = {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+export default function SigninForm(props: TProps) {
+  const { setIsOpen } = props;
   const [loading, setLoading] = useState(false);
 
   const formSchema = z.object({
@@ -47,6 +53,7 @@ export default function SigninForm() {
       toast.success("Login successful", {
         position: "top-right",
       });
+      setIsOpen(false);
     }
 
     setLoading(false);
@@ -127,8 +134,12 @@ export default function SigninForm() {
       <div className="!mt-6">
         <button
           type="submit"
-          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="flex w-full items-center justify-center gap-2 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          disabled={loading}
         >
+          {loading && (
+            <ImSpinner2 className="animate-spin text-lg text-white" />
+          )}
           Sign in
         </button>
       </div>
