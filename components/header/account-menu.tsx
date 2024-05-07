@@ -1,42 +1,26 @@
 "use client";
 
 import { TUser } from "@/app/(main)/settings/page";
-import { getUserById } from "@/lib/fetchers";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { useMediaQuery } from "usehooks-ts";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function AccountMenu() {
-  const { data: session } = useSession();
-  const [user, setUser] = useState<TUser>(null);
-  const [loading, setLoading] = useState(false);
-  const getUserData = async () => {
-    setLoading(true);
-    try {
-      const user = await getUserById();
-      console.log("user", user);
-      setUser({ ...user });
-    } catch (error) {
-      console.log("error", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+type TProps = {
+  user: TUser;
+};
 
-  useEffect(() => {
-    // if (session?.user?.email) {
-    getUserData();
-    // }
-  }, []);
+export default function AccountMenu(props: TProps) {
+  const { data: session } = useSession();
+  const { user } = props;
+
   const match = useMediaQuery("(max-width:1024px)");
   return (
     <Menu as="div" className="relative inline-block text-left">

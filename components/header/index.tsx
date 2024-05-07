@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import AuthModal from "../modal/auth-modal";
@@ -15,6 +15,8 @@ import { DebouncedState } from "use-debounce";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useMediaQuery } from "usehooks-ts";
 import { TMeta } from "@/types";
+import { TUser } from "@/app/(main)/settings/page";
+import { getUserById } from "@/lib/fetchers";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -37,6 +39,23 @@ export default function SiteHeader(props: TProps) {
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const matches = useMediaQuery("(max-width: 500px)");
+  const [user, setUser] = useState<TUser>(null);
+  const [loading, setLoading] = useState(false);
+  const getUserData = async () => {
+    setLoading(true);
+    try {
+      const user = await getUserById();
+      setUser({ ...user });
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
   return (
     <header
       className={`${isAuth ? "fixed w-full" : "relative"} border-b-1 z-10 bg-white`}
@@ -46,7 +65,7 @@ export default function SiteHeader(props: TProps) {
         aria-label="Global"
       >
         <div className="flex items-center gap-x-12">
-          <Link href="#" className="-m-1.5 p-1.5">
+          <Link href="/" className="-m-1.5 p-1.5">
             <Image
               src={"/WebEasy-logo-dark.svg"}
               alt={"Logo"}
@@ -103,7 +122,7 @@ export default function SiteHeader(props: TProps) {
         {showNavigation && (
           <div className="hidden w-36 lg:flex">
             {status === "authenticated" ? (
-              <AccountMenu />
+              <AccountMenu user={user} />
             ) : (
               <AuthModal>
                 <Link
@@ -160,7 +179,7 @@ export default function SiteHeader(props: TProps) {
               </div>
               <div className="py-6">
                 {status === "authenticated" ? (
-                  <AccountMenu />
+                  <AccountMenu user={user} />
                 ) : (
                   <AuthModal>
                     <button className=" font-bold text-black  ">Sign in</button>
