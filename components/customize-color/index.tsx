@@ -19,7 +19,7 @@ const CustomizeColor = (props: TProps) => {
   const [colorFields, setColorFields] = useState<FormField[]>([
     {
       name: "primary",
-      type: "text",
+      type: "color",
       label: "Primary Color",
       defaultValue: "",
       placeholder: "Enter your Primary Color",
@@ -29,7 +29,7 @@ const CustomizeColor = (props: TProps) => {
     },
     {
       name: "secondary",
-      type: "text",
+      type: "color",
       label: "Secondary Color",
       defaultValue: "",
       placeholder: "Enter your Secondary Color",
@@ -67,7 +67,7 @@ const CustomizeColor = (props: TProps) => {
                 data,
                 keys,
               );
-              getData();
+              // getData();
               toast.success("Your Colors has been saved");
             } catch (error) {}
           }} // updateSite}

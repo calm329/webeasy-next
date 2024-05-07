@@ -30,12 +30,10 @@ type TProps = {
   getData?: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
   appState?: AppState;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
-  meta?: TMeta;
 };
 
 export default function SiteHeader(props: TProps) {
-  const { showNavigation, isAuth, getData, appState, handleChange, meta } =
-    props;
+  const { showNavigation, isAuth, getData, appState, handleChange } = props;
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -96,7 +94,6 @@ export default function SiteHeader(props: TProps) {
                   getData={getData}
                   handleChange={handleChange ?? undefined}
                   appState={appState}
-                  meta={meta}
                 />
               )}
               <Link

@@ -24,6 +24,7 @@ export interface AppState {
   aiContent: any;
   logo: string;
   editable: boolean;
+  meta: TMeta;
 }
 
 const initialState: AppState = {
@@ -32,6 +33,10 @@ const initialState: AppState = {
   aiContent: {},
   logo: "",
   editable: false,
+  meta: {
+    title: "",
+    description: "",
+  },
 };
 
 type TData = Partial<{
@@ -52,7 +57,6 @@ export default function Page() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<TFields>(null);
   const [section, setSection] = useState<TSection>("Banner");
-  const [meta, setMeta] = useState<TMeta>(null);
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
       {
@@ -192,7 +196,6 @@ export default function Page() {
         title: siteData.title,
         description: siteData.description,
       });
-      setMeta({ title: siteData.title, description: siteData.description });
       const aiContent = JSON.parse(siteData.aiResult);
 
       console.log(aiContent);
@@ -203,6 +206,7 @@ export default function Page() {
         aiContent: aiContent,
         iPosts: JSON.parse(siteData.posts),
         logo: siteData.logo || state.logo,
+        meta: { title: siteData.title, description: siteData.description },
       }));
 
       // update default values
@@ -409,6 +413,42 @@ export default function Page() {
           },
         }));
         break;
+      case "primary":
+        setAppState((state) => ({
+          ...state,
+          aiContent: {
+            ...state.aiContent,
+            ["colors"]: {
+              ...state.aiContent["colors"],
+              ["primary"]: value,
+            },
+          },
+        }));
+        break;
+      case "title":
+        setAppState((state) => ({
+          ...state,
+          title: value,
+        }));
+        break;
+      case "description":
+        setAppState((state) => ({
+          ...state,
+          description: value,
+        }));
+        break;
+      case "secondary":
+        setAppState((state) => ({
+          ...state,
+          aiContent: {
+            ...state.aiContent,
+            ["colors"]: {
+              ...state.aiContent["colors"],
+              ["secondary"]: value,
+            },
+          },
+        }));
+        break;
       default:
         break;
     }
@@ -475,7 +515,6 @@ export default function Page() {
             getData={getData}
             appState={appState}
             handleChange={handleChange}
-            meta={meta}
           />
           <div className="relative flex size-full pt-20">
             <div className="h-full w-full">

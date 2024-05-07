@@ -2,10 +2,17 @@
 import { cn, generateZodSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+  UseFormGetValues,
+} from "react-hook-form";
 import Uploader from "./uploader";
 import { TFields, type FormField } from "@/types";
 import { ImSpinner2 } from "react-icons/im";
+import { SketchPicker, SwatchesPicker } from "react-color";
 
 type TProps = {
   title?: string;
@@ -34,6 +41,7 @@ export default function DynamicForm(props: TProps) {
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm({
     resolver: zodResolver(zodSchema),
   });
@@ -74,6 +82,7 @@ export default function DynamicForm(props: TProps) {
             errors={errors}
             handleChange={handleChange}
             focusedField={focusedField ?? null}
+            getValues={getValues}
           />
         ))}
         <FormNavigation handleBack={handleBack} loading={loading} />
@@ -89,14 +98,14 @@ type TFormFieldProps = {
   handleChange: (name: string, value: string) => void;
   focusedField: TFields;
   open?: boolean;
+  getValues: UseFormGetValues<FieldValues>;
 };
 
 function FormField(props: TFormFieldProps) {
-  const { field, control, errors, handleChange, focusedField, open } = props;
+  const { field, control, errors, handleChange, focusedField, getValues } =
+    props;
   const f: FormField = field;
-  const inputRef = useRef<HTMLInputElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
+  const [show, setShow] = useState(false);
   return field.name === focusedField ||
     (focusedField === "cta" && field.name === "ctaLink") ||
     (focusedField === "title" && field.name === "description") ||
@@ -107,7 +116,7 @@ function FormField(props: TFormFieldProps) {
       control={control}
       render={({ field }) => (
         <div className="flex w-full flex-col">
-          {f.type === "image" ? (
+          {f.type === "image" && (
             <div>
               <Uploader
                 defaultValue={f.defaultValue}
@@ -123,6 +132,40 @@ function FormField(props: TFormFieldProps) {
                   {errors[field.name].message}
                 </p>
               )}
+            </div>
+          )}
+          {f.type === "color" ? (
+            <div>
+              <div className="mt-5 flex gap-5">
+                <h2 className="font-semibold">{f.label}:</h2>
+                <div
+                  className="mb-5 inline-block cursor-pointer rounded bg-white p-1 shadow "
+                  onClick={() => setShow(true)}
+                >
+                  <div
+                    className={`h-4 w-9 border-2`}
+                    style={{ background: getValues(f.name) }}
+                  />
+                </div>
+                <p> {getValues(f.name)}</p>
+              </div>
+
+              {show ? (
+                <div className="absolute right-0 top-2 z-10">
+                  <div
+                    className="fixed bottom-0 left-0 right-0 top-0"
+                    onClick={() => setShow(false)}
+                  />
+                  <SketchPicker
+                    {...field}
+                    color={getValues(f.name)}
+                    onChange={(value) => {
+                      handleChange(f.name, value.hex);
+                      field.onChange(value.hex);
+                    }}
+                  />
+                </div>
+              ) : null}
             </div>
           ) : (
             <div>
