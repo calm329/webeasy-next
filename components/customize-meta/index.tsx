@@ -11,11 +11,10 @@ type TProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
-  meta?: TMeta;
   getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 const CustomizeMeta = (props: TProps) => {
-  const { open, setOpen, handleChange, appState, meta, getData } = props;
+  const { open, setOpen, handleChange, appState, getData } = props;
   const [metaFields, setMetaFields] = useState<FormField[]>([
     {
       name: "title",
@@ -40,14 +39,13 @@ const CustomizeMeta = (props: TProps) => {
   ]);
 
   useEffect(() => {
-    console.log("MetaData", meta);
-    if (meta) {
+    if (appState?.meta) {
       const tempFields = metaFields;
-      tempFields[0].defaultValue = meta.title;
-      tempFields[1].defaultValue = meta.description;
+      tempFields[0].defaultValue = appState?.meta?.title;
+      tempFields[1].defaultValue = appState?.meta?.description;
       setMetaFields([...tempFields]);
     }
-  }, [meta, open]);
+  }, [open]);
   const isMobile = useMediaQuery("(max-width: 1024px)");
   return (
     <>
@@ -69,7 +67,7 @@ const CustomizeMeta = (props: TProps) => {
                 data,
                 keys,
               );
-              getData();
+
               toast.success("Your Meta Data has been saved");
             } catch (error) {}
           }} // updateSite}

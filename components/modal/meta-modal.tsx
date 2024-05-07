@@ -13,11 +13,10 @@ type TProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
-  meta?: TMeta;
   getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 export default function CustomizeMetaModal(props: TProps) {
-  const { open, setOpen, handleChange, appState, meta, getData } = props;
+  const { open, setOpen, handleChange, appState, getData } = props;
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -52,7 +51,6 @@ export default function CustomizeMetaModal(props: TProps) {
                   handleChange={handleChange}
                   open={open}
                   setOpen={setOpen}
-                  meta={meta}
                 />
               </Dialog.Panel>
             </Transition.Child>

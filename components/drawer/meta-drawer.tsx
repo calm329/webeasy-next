@@ -12,12 +12,11 @@ type TProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
-  meta?: TMeta;
   getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 
 export function MetaDrawer(props: TProps) {
-  const { open, setOpen, handleChange, appState, meta, getData } = props;
+  const { open, setOpen, handleChange, appState, getData } = props;
   return (
     <Drawer open={!!open} onOpenChange={setOpen}>
       <DrawerContent>
@@ -28,7 +27,6 @@ export function MetaDrawer(props: TProps) {
             handleChange={handleChange}
             open={open}
             setOpen={setOpen}
-            meta={meta}
           />
         </div>
       </DrawerContent>
