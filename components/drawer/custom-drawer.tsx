@@ -1,9 +1,6 @@
 import * as React from "react";
 import CustomizePanel from "../customize-panel/index";
-import {
-  Drawer,
-  DrawerContent,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { FormField, TFields, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
 type TProps = {
@@ -28,8 +25,8 @@ export function CustomDrawer(props: TProps) {
     focusedField,
   } = props;
   return (
-    <Drawer open={open} onClose={() => setIsOpen(false)}>
-      <DrawerContent>
+    <Drawer open={open} onOpenChange={setIsOpen}>
+      <DrawerContent className="border border-white">
         <div className="mx-auto w-full max-w-sm pb-10">
           <CustomizePanel
             setIsOpen={setIsOpen}
