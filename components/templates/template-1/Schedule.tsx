@@ -230,7 +230,7 @@ function TimeSlots({ className }: { className?: string }) {
 
 function ScheduleStatic() {
   return (
-    <div className="hidden  lg:grid lg:grid-cols-3 lg:gap-x-8">
+    <div className="grid  lg:gap-x-8">
       {/* <DaySummary day={day} /> */}
       <TimeSlots className="mt-10" />
     </div>
