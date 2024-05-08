@@ -142,7 +142,7 @@ function FormField(props: TFormFieldProps) {
           {f.type === "color" ? (
             <div>
               <div className="mt-5 flex gap-5">
-                <h2 className="font-semibold">{f.label}:</h2>
+                <h2 className="">{f.label}:</h2>
                 <div
                   className="mb-5 inline-block cursor-pointer rounded bg-white p-1 shadow "
                   onClick={() => setShow(true)}
