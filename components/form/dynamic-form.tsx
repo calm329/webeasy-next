@@ -13,6 +13,10 @@ import Uploader from "./uploader";
 import { TFields, type FormField } from "@/types";
 import { ImSpinner2 } from "react-icons/im";
 import { SketchPicker, SwatchesPicker } from "react-color";
+import PrimaryModal from "../modal/select-color-modal";
+import SelectColorModal from "../modal/select-color-modal";
+import { useMediaQuery } from "usehooks-ts";
+import { SelectColorDrawer } from "../drawer/select-color-drawer";
 
 type TProps = {
   title?: string;
@@ -106,6 +110,7 @@ function FormField(props: TFormFieldProps) {
     props;
   const f: FormField = field;
   const [show, setShow] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 1024px)");
   return field.name === focusedField ||
     (focusedField === "cta" && field.name === "ctaLink") ||
     (focusedField === "title" && field.name === "description") ||
@@ -150,22 +155,26 @@ function FormField(props: TFormFieldProps) {
                 <p> {getValues(f.name)}</p>
               </div>
 
-              {show ? (
-                <div className="z-10 ">
-                  <div
-                    className="fixed bottom-0 left-0 right-0 top-0"
-                    onClick={() => setShow(false)}
+              {show &&
+                (isMobile ? (
+                  <SelectColorDrawer
+                    f={f}
+                    field={field}
+                    getValues={getValues}
+                    handleChange={handleChange}
+                    open={show}
+                    setOpen={setShow}
                   />
-                  <SketchPicker
-                    {...field}
-                    color={getValues(f.name)}
-                    onChange={(value) => {
-                      handleChange(f.name, value.hex);
-                      field.onChange(value.hex);
-                    }}
+                ) : (
+                  <SelectColorModal
+                    f={f}
+                    field={field}
+                    getValues={getValues}
+                    handleChange={handleChange}
+                    open={show}
+                    setOpen={setShow}
                   />
-                </div>
-              ) : null}
+                ))}
             </div>
           ) : (
             <div>
