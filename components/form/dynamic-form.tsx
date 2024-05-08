@@ -151,7 +151,7 @@ function FormField(props: TFormFieldProps) {
               </div>
 
               {show ? (
-                <div className="absolute right-0 top-2 z-10">
+                <div className="z-10 ">
                   <div
                     className="fixed bottom-0 left-0 right-0 top-0"
                     onClick={() => setShow(false)}
