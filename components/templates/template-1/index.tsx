@@ -9,8 +9,8 @@ const Template1 = () => {
     <>
       <Header />
       <Hero />
-      <Speakers />
       <Schedule />
+      <Speakers />
     </>
   );
 };
