@@ -202,7 +202,7 @@ const schedule: Array<Day> = [
   },
 ];
 
-function TimeSlots({ className }: { day: Day; className?: string }) {
+function TimeSlots({ className }: { className?: string }) {
   return (
     <ol
       role="list"
