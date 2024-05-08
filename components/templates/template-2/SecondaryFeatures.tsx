@@ -29,26 +29,35 @@ function Feature({
   isActive: boolean;
 }) {
   return (
-    <div
-      className={clsx(className, !isActive && "opacity-75 hover:opacity-100")}
-      {...props}
-    >
+    <div className={clsx(className)} {...props}>
       <div
-        className={clsx(
-          "w-9 rounded-lg",
-          isActive ? "bg-blue-600" : "bg-slate-500",
-        )}
+        className={clsx("flex w-9 justify-center rounded-lg", "bg-slate-500")}
       >
-        <svg aria-hidden="true" className="h-9 w-9" fill="none">
-          {/* <feature.icon /> */}
+        <svg
+          fill="none"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          color="#F7B886"
+        >
+          <path
+            d="M14 16C14 17.77 13.23 19.37 12 20.46C10.94 21.42 9.54 22 8 22C4.69 22 2 19.31 2 16C2 13.9753 3.01397 12.1814 4.5554 11.0973C4.80358 10.9228 5.1393 11.0422 5.27324 11.3145C6.21715 13.2332 7.95419 14.6699 10.02 15.23C10.65 15.41 11.31 15.5 12 15.5C12.4872 15.5 12.9539 15.4538 13.4074 15.3687C13.6958 15.3147 13.9828 15.4995 13.9955 15.7926C13.9985 15.8621 14 15.9314 14 16Z"
+            fill="currentColor"
+            fill-rule="evenodd"
+          ></path>
+          <path
+            d="M18 8C18 8.78 17.85 9.53 17.58 10.21C16.89 11.95 15.41 13.29 13.58 13.79C13.08 13.93 12.55 14 12 14C11.45 14 10.92 13.93 10.42 13.79C8.59 13.29 7.11 11.95 6.42 10.21C6.15 9.53 6 8.78 6 8C6 4.69 8.69 2 12 2C15.31 2 18 4.69 18 8Z"
+            fill="currentColor"
+            fill-rule="evenodd"
+          ></path>
+          <path
+            d="M22 16C22 19.31 19.31 22 16 22C15.2555 22 14.5393 21.8643 13.8811 21.6141C13.5624 21.4929 13.503 21.0851 13.7248 20.8262C14.8668 19.4938 15.5 17.786 15.5 16C15.5 15.66 15.47 15.32 15.42 15C15.3902 14.8155 15.4844 14.6342 15.6478 14.5437C16.9719 13.8107 18.0532 12.6876 18.727 11.3153C18.8609 11.0427 19.1968 10.923 19.4452 11.0978C20.9863 12.1818 22 13.9755 22 16Z"
+            fill="currentColor"
+            fill-rule="evenodd"
+          ></path>
         </svg>
       </div>
-      <h3
-        className={clsx(
-          "mt-6 text-sm font-medium",
-          isActive ? "text-blue-600" : "text-slate-600",
-        )}
-      >
+      <h3 className={clsx("mt-6 text-sm font-medium", "text-slate-600")}>
         {feature.name}
       </h3>
       <p className="mt-4 text-sm text-slate-600">{feature.description}</p>
@@ -84,7 +93,7 @@ function FeaturesMobile() {
 function FeaturesDesktop() {
   return (
     <div className="hidden lg:mt-20 lg:block">
-      <div className="grid grid-cols-3 gap-x-8">
+      <div className="grid grid-cols-2  gap-10 ">
         {services.list.map((feature, featureIndex) => (
           <Feature
             key={feature.name}
