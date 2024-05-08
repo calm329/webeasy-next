@@ -18,6 +18,37 @@ interface Day {
   }>;
 }
 
+const services = {
+  title: "Our Services",
+  description: "Delivering Graceful Moments with Floral Art",
+  list: [
+    {
+      name: "Custom Floral Arrangements",
+      description:
+        "Tailor-made arrangements that marry simplicity with elegance, perfect for every occasion from weddings to corporate events.",
+      image: "url-to-service1-image.jpg",
+    },
+    {
+      name: "Digital Floral Artistry",
+      description:
+        "Our expertly crafted digital images bring the delicate beauty of blooms to your digital spaces, ideal for creating serene backdrops and inspired settings.",
+      image: "url-to-service2-image.jpg",
+    },
+    {
+      name: "Romantic Floral Sets",
+      description:
+        "Experience the enchantment of meticulously designed floral sets that evoke romance and elegance, making every moment unforgettable.",
+      image: "url-to-service3-image.jpg",
+    },
+    {
+      name: "Seasonal Bloom Collections",
+      description:
+        "Explore the vibrant colors and fragrant scents of our seasonal bloom collections curated to reflect the beauty of each season.",
+      image: "url-to-service4-image.jpg",
+    },
+  ],
+};
+
 const schedule: Array<Day> = [
   {
     date: "April 4",
@@ -171,109 +202,26 @@ const schedule: Array<Day> = [
   },
 ];
 
-function ScheduleTabbed() {
-  let [tabOrientation, setTabOrientation] = useState("horizontal");
-
-  useEffect(() => {
-    let smMediaQuery = window.matchMedia("(min-width: 640px)");
-
-    function onMediaQueryChange({ matches }: { matches: boolean }) {
-      setTabOrientation(matches ? "vertical" : "horizontal");
-    }
-
-    onMediaQueryChange(smMediaQuery);
-    smMediaQuery.addEventListener("change", onMediaQueryChange);
-
-    return () => {
-      smMediaQuery.removeEventListener("change", onMediaQueryChange);
-    };
-  }, []);
-
-  return (
-    <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-6 sm:grid-cols-2 lg:hidden">
-      <div className="-mx-4 flex gap-x-4 gap-y-10 overflow-x-auto pb-4 pl-4 sm:mx-0 sm:flex-col sm:pb-0 sm:pl-0 sm:pr-8">
-        <>
-          {schedule.map((day, dayIndex) => (
-            <div
-              key={day.dateTime}
-              className={clsx(
-                "relative w-3/4 flex-none pr-4 sm:w-auto sm:pr-0",
-              )}
-            >
-              <DaySummary
-                day={{
-                  ...day,
-                  date: (
-                    <div className="ui-not-focus-visible:outline-none">
-                      <span className="absolute inset-0" />
-                      {day.date}
-                    </div>
-                  ),
-                }}
-              />
-            </div>
-          ))}
-        </>
-      </div>
-      <div>
-        {schedule.map((day) => (
-          <div key={day.dateTime} className="ui-not-focus-visible:outline-none">
-            <TimeSlots day={day} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function DaySummary({ day }: { day: Day }) {
-  return (
-    <>
-      <h3 className="text-2xl font-semibold tracking-tight text-blue-900">
-        <time dateTime={day.dateTime}>{day.date}</time>
-      </h3>
-      <p className="mt-1.5 text-base tracking-tight text-blue-900">
-        {day.summary}
-      </p>
-    </>
-  );
-}
-
-function TimeSlots({ day, className }: { day: Day; className?: string }) {
+function TimeSlots({ className }: { day: Day; className?: string }) {
   return (
     <ol
       role="list"
       className={clsx(
         className,
-        "space-y-8 bg-white px-10 py-14 text-center shadow-xl shadow-blue-900/5 ",
+        " space-y-8 bg-white px-10 py-14 text-center shadow-xl shadow-blue-900/5",
       )}
     >
-      {day.timeSlots.map((timeSlot, timeSlotIndex) => (
-        <li
-          key={timeSlot.start}
-          aria-label={`${timeSlot.name} talking about ${timeSlot.description} at ${timeSlot.start} - ${timeSlot.end} PST`}
-        >
-          {timeSlotIndex > 0 && (
-            <div className="mx-auto mb-8 h-px w-48 bg-white" />
-          )}
+      {services.list.map((data, i) => (
+        <li key={i}>
+          {i > 0 && <div className="mx-auto mb-8 h-px w-48 bg-white" />}
           <h4 className="text-lg font-semibold tracking-tight text-blue-900">
-            {timeSlot.name}
+            {data.name}
           </h4>
-          {timeSlot.description && (
+          {data.description && (
             <p className="mt-1 tracking-tight text-blue-900">
-              {timeSlot.description}
+              {data.description}
             </p>
           )}
-          <p className="mt-1 font-mono text-sm text-slate-500">
-            <time dateTime={`${day.dateTime}T${timeSlot.start}-08:00`}>
-              {timeSlot.start}
-            </time>{" "}
-            -{" "}
-            <time dateTime={`${day.dateTime}T${timeSlot.end}-08:00`}>
-              {timeSlot.end}
-            </time>{" "}
-            PST
-          </p>
         </li>
       ))}
     </ol>
@@ -283,12 +231,8 @@ function TimeSlots({ day, className }: { day: Day; className?: string }) {
 function ScheduleStatic() {
   return (
     <div className="hidden  lg:grid lg:grid-cols-3 lg:gap-x-8">
-      {schedule.map((day) => (
-        <section key={day.dateTime}>
-          {/* <DaySummary day={day} /> */}
-          <TimeSlots day={day} className="mt-10" />
-        </section>
-      ))}
+      {/* <DaySummary day={day} /> */}
+      <TimeSlots className="mt-10" />
     </div>
   );
 }
