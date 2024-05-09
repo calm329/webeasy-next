@@ -34,7 +34,7 @@ const SelectTemplateCarousel = (props: TProps) => {
     }
   }
   return (
-    <div className="flex flex-col gap-5 text-center">
+    <div className="mt-5 flex flex-col gap-5 text-center">
       {!isMobile && (
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -50,7 +50,7 @@ const SelectTemplateCarousel = (props: TProps) => {
               <CarouselItem key={data.id}>
                 <div className=" p-1">
                   <Card className="">
-                    <CardContent className="aspect-square flex h-96 flex-col items-center  justify-center p-6">
+                    <CardContent className="aspect-square flex h-56 flex-col items-center  justify-center p-6">
                       <Image
                         alt=""
                         src={data.previewUrl}

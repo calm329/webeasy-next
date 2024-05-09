@@ -13,7 +13,7 @@ type TProps = {
 export default function SelectTemplateDrawer(props: TProps) {
   const { open, setOpen, templates, setSelectedTemplate, getData } = props;
   return (
-    <Drawer open={!!open} onOpenChange={(state) => setOpen}>
+    <Drawer open={!!open} onOpenChange={setOpen}>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm pb-10">
           <SelectTemplateCarousel
