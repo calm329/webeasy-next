@@ -8,9 +8,10 @@ type TProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   templates: TTemplate | null;
   setSelectedTemplate: React.Dispatch<React.SetStateAction<TTemplateName>>;
+  getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 export default function SelectTemplateDrawer(props: TProps) {
-  const { open, setOpen, templates, setSelectedTemplate } = props;
+  const { open, setOpen, templates, setSelectedTemplate, getData } = props;
   return (
     <Drawer open={!!open} onOpenChange={(state) => setOpen}>
       <DrawerContent>
@@ -19,6 +20,7 @@ export default function SelectTemplateDrawer(props: TProps) {
             templates={templates}
             setSelectedTemplate={setSelectedTemplate}
             setOpen={setOpen}
+            getData={getData}
           />
         </div>
       </DrawerContent>

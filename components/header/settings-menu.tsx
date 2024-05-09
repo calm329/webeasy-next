@@ -44,6 +44,7 @@ export default function SettingMenu(props: TProps) {
           setOpen={setIsTemplateOpen}
           templates={templates}
           setSelectedTemplate={setSelectedTemplate}
+          getData={getData}
         />
       ) : (
         <SelectTemplateModal
@@ -51,6 +52,7 @@ export default function SettingMenu(props: TProps) {
           setOpen={setIsTemplateOpen}
           templates={templates}
           setSelectedTemplate={setSelectedTemplate}
+          getData={getData}
         />
       )}
       {handleChange &&

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Header } from "./Header";
 import { Hero } from "./Hero";
 import { Speakers } from "./Speakers";
@@ -43,6 +43,7 @@ const Template1 = (props: TProps) => {
     editable,
     setFocusedField,
   } = props;
+
   return (
     <>
       <Header

@@ -18,9 +18,10 @@ type TProps = {
   templates: TTemplate | null;
   setSelectedTemplate: React.Dispatch<React.SetStateAction<TTemplateName>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 const SelectTemplateCarousel = (props: TProps) => {
-  const { templates, setSelectedTemplate, setOpen } = props;
+  const { templates, setSelectedTemplate, setOpen, getData } = props;
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const [activeIndex, setActiveIndex] = React.useState(0);
 
@@ -29,6 +30,7 @@ const SelectTemplateCarousel = (props: TProps) => {
       const templateData = templates[activeIndex];
       setSelectedTemplate(templateData.name);
       setOpen(false);
+      getData("regenerate");
     }
   }
   return (
