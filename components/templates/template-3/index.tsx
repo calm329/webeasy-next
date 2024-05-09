@@ -132,7 +132,6 @@ function Photos() {
 
   return (
     <>
-      {/* <Header /> */}
       <div className="mt-16 sm:mt-20">
         <div className="-my-4 flex flex-wrap justify-center gap-10 overflow-hidden py-4 ">
           {posts.map((data, i) => (
@@ -192,48 +191,58 @@ const services = {
   ],
 };
 
-export default async function Home() {
+export default function Home() {
   return (
     <>
-      <Container className="mt-9 flex w-full">
-        <div className="flex max-lg:flex-col">
-          <div className="">
-            <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
-              Experience Serenity in Every Blossom
-            </h1>
-            <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-              Discover the art of floral elegance with our carefully curated
-              blooms.
-            </p>
-            <Button href="#" className="mt-10  ">
-              Explore Now
-            </Button>
-          </div>
-          <div>
-            <Image
-              src={
-                "https://scontent-iad3-2.cdninstagram.com/v/t51.29350-15/438189906_934731618125271_1300104843356179889_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=18de74&_nc_ohc=_YRdY8w6oWoQ7kNvgETebwM&_nc_ht=scontent-iad3-2.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfBJWA1VblrusYqrBzp2CQfA158P7kAFuAqoEK4oDiUwEg&oe=6640F368"
-              }
-              alt=""
-              height={400}
-              width={300}
-              className="mt-5 rounded-lg object-contain drop-shadow max-lg:mx-auto"
-            />
-          </div>
+      <div className=" inset-0 flex justify-center sm:px-8">
+        <div className="flex w-full max-w-7xl lg:px-8">
+          <div className="w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20" />
         </div>
-      </Container>
-      <Container>
-        <Photos />
-      </Container>
-      <Container className="my-24 md:mt-28">
-        <div className="mx-auto  gap-y-20 lg:max-w-none lg:grid-cols-2">
-          <div className="flex  flex-wrap gap-10">
-            {services.list.map((data) => (
-              <Service key={data.name} service={data} />
-            ))}
-          </div>
-        </div>
-      </Container>
+      </div>
+      <div className="relative flex w-full flex-col">
+        <Header />
+        <main className="flex-auto">
+          <Container className="mt-9 flex w-full">
+            <div className="flex max-lg:flex-col">
+              <div className="">
+                <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
+                  Experience Serenity in Every Blossom
+                </h1>
+                <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+                  Discover the art of floral elegance with our carefully curated
+                  blooms.
+                </p>
+                <Button href="#" className="mt-10  ">
+                  Explore Now
+                </Button>
+              </div>
+              <div>
+                <Image
+                  src={
+                    "https://scontent-iad3-2.cdninstagram.com/v/t51.29350-15/438189906_934731618125271_1300104843356179889_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=18de74&_nc_ohc=_YRdY8w6oWoQ7kNvgETebwM&_nc_ht=scontent-iad3-2.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfBJWA1VblrusYqrBzp2CQfA158P7kAFuAqoEK4oDiUwEg&oe=6640F368"
+                  }
+                  alt=""
+                  height={400}
+                  width={300}
+                  className="mt-5 rounded-lg object-contain drop-shadow max-lg:mx-auto"
+                />
+              </div>
+            </div>
+          </Container>
+          <Container>
+            <Photos />
+          </Container>
+          <Container className="my-24 md:mt-28">
+            <div className="mx-auto  gap-y-20 lg:max-w-none lg:grid-cols-2">
+              <div className="flex  flex-wrap gap-10">
+                {services.list.map((data) => (
+                  <Service key={data.name} service={data} />
+                ))}
+              </div>
+            </div>
+          </Container>
+        </main>
+      </div>
     </>
   );
 }

@@ -12,14 +12,25 @@ import {
 import { getAllTemplates } from "@/lib/fetchers";
 import { TTemplate } from "../header";
 import Image from "next/image";
+import { TTemplateName } from "@/types";
 
 type TProps = {
   templates: TTemplate | null;
+  setSelectedTemplate: React.Dispatch<React.SetStateAction<TTemplateName>>;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const SelectTemplateCarousel = (props: TProps) => {
-  const { templates } = props;
+  const { templates, setSelectedTemplate, setOpen } = props;
   const isMobile = useMediaQuery("(max-width: 1024px)");
+  const [activeIndex, setActiveIndex] = React.useState(0);
 
+  function handleSwitchTemplate() {
+    if (templates) {
+      const templateData = templates[activeIndex];
+      setSelectedTemplate(templateData.name);
+      setOpen(false);
+    }
+  }
   return (
     <div className="flex flex-col gap-5 text-center">
       {!isMobile && (
@@ -29,7 +40,7 @@ const SelectTemplateCarousel = (props: TProps) => {
           </h2>
         </div>
       )}
-      <Carousel className=" w-full max-w-xs">
+      <Carousel className=" w-full max-w-xs" setActiveIndex={setActiveIndex}>
         <CarouselContent>
           {templates?.map((data, i) => (
             <CarouselItem key={data.id}>
@@ -55,6 +66,7 @@ const SelectTemplateCarousel = (props: TProps) => {
       <button
         type="submit"
         className={`ml-auto  flex gap-2 rounded-md bg-indigo-600 px-3 py-2  text-sm font-semibold text-white  shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 `}
+        onClick={handleSwitchTemplate}
       >
         Switch
       </button>

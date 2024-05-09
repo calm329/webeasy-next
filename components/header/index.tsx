@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import AuthModal from "../modal/auth-modal";
@@ -14,7 +14,7 @@ import { AppState } from "@/app/(main)/auth/page";
 import { DebouncedState } from "use-debounce";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useMediaQuery } from "usehooks-ts";
-import { TMeta } from "@/types";
+import { TMeta, TTemplateName } from "@/types";
 import { TUser } from "@/app/(main)/settings/page";
 import { getAllTemplates, getUserById } from "@/lib/fetchers";
 
@@ -30,16 +30,24 @@ type TProps = {
   getData?: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
   appState?: AppState;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
+  setSelectedTemplate: Dispatch<SetStateAction<TTemplateName>>;
 };
 export type TTemplate = {
   id: string;
-  name: string;
+  name: any;
   previewUrl: string;
   createdAt: Date;
   updatedAt: Date;
 }[];
 export default function SiteHeader(props: TProps) {
-  const { showNavigation, isAuth, getData, appState, handleChange } = props;
+  const {
+    showNavigation,
+    isAuth,
+    getData,
+    appState,
+    handleChange,
+    setSelectedTemplate,
+  } = props;
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -113,6 +121,7 @@ export default function SiteHeader(props: TProps) {
                   handleChange={handleChange ?? undefined}
                   appState={appState}
                   templates={templates}
+                  setSelectedTemplate={setSelectedTemplate}
                 />
               )}
               <Link

@@ -3,14 +3,16 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { Dispatch, Fragment, SetStateAction, useState } from "react";
 import SelectTemplateCarousel from "../select-template-carousel/index";
 import { TTemplate } from "../header";
+import { TTemplateName } from "@/types";
 
 type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   templates: TTemplate | null;
+  setSelectedTemplate: Dispatch<SetStateAction<TTemplateName>>;
 };
 export default function SelectTemplateModal(props: TProps) {
-  const { open, setOpen, templates } = props;
+  const { open, setOpen, templates, setSelectedTemplate } = props;
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" open={open} className="relative z-10" onClose={setOpen}>
@@ -38,7 +40,11 @@ export default function SelectTemplateModal(props: TProps) {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative flex  transform flex-col items-center justify-center rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
-                <SelectTemplateCarousel templates={templates} />
+                <SelectTemplateCarousel
+                  templates={templates}
+                  setSelectedTemplate={setSelectedTemplate}
+                  setOpen={setOpen}
+                />
               </Dialog.Panel>
             </Transition.Child>
           </div>

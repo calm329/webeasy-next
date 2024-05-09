@@ -119,7 +119,7 @@ export function Header() {
   return (
     <>
       <header
-        className="pointer-events-none relative z-50 flex flex-none flex-col"
+        className="pointer-events-none relative flex flex-none flex-col"
         style={{
           height: "var(--header-height)",
           marginBottom: "var(--header-mb)",
@@ -127,7 +127,7 @@ export function Header() {
       >
         <div className="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]" />
         <div
-          className="top-0 z-10 h-16 pt-6"
+          className="top-0  h-16 pt-6"
           style={{
             position:
               "var(--header-position)" as React.CSSProperties["position"],

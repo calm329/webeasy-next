@@ -42,3 +42,9 @@ export type TMeta = {
 };
 
 export type TTabs = "General" | "Security";
+
+export type TTemplateName =
+  | "Basic template"
+  | "Template 1"
+  | "Template 2"
+  | "Template 3";
