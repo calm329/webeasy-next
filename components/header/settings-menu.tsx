@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { signOut, useSession } from "next-auth/react";
@@ -7,7 +7,7 @@ import CustomizeMetaModal from "../modal/meta-modal";
 import { DebouncedState } from "use-debounce";
 import { AppState } from "@/app/(main)/auth/page";
 import { useMediaQuery } from "usehooks-ts";
-import { TMeta } from "@/types";
+import { TMeta, TTemplateName } from "@/types";
 import ColorModal from "../modal/color-modal";
 import { MetaDrawer } from "../drawer/meta-drawer";
 import { ColorDrawer } from "../drawer/color-drawer";
@@ -24,10 +24,12 @@ type TProps = {
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
   templates: TTemplate | null;
+  setSelectedTemplate: Dispatch<SetStateAction<TTemplateName>>;
 };
 
 export default function SettingMenu(props: TProps) {
-  const { getData, handleChange, appState, templates } = props;
+  const { getData, handleChange, appState, templates, setSelectedTemplate } =
+    props;
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const [isColorOpen, setIsColorOpen] = useState(false);
@@ -41,12 +43,14 @@ export default function SettingMenu(props: TProps) {
           open={isTemplateOpen}
           setOpen={setIsTemplateOpen}
           templates={templates}
+          setSelectedTemplate={setSelectedTemplate}
         />
       ) : (
         <SelectTemplateModal
           open={isTemplateOpen}
           setOpen={setIsTemplateOpen}
           templates={templates}
+          setSelectedTemplate={setSelectedTemplate}
         />
       )}
       {handleChange &&

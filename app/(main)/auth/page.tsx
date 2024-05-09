@@ -11,12 +11,15 @@ import {
 } from "@/lib/actions";
 import { getSiteData } from "@/lib/fetchers";
 import { fetchData, getUsernameFromPosts } from "@/lib/utils";
-import { FormField, TFields, TMeta, TSection } from "@/types";
+import { FormField, TFields, TMeta, TSection, TTemplateName } from "@/types";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
+import Template1 from "@/components/templates/template-1";
+import Template2 from "@/components/templates/template-2";
+import Template3 from "@/components/templates/template-3";
 
 export interface AppState {
   status: string;
@@ -57,6 +60,8 @@ export default function Page() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<TFields>(null);
   const [section, setSection] = useState<TSection>("Banner");
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<TTemplateName>("Basic template");
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
       {
@@ -530,6 +535,7 @@ export default function Page() {
             getData={getData}
             appState={appState}
             handleChange={handleChange}
+            setSelectedTemplate={setSelectedTemplate}
           />
           <div className="relative flex size-full pt-20">
             <div className="h-full w-full">
@@ -549,27 +555,31 @@ export default function Page() {
                 Refresh Instagram feed
               </button>
             </div> */}
-
-              <BasicTemplate
-                editable={appState.editable}
-                setSection={setSection}
-                setIsOpen={setIsSideBarOpen}
-                logo={appState.logo}
-                businessName={appState.aiContent["businessName"]}
-                hero={{
-                  heading: appState.aiContent["hero"]["heading"],
-                  subheading: appState.aiContent["hero"]["subheading"],
-                  imageUrl: appState.aiContent["hero"]["imageUrl"],
-                }}
-                colors={appState.aiContent["colors"]}
-                cta={{
-                  text: appState.aiContent["hero"]["cta"],
-                  link: appState.aiContent["hero"]["ctaLink"] || "#",
-                }}
-                services={appState.aiContent["services"]["list"]}
-                posts={appState.iPosts}
-                setFocusedField={setFocusedField}
-              />
+              {selectedTemplate === "Basic template" && (
+                <BasicTemplate
+                  editable={appState.editable}
+                  setSection={setSection}
+                  setIsOpen={setIsSideBarOpen}
+                  logo={appState.logo}
+                  businessName={appState.aiContent["businessName"]}
+                  hero={{
+                    heading: appState.aiContent["hero"]["heading"],
+                    subheading: appState.aiContent["hero"]["subheading"],
+                    imageUrl: appState.aiContent["hero"]["imageUrl"],
+                  }}
+                  colors={appState.aiContent["colors"]}
+                  cta={{
+                    text: appState.aiContent["hero"]["cta"],
+                    link: appState.aiContent["hero"]["ctaLink"] || "#",
+                  }}
+                  services={appState.aiContent["services"]["list"]}
+                  posts={appState.iPosts}
+                  setFocusedField={setFocusedField}
+                />
+              )}
+              {selectedTemplate === "Template 1" && <Template1 />}
+              {selectedTemplate === "Template 2" && <Template2 />}
+              {selectedTemplate === "Template 3" && <Template3 />}
             </div>
             {appState.editable && (
               <>
