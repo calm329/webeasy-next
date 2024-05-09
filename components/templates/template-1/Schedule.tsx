@@ -208,12 +208,14 @@ function TimeSlots({ className }: { className?: string }) {
       role="list"
       className={clsx(
         className,
-        " space-y-8 bg-white px-10 py-14 text-center shadow-xl shadow-blue-900/5",
+        " space-y-8  bg-white px-10 py-14 text-center shadow-xl shadow-blue-900/5",
       )}
     >
       {services.list.map((data, i) => (
         <li key={i}>
-          {i > 0 && <div className="mx-auto mb-8 h-px w-48 bg-white" />}
+          {i > 0 && (
+            <div className="mx-auto mb-8 h-px  border-b-2 border-gray-400 bg-white" />
+          )}
           <h4 className="text-lg font-semibold tracking-tight text-blue-900">
             {data.name}
           </h4>
