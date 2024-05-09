@@ -577,7 +577,28 @@ export default function Page() {
                   setFocusedField={setFocusedField}
                 />
               )}
-              {selectedTemplate === "Template 1" && <Template1 />}
+              {selectedTemplate === "Template 1" && (
+                <Template1
+                  editable={appState.editable}
+                  setSection={setSection}
+                  setIsOpen={setIsSideBarOpen}
+                  logo={appState.logo}
+                  businessName={appState.aiContent["businessName"]}
+                  hero={{
+                    heading: appState.aiContent["hero"]["heading"],
+                    subheading: appState.aiContent["hero"]["subheading"],
+                    imageUrl: appState.aiContent["hero"]["imageUrl"],
+                  }}
+                  colors={appState.aiContent["colors"]}
+                  cta={{
+                    text: appState.aiContent["hero"]["cta"],
+                    link: appState.aiContent["hero"]["ctaLink"] || "#",
+                  }}
+                  services={appState.aiContent["services"]["list"]}
+                  posts={appState.iPosts}
+                  setFocusedField={setFocusedField}
+                />
+              )}
               {selectedTemplate === "Template 2" && <Template2 />}
               {selectedTemplate === "Template 3" && <Template3 />}
             </div>

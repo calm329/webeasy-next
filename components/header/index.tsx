@@ -30,7 +30,7 @@ type TProps = {
   getData?: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
   appState?: AppState;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
-  setSelectedTemplate: Dispatch<SetStateAction<TTemplateName>>;
+  setSelectedTemplate?: Dispatch<SetStateAction<TTemplateName>>;
 };
 export type TTemplate = {
   id: string;
@@ -115,7 +115,7 @@ export default function SiteHeader(props: TProps) {
         {isAuth && (
           <>
             <div className="ml-auto flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2">
-              {getData && appState && (
+              {getData && setSelectedTemplate && appState && (
                 <SettingMenu
                   getData={getData}
                   handleChange={handleChange ?? undefined}
