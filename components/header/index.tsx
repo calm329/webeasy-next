@@ -16,7 +16,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { useMediaQuery } from "usehooks-ts";
 import { TMeta } from "@/types";
 import { TUser } from "@/app/(main)/settings/page";
-import { getUserById } from "@/lib/fetchers";
+import { getAllTemplates, getUserById } from "@/lib/fetchers";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -31,7 +31,13 @@ type TProps = {
   appState?: AppState;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
 };
-
+export type TTemplate = {
+  id: string;
+  name: string;
+  previewUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
+}[];
 export default function SiteHeader(props: TProps) {
   const { showNavigation, isAuth, getData, appState, handleChange } = props;
   const { status } = useSession();
@@ -40,6 +46,18 @@ export default function SiteHeader(props: TProps) {
   const matches = useMediaQuery("(max-width: 500px)");
   const [user, setUser] = useState<TUser>(null);
   const [loading, setLoading] = useState(false);
+  const [templates, setTemplates] = useState<TTemplate | null>(null);
+  const fetchData = async () => {
+    try {
+      const response = await getAllTemplates();
+      console.log("templates", response);
+      setTemplates(response);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   const getUserData = async () => {
     setLoading(true);
     try {
@@ -94,6 +112,7 @@ export default function SiteHeader(props: TProps) {
                   getData={getData}
                   handleChange={handleChange ?? undefined}
                   appState={appState}
+                  templates={templates}
                 />
               )}
               <Link

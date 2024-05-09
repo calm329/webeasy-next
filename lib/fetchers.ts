@@ -90,3 +90,14 @@ export async function getUserById() {
   //   },
   // )();
 }
+
+export async function getAllTemplates() {
+  try {
+    const templates = await prisma.template.findMany();
+    return templates;
+  } catch (error) {
+    console.log(error);
+
+    return [];
+  }
+}
