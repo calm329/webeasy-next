@@ -42,23 +42,25 @@ const SelectTemplateCarousel = (props: TProps) => {
       )}
       <Carousel className=" w-full max-w-xs" setActiveIndex={setActiveIndex}>
         <CarouselContent>
-          {templates?.map((data, i) => (
-            <CarouselItem key={data.id}>
-              <div className=" p-1">
-                <Card className="">
-                  <CardContent className="aspect-square flex h-96 flex-col items-center  justify-center p-6">
-                    <Image
-                      alt=""
-                      src={data.previewUrl}
-                      height={400}
-                      width={400}
-                    />
-                    <span className="text-xl font-semibold">{data.name}</span>
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
-          ))}
+          {templates
+            ?.sort((a, b) => a.name.localeCompare(b.name))
+            ?.map((data, i) => (
+              <CarouselItem key={data.id}>
+                <div className=" p-1">
+                  <Card className="">
+                    <CardContent className="aspect-square flex h-96 flex-col items-center  justify-center p-6">
+                      <Image
+                        alt=""
+                        src={data.previewUrl}
+                        height={400}
+                        width={400}
+                      />
+                      <span className="text-xl font-semibold">{data.name}</span>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
