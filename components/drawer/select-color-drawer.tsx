@@ -7,6 +7,7 @@ import { AppState } from "@/app/(main)/auth/page";
 import CustomizeColor from "../customize-color";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import { SketchPicker } from "react-color";
+import { IoClose } from "react-icons/io5";
 
 type TProps = {
   field: ControllerRenderProps<
@@ -35,18 +36,42 @@ type TProps = {
 
 export function SelectColorDrawer(props: TProps) {
   const { field, getValues, setOpen, open, f, handleChange } = props;
+  const [selectedColor, setSelectedColor] = React.useState("");
+  const saveColor = () => {
+    handleChange(f.name, selectedColor);
+    field.onChange(selectedColor);
+    setOpen(false);
+  };
+
   return (
     <Drawer open={!!open} onOpenChange={setOpen}>
       <DrawerContent>
-        <div className="mx-auto mt-5 flex w-full max-w-sm justify-center px-5 pb-10">
+        <div className="mx-auto mt-5 flex w-full max-w-sm flex-col items-center justify-center px-5 pb-10">
+          <button
+            onClick={() => setOpen(false)}
+            className="mb-5 ml-auto text-2xl"
+          >
+            <IoClose />
+          </button>
           <SketchPicker
             {...field}
-            color={getValues(f.name)}
-            onChange={(value) => {
-              handleChange(f.name, value.hex);
-              field.onChange(value.hex);
-            }}
+            color={selectedColor}
+            onChange={(value) => setSelectedColor(value.hex)}
           />
+          <div className="ml-auto mt-5 flex gap-5">
+            <button
+              onClick={saveColor}
+              className={`ml-auto flex w-16 items-center justify-center gap-2 rounded-md bg-indigo-600 px-3  py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+            >
+              Ok
+            </button>
+            <button
+              onClick={() => setOpen(false)}
+              className={`ml-auto  flex w-16 items-center justify-center gap-2 rounded-md  border-2 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </DrawerContent>
     </Drawer>
