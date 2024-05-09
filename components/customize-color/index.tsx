@@ -92,6 +92,8 @@ const CustomizeColor = (props: TProps) => {
             tempColorFields[0].defaultValue = originalColor.primary;
             tempColorFields[1].defaultValue = originalColor.secondary;
             setColorFields([...tempColorFields]);
+            handleChange("primary", tempColorFields[0].defaultValue);
+            handleChange("secondary", tempColorFields[1].defaultValue);
           }}
           className={`mt-auto  flex w-16 items-center justify-center gap-2 rounded-md  border-2 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
         >
