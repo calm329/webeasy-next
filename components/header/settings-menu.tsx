@@ -11,6 +11,9 @@ import { TMeta } from "@/types";
 import ColorModal from "../modal/color-modal";
 import { MetaDrawer } from "../drawer/meta-drawer";
 import { ColorDrawer } from "../drawer/color-drawer";
+import SelectTemplateModal from "../modal/select-template-modal";
+import { TTemplate } from ".";
+import SelectTemplateDrawer from "../drawer/select-template-drawer";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -20,17 +23,32 @@ type TProps = {
   getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
+  templates: TTemplate | null;
 };
 
 export default function SettingMenu(props: TProps) {
-  const { getData, handleChange, appState } = props;
+  const { getData, handleChange, appState, templates } = props;
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const [isColorOpen, setIsColorOpen] = useState(false);
+  const [isTemplateOpen, setIsTemplateOpen] = useState(false);
   const matches = useMediaQuery("(max-width: 500px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
   return (
     <>
+      {isMobile ? (
+        <SelectTemplateDrawer
+          open={isTemplateOpen}
+          setOpen={setIsTemplateOpen}
+          templates={templates}
+        />
+      ) : (
+        <SelectTemplateModal
+          open={isTemplateOpen}
+          setOpen={setIsTemplateOpen}
+          templates={templates}
+        />
+      )}
       {handleChange &&
         (isMobile ? (
           <MetaDrawer
@@ -119,6 +137,19 @@ export default function SettingMenu(props: TProps) {
                     onClick={() => setIsColorOpen(true)}
                   >
                     Customize Colors
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={classNames(
+                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                    )}
+                    onClick={() => setIsTemplateOpen(true)}
+                  >
+                    Switch Template
                   </button>
                 )}
               </Menu.Item>

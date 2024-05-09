@@ -209,3 +209,26 @@ export async function updateSite(
     console.log(error);
   }
 }
+
+export async function addTemplate({
+  name,
+  previewUrl,
+}: {
+  name: string;
+  previewUrl: string;
+}) {
+  try {
+    const templateResponse = await prisma.template.create({
+      data: {
+        name,
+        previewUrl,
+      },
+    });
+
+    return templateResponse;
+  } catch (error) {
+    console.log(error);
+
+    return { error: "Failed to create site" };
+  }
+}
