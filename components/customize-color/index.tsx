@@ -38,14 +38,25 @@ const CustomizeColor = (props: TProps) => {
       },
     },
   ]);
+
+  const [originalColor, setOriginalColor] = useState({
+    primary: "",
+    secondary: "",
+  });
+
   useEffect(() => {
     if (appState.aiContent.colors) {
       const tempColorFields = colorFields;
       tempColorFields[0].defaultValue = appState.aiContent.colors.primary;
       tempColorFields[1].defaultValue = appState.aiContent.colors.secondary;
       setColorFields([...tempColorFields]);
+      setOriginalColor({
+        primary: appState.aiContent.colors.primary,
+        secondary: appState.aiContent.colors.secondary,
+      });
     }
   }, []);
+  console.log("Original", originalColor, appState);
   const isMobile = useMediaQuery("(max-width: 1024px)");
   return (
     <div>
@@ -56,23 +67,36 @@ const CustomizeColor = (props: TProps) => {
           </h2>
         </div>
       )}
-      <div>
-        <DynamicForm
-          focusedField={"primary"}
-          fields={colorFields}
-          handler={async (data: any, keys: string[]) => {
-            try {
-              await updateSite(
-                getUsernameFromPosts(JSON.stringify(appState.iPosts)) || "",
-                data,
-                keys,
-              );
-              // getData();
-              toast.success("Your Colors has been saved");
-            } catch (error) {}
-          }} // updateSite}
-          handleChange={handleChange}
-        />
+      <div className="flex gap-5">
+        <div className="flex-1">
+          <DynamicForm
+            focusedField={"primary"}
+            fields={colorFields}
+            handler={async (data: any, keys: string[]) => {
+              try {
+                await updateSite(
+                  getUsernameFromPosts(JSON.stringify(appState.iPosts)) || "",
+                  data,
+                  keys,
+                );
+                // getData();
+                toast.success("Your Colors has been saved");
+              } catch (error) {}
+            }} // updateSite}
+            handleChange={handleChange}
+          />
+        </div>
+        <button
+          onClick={() => {
+            const tempColorFields = colorFields;
+            tempColorFields[0].defaultValue = originalColor.primary;
+            tempColorFields[1].defaultValue = originalColor.secondary;
+            setColorFields([...tempColorFields]);
+          }}
+          className={`mt-auto  flex w-16 items-center justify-center gap-2 rounded-md  border-2 bg-white px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+        >
+          Cancel
+        </button>
       </div>
     </div>
   );
