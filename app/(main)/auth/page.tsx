@@ -425,6 +425,15 @@ export default function Page() {
           },
         }));
         break;
+      case "colors":
+        setAppState((state) => ({
+          ...state,
+          aiContent: {
+            ...state.aiContent,
+            ["colors"]: value,
+          },
+        }));
+        break;
       case "title":
         setAppState((state) => ({
           ...state,
