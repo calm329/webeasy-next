@@ -46,7 +46,7 @@ export default function RegisterForm() {
         await signIn("email", {
           email: data.email,
           password: data.password,
-          redirect: false,
+          redirect: true,
         });
         toast.success("Signup successful", {
           position: "top-right",
