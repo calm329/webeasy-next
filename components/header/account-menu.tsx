@@ -26,27 +26,31 @@ export default function AccountMenu(props: TProps) {
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="inline-flex w-full justify-center gap-5 gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50">
-          {user?.image ? (
-            <Image
-              src={user?.image}
-              className=" aspect-1 h-[45px] w-[45px] rounded-full object-cover text-gray-900"
-              alt=""
-              width={50}
-              height={50}
-            />
-          ) : (
-            <Image
-              src={"/Default_pfp.png"}
-              className="aspect-1 h-[45px] w-[45px] rounded-full object-cover text-gray-900"
-              alt=""
-              width={50}
-              height={50}
-            />
+          {user && (
+            <>
+              {user?.image ? (
+                <Image
+                  src={user?.image}
+                  className=" aspect-1 h-[45px] w-[45px] rounded-full object-cover text-gray-900"
+                  alt=""
+                  width={50}
+                  height={50}
+                />
+              ) : (
+                <Image
+                  src={"/Default_pfp.png"}
+                  className="aspect-1 h-[45px] w-[45px] rounded-full object-cover text-gray-900"
+                  alt=""
+                  width={50}
+                  height={50}
+                />
+              )}
+              <ChevronDownIcon
+                className="-mr-1 mt-2.5 h-5 w-5 text-gray-400"
+                aria-hidden="true"
+              />
+            </>
           )}
-          <ChevronDownIcon
-            className="-mr-1 mt-2.5 h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
         </Menu.Button>
       </div>
 
