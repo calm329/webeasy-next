@@ -93,7 +93,7 @@ export default function General() {
                       />
                     ) : (
                       <Image
-                        src={"/Default_pfp.svg"}
+                        src={"/Default_pfp.png"}
                         className="aspect-1 h-12 w-12 rounded-full object-cover text-gray-900"
                         alt=""
                         width={100}
