@@ -100,7 +100,9 @@ export default function SiteHeader(props: TProps) {
               height={100}
             />
           </Link>
-          <div className={`flex lg:gap-x-12 ${pathname === "/" && "hidden"}`}>
+          <div
+            className={`flex lg:gap-x-12 ${pathname === "/" && "hidden"} max-lg:hidden`}
+          >
             {user &&
               showNavigation &&
               navigation.map((item) => (
