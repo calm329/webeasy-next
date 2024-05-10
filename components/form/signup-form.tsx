@@ -43,14 +43,13 @@ export default function RegisterForm() {
       });
 
       if (response.status === 200) {
-        toast.success("Signup successful", {
-          position: "top-right",
-        });
-
-        signIn("credentials", {
+        await signIn("email", {
           email: data.email,
           password: data.password,
           redirect: false,
+        });
+        toast.success("Signup successful", {
+          position: "top-right",
         });
       } else {
         const { error } = await response.json();
