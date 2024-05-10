@@ -220,6 +220,7 @@ function FormField(props: TFormFieldProps) {
                               handleChange(f.name, e.target.value);
                               field.onChange(e.target.value);
                             }}
+                            type={f.type}
                           />
                         )}
                         {errors[field.name] && (
