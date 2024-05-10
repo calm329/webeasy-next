@@ -15,7 +15,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
             closeButton: "ml-auto right-0 mt-3",
           },
         }}
-        duration={100000}
       />
       {children}
     </SessionProvider>
