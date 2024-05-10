@@ -17,6 +17,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { TMeta, TTemplateName } from "@/types";
 import { TUser } from "@/app/(main)/settings/page";
 import { getAllTemplates, getUserById } from "@/lib/fetchers";
+import { usePathname } from "next/navigation";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -40,6 +41,7 @@ export type TTemplate = {
   updatedAt: Date;
 }[];
 export default function SiteHeader(props: TProps) {
+  const pathname = usePathname();
   const {
     showNavigation,
     isAuth,
@@ -99,7 +101,7 @@ export default function SiteHeader(props: TProps) {
               height={100}
             />
           </Link>
-          <div className="hidden lg:flex lg:gap-x-12">
+          <div className={`flex lg:gap-x-12 ${pathname === "/" && "hidden"}`}>
             {showNavigation &&
               navigation.map((item) => (
                 <a
