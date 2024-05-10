@@ -22,7 +22,6 @@ import { usePathname } from "next/navigation";
 const navigation = [
   { name: "Customization", href: "#" },
   { name: "Analytics", href: "#" },
-  { name: "Settings", href: "/settings" },
 ];
 
 type TProps = {
@@ -102,7 +101,8 @@ export default function SiteHeader(props: TProps) {
             />
           </Link>
           <div className={`flex lg:gap-x-12 ${pathname === "/" && "hidden"}`}>
-            {showNavigation &&
+            {user &&
+              showNavigation &&
               navigation.map((item) => (
                 <a
                   key={item.name}
@@ -243,15 +243,16 @@ export default function SiteHeader(props: TProps) {
                 </div>
               )}
               <div className="space-y-1 py-5">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base  leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    {item.name}
-                  </a>
-                ))}
+                {user &&
+                  navigation.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className="-mx-3 block rounded-lg px-3 py-2 text-base  leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      {item.name}
+                    </a>
+                  ))}
               </div>
 
               {status === "authenticated" ? (
