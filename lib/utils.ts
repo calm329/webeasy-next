@@ -17,6 +17,13 @@ export function generateZodSchema(fields: any) {
       zodValidation = zodValidation.min(1, `${field.label} is required`);
     }
 
+    if (validation.link) {
+      zodValidation = zodValidation.regex(
+        /https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}/,
+        `Please enter a valid URL. Example: https://domain.com`,
+      );
+    }
+
     if (validation.maxLength) {
       zodValidation = zodValidation.max(
         validation.maxLength,
