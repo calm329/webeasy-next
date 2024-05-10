@@ -148,7 +148,7 @@ export default function Home(props: TProps) {
           cta={cta}
           colors={colors}
         />
-        <main className="flex-auto">
+        <main className="flex-auto max-sm:mt-20">
           <Container className="mt-9 flex w-full">
             <div className="flex gap-10 max-lg:flex-col">
               <div className="">

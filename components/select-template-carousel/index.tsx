@@ -42,7 +42,10 @@ const SelectTemplateCarousel = (props: TProps) => {
           </h2>
         </div>
       )}
-      <Carousel className=" w-full max-w-xs" setActiveIndex={setActiveIndex}>
+      <Carousel
+        className=" mx-auto w-full max-w-xs"
+        setActiveIndex={setActiveIndex}
+      >
         <CarouselContent>
           {templates
             ?.sort((a, b) => a.name.localeCompare(b.name))
