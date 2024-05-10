@@ -115,112 +115,130 @@ function FormField(props: TFormFieldProps) {
     (focusedField === "cta" && field.name === "ctaLink") ||
     (focusedField === "title" && field.name === "description") ||
     (focusedField === "primary" && field.name === "secondary") ? (
-    <Controller
-      key={field.name}
-      name={field.name}
-      control={control}
-      render={({ field }) => (
-        <div className="flex w-full flex-col">
-          {f.type === "image" && (
-            <div>
-              <Uploader
-                defaultValue={f.defaultValue}
-                name={f.name as "image" | "logo"}
-                label={f.label}
-                onChange={(value) => {
-                  handleChange(f.name, value);
-                  field.onChange(value);
-                }}
-              />
-              {errors[field.name] && (
-                <p className="mt-2 text-sm text-red-600" id="email-error">
-                  {errors[field.name].message}
-                </p>
-              )}
-            </div>
-          )}
-          {f.type === "color" ? (
-            <div>
-              <div className="mt-5 flex gap-5">
-                <h2 className="">{f.label}:</h2>
-                <div
-                  className="mb-5 inline-block cursor-pointer rounded bg-white p-1 shadow "
-                  onClick={() => setShow(true)}
-                >
-                  <div
-                    className={`h-4 w-9 border-2`}
-                    style={{ background: getValues(f.name) }}
-                  />
-                </div>
-                <p> {getValues(f.name)}</p>
-              </div>
+    <div className="flex w-full flex-col">
+      <Controller
+        key={field.name}
+        name={field.name}
+        control={control}
+        render={({ field }) => (
+          <>
+            {(() => {
+              switch (f.type) {
+                case "image":
+                  return (
+                    <div>
+                      <Uploader
+                        defaultValue={f.defaultValue}
+                        name={f.name as "image" | "logo"}
+                        label={f.label}
+                        onChange={(value) => {
+                          handleChange(f.name, value);
+                          field.onChange(value);
+                        }}
+                      />
+                      {errors[field.name] && (
+                        <p
+                          className="mt-2 text-sm text-red-600"
+                          id="email-error"
+                        >
+                          {errors[field.name].message}
+                        </p>
+                      )}
+                    </div>
+                  );
+                case "color":
+                  return (
+                    <div>
+                      <div className="mt-5 flex gap-5">
+                        <h2 className="">{f.label}:</h2>
+                        <div
+                          className="mb-5 inline-block cursor-pointer rounded bg-white p-1 shadow "
+                          onClick={() => setShow(true)}
+                        >
+                          <div
+                            className={`h-4 w-9 border-2`}
+                            style={{ background: getValues(f.name) }}
+                          />
+                        </div>
+                        <p> {getValues(f.name)}</p>
+                      </div>
 
-              {show &&
-                (isMobile ? (
-                  <SelectColorDrawer
-                    f={f}
-                    field={field}
-                    getValues={getValues}
-                    handleChange={handleChange}
-                    open={show}
-                    setOpen={setShow}
-                  />
-                ) : (
-                  <SelectColorModal
-                    f={f}
-                    field={field}
-                    getValues={getValues}
-                    handleChange={handleChange}
-                    open={show}
-                    setOpen={setShow}
-                  />
-                ))}
-            </div>
-          ) : (
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                {f.label}
-              </label>
-              <div className="mt-2">
-                {f.type === "textarea" ? (
-                  <textarea
-                    {...field}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder={f.placeholder}
-                    aria-invalid={errors[field.name] ? "true" : "false"}
-                    aria-describedby={field.name}
-                    onChange={(e) => {
-                      handleChange(f.name, e.target.value);
-                      field.onChange(e.target.value);
-                    }}
-                  />
-                ) : (
-                  <input
-                    {...field}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder={f.placeholder}
-                    aria-invalid={errors[field.name] ? "true" : "false"}
-                    aria-describedby={field.name}
-                    onChange={(e) => {
-                      handleChange(f.name, e.target.value);
-                      field.onChange(e.target.value);
-                    }}
-                  />
-                )}
-                {errors[field.name] && (
-                  <p className="mt-2 text-sm text-red-600" id="email-error">
-                    {errors[field.name].message}
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    />
+                      {show &&
+                        (isMobile ? (
+                          <SelectColorDrawer
+                            f={f}
+                            field={field}
+                            getValues={getValues}
+                            handleChange={handleChange}
+                            open={show}
+                            setOpen={setShow}
+                          />
+                        ) : (
+                          <SelectColorModal
+                            f={f}
+                            field={field}
+                            getValues={getValues}
+                            handleChange={handleChange}
+                            open={show}
+                            setOpen={setShow}
+                          />
+                        ))}
+                    </div>
+                  );
+                case "textarea":
+                case "text":
+                default:
+                  return (
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        {f.label}
+                      </label>
+                      <div className="mt-2">
+                        {f.type === "textarea" ? (
+                          <textarea
+                            {...field}
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            placeholder={f.placeholder}
+                            aria-invalid={errors[field.name] ? "true" : "false"}
+                            aria-describedby={field.name}
+                            onChange={(e) => {
+                              handleChange(f.name, e.target.value);
+                              field.onChange(e.target.value);
+                            }}
+                          />
+                        ) : (
+                          <input
+                            {...field}
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            placeholder={f.placeholder}
+                            aria-invalid={errors[field.name] ? "true" : "false"}
+                            aria-describedby={field.name}
+                            onChange={(e) => {
+                              handleChange(f.name, e.target.value);
+                              field.onChange(e.target.value);
+                            }}
+                          />
+                        )}
+                        {errors[field.name] && (
+                          <p
+                            className="mt-2 text-sm text-red-600"
+                            id="email-error"
+                          >
+                            {errors[field.name].message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+              }
+            })()}
+          </>
+        )}
+      />
+    </div>
   ) : null;
 }
 
