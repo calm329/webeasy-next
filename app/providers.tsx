@@ -6,7 +6,17 @@ import { Toaster } from "sonner";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
-      <Toaster position="top-right" richColors />
+      <Toaster
+        position="top-right"
+        richColors
+        closeButton={true}
+        toastOptions={{
+          classNames: {
+            closeButton: "ml-auto right-0 mt-3",
+          },
+        }}
+        duration={100000}
+      />
       {children}
     </SessionProvider>
   );
