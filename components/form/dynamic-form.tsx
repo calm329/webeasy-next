@@ -17,11 +17,12 @@ import PrimaryModal from "../modal/select-color-modal";
 import SelectColorModal from "../modal/select-color-modal";
 import { useMediaQuery } from "usehooks-ts";
 import { SelectColorDrawer } from "../drawer/select-color-drawer";
+import { error } from "console";
 
 type TProps = {
   title?: string;
   fields: any[];
-  handler: (formData: any, keys: string[]) => void;
+  handler: (formData: any, keys: string[], onLinkInvalid?: () => void) => void;
   handleChange: (name: string, value: string) => void;
   handleBack?: () => void;
   handleNext?: () => void;
@@ -50,18 +51,31 @@ export default function DynamicForm(props: TProps) {
     resolver: zodResolver(zodSchema),
   });
 
+  const [isLinkInValid, setIsLinkInValid] = useState(false);
+  const onLinkInvalid = () => {
+    setIsLinkInValid(true);
+  };
+  console.log("isLinkInValid", isLinkInValid, errors);
+
   const onSubmit: SubmitHandler<any> = async (data) => {
     setLoading(true);
 
     try {
+      const response = await fetch(data["ctaLink"], { mode: "no-cors" });
+      setIsLinkInValid(false);
+
       await handler(
         data,
         fields.map((f) => f.name as string),
+        onLinkInvalid,
       );
 
       handleNext?.();
-    } catch (error) {
-      console.error("Form submission error:", error);
+    } catch (error: any) {
+      if (error.message === "Failed to fetch") {
+        onLinkInvalid();
+      }
+      console.error("Form submission error:", error.message);
     } finally {
       setLoading(false);
     }
@@ -87,6 +101,7 @@ export default function DynamicForm(props: TProps) {
             handleChange={handleChange}
             focusedField={focusedField ?? null}
             getValues={getValues}
+            isLinkInValid={isLinkInValid}
           />
         ))}
         <FormNavigation handleBack={handleBack} loading={loading} />
@@ -103,11 +118,19 @@ type TFormFieldProps = {
   focusedField: TFields;
   open?: boolean;
   getValues: UseFormGetValues<FieldValues>;
+  isLinkInValid: boolean;
 };
 
 function FormField(props: TFormFieldProps) {
-  const { field, control, errors, handleChange, focusedField, getValues } =
-    props;
+  const {
+    field,
+    control,
+    errors,
+    handleChange,
+    focusedField,
+    getValues,
+    isLinkInValid,
+  } = props;
   const f: FormField = field;
   const [show, setShow] = useState(false);
   const isMobile = useMediaQuery("(max-width: 1024px)");
@@ -222,6 +245,14 @@ function FormField(props: TFormFieldProps) {
                             }}
                             type={f.type}
                           />
+                        )}
+                        {isLinkInValid && field.name === "ctaLink" && (
+                          <p
+                            className="mt-2 text-sm text-red-600"
+                            id="email-error"
+                          >
+                            {"Invalid Link"}
+                          </p>
                         )}
                         {errors[field.name] && (
                           <p
