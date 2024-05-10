@@ -25,12 +25,19 @@ type TProps = {
   appState: AppState;
   templates: TTemplate | null;
   setSelectedTemplate: Dispatch<SetStateAction<TTemplateName>>;
+  setShowAuthModal: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function SettingMenu(props: TProps) {
-  const { getData, handleChange, appState, templates, setSelectedTemplate } =
-    props;
-  const { data: session } = useSession();
+  const {
+    getData,
+    handleChange,
+    appState,
+    templates,
+    setSelectedTemplate,
+    setShowAuthModal,
+  } = props;
+  const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [isColorOpen, setIsColorOpen] = useState(false);
   const [isTemplateOpen, setIsTemplateOpen] = useState(false);
@@ -127,7 +134,11 @@ export default function SettingMenu(props: TProps) {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                     )}
-                    onClick={() => setOpen(true)}
+                    onClick={() =>
+                      status === "unauthenticated"
+                        ? setShowAuthModal(true)
+                        : setOpen(true)
+                    }
                   >
                     SEO Configuration
                   </button>
@@ -140,7 +151,11 @@ export default function SettingMenu(props: TProps) {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                     )}
-                    onClick={() => setIsColorOpen(true)}
+                    onClick={() =>
+                      status === "unauthenticated"
+                        ? setShowAuthModal(true)
+                        : setIsColorOpen(true)
+                    }
                   >
                     Customize Colors
                   </button>
@@ -153,7 +168,11 @@ export default function SettingMenu(props: TProps) {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                     )}
-                    onClick={() => setIsTemplateOpen(true)}
+                    onClick={() =>
+                      status === "unauthenticated"
+                        ? setShowAuthModal(true)
+                        : setIsTemplateOpen(true)
+                    }
                   >
                     Switch Template
                   </button>
@@ -162,7 +181,11 @@ export default function SettingMenu(props: TProps) {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    onClick={() => getData("regenerate")}
+                    onClick={() =>
+                      status === "unauthenticated"
+                        ? setShowAuthModal(true)
+                        : getData("regenerate")
+                    }
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
@@ -175,7 +198,11 @@ export default function SettingMenu(props: TProps) {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    onClick={() => getData("refresh")}
+                    onClick={() =>
+                      status === "unauthenticated"
+                        ? setShowAuthModal(true)
+                        : getData("refresh")
+                    }
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",

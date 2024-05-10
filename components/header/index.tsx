@@ -126,6 +126,7 @@ export default function SiteHeader(props: TProps) {
                   appState={appState}
                   templates={templates}
                   setSelectedTemplate={setSelectedTemplate}
+                  setShowAuthModal={setShowAuthModal}
                 />
               )}
               <Link
@@ -244,7 +245,7 @@ export default function SiteHeader(props: TProps) {
                   </div>
                 </div>
               )}
-              <div className="space-y-1 py-5">
+              {/* <div className="space-y-1 py-5">
                 {user &&
                   navigation.map((item) => (
                     <a
@@ -255,7 +256,7 @@ export default function SiteHeader(props: TProps) {
                       {item.name}
                     </a>
                   ))}
-              </div>
+              </div> */}
 
               {status === "authenticated" ? (
                 <>
