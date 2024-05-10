@@ -15,6 +15,7 @@ export type FormField = {
     maxLength?: number;
     minLength?: number;
     pattern?: string;
+    link?: boolean;
   };
 };
 

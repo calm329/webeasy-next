@@ -102,6 +102,7 @@ export default function Page() {
         placeholder: "Enter a link",
         validation: {
           required: true,
+          link: true,
         },
       },
     ],
