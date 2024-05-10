@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
 import { z } from "zod";
+import CryptoJS from "crypto-js";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -14,7 +15,8 @@ type TProps = {
 export default function SigninForm(props: TProps) {
   const { setIsOpen } = props;
   const [loading, setLoading] = useState(false);
-
+  const [encryptedData, setEncryptedData] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const formSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
@@ -30,10 +32,25 @@ export default function SigninForm(props: TProps) {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<UserFormValue>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
+
+  const encryptData = (email: string, password: string) => {
+    const encryptedEmail = CryptoJS.AES.encrypt(email, "secretKey").toString();
+    const encryptedPassword = CryptoJS.AES.encrypt(
+      password,
+      "secretKey",
+    ).toString();
+    const encryptedData = {
+      email: encryptedEmail,
+      password: encryptedPassword,
+    };
+    localStorage.setItem("userData", JSON.stringify(encryptedData));
+    setEncryptedData(JSON.stringify(encryptedData));
+  };
 
   const onSubmit = async (data: UserFormValue) => {
     setLoading(true);
@@ -50,6 +67,9 @@ export default function SigninForm(props: TProps) {
       });
     }
     if (status?.ok) {
+      if (rememberMe) {
+        encryptData(data.email, data.password);
+      }
       toast.success("Login successful", {
         position: "top-right",
       });
@@ -58,6 +78,33 @@ export default function SigninForm(props: TProps) {
 
     setLoading(false);
   };
+
+  const decryptData = () => {
+    const encryptedData = localStorage.getItem("userData");
+    if (encryptedData) {
+      const decryptedData = JSON.parse(encryptedData);
+      const decryptedEmail = CryptoJS.AES.decrypt(
+        decryptedData.email,
+        "secretKey",
+      ).toString(CryptoJS.enc.Utf8);
+      const decryptedPassword = CryptoJS.AES.decrypt(
+        decryptedData.password,
+        "secretKey",
+      ).toString(CryptoJS.enc.Utf8);
+      setValue("email", decryptedEmail);
+      setValue("password", decryptedPassword);
+    } else {
+      setValue("email", "");
+      setValue("password", "");
+    }
+  };
+
+  useEffect(() => {
+    const encryptedData = localStorage.getItem("userData");
+    if (encryptedData) {
+      decryptData();
+    }
+  }, []);
 
   return (
     <form className="mt-10 space-y-2" onSubmit={handleSubmit(onSubmit)}>
@@ -112,6 +159,7 @@ export default function SigninForm(props: TProps) {
             name="remember-me"
             type="checkbox"
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+            onChange={(e) => setRememberMe(e.target.checked)}
           />
           <label
             htmlFor="remember-me"
