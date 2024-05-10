@@ -209,7 +209,9 @@ export default function Page() {
       const aiContent = JSON.parse(siteData.aiResult);
 
       console.log(aiContent);
-
+      if (!aiContent["hero"]["ctaLink"]) {
+        aiContent["hero"]["ctaLink"] = "https://domain.com";
+      }
       setAppState((state) => ({
         ...state,
         status: "Done",
