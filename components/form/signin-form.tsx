@@ -69,6 +69,11 @@ export default function SigninForm(props: TProps) {
     if (status?.ok) {
       if (rememberMe) {
         encryptData(data.email, data.password);
+      } else {
+        const encryptedData = localStorage.getItem("userData");
+        if (encryptedData) {
+          localStorage.removeItem("userData");
+        }
       }
       toast.success("Login successful", {
         position: "top-right",
