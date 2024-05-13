@@ -1,5 +1,5 @@
 import { FormField, TFields, TSection } from "@/types";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { DebouncedState } from "use-debounce";
 import CustomizePanel from "../customize-panel";
 import HeroContent from "../customize-panel/hero";
@@ -27,7 +27,7 @@ function SlideOver(props: TProps) {
     brandCustomizeFields,
     focusedField,
   } = props;
-
+  const [showButtonForm, setShowButtonForm] = useState(false);
   return (
     <div className="pointer-events-none fixed right-0  z-10 flex max-w-full  pl-10  sm:pl-16">
       <div
@@ -42,6 +42,8 @@ function SlideOver(props: TProps) {
             heroCustomizeFields={heroCustomizeFields}
             brandCustomizeFields={brandCustomizeFields}
             focusedField={focusedField}
+            showButtonForm={showButtonForm}
+            setShowButtonForm={setShowButtonForm}
           >
             {section === "Hero" && (
               <HeroContent
@@ -50,6 +52,7 @@ function SlideOver(props: TProps) {
                 subdomain={subdomain}
                 heroCustomizeFields={heroCustomizeFields}
                 focusedField={focusedField}
+                setShowButtonForm={setShowButtonForm}
               />
             )}
             {section === "Banner" && (
@@ -59,6 +62,7 @@ function SlideOver(props: TProps) {
                 subdomain={subdomain}
                 brandCustomizeFields={brandCustomizeFields}
                 focusedField={focusedField}
+                setShowButtonForm={setShowButtonForm}
               />
             )}
           </CustomizePanel>

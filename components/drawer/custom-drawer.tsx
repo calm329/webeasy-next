@@ -27,6 +27,7 @@ export function CustomDrawer(props: TProps) {
     heroCustomizeFields,
     focusedField,
   } = props;
+  const [showButtonForm, setShowButtonForm] = React.useState(false);
   return (
     <Drawer open={open} onOpenChange={setIsOpen}>
       <DrawerContent className="border border-white">
@@ -39,6 +40,8 @@ export function CustomDrawer(props: TProps) {
             heroCustomizeFields={heroCustomizeFields}
             brandCustomizeFields={brandCustomizeFields}
             focusedField={focusedField}
+            showButtonForm={showButtonForm}
+            setShowButtonForm={setShowButtonForm}
           >
             {section === "Hero" && (
               <HeroContent
@@ -47,6 +50,7 @@ export function CustomDrawer(props: TProps) {
                 subdomain={subdomain}
                 heroCustomizeFields={heroCustomizeFields}
                 focusedField={focusedField}
+                setShowButtonForm={setShowButtonForm}
               />
             )}
             {section === "Banner" && (
@@ -56,6 +60,7 @@ export function CustomDrawer(props: TProps) {
                 subdomain={subdomain}
                 brandCustomizeFields={brandCustomizeFields}
                 focusedField={focusedField}
+                setShowButtonForm={setShowButtonForm}
               />
             )}
           </CustomizePanel>
