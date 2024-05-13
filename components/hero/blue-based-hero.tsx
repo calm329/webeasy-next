@@ -1,4 +1,4 @@
-import { BackgroundImage } from "../templates/blue-based/BackgroundImage";
+import { BackgroundImage } from "@/templates/blue-based/BackgroundImage";
 import { Button } from "../ui/button/Button";
 import { Container } from "../container/Container";
 import Image from "next/image";

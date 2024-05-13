@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { getUserById } from "@/lib/fetchers";
 import { useEffect, useState } from "react";
-import Loader from "@/components/loader";
+import Loader from "@/components/ui/loader";
 import { FormField, TFields } from "@/types";
 import UserModal from "@/components/ui/modal/user-modal";
 import { UserDrawer } from "@/components/ui/drawer/user-drawer";

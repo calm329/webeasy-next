@@ -1,9 +1,9 @@
 import { FormField, TFields, TSection } from "@/types";
 import { Dispatch, SetStateAction, useState } from "react";
 import { DebouncedState } from "use-debounce";
-import CustomizePanel from "../customize-panel";
-import HeroContent from "../customize-panel/hero";
-import BannerContent from "../customize-panel/banner.tsx";
+import CustomizePanel from "@/components/customize/panel";
+import HeroContent from "@/components/customize/panel/hero";
+import BannerContent from "@/components/customize/panel/banner.tsx";
 
 type TProps = {
   open: boolean;

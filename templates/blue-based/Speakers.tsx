@@ -4,7 +4,7 @@ import { useEffect, useId, useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 
-import { Container } from "../../container/Container";
+import { Container } from "@/components/container/Container";
 
 function ImageClipPaths({
   id,

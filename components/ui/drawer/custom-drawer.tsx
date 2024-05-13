@@ -1,11 +1,10 @@
 import * as React from "react";
-import CustomizePanel from "../../customize-panel/index";
+import CustomizePanel from "@/components/customize/panel";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { FormField, TFields, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
-import CustomizeHero from "../../customize-panel/hero";
-import HeroContent from "../../customize-panel/hero";
-import BannerContent from "../../customize-panel/banner.tsx";
+import HeroContent from "@/components/customize/panel/hero";
+import BannerContent from "@/components/customize/panel/banner.tsx";
 type TProps = {
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
