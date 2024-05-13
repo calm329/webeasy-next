@@ -1,10 +1,10 @@
 import Image, { type ImageProps } from "next/image";
 import clsx from "clsx";
 
-import { Button } from "../ui/button/Button";
-import { Card } from "../ui/card/Card";
-import { Container } from "../container/nested-container";
-import { Header } from "../header/general-header";
+import { Button } from "@/components/ui/button/Button";
+import { Card } from "@/components/ui/card/Card";
+import { Container } from "@/components/container/nested-container";
+import { Header } from "@/components/header/general-header";
 import { Dispatch, SetStateAction } from "react";
 import { TFields, TSection } from "@/types";
 

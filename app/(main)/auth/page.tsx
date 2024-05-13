@@ -1,9 +1,9 @@
 "use client";
 import { CustomDrawer } from "@/components/ui/drawer/custom-drawer";
 import { useMediaQuery } from "usehooks-ts";
-import Loader from "@/components/loader";
-import SlideOver from "@/components/slide-over";
-import BasicTemplate from "@/components/templates/basic-template-csr";
+import Loader from "@/components/ui/loader";
+import SlideOver from "@/components/ui/slide-over";
+import BasicTemplate from "@/templates/basic-template-csr";
 import {
   checkSiteAvailability,
   createNewSite,
@@ -17,9 +17,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
-import BlueBasedTemplate from "@/components/templates/blue-based";
-import PostBasedTemplate from "@/components/templates/post-based";
-import GeneralTemplate from "@/components/templates/general-template";
+import BlueBasedTemplate from "@/templates/blue-based";
+import PostBasedTemplate from "@/templates/post-based";
+import GeneralTemplate from "@/templates/general-template";
 
 export interface AppState {
   status: string;

@@ -1,7 +1,7 @@
 import { FormField, TFields, TSection } from "@/types";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { DebouncedState } from "usehooks-ts";
-import CustomButton from "../ui/form/custom-button";
+import CustomButton from "@/components/ui/form/custom-button";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;

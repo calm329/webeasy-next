@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import { Header } from "../../header/post-based-header";
-import { Hero } from "../../hero/post-based-hero";
 import { SecondaryFeatures } from "./SecondaryFeatures";
 import { Testimonials } from "./Testimonials";
 import { TFields, TSection } from "@/types";
+import { Header } from "@/components/header/post-based-header";
+import { Hero } from "@/components/hero/post-based-hero";
 type TProps = {
   logo?: string;
   businessName: string;

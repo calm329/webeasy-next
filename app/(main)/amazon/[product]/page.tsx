@@ -1,5 +1,5 @@
 import SiteHeader from "@/components/header";
-import ProductTemplate from "@/components/templates/product-template";
+import ProductTemplate from "@/templates/product-template";
 import React from "react";
 
 const page = () => {

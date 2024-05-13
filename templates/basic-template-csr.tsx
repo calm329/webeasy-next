@@ -1,8 +1,8 @@
 import Image from "next/image";
-import PostCard from "../ui/card/post-card";
-import ServiceCard from "../ui/card/service-card";
-import CTA from "../cta";
-import TopBar from "../top-bar";
+import PostCard from "@/components/ui/card/post-card";
+import ServiceCard from "@/components/ui/card/service-card";
+import CTA from "@/components/cta";
+import TopBar from "@/components/top-bar";
 import { Dispatch, SetStateAction } from "react";
 import { TFields, TSection } from "@/types";
 

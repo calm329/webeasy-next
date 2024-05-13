@@ -1,4 +1,4 @@
-import BasicTemplate from "@/components/templates/basic-template";
+import BasicTemplate from "@/templates/basic-template";
 import { getSiteData } from "@/lib/fetchers";
 
 type TProps = {

@@ -1,5 +1,5 @@
 "use client";
-import Loader from "@/components/loader";
+import Loader from "@/components/ui/loader";
 import { getAccessTokenByUserId, getSitesByUserId } from "@/lib/fetchers";
 import { getUsernameFromPosts } from "@/lib/utils";
 import Image from "next/image";

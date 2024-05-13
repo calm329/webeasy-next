@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
-import { Header } from "../../header/blue-based-header";
-import { Hero } from "../../hero/blue-based-hero";
 import { Speakers } from "./Speakers";
 import { Schedule } from "./Schedule";
 import { TFields, TSection } from "@/types";
+import { Header } from "@/components/header/blue-based-header";
+import { Hero } from "@/components/hero/blue-based-hero";
 
 type TProps = {
   logo?: string;
