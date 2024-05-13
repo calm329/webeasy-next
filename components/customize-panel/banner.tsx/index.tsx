@@ -65,6 +65,24 @@ const BannerContent = (props: TProps) => {
                           // field.onChange(value);
                         }}
                       />
+
+                      <div className="flex flex-col  pt-5">
+                        <label
+                          htmlFor={"alt"}
+                          className="block text-sm font-medium leading-6 text-gray-900"
+                        >
+                          Alt Text
+                        </label>
+                        <input
+                          type="text"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          id={"alt"}
+                          defaultValue={data.alt}
+                          onChange={(e) =>
+                            handleChange(data.name, e.target.value)
+                          }
+                        />
+                      </div>
                     </div>
                   )}
                 </div>

@@ -8,6 +8,7 @@ export type FormField = {
   name: string;
   type: "text" | "email" | "image" | "textarea" | "color" | "button";
   label?: string;
+  alt?: string;
   defaultValue?: string;
   placeholder?: string;
   validation?: {

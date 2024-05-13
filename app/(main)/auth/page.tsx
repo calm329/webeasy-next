@@ -68,6 +68,7 @@ export default function Page() {
         name: "logo",
         show: true,
         type: "image",
+        alt: "",
         label: "Logo Image",
         defaultValue: "",
         placeholder: "Enter your first name",
@@ -110,6 +111,7 @@ export default function Page() {
       type: "image",
       label: "Banner Image",
       defaultValue: "",
+      alt: "",
       placeholder: "Select Banner Image",
       validation: {
         required: true,
