@@ -56,6 +56,8 @@ export default function SiteHeader(props: TProps) {
   const [user, setUser] = useState<TUser>(null);
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState<TTemplate | null>(null);
+  const [hideNavigation, setHideNavigation] = useState(false);
+
   const fetchData = async () => {
     try {
       const response = await getAllTemplates();
@@ -66,7 +68,18 @@ export default function SiteHeader(props: TProps) {
 
   useEffect(() => {
     fetchData();
-  }, []);
+
+    switch (pathname) {
+      case "/":
+      case "/custom":
+      case "/amazon":
+        setHideNavigation(true);
+        break;
+      default:
+        setHideNavigation(false);
+    }
+  }, [pathname]);
+
   const getUserData = async () => {
     setLoading(true);
     try {
@@ -101,7 +114,7 @@ export default function SiteHeader(props: TProps) {
             />
           </Link>
           <div
-            className={`flex lg:gap-x-12 ${pathname === "/" && "hidden"} max-lg:hidden`}
+            className={`flex lg:gap-x-12 ${hideNavigation && "hidden"} max-lg:hidden`}
           >
             {user &&
               showNavigation &&
