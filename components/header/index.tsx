@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import AuthModal from "../modal/auth-modal";
+import AuthModal from "../ui/modal/auth-modal";
 import AccountMenu from "./account-menu";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";

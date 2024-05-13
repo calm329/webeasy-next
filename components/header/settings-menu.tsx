@@ -3,17 +3,17 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { signOut, useSession } from "next-auth/react";
 import { IoMdSettings } from "react-icons/io";
-import CustomizeMetaModal from "../modal/meta-modal";
+import CustomizeMetaModal from "../ui/modal/meta-modal";
 import { DebouncedState } from "use-debounce";
 import { AppState } from "@/app/(main)/auth/page";
 import { useMediaQuery } from "usehooks-ts";
 import { TMeta, TTemplateName } from "@/types";
-import ColorModal from "../modal/color-modal";
-import { MetaDrawer } from "../drawer/meta-drawer";
-import { ColorDrawer } from "../drawer/color-drawer";
-import SelectTemplateModal from "../modal/select-template-modal";
+import ColorModal from "../ui/modal/color-modal";
+import { MetaDrawer } from "../ui/drawer/meta-drawer";
+import { ColorDrawer } from "../ui/drawer/color-drawer";
+import SelectTemplateModal from "../ui/modal/select-template-modal";
 import { TTemplate } from ".";
-import SelectTemplateDrawer from "../drawer/select-template-drawer";
+import SelectTemplateDrawer from "../ui/drawer/select-template-drawer";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
