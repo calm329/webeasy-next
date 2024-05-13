@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-import { Header } from "./Header";
-import { Hero } from "./Hero";
+import { Header } from "../../header/post-based-header";
+import { Hero } from "../../hero/post-based-hero";
 import { SecondaryFeatures } from "./SecondaryFeatures";
 import { Testimonials } from "./Testimonials";
 import { TFields, TSection } from "@/types";
@@ -28,7 +28,7 @@ type TProps = {
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
 };
 
-export default function Template2(props: TProps) {
+export default function PostBasedTemplate(props: TProps) {
   const {
     logo,
     businessName,

@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-import { Button } from "../template-1/Button";
-import { Container } from "./Container";
+import { Button } from "../button/Button";
+import { Container } from "../container/Container";
 type TProps = {
   hero: {
     heading: string;

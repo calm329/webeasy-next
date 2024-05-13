@@ -1,6 +1,5 @@
+import { Container } from "@/components/container/Container";
 import Image from "next/image";
-
-import { Container } from "./Container";
 
 function QuoteIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   return (

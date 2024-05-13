@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
-import { Header } from "./Header";
-import { Hero } from "./Hero";
+import { Header } from "../../header/blue-based-header";
+import { Hero } from "../../hero/blue-based-hero";
 import { Speakers } from "./Speakers";
 import { Schedule } from "./Schedule";
 import { TFields, TSection } from "@/types";
@@ -29,7 +29,7 @@ type TProps = {
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
 };
 
-const Template1 = (props: TProps) => {
+const BlueBasedTemplate = (props: TProps) => {
   const {
     logo,
     businessName,
@@ -59,4 +59,4 @@ const Template1 = (props: TProps) => {
   );
 };
 
-export default Template1;
+export default BlueBasedTemplate;
