@@ -66,6 +66,7 @@ export default function Page() {
     [
       {
         name: "logo",
+        show: true,
         type: "image",
         label: "Logo Image",
         defaultValue: "",
@@ -86,24 +87,19 @@ export default function Page() {
       },
       {
         name: "cta",
-        type: "text",
-        label: "Call To Action Text",
-        defaultValue: "",
-        placeholder: "Enter Call To Action Text",
-        validation: {
-          required: true,
-        },
-      },
-      {
-        name: "ctaLink",
-        type: "text",
-        label: "Call To Action Link",
-        defaultValue: "",
-        placeholder: "Enter a link",
-        validation: {
-          required: true,
-          link: true,
-        },
+        show: true,
+        type: "button",
+        children: [
+          {
+            name: "cta",
+            type: "External",
+            defaultValue: "",
+            label: "Learn More",
+            validation: { required: true, link: true },
+            link: "#",
+            placeholder: "Enter",
+          },
+        ],
       },
     ],
   );
@@ -141,23 +137,19 @@ export default function Page() {
     },
     {
       name: "cta",
-      type: "text",
-      label: "Call To Action Text",
-      defaultValue: "",
-      placeholder: "Enter Call To Action Text",
-      validation: {
-        required: true,
-      },
-    },
-    {
-      name: "ctaLink",
-      type: "text",
-      label: "Call To Action Link",
-      defaultValue: "",
-      placeholder: "Enter a link",
-      validation: {
-        required: true,
-      },
+      show: true,
+      type: "button",
+      children: [
+        {
+          name: "cta",
+          type: "External",
+          defaultValue: "",
+          label: "Learn More",
+          validation: { required: true, link: true },
+          link: "#",
+          placeholder: "Enter",
+        },
+      ],
     },
   ]);
 
@@ -544,7 +536,7 @@ export default function Page() {
             handleChange={handleChange}
             setSelectedTemplate={setSelectedTemplate}
           />
-          <div className="relative flex size-full pt-20">
+          <div className="relative flex size-full ">
             <div className="h-full w-full">
               {/* <div className="flex w-full justify-end gap-2 bg-gray-100 p-2">
               <button

@@ -28,7 +28,7 @@ const CustomizePanel = (props: TProps) => {
   } = props;
   const [isContent, setIsContent] = useState(true);
   return (
-    <div className=" overflow-y-auto">
+    <div className=" ">
       {!isMobile && (
         <>
           <div className=" px-4 py-6 sm:px-6">
@@ -136,9 +136,7 @@ const CustomizePanel = (props: TProps) => {
       )}
       <div className="flex flex-1 flex-col justify-between">
         {isContent ? (
-          <div className="divide-y divide-gray-200 px-4 sm:px-6">
-            {children}
-          </div>
+          <div className="divide-y divide-gray-200 ">{children}</div>
         ) : null}
       </div>
     </div>

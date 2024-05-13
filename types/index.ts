@@ -6,10 +6,10 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 
 export type FormField = {
   name: string;
-  type: "text" | "email" | "image" | "textarea" | "color";
-  label: string;
-  defaultValue: string;
-  placeholder: string;
+  type: "text" | "email" | "image" | "textarea" | "color" | "button";
+  label?: string;
+  defaultValue?: string;
+  placeholder?: string;
   validation?: {
     required?: boolean;
     maxLength?: number;
@@ -17,6 +17,22 @@ export type FormField = {
     pattern?: string;
     link?: boolean;
   };
+  show?: boolean;
+  children?: Array<{
+    name: string;
+    type: "External" | "Page" | "Email" | "Phone" | "Section";
+    label: string;
+    defaultValue: string;
+    placeholder: string;
+    link: string;
+    validation?: {
+      required?: boolean;
+      maxLength?: number;
+      minLength?: number;
+      pattern?: string;
+      link?: boolean;
+    };
+  }>;
 };
 
 export type TSection = "Hero" | "Banner";
