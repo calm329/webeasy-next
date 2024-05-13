@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 
-import { Button } from "../template-1/Button";
-import { Container } from "./Container";
+import { Button } from "../button/Button";
 import Image from "next/image";
+import { Container } from "@/components/container/Container";
 
 type TProps = {
   logo?: string;

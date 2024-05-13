@@ -17,9 +17,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
-import Template1 from "@/components/templates/template-1";
-import Template2 from "@/components/templates/template-2";
-import Template3 from "@/components/templates/template-3";
+import BlueBasedTemplate from "@/components/templates/blue-based";
+import PostBasedTemplate from "@/components/templates/post-based";
+import GeneralTemplate from "@/components/templates/general";
 
 export interface AppState {
   status: string;
@@ -578,8 +578,8 @@ export default function Page() {
                   setFocusedField={setFocusedField}
                 />
               )}
-              {selectedTemplate === "Template 1" && (
-                <Template1
+              {selectedTemplate === "Blue-Based template" && (
+                <BlueBasedTemplate
                   editable={appState.editable}
                   setSection={setSection}
                   setIsOpen={setIsSideBarOpen}
@@ -600,8 +600,8 @@ export default function Page() {
                   setFocusedField={setFocusedField}
                 />
               )}
-              {selectedTemplate === "Template 2" && (
-                <Template2
+              {selectedTemplate === "Post-Based template" && (
+                <PostBasedTemplate
                   editable={appState.editable}
                   setSection={setSection}
                   setIsOpen={setIsSideBarOpen}
@@ -622,8 +622,8 @@ export default function Page() {
                   setFocusedField={setFocusedField}
                 />
               )}
-              {selectedTemplate === "Template 3" && (
-                <Template3
+              {selectedTemplate === "General template" && (
+                <GeneralTemplate
                   editable={appState.editable}
                   setSection={setSection}
                   setIsOpen={setIsSideBarOpen}

@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
 
-import { Container } from "./Container";
-import { Button } from "../template-1/Button";
+import { Container } from "../container/nested-container";
+import { Button } from "../button/Button";
 type TProps = {
   logo?: string;
   businessName: string;

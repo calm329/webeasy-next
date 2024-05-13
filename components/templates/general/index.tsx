@@ -1,10 +1,10 @@
 import Image, { type ImageProps } from "next/image";
 import clsx from "clsx";
 
-import { Button } from "../template-1/Button";
-import { Card } from "./Card";
-import { Container } from "./Container";
-import { Header } from "./Header";
+import { Button } from "../../button/Button";
+import { Card } from "../../card/Card";
+import { Container } from "../../container/nested-container";
+import { Header } from "../../header/general-header";
 import { Dispatch, SetStateAction } from "react";
 import { TFields, TSection } from "@/types";
 
@@ -65,37 +65,6 @@ function Photos(props: TPostProps) {
   );
 }
 
-const services = {
-  title: "Our Services",
-  description: "Delivering Graceful Moments with Floral Art",
-  list: [
-    {
-      name: "Custom Floral Arrangements",
-      description:
-        "Tailor-made arrangements that marry simplicity with elegance, perfect for every occasion from weddings to corporate events.",
-      image: "url-to-service1-image.jpg",
-    },
-    {
-      name: "Digital Floral Artistry",
-      description:
-        "Our expertly crafted digital images bring the delicate beauty of blooms to your digital spaces, ideal for creating serene backdrops and inspired settings.",
-      image: "url-to-service2-image.jpg",
-    },
-    {
-      name: "Romantic Floral Sets",
-      description:
-        "Experience the enchantment of meticulously designed floral sets that evoke romance and elegance, making every moment unforgettable.",
-      image: "url-to-service3-image.jpg",
-    },
-    {
-      name: "Seasonal Bloom Collections",
-      description:
-        "Explore the vibrant colors and fragrant scents of our seasonal bloom collections curated to reflect the beauty of each season.",
-      image: "url-to-service4-image.jpg",
-    },
-  ],
-};
-
 type TProps = {
   logo?: string;
   businessName: string;
@@ -120,7 +89,7 @@ type TProps = {
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
 };
 
-export default function Home(props: TProps) {
+export default function General(props: TProps) {
   const {
     logo,
     businessName,
