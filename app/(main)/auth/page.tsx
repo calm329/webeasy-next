@@ -19,7 +19,7 @@ import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
 import BlueBasedTemplate from "@/components/templates/blue-based";
 import PostBasedTemplate from "@/components/templates/post-based";
-import GeneralTemplate from "@/components/templates/general";
+import GeneralTemplate from "@/components/templates/general-template";
 
 export interface AppState {
   status: string;
