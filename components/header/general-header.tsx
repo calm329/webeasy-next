@@ -3,7 +3,7 @@ import Link from "next/link";
 import clsx from "clsx";
 
 import { Container } from "../container/nested-container";
-import { Button } from "../button/Button";
+import { Button } from "../ui/button/Button";
 type TProps = {
   logo?: string;
   businessName: string;

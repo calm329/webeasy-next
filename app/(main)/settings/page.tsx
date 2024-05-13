@@ -6,8 +6,8 @@ import { getUserById } from "@/lib/fetchers";
 import { useEffect, useState } from "react";
 import Loader from "@/components/loader";
 import { FormField, TFields } from "@/types";
-import UserModal from "@/components/modal/user-modal";
-import { UserDrawer } from "@/components/drawer/user-drawer";
+import UserModal from "@/components/ui/modal/user-modal";
+import { UserDrawer } from "@/components/ui/drawer/user-drawer";
 import { useMediaQuery } from "usehooks-ts";
 
 export type TUser = {
