@@ -1,6 +1,7 @@
 import { FormField, TFields, TSection } from "@/types";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { DebouncedState } from "usehooks-ts";
+import CustomButton from "../form/custom-button";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -12,6 +13,8 @@ type TProps = {
   focusedField: TFields;
   isMobile?: boolean;
   children: React.ReactNode;
+  showButtonForm: boolean;
+  setShowButtonForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const CustomizePanel = (props: TProps) => {
@@ -25,9 +28,14 @@ const CustomizePanel = (props: TProps) => {
     focusedField,
     isMobile,
     children,
+    showButtonForm,
+    setShowButtonForm,
   } = props;
   const [isContent, setIsContent] = useState(true);
-  return (
+
+  return showButtonForm ? (
+    <CustomButton setIsOpen={setIsOpen} setShowButtonForm={setShowButtonForm} />
+  ) : (
     <div className=" ">
       {!isMobile && (
         <>

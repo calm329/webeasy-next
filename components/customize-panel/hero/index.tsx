@@ -8,12 +8,14 @@ import { ImSpinner2 } from "react-icons/im";
 import Uploader from "@/components/form/uploader";
 import { DebouncedState } from "usehooks-ts";
 import { FormField, TFields, TSection } from "@/types";
+import CustomButton from "@/components/form/custom-button";
 type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   subdomain: string;
   heroCustomizeFields: FormField[];
   focusedField: TFields;
+  setShowButtonForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const HeroContent = (props: TProps) => {
   const [loading, setLoading] = useState(false);
@@ -35,6 +37,7 @@ const HeroContent = (props: TProps) => {
     subdomain,
     heroCustomizeFields,
     focusedField,
+    setShowButtonForm,
   } = props;
   return (
     <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
@@ -158,7 +161,10 @@ const HeroContent = (props: TProps) => {
                         </div>
                       ))}
 
-                      <button className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800">
+                      <button
+                        className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                        onClick={() => setShowButtonForm(true)}
+                      >
                         Add Button
                         <IoMdAdd size={20} />
                       </button>

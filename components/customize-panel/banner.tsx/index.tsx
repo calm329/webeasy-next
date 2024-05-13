@@ -14,6 +14,7 @@ type TProps = {
   subdomain: string;
   brandCustomizeFields: FormField[];
   focusedField: TFields;
+  setShowButtonForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const BannerContent = (props: TProps) => {
@@ -23,6 +24,7 @@ const BannerContent = (props: TProps) => {
     subdomain,
     brandCustomizeFields,
     focusedField,
+    setShowButtonForm,
   } = props;
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false);
