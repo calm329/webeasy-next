@@ -1,9 +1,7 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import DynamicForm from "../form/dynamic-form";
 import { FormField, TFields, TSection } from "@/types";
-import { DebouncedState } from "use-debounce";
-import { updateSite } from "@/lib/actions";
-import { toast } from "sonner";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { DebouncedState } from "usehooks-ts";
+
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   section: TSection;
@@ -13,7 +11,9 @@ type TProps = {
   heroCustomizeFields: FormField[];
   focusedField: TFields;
   isMobile?: boolean;
+  children: React.ReactNode;
 };
+
 const CustomizePanel = (props: TProps) => {
   const {
     setIsOpen,
@@ -24,6 +24,7 @@ const CustomizePanel = (props: TProps) => {
     brandCustomizeFields,
     focusedField,
     isMobile,
+    children,
   } = props;
   const [isContent, setIsContent] = useState(true);
   return (
@@ -136,34 +137,7 @@ const CustomizePanel = (props: TProps) => {
       <div className="flex flex-1 flex-col justify-between">
         {isContent ? (
           <div className="divide-y divide-gray-200 px-4 sm:px-6">
-            {section === "Banner" && (
-              <DynamicForm
-                // title={`Section ${section}`}
-                focusedField={focusedField}
-                fields={brandCustomizeFields}
-                handler={async (data: any, keys: string[]) => {
-                  try {
-                    await updateSite(subdomain, data, keys);
-                    toast.success("Your brand customization has been saved");
-                  } catch (error) {}
-                }} // updateSite}
-                handleChange={handleChange}
-              />
-            )}
-            {section === "Hero" && (
-              <DynamicForm
-                // title={`Section ${section}`}
-                focusedField={focusedField}
-                fields={heroCustomizeFields}
-                handler={async (data: any, keys: string[]) => {
-                  try {
-                    await updateSite(subdomain, data, keys);
-                    toast.success("Your brand customization has been saved");
-                  } catch (error) {}
-                }} // updateSite}
-                handleChange={handleChange}
-              />
-            )}
+            {children}
           </div>
         ) : null}
       </div>

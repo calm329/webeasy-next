@@ -48,7 +48,15 @@ export default function BasicTemplate(props: BasicTemplateProps) {
   return (
     <>
       <section className="bg-white py-6">
-        <div className={`container mx-auto px-4 `}>
+        <div
+          className={`container mx-auto px-4 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+          onClick={() => {
+            if (editable && setIsOpen && setSection) {
+              setSection("Banner");
+              setIsOpen(true);
+            }
+          }}
+        >
           <TopBar
             logo={logo || ""}
             businessName={businessName}
@@ -65,7 +73,15 @@ export default function BasicTemplate(props: BasicTemplateProps) {
         <div className="container mx-auto px-4">
           <div className="rounded-3xl bg-white px-8 py-16">
             <div className="mx-auto max-w-7xl">
-              <div className={`-m-8 mb-10 flex flex-wrap `}>
+              <div
+                className={`-m-8 mb-10 flex flex-wrap ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                onClick={() => {
+                  if (editable && setIsOpen && setSection) {
+                    setSection("Hero");
+                    setIsOpen(true);
+                  }
+                }}
+              >
                 <div className="w-full p-8 md:w-1/2">
                   <div className="md:max-w-lg">
                     <h2

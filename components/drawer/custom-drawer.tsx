@@ -3,6 +3,9 @@ import CustomizePanel from "../customize-panel/index";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { FormField, TFields, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
+import CustomizeHero from "../customize-panel/hero";
+import HeroContent from "../customize-panel/hero";
+import BannerContent from "../customize-panel/banner.tsx";
 type TProps = {
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,8 +39,10 @@ export function CustomDrawer(props: TProps) {
             heroCustomizeFields={heroCustomizeFields}
             brandCustomizeFields={brandCustomizeFields}
             focusedField={focusedField}
-            isMobile={true}
-          />
+          >
+            {section === "Hero" && <HeroContent />}
+            {section === "Banner" && <BannerContent />}
+          </CustomizePanel>
         </div>
       </DrawerContent>
     </Drawer>

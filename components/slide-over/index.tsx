@@ -2,6 +2,8 @@ import { FormField, TFields, TSection } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 import { DebouncedState } from "use-debounce";
 import CustomizePanel from "../customize-panel";
+import HeroContent from "../customize-panel/hero";
+import BannerContent from "../customize-panel/banner.tsx";
 
 type TProps = {
   open: boolean;
@@ -40,7 +42,10 @@ function SlideOver(props: TProps) {
             heroCustomizeFields={heroCustomizeFields}
             brandCustomizeFields={brandCustomizeFields}
             focusedField={focusedField}
-          />
+          >
+            {section === "Hero" && <HeroContent />}
+            {section === "Banner" && <BannerContent />}
+          </CustomizePanel>
         </div>
       </div>
     </div>
