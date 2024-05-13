@@ -40,8 +40,24 @@ export function CustomDrawer(props: TProps) {
             brandCustomizeFields={brandCustomizeFields}
             focusedField={focusedField}
           >
-            {section === "Hero" && <HeroContent />}
-            {section === "Banner" && <BannerContent />}
+            {section === "Hero" && (
+              <HeroContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                heroCustomizeFields={heroCustomizeFields}
+                focusedField={focusedField}
+              />
+            )}
+            {section === "Banner" && (
+              <BannerContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                brandCustomizeFields={brandCustomizeFields}
+                focusedField={focusedField}
+              />
+            )}
           </CustomizePanel>
         </div>
       </DrawerContent>
