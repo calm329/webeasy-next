@@ -30,7 +30,10 @@ export function CustomDrawer(props: TProps) {
     setBrandCustomizeFields,
     setHeroCustomizeFields,
   } = props;
-  const [showButtonForm, setShowButtonForm] = React.useState(false);
+  const [showButtonForm, setShowButtonForm] = React.useState({
+    show: false,
+    edit: "",
+  });
   return (
     <Drawer open={open} onOpenChange={setIsOpen}>
       <DrawerContent className="border border-white">
@@ -52,6 +55,7 @@ export function CustomDrawer(props: TProps) {
                 section={section}
                 handleChange={handleChange}
                 subdomain={subdomain}
+                setHeroCustomizeFields={setHeroCustomizeFields}
                 heroCustomizeFields={heroCustomizeFields}
                 focusedField={focusedField}
                 setShowButtonForm={setShowButtonForm}

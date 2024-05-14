@@ -31,7 +31,10 @@ function SlideOver(props: TProps) {
     setBrandCustomizeFields,
     setHeroCustomizeFields,
   } = props;
-  const [showButtonForm, setShowButtonForm] = useState(false);
+  const [showButtonForm, setShowButtonForm] = useState({
+    edit: "",
+    show: true,
+  });
   return (
     <div className="pointer-events-none fixed right-0  z-10 flex max-w-full  pl-10  sm:pl-16">
       <div
@@ -56,6 +59,7 @@ function SlideOver(props: TProps) {
                 handleChange={handleChange}
                 subdomain={subdomain}
                 heroCustomizeFields={heroCustomizeFields}
+                setHeroCustomizeFields={setHeroCustomizeFields}
                 focusedField={focusedField}
                 setShowButtonForm={setShowButtonForm}
               />
