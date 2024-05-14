@@ -204,7 +204,7 @@ const BannerContent = (props: TProps) => {
                               handleChange(data.name, e.target.value);
                               field.onChange(e.target.value);
                             }}
-                            defaultValue={data.alt}
+                            defaultValue={data.defaultValue}
                           />
                         </div>
                       );
