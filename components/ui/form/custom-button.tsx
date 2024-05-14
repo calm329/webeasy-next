@@ -1,14 +1,23 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 
 type TProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowButtonForm: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowButtonForm: React.Dispatch<
+    React.SetStateAction<{
+      edit: string;
+      show: boolean;
+    }>
+  >;
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   section: TSection;
   brandCustomizeFields: FormField[];
   heroCustomizeFields: FormField[];
+  showButtonForm: {
+    edit: string;
+    show: boolean;
+  };
 };
 import { IoMdArrowBack } from "react-icons/io";
 import {
@@ -33,8 +42,23 @@ const CustomButton = (props: TProps) => {
     brandCustomizeFields,
     heroCustomizeFields,
     section,
+    showButtonForm,
   } = props;
   const [loading, setLoading] = useState(false);
+  console.log("Custom", showButtonForm);
+  const [data, setData] = useState<any>();
+  useEffect(() => {
+    if (showButtonForm.edit) {
+      heroCustomizeFields.forEach((field) => {
+        field.children?.forEach((child) => {
+          if (child.name === showButtonForm.edit) {
+            setData(child);
+          }
+        });
+      });
+    }
+  }, []);
+  console.log("Custom", data);
   return (
     <div className="">
       <div className=" border-b px-4 py-6 sm:px-6">
@@ -44,7 +68,12 @@ const CustomButton = (props: TProps) => {
             id="slide-over-title"
           >
             <IoMdArrowBack
-              onClick={() => setShowButtonForm(false)}
+              onClick={() =>
+                setShowButtonForm({
+                  edit: "",
+                  show: false,
+                })
+              }
               className="cursor-pointer"
             />
             Button Settings
@@ -83,7 +112,7 @@ const CustomButton = (props: TProps) => {
           >
             Link type
           </label>
-          <Select>
+          <Select value={data?.type ?? ""}>
             <SelectTrigger className="">
               <SelectValue placeholder="Select a Link Type" />
             </SelectTrigger>
@@ -109,7 +138,7 @@ const CustomButton = (props: TProps) => {
             type="text"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             id={"label"}
-            // defaultValue={data.defaultValue}
+            defaultValue={data?.label ?? ""}
             // onChange={(e) => handleChange(data.name, e.target.value)}
           />
         </div>
@@ -124,7 +153,7 @@ const CustomButton = (props: TProps) => {
             type="text"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             id={"website"}
-            // defaultValue={data.defaultValue}
+            defaultValue={data?.link ?? ""}
             // onChange={(e) => handleChange(data.name, e.target.value)}
           />
         </div>

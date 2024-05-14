@@ -11,8 +11,16 @@ type TProps = {
   focusedField: TFields;
   isMobile?: boolean;
   children: React.ReactNode;
-  showButtonForm: boolean;
-  setShowButtonForm: React.Dispatch<React.SetStateAction<boolean>>;
+  showButtonForm: {
+    edit: string;
+    show: boolean;
+  };
+  setShowButtonForm: React.Dispatch<
+    React.SetStateAction<{
+      edit: string;
+      show: boolean;
+    }>
+  >;
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
 };
@@ -34,7 +42,7 @@ const CustomizePanel = (props: TProps) => {
   } = props;
   const [isContent, setIsContent] = useState(true);
 
-  return showButtonForm ? (
+  return showButtonForm.show ? (
     <CustomButton
       section={section}
       heroCustomizeFields={heroCustomizeFields}
@@ -43,6 +51,7 @@ const CustomizePanel = (props: TProps) => {
       setShowButtonForm={setShowButtonForm}
       setBrandCustomizeFields={setBrandCustomizeFields}
       setHeroCustomizeFields={setHeroCustomizeFields}
+      showButtonForm={showButtonForm}
     />
   ) : (
     <div className=" ">

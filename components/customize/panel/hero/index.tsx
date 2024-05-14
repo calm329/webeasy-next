@@ -21,12 +21,14 @@ type TProps = {
   subdomain: string;
   heroCustomizeFields: FormField[];
   focusedField: TFields;
-  setShowButtonForm: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowButtonForm: React.Dispatch<
+    React.SetStateAction<{
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
 };
-interface Item {
-  name: string;
-  label: string;
-}
 
 const grid = 2;
 
@@ -56,17 +58,8 @@ const HeroContent = (props: TProps) => {
       }
     });
   }, []);
-  const getItems = (): Item[] =>
-    heroCustomizeFields[3].children?.map((k) => ({
-      name: k.name,
-      label: k.label ?? "",
-    })) ?? [];
 
-  const reorder = (
-    list: Item[],
-    startIndex: number,
-    endIndex: number,
-  ): Item[] => {
+  const reorder = (list: any, startIndex: number, endIndex: number): any => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
@@ -79,9 +72,9 @@ const HeroContent = (props: TProps) => {
     subdomain,
     heroCustomizeFields,
     focusedField,
+    setHeroCustomizeFields,
     setShowButtonForm,
   } = props;
-  const [items, setItems] = useState<Item[]>(getItems());
 
   const onDragEnd = (result: DropResult): void => {
     if (!result.destination) {
@@ -89,12 +82,26 @@ const HeroContent = (props: TProps) => {
     }
 
     const updatedItems = reorder(
-      items,
+      heroCustomizeFields[3]?.children,
       result.source.index,
       result.destination.index,
     );
 
-    setItems(updatedItems);
+    const tempFields = heroCustomizeFields;
+    tempFields[3].children = updatedItems;
+    setHeroCustomizeFields(tempFields);
+  };
+
+  const handleDeleteButton = (name: string) => {
+    const updatedHeroCustomizeFields = heroCustomizeFields.map((field) => {
+      if (field.name === "cta" && Array.isArray(field.children)) {
+        // Filter out the child with the provided name
+        field.children = field.children.filter((child) => child.name !== name);
+      }
+      return field;
+    });
+    console.log(updatedHeroCustomizeFields);
+    setHeroCustomizeFields(updatedHeroCustomizeFields);
   };
 
   return (
@@ -212,57 +219,74 @@ const HeroContent = (props: TProps) => {
                               ref={provided.innerRef}
                               style={getListStyle(snapshot.isDraggingOver)}
                             >
-                              {items?.map((item, index) => (
-                                <Draggable
-                                  key={item.name}
-                                  draggableId={item.name}
-                                  index={index}
-                                >
-                                  {(provided, snapshot) => (
-                                    <div
-                                      className=" flex items-center justify-between"
-                                      key={item.name}
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      style={getItemStyle(
-                                        snapshot.isDragging,
-                                        provided.draggableProps.style,
-                                      )}
-                                    >
-                                      <div className="flex items-center gap-2">
-                                        <RxDragHandleDots2 />
-                                        <FiLink />
-                                        <h4>{item.label}</h4>
+                              {heroCustomizeFields[3].children?.map(
+                                (item, index) => (
+                                  <Draggable
+                                    key={item.name}
+                                    draggableId={item.name}
+                                    index={index}
+                                  >
+                                    {(provided, snapshot) => (
+                                      <div
+                                        className=" flex items-center justify-between"
+                                        key={item.name}
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        style={getItemStyle(
+                                          snapshot.isDragging,
+                                          provided.draggableProps.style,
+                                        )}
+                                      >
+                                        <div className="flex items-center gap-2">
+                                          <RxDragHandleDots2 />
+                                          <FiLink />
+                                          <h4>{item.label}</h4>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                          <MdModeEditOutline
+                                            color="blue"
+                                            size={20}
+                                            onClick={() =>
+                                              setShowButtonForm({
+                                                show: true,
+                                                edit: data.name,
+                                              })
+                                            }
+                                          />
+                                          <MdDeleteForever
+                                            color="red"
+                                            size={20}
+                                            onClick={() =>
+                                              handleDeleteButton(item.name)
+                                            }
+                                          />
+                                        </div>
                                       </div>
-                                      <div className="flex items-center gap-2">
-                                        <MdModeEditOutline
-                                          color="blue"
-                                          size={20}
-                                        />
-                                        <MdDeleteForever
-                                          color="red"
-                                          size={20}
-                                        />
-                                      </div>
-                                    </div>
-                                  )}
-                                </Draggable>
-                              ))}
+                                    )}
+                                  </Draggable>
+                                ),
+                              )}
                               {provided.placeholder}
                             </div>
                           )}
                         </Droppable>
                       </DragDropContext>
-                      {items && items.length !== 2 && (
-                        <button
-                          className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-                          onClick={() => setShowButtonForm(true)}
-                        >
-                          Add Button
-                          <IoMdAdd size={20} />
-                        </button>
-                      )}
+                      {heroCustomizeFields[3].children &&
+                        heroCustomizeFields[3].children.length !== 2 && (
+                          <button
+                            className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                            onClick={() =>
+                              setShowButtonForm({
+                                edit: "",
+                                show: true,
+                              })
+                            }
+                          >
+                            Add Button
+                            <IoMdAdd size={20} />
+                          </button>
+                        )}
                     </>
                   )}
                 </div>

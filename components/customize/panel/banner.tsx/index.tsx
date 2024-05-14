@@ -14,7 +14,12 @@ type TProps = {
   subdomain: string;
   brandCustomizeFields: FormField[];
   focusedField: TFields;
-  setShowButtonForm: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowButtonForm: React.Dispatch<
+    React.SetStateAction<{
+      edit: string;
+      show: boolean;
+    }>
+  >;
 };
 
 const BannerContent = (props: TProps) => {
