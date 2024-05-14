@@ -72,6 +72,7 @@ function SlideOver(props: TProps) {
                 brandCustomizeFields={brandCustomizeFields}
                 focusedField={focusedField}
                 setShowButtonForm={setShowButtonForm}
+                setBrandCustomizeFields={setBrandCustomizeFields}
               />
             )}
           </CustomizePanel>

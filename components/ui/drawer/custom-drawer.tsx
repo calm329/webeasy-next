@@ -66,6 +66,7 @@ export function CustomDrawer(props: TProps) {
                 section={section}
                 handleChange={handleChange}
                 subdomain={subdomain}
+                setBrandCustomizeFields={setBrandCustomizeFields}
                 brandCustomizeFields={brandCustomizeFields}
                 focusedField={focusedField}
                 setShowButtonForm={setShowButtonForm}

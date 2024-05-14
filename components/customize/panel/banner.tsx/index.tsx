@@ -14,6 +14,7 @@ type TProps = {
   subdomain: string;
   brandCustomizeFields: FormField[];
   focusedField: TFields;
+  setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setShowButtonForm: React.Dispatch<
     React.SetStateAction<{
       edit: string;
@@ -30,6 +31,7 @@ const BannerContent = (props: TProps) => {
     brandCustomizeFields,
     focusedField,
     setShowButtonForm,
+    setBrandCustomizeFields,
   } = props;
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false);
@@ -44,6 +46,18 @@ const BannerContent = (props: TProps) => {
       }
     });
   }, []);
+
+  const handleDeleteButton = (name: string) => {
+    const updatedBrandCustomizeFields = brandCustomizeFields.map((field) => {
+      if (field.name === "cta" && Array.isArray(field.children)) {
+        // Filter out the child with the provided name
+        field.children = field.children.filter((child) => child.name !== name);
+      }
+      return field;
+    });
+    console.log(updatedBrandCustomizeFields);
+    setBrandCustomizeFields(updatedBrandCustomizeFields);
+  };
   return (
     <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-5">
@@ -144,13 +158,34 @@ const BannerContent = (props: TProps) => {
                             <h4>{child.label}</h4>
                           </div>
                           <div className="flex items-center gap-2">
-                            <MdModeEditOutline color="blue" size={20} />
-                            <MdDeleteForever color="red" size={20} />
+                            <MdModeEditOutline
+                              color="blue"
+                              size={20}
+                              onClick={() =>
+                                setShowButtonForm({
+                                  edit: child.name,
+                                  show: true,
+                                })
+                              }
+                            />
+                            <MdDeleteForever
+                              color="red"
+                              size={20}
+                              onClick={() => handleDeleteButton(child.name)}
+                            />
                           </div>
                         </div>
                       ))}
 
-                      <button className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800">
+                      <button
+                        className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                        onClick={() =>
+                          setShowButtonForm({
+                            edit: "",
+                            show: true,
+                          })
+                        }
+                      >
                         Add Button
                         <IoMdAdd size={20} />
                       </button>
