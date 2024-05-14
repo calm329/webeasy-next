@@ -1,6 +1,6 @@
 import BasicTemplate from "@/templates/basic-template-csr";
-import BlueBasedTemplate from "@/templates/blue-based";
-import PostBasedTemplate from "@/templates/post-based";
+import BlueBasedTemplate from "@/templates/blue-based-template";
+import PostBasedTemplate from "@/templates/post-based-template";
 import React, { Dispatch, SetStateAction } from "react";
 import GeneralTemplate from "@/templates/general-template";
 import { AppState, TFields, TSection, TTemplateName } from "@/types";

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
-import { Speakers } from "./Speakers";
-import { Schedule } from "./Schedule";
+import { Speakers } from "../components/posts/blue-based-posts";
+import { Schedule } from "../components/services/blue-based-services";
 import { TFields, TSection } from "@/types";
 import { Header } from "@/components/header/blue-based-header";
 import { Hero } from "@/components/hero/blue-based-hero";
