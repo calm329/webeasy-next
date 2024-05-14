@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 
 import { BackgroundImage } from "./BackgroundImage";
-import { Container } from "@/components/container/Container";
+import { Container } from "@/components/container";
 
 interface Day {
   date: React.ReactNode;

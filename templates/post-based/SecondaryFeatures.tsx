@@ -4,7 +4,7 @@ import { useId } from "react";
 import Image, { type ImageProps } from "next/image";
 // import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import clsx from "clsx";
-import { Container } from "@/components/container/Container";
+import { Container } from "@/components/container";
 
 interface Feature {
   service: {
