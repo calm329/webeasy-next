@@ -4,6 +4,11 @@ import { ImSpinner2 } from "react-icons/im";
 type TProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setShowButtonForm: React.Dispatch<React.SetStateAction<boolean>>;
+  setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
+  setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
+  section: TSection;
+  brandCustomizeFields: FormField[];
+  heroCustomizeFields: FormField[];
 };
 import { IoMdArrowBack } from "react-icons/io";
 import {
@@ -15,11 +20,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../select";
+import { FormField, TSection } from "@/types";
 
 const linkTypes = ["External", "Section"];
 
 const CustomButton = (props: TProps) => {
-  const { setIsOpen, setShowButtonForm } = props;
+  const {
+    setIsOpen,
+    setShowButtonForm,
+    setBrandCustomizeFields,
+    setHeroCustomizeFields,
+    brandCustomizeFields,
+    heroCustomizeFields,
+    section,
+  } = props;
   const [loading, setLoading] = useState(false);
   return (
     <div className="">

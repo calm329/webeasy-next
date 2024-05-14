@@ -9,6 +9,12 @@ import Uploader from "@/components/ui/form/uploader";
 import { DebouncedState } from "usehooks-ts";
 import { FormField, TFields, TSection } from "@/types";
 import CustomButton from "@/components/ui/form/custom-button";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
 type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
@@ -17,6 +23,25 @@ type TProps = {
   focusedField: TFields;
   setShowButtonForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
+interface Item {
+  name: string;
+  label: string;
+}
+
+const grid = 2;
+
+const getItemStyle = (
+  isDragging: boolean,
+  draggableStyle: any,
+): React.CSSProperties => ({
+  userSelect: "none",
+  padding: grid * 2,
+  margin: `0 0 ${grid}px 0`,
+  ...draggableStyle,
+});
+
+const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
+
 const HeroContent = (props: TProps) => {
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false);
@@ -31,6 +56,23 @@ const HeroContent = (props: TProps) => {
       }
     });
   }, []);
+  const getItems = (): Item[] =>
+    heroCustomizeFields[3].children?.map((k) => ({
+      name: k.name,
+      label: k.label ?? "",
+    })) ?? [];
+
+  const reorder = (
+    list: Item[],
+    startIndex: number,
+    endIndex: number,
+  ): Item[] => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
+
   const {
     section,
     handleChange,
@@ -39,6 +81,22 @@ const HeroContent = (props: TProps) => {
     focusedField,
     setShowButtonForm,
   } = props;
+  const [items, setItems] = useState<Item[]>(getItems());
+
+  const onDragEnd = (result: DropResult): void => {
+    if (!result.destination) {
+      return;
+    }
+
+    const updatedItems = reorder(
+      items,
+      result.source.index,
+      result.destination.index,
+    );
+
+    setItems(updatedItems);
+  };
+
   return (
     <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
@@ -64,7 +122,6 @@ const HeroContent = (props: TProps) => {
                         label={""}
                         onChange={(value) => {
                           handleChange(data.name, value);
-                          // field.onChange(value);
                         }}
                       />
                       <div className="flex flex-col  pt-5">
@@ -144,22 +201,59 @@ const HeroContent = (props: TProps) => {
                   </div>
                   {showButtons && (
                     <>
-                      {data.children?.map((child) => (
-                        <div
-                          className="flex items-center justify-between "
-                          key={child.name}
-                        >
-                          <div className="flex items-center gap-2">
-                            <RxDragHandleDots2 />
-                            <FiLink />
-                            <h4>{child.label}</h4>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <MdModeEditOutline color="blue" size={20} />
-                            <MdDeleteForever color="red" size={20} />
-                          </div>
-                        </div>
-                      ))}
+                      <DragDropContext
+                        onDragEnd={onDragEnd}
+                        onDragStart={() => console.log("it's started")}
+                      >
+                        <Droppable droppableId="droppable">
+                          {(provided, snapshot) => (
+                            <div
+                              {...provided.droppableProps}
+                              ref={provided.innerRef}
+                              style={getListStyle(snapshot.isDraggingOver)}
+                            >
+                              {items?.map((item, index) => (
+                                <Draggable
+                                  key={item.name}
+                                  draggableId={item.name}
+                                  index={index}
+                                >
+                                  {(provided, snapshot) => (
+                                    <div
+                                      className=" flex items-center justify-between"
+                                      key={item.name}
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={getItemStyle(
+                                        snapshot.isDragging,
+                                        provided.draggableProps.style,
+                                      )}
+                                    >
+                                      <div className="flex items-center gap-2">
+                                        <RxDragHandleDots2 />
+                                        <FiLink />
+                                        <h4>{item.label}</h4>
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                        <MdModeEditOutline
+                                          color="blue"
+                                          size={20}
+                                        />
+                                        <MdDeleteForever
+                                          color="red"
+                                          size={20}
+                                        />
+                                      </div>
+                                    </div>
+                                  )}
+                                </Draggable>
+                              ))}
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      </DragDropContext>
 
                       <button
                         className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"

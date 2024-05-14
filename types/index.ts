@@ -21,7 +21,7 @@ export type FormField = {
   show?: boolean;
   children?: Array<{
     name: string;
-    type: "External" | "Page" | "Email" | "Phone" | "Section";
+    type: "External" | "Section";
     label: string;
     defaultValue: string;
     placeholder: string;

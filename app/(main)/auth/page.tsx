@@ -125,6 +125,15 @@ export default function Page() {
           link: "#",
           placeholder: "Enter",
         },
+        {
+          name: "cta2",
+          type: "External",
+          defaultValue: "",
+          label: "Learn More",
+          validation: { required: true, link: true },
+          link: "#",
+          placeholder: "Enter",
+        },
       ],
     },
   ]);
@@ -228,6 +237,8 @@ export default function Page() {
                     brandCustomizeFields={brandCustomizeFields}
                     heroCustomizeFields={heroCustomizeFields}
                     focusedField={focusedField}
+                    setBrandCustomizeFields={setBrandCustomizeFields}
+                    setHeroCustomizeFields={setHeroCustomizeFields}
                   />
                 ) : (
                   <CustomDrawer
@@ -241,6 +252,8 @@ export default function Page() {
                     }
                     brandCustomizeFields={brandCustomizeFields}
                     heroCustomizeFields={heroCustomizeFields}
+                    setBrandCustomizeFields={setBrandCustomizeFields}
+                    setHeroCustomizeFields={setHeroCustomizeFields}
                     focusedField={focusedField}
                   />
                 )}
