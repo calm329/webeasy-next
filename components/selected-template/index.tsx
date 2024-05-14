@@ -1,4 +1,4 @@
-import BasicTemplate from "@/templates/basic-template-csr";
+import BasicTemplate from "@/templates/basic-template/basic-template-csr";
 import BlueBasedTemplate from "@/templates/blue-based-template";
 import PostBasedTemplate from "@/templates/post-based-template";
 import React, { Dispatch, SetStateAction } from "react";
