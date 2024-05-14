@@ -6,7 +6,6 @@ import CustomButton from "@/components/ui/form/custom-button";
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   section: TSection;
-  handleChange: DebouncedState<(name: string, value: string) => void>;
   subdomain: string;
   brandCustomizeFields: FormField[];
   heroCustomizeFields: FormField[];
@@ -21,7 +20,6 @@ const CustomizePanel = (props: TProps) => {
   const {
     setIsOpen,
     section,
-    handleChange,
     subdomain,
     heroCustomizeFields,
     brandCustomizeFields,
