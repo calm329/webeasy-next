@@ -18,7 +18,6 @@ import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
 import SelectedTemplate from "@/components/selected-template";
-import { getData } from "@/lib/utils/function";
 
 export interface AppState {
   status: string;
