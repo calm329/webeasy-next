@@ -17,9 +17,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
-import BlueBasedTemplate from "@/templates/blue-based";
-import PostBasedTemplate from "@/templates/post-based";
-import GeneralTemplate from "@/templates/general-template";
+import SelectedTemplate from "@/components/selected-template";
+import { getData } from "@/lib/utils/function";
 
 export interface AppState {
   status: string;
@@ -499,7 +498,6 @@ export default function Page() {
 
   useEffect(() => {
     if (searchParams.get("access_token") && searchParams.get("user_id")) {
-      console.log(appState, "appState");
       getData();
     }
   }, [searchParams]);
@@ -520,10 +518,6 @@ export default function Page() {
     checkSiteEditable();
   }, [session]);
 
-  useEffect(() => {
-    console.log(appState, "appState");
-  }, [appState]);
-
   const matches = useMediaQuery("(min-width: 768px)");
 
   return (
@@ -539,112 +533,13 @@ export default function Page() {
             setSelectedTemplate={setSelectedTemplate}
           />
           <div className="relative flex size-full ">
-            <div className="h-full w-full">
-              {/* <div className="flex w-full justify-end gap-2 bg-gray-100 p-2">
-              <button
-                type="button"
-                className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                onClick={() => getData("regenerate")}
-              >
-                Regenerate the content
-              </button>
-              <button
-                type="button"
-                className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                onClick={() => getData("refresh")}
-              >
-                Refresh Instagram feed
-              </button>
-            </div> */}
-              {selectedTemplate === "Basic template" && (
-                <BasicTemplate
-                  editable={appState.editable}
-                  setSection={setSection}
-                  setIsOpen={setIsSideBarOpen}
-                  logo={appState.logo}
-                  businessName={appState.aiContent["businessName"]}
-                  hero={{
-                    heading: appState.aiContent["hero"]["heading"],
-                    subheading: appState.aiContent["hero"]["subheading"],
-                    imageUrl: appState.aiContent["hero"]["imageUrl"],
-                  }}
-                  colors={appState.aiContent["colors"]}
-                  cta={{
-                    text: appState.aiContent["hero"]["cta"],
-                    link: appState.aiContent["hero"]["ctaLink"] || "#",
-                  }}
-                  services={appState.aiContent["services"]["list"]}
-                  posts={appState.iPosts}
-                  setFocusedField={setFocusedField}
-                />
-              )}
-              {selectedTemplate === "Blue-Based template" && (
-                <BlueBasedTemplate
-                  editable={appState.editable}
-                  setSection={setSection}
-                  setIsOpen={setIsSideBarOpen}
-                  logo={appState.logo}
-                  businessName={appState.aiContent["businessName"]}
-                  hero={{
-                    heading: appState.aiContent["hero"]["heading"],
-                    subheading: appState.aiContent["hero"]["subheading"],
-                    imageUrl: appState.aiContent["hero"]["imageUrl"],
-                  }}
-                  colors={appState.aiContent["colors"]}
-                  cta={{
-                    text: appState.aiContent["hero"]["cta"],
-                    link: appState.aiContent["hero"]["ctaLink"] || "#",
-                  }}
-                  services={appState.aiContent["services"]["list"]}
-                  posts={appState.iPosts}
-                  setFocusedField={setFocusedField}
-                />
-              )}
-              {selectedTemplate === "Post-Based template" && (
-                <PostBasedTemplate
-                  editable={appState.editable}
-                  setSection={setSection}
-                  setIsOpen={setIsSideBarOpen}
-                  logo={appState.logo}
-                  businessName={appState.aiContent["businessName"]}
-                  hero={{
-                    heading: appState.aiContent["hero"]["heading"],
-                    subheading: appState.aiContent["hero"]["subheading"],
-                    imageUrl: appState.aiContent["hero"]["imageUrl"],
-                  }}
-                  colors={appState.aiContent["colors"]}
-                  cta={{
-                    text: appState.aiContent["hero"]["cta"],
-                    link: appState.aiContent["hero"]["ctaLink"] || "#",
-                  }}
-                  services={appState.aiContent["services"]["list"]}
-                  posts={appState.iPosts}
-                  setFocusedField={setFocusedField}
-                />
-              )}
-              {selectedTemplate === "General template" && (
-                <GeneralTemplate
-                  editable={appState.editable}
-                  setSection={setSection}
-                  setIsOpen={setIsSideBarOpen}
-                  logo={appState.logo}
-                  businessName={appState.aiContent["businessName"]}
-                  hero={{
-                    heading: appState.aiContent["hero"]["heading"],
-                    subheading: appState.aiContent["hero"]["subheading"],
-                    imageUrl: appState.aiContent["hero"]["imageUrl"],
-                  }}
-                  colors={appState.aiContent["colors"]}
-                  cta={{
-                    text: appState.aiContent["hero"]["cta"],
-                    link: appState.aiContent["hero"]["ctaLink"] || "#",
-                  }}
-                  services={appState.aiContent["services"]["list"]}
-                  posts={appState.iPosts}
-                  setFocusedField={setFocusedField}
-                />
-              )}
-            </div>
+            <SelectedTemplate
+              appState={appState}
+              selectedTemplate={selectedTemplate}
+              setFocusedField={setFocusedField}
+              setIsSideBarOpen={setIsSideBarOpen}
+              setSection={setSection}
+            />
             {appState.editable && (
               <>
                 {matches ? (
