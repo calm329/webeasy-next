@@ -254,14 +254,15 @@ const HeroContent = (props: TProps) => {
                           )}
                         </Droppable>
                       </DragDropContext>
-
-                      <button
-                        className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-                        onClick={() => setShowButtonForm(true)}
-                      >
-                        Add Button
-                        <IoMdAdd size={20} />
-                      </button>
+                      {items && items.length !== 2 && (
+                        <button
+                          className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                          onClick={() => setShowButtonForm(true)}
+                        >
+                          Add Button
+                          <IoMdAdd size={20} />
+                        </button>
+                      )}
                     </>
                   )}
                 </div>
