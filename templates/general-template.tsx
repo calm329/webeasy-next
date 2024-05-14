@@ -1,8 +1,8 @@
 import Image, { type ImageProps } from "next/image";
 import clsx from "clsx";
 
-import { Button } from "@/components/ui/button/Button";
-import { Card } from "@/components/ui/card/Card";
+import { Button } from "@/components/ui/button/template-button";
+import { Card } from "@/components/ui/card/general-card";
 import { Container } from "@/components/container/nested-container";
 import { Header } from "@/components/header/general-header";
 import { Dispatch, SetStateAction } from "react";

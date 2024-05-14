@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { Button } from "../ui/button/Button";
+import { Button } from "../ui/button/template-button";
 import Image from "next/image";
 import { Container } from "@/components/container/Container";
 

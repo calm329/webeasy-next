@@ -6,8 +6,17 @@ type TProps = {
   setShowButtonForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 import { IoMdArrowBack } from "react-icons/io";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../select";
 
-const linkTypes = ["External", "Section", "Page"];
+const linkTypes = ["External", "Section"];
 
 const CustomButton = (props: TProps) => {
   const { setIsOpen, setShowButtonForm } = props;
@@ -60,11 +69,20 @@ const CustomButton = (props: TProps) => {
           >
             Link type
           </label>
-          <input
-            type="text"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            id={"linktype"}
-          />
+          <Select>
+            <SelectTrigger className="">
+              <SelectValue placeholder="Select a Link Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {linkTypes.map((type) => (
+                  <SelectItem value={type} key={type}>
+                    {type}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div className="flex flex-col ">
           <label
