@@ -7,7 +7,10 @@ import Image from "next/image";
 import { Container } from "@/components/container";
 
 type TProps = {
-  logo?: string;
+  logo: {
+    link: string;
+    alt: string;
+  };
   businessName: string;
   cta: {
     text: string;
@@ -34,7 +37,12 @@ export function Header(props: TProps) {
               aria-label="Home"
               className="flex items-center gap-5"
             >
-              <Image src={logo ?? ""} alt="" height={100} width={100} />
+              <Image
+                src={logo.link ?? ""}
+                alt={logo.alt}
+                height={100}
+                width={100}
+              />
               {businessName}
             </Link>
           </div>

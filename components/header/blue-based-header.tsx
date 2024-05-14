@@ -3,7 +3,10 @@ import { Button } from "../ui/button/template-button";
 import { Container } from "../container";
 
 type TProps = {
-  logo?: string;
+  logo: {
+    link: string;
+    alt: string;
+  };
   businessName: string;
   cta: {
     text: string;
@@ -24,7 +27,12 @@ export function Header(props: TProps) {
         style={{ color: colors.primary }}
       >
         <div className="mt-10 flex items-center  gap-2 text-xl lg:mt-0 lg:grow lg:basis-0">
-          <Image src={logo ?? ""} alt="" height={100} width={100} />
+          <Image
+            src={logo.link ?? ""}
+            alt={logo.alt}
+            height={100}
+            width={100}
+          />
           {businessName}
         </div>
         <div className="hidden sm:mt-10 sm:flex lg:mt-0 lg:grow lg:basis-0 lg:justify-end">

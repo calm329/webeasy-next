@@ -6,7 +6,10 @@ import { Header } from "@/components/header/blue-based-header";
 import { Hero } from "@/components/hero/blue-based-hero";
 
 type TProps = {
-  logo?: string;
+  logo: {
+    link: string;
+    alt: string;
+  };
   businessName: string;
   hero: {
     heading: string;

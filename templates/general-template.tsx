@@ -66,7 +66,10 @@ function Photos(props: TPostProps) {
 }
 
 type TProps = {
-  logo?: string;
+  logo: {
+    link: string;
+    alt: string;
+  };
   businessName: string;
   hero: {
     heading: string;
