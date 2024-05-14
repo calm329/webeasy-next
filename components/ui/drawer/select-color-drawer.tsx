@@ -3,7 +3,6 @@ import CustomizePanel from "@/components/customize/panel";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { FormField, TFields, TMeta, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
-import { AppState } from "@/app/(main)/auth/page";
 import CustomizeColor from "../../customize/color";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import { SketchPicker } from "react-color";

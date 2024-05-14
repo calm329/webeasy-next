@@ -1,21 +1,19 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import DynamicForm from "../../ui/form/dynamic-form";
-import { FormField } from "@/types";
+import { AppState, FormField } from "@/types";
 import { updateSite } from "@/lib/actions";
 import { getUsernameFromPosts } from "@/lib/utils";
 import { toast } from "sonner";
 import { DebouncedState, useMediaQuery } from "usehooks-ts";
-import { AppState } from "@/app/(main)/auth/page";
 
 type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
-  getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 const CustomizeColor = (props: TProps) => {
-  const { open, setOpen, handleChange, appState, getData } = props;
+  const { open, setOpen, handleChange, appState } = props;
   const [colorFields, setColorFields] = useState<FormField[]>([
     {
       name: "primary",

@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import DynamicForm from "../../ui/form/dynamic-form";
-import { FormField, TMeta } from "@/types";
+import { AppState, FormField, TMeta } from "@/types";
 import { DebouncedState, useMediaQuery } from "usehooks-ts";
-import { AppState } from "@/app/(main)/auth/page";
+
 import { updateSite } from "@/lib/actions";
 import { getUsernameFromPosts } from "@/lib/utils";
 import { toast } from "sonner";
@@ -11,10 +11,9 @@ type TProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
-  getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 const CustomizeMeta = (props: TProps) => {
-  const { open, setOpen, handleChange, appState, getData } = props;
+  const { open, setOpen, handleChange, appState } = props;
   const [metaFields, setMetaFields] = useState<FormField[]>([
     {
       name: "title",

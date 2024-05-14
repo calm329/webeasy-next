@@ -1,9 +1,8 @@
 import * as React from "react";
 import CustomizePanel from "@/components/customize/panel";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import { FormField, TFields, TMeta, TSection } from "@/types";
+import { AppState, FormField, TFields, TMeta, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
-import { AppState } from "@/app/(main)/auth/page";
 import CustomizeColor from "../../customize/color";
 type TProps = {
   open: boolean;
@@ -11,18 +10,16 @@ type TProps = {
   handleChange: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
   meta?: TMeta;
-  getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 
 export function ColorDrawer(props: TProps) {
-  const { open, setOpen, handleChange, appState, meta, getData } = props;
+  const { open, setOpen, handleChange, appState, meta } = props;
   return (
     <Drawer open={!!open} onOpenChange={setOpen}>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm px-5 pb-10">
           <CustomizeColor
             appState={appState}
-            getData={getData}
             handleChange={handleChange}
             open={open}
             setOpen={setOpen}

@@ -37,7 +37,6 @@ function SlideOver(props: TProps) {
           <CustomizePanel
             setIsOpen={setIsOpen}
             section={section}
-            handleChange={handleChange}
             subdomain={subdomain}
             heroCustomizeFields={heroCustomizeFields}
             brandCustomizeFields={brandCustomizeFields}
