@@ -75,6 +75,9 @@ export default function Page() {
             placeholder: "Enter",
           },
         ],
+        validation: {
+          required: true,
+        },
       },
     ],
   );
@@ -115,6 +118,9 @@ export default function Page() {
       name: "cta",
       show: true,
       type: "button",
+      validation: {
+        required: true,
+      },
       children: [
         {
           name: "cta",

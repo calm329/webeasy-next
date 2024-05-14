@@ -47,6 +47,7 @@ const CustomButton = (props: TProps) => {
   const [loading, setLoading] = useState(false);
   console.log("Custom", showButtonForm);
   const [data, setData] = useState<any>();
+
   useEffect(() => {
     if (showButtonForm.edit) {
       heroCustomizeFields.forEach((field) => {
@@ -58,7 +59,7 @@ const CustomButton = (props: TProps) => {
       });
     }
   }, []);
-  console.log("Custom", data);
+
   return (
     <div className="">
       <div className=" border-b px-4 py-6 sm:px-6">
