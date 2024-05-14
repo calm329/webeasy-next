@@ -5,9 +5,8 @@ import { signOut, useSession } from "next-auth/react";
 import { IoMdSettings } from "react-icons/io";
 import CustomizeMetaModal from "../ui/modal/meta-modal";
 import { DebouncedState } from "use-debounce";
-import { AppState } from "@/app/(main)/auth/page";
 import { useMediaQuery } from "usehooks-ts";
-import { TMeta, TTemplateName } from "@/types";
+import { TMeta, TTemplateName, AppState } from "@/types";
 import ColorModal from "../ui/modal/color-modal";
 import { MetaDrawer } from "../ui/drawer/meta-drawer";
 import { ColorDrawer } from "../ui/drawer/color-drawer";
@@ -69,7 +68,6 @@ export default function SettingMenu(props: TProps) {
             open={open}
             handleChange={handleChange}
             appState={appState}
-            getData={getData}
           />
         ) : (
           <CustomizeMetaModal
@@ -77,7 +75,6 @@ export default function SettingMenu(props: TProps) {
             open={open}
             handleChange={handleChange}
             appState={appState}
-            getData={getData}
           />
         ))}
       {handleChange &&
@@ -87,7 +84,6 @@ export default function SettingMenu(props: TProps) {
             open={isColorOpen}
             handleChange={handleChange}
             appState={appState}
-            getData={getData}
           />
         ) : (
           <ColorModal
@@ -95,7 +91,6 @@ export default function SettingMenu(props: TProps) {
             open={isColorOpen}
             handleChange={handleChange}
             appState={appState}
-            getData={getData}
           />
         ))}
       <Menu as="div" className="relative inline-block text-left">

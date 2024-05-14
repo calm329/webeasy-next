@@ -66,3 +66,22 @@ export type TTemplateName =
   | "Blue-Based template"
   | "Post-Based template"
   | "General template";
+
+export interface AppState {
+  status: string;
+  iPosts: any[];
+  aiContent: any;
+  logo: string;
+  editable: boolean;
+  meta: TMeta;
+}
+
+export type TData = Partial<{
+  logo: string;
+  businessName: string;
+  ctaLink: string;
+  heading: string;
+  subheading: string;
+  imageUrl: string;
+  cta: string;
+}>;

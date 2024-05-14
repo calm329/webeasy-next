@@ -1,11 +1,10 @@
 "use client";
 
-import { TMeta } from "@/types";
+import { AppState, TMeta } from "@/types";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Dispatch, Fragment, SetStateAction } from "react";
 
 import { DebouncedState } from "use-debounce";
-import { AppState } from "@/app/(main)/auth/page";
 import CustomizeMeta from "../../customize/meta";
 
 type TProps = {
@@ -13,10 +12,9 @@ type TProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
-  getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 export default function CustomizeMetaModal(props: TProps) {
-  const { open, setOpen, handleChange, appState, getData } = props;
+  const { open, setOpen, handleChange, appState } = props;
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -47,7 +45,6 @@ export default function CustomizeMetaModal(props: TProps) {
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
                 <CustomizeMeta
                   appState={appState}
-                  getData={getData}
                   handleChange={handleChange}
                   open={open}
                   setOpen={setOpen}

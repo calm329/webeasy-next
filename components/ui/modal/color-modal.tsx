@@ -1,6 +1,6 @@
 "use client";
 
-import { FormField, TMeta } from "@/types";
+import { AppState, FormField, TMeta } from "@/types";
 import { Dialog, Transition } from "@headlessui/react";
 import React, {
   Dispatch,
@@ -14,7 +14,6 @@ import { checkSiteAvailability, updateSite } from "@/lib/actions";
 import { toast } from "sonner";
 import { DebouncedState } from "use-debounce";
 import { getUsernameFromPosts } from "@/lib/utils";
-import { AppState } from "@/app/(main)/auth/page";
 import CustomizeColor from "../../customize/color/index";
 
 type TProps = {
@@ -22,10 +21,9 @@ type TProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
-  getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 export default function ColorModal(props: TProps) {
-  const { open, setOpen, handleChange, appState, getData } = props;
+  const { open, setOpen, handleChange, appState } = props;
   const [colorFields, setColorFields] = useState<FormField[]>([
     {
       name: "primary",
@@ -85,7 +83,6 @@ export default function ColorModal(props: TProps) {
               <Dialog.Panel className="relative transform  rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
                 <CustomizeColor
                   appState={appState}
-                  getData={getData}
                   handleChange={handleChange}
                   open={open}
                   setOpen={setOpen}
