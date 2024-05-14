@@ -25,7 +25,7 @@ export default async function SiteHomePage(props: TProps) {
   return (
     <div>
       <BasicTemplate
-        logo={data.logo ?? undefined}
+        logo={{ link: data.logo ?? "", alt: "" } ?? undefined}
         businessName={aiResult["businessName"]}
         hero={{
           heading: aiResult["hero"]["heading"],

@@ -78,7 +78,10 @@ export const getData = async (params: TParams) => {
       status: "Done",
       aiContent: aiContent,
       iPosts: JSON.parse(siteData.posts),
-      logo: siteData.logo || state.logo,
+      logo: {
+        link: siteData.logo ?? state.logo.link ?? "",
+        alt: state.logo.alt,
+      },
       meta: { title: siteData.title, description: siteData.description },
     }));
 
@@ -226,8 +229,23 @@ export const handleChangeAppState = (
   value: string,
 ) => {
   switch (name) {
+    case "alt":
+      setAppState((state) => ({
+        ...state,
+        logo: {
+          ...state.logo,
+          alt: value,
+        },
+      }));
+      break;
     case "logo":
-      setAppState((state) => ({ ...state, logo: value }));
+      setAppState((state) => ({
+        ...state,
+        logo: {
+          ...state.logo,
+          link: value,
+        },
+      }));
       break;
     case "businessName":
       setAppState((state) => ({

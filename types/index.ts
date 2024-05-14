@@ -71,7 +71,10 @@ export interface AppState {
   status: string;
   iPosts: any[];
   aiContent: any;
-  logo: string;
+  logo: {
+    link: string;
+    alt: string;
+  };
   editable: boolean;
   meta: TMeta;
 }

@@ -18,7 +18,10 @@ const initialState: AppState = {
   status: "Loading Instagram",
   iPosts: [],
   aiContent: {},
-  logo: "",
+  logo: {
+    link: "",
+    alt: "",
+  },
   editable: false,
   meta: {
     title: "",

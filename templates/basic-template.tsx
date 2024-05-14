@@ -5,7 +5,10 @@ import CTA from "@/components/cta";
 import TopBar from "@/components/top-bar";
 
 type BasicTemplateProps = {
-  logo?: string;
+  logo?: {
+    link: string;
+    alt: string;
+  };
   businessName: string;
   hero: {
     heading: string;
@@ -32,7 +35,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
       <section className="bg-white py-6">
         <div className={`container mx-auto px-4`}>
           <TopBar
-            logo={logo ?? ""}
+            logo={logo!}
             businessName={businessName}
             colors={colors}
             cta={cta}

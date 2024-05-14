@@ -7,7 +7,10 @@ import { Dispatch, SetStateAction } from "react";
 import { TFields, TSection } from "@/types";
 
 type BasicTemplateProps = {
-  logo?: string;
+  logo?: {
+    link: string;
+    alt: string;
+  };
   businessName: string;
   hero: {
     heading: string;
@@ -58,7 +61,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           }}
         >
           <TopBar
-            logo={logo || ""}
+            logo={logo!}
             businessName={businessName}
             colors={colors}
             cta={cta}

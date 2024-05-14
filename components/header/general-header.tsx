@@ -5,7 +5,10 @@ import clsx from "clsx";
 import { Container } from "../container/nested-container";
 import { Button } from "../ui/button/template-button";
 type TProps = {
-  logo?: string;
+  logo: {
+    link: string;
+    alt: string;
+  };
   businessName: string;
   cta: {
     text: string;
@@ -51,7 +54,12 @@ export function Header(props: TProps) {
                       className="flex items-center gap-5 max-md:gap-2"
                       style={{ color: colors.primary }}
                     >
-                      <Image src={logo ?? ""} alt="" height={100} width={100} />
+                      <Image
+                        src={logo.link ?? ""}
+                        alt={logo.alt}
+                        height={100}
+                        width={100}
+                      />
                       <h2 className="text-xl max-md:text-base">
                         {businessName}
                       </h2>

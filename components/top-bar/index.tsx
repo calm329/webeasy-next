@@ -5,7 +5,10 @@ import { TFields, TSection } from "@/types";
 import Image from "next/image";
 
 type TopBarProps = {
-  logo: string;
+  logo: {
+    link: string;
+    alt: string;
+  };
   businessName: string;
   colors: {
     primary: string;
@@ -44,8 +47,8 @@ export default function TopBar(props: TopBarProps) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {logo && editable ? (
               <Image
-                src={logo}
-                alt="logo"
+                src={logo.link}
+                alt={logo.alt}
                 className={`h-8 w-auto ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
                 onClick={() => {
                   if (setIsOpen && setSection && setFocusedField) {
@@ -60,8 +63,8 @@ export default function TopBar(props: TopBarProps) {
             ) : (
               logo && (
                 <Image
-                  src={logo}
-                  alt="logo"
+                  src={logo.link}
+                  alt={logo.alt}
                   className={`h-8 w-auto `}
                   height={32}
                   width={200}

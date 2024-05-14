@@ -5,7 +5,10 @@ import { TFields, TSection } from "@/types";
 import { Header } from "@/components/header/post-based-header";
 import { Hero } from "@/components/hero/post-based-hero";
 type TProps = {
-  logo?: string;
+  logo: {
+    link: string;
+    alt: string;
+  };
   businessName: string;
   hero: {
     heading: string;
