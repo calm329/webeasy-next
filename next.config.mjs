@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
@@ -10,7 +11,11 @@ const nextConfig = {
         hostname: "*.cdninstagram.com",
       },
     ],
-    domains: ['xhq5zxhb2o7dgubv.public.blob.vercel-storage.com','tailwindui.com',"images.unsplash.com"],
+    domains: [
+      "xhq5zxhb2o7dgubv.public.blob.vercel-storage.com",
+      "tailwindui.com",
+      "images.unsplash.com",
+    ],
   },
 };
 

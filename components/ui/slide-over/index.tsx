@@ -14,6 +14,8 @@ type TProps = {
   brandCustomizeFields: FormField[];
   heroCustomizeFields: FormField[];
   focusedField: TFields;
+  setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
+  setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
 };
 
 function SlideOver(props: TProps) {
@@ -26,6 +28,8 @@ function SlideOver(props: TProps) {
     heroCustomizeFields,
     brandCustomizeFields,
     focusedField,
+    setBrandCustomizeFields,
+    setHeroCustomizeFields,
   } = props;
   const [showButtonForm, setShowButtonForm] = useState(false);
   return (
@@ -43,6 +47,8 @@ function SlideOver(props: TProps) {
             focusedField={focusedField}
             showButtonForm={showButtonForm}
             setShowButtonForm={setShowButtonForm}
+            setBrandCustomizeFields={setBrandCustomizeFields}
+            setHeroCustomizeFields={setHeroCustomizeFields}
           >
             {section === "Hero" && (
               <HeroContent

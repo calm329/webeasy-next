@@ -14,6 +14,8 @@ type TProps = {
   brandCustomizeFields: FormField[];
   heroCustomizeFields: FormField[];
   focusedField: TFields;
+  setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
+  setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
 };
 export function CustomDrawer(props: TProps) {
   const {
@@ -25,6 +27,8 @@ export function CustomDrawer(props: TProps) {
     brandCustomizeFields,
     heroCustomizeFields,
     focusedField,
+    setBrandCustomizeFields,
+    setHeroCustomizeFields,
   } = props;
   const [showButtonForm, setShowButtonForm] = React.useState(false);
   return (
@@ -40,6 +44,8 @@ export function CustomDrawer(props: TProps) {
             focusedField={focusedField}
             showButtonForm={showButtonForm}
             setShowButtonForm={setShowButtonForm}
+            setHeroCustomizeFields={setHeroCustomizeFields}
+            setBrandCustomizeFields={setBrandCustomizeFields}
           >
             {section === "Hero" && (
               <HeroContent
