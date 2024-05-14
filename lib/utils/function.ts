@@ -219,3 +219,137 @@ export const getData = async (params: TParams) => {
     setHeroCustomizeFields,
   );
 };
+
+export const handleChangeAppState = (
+  setAppState: Dispatch<SetStateAction<AppState>>,
+  name: string,
+  value: string,
+) => {
+  switch (name) {
+    case "logo":
+      setAppState((state) => ({ ...state, logo: value }));
+      break;
+    case "businessName":
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["businessName"]: value,
+        },
+      }));
+      break;
+    case "ctaLink":
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["hero"]: {
+            ...state.aiContent["hero"],
+            ["ctaLink"]: value,
+          },
+        },
+      }));
+      break;
+    case "heading":
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["hero"]: {
+            ...state.aiContent["hero"],
+            ["heading"]: value,
+          },
+        },
+      }));
+      break;
+    case "subheading":
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["hero"]: {
+            ...state.aiContent["hero"],
+            ["subheading"]: value,
+          },
+        },
+      }));
+      break;
+    case "imageUrl":
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["hero"]: {
+            ...state.aiContent["hero"],
+            ["imageUrl"]: value,
+          },
+        },
+      }));
+      break;
+    case "cta":
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["hero"]: {
+            ...state.aiContent["hero"],
+            ["cta"]: value,
+          },
+        },
+      }));
+      break;
+    case "primary":
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["colors"]: {
+            ...state.aiContent["colors"],
+            ["primary"]: value,
+          },
+        },
+      }));
+      break;
+    case "colors":
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["colors"]: value,
+        },
+      }));
+      break;
+    case "title":
+      setAppState((state) => ({
+        ...state,
+        meta: {
+          ...state.meta,
+          title: value,
+        },
+      }));
+      break;
+    case "description":
+      setAppState((state) => ({
+        ...state,
+        meta: {
+          ...state.meta,
+          description: value,
+        },
+      }));
+      break;
+    case "secondary":
+      setAppState((state) => ({
+        ...state,
+        aiContent: {
+          ...state.aiContent,
+          ["colors"]: {
+            ...state.aiContent["colors"],
+            ["secondary"]: value,
+          },
+        },
+      }));
+      break;
+    default:
+      break;
+  }
+};

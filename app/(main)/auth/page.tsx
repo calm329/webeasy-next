@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
 import SelectedTemplate from "@/components/selected-template";
-import { getData } from "@/lib/utils/function";
+import { getData, handleChangeAppState } from "@/lib/utils/function";
 
 const initialState: AppState = {
   status: "Loading Instagram",
@@ -130,133 +130,7 @@ export default function Page() {
   ]);
 
   const handleChange = useDebouncedCallback((name: string, value: string) => {
-    switch (name) {
-      case "logo":
-        setAppState((state) => ({ ...state, logo: value }));
-        break;
-      case "businessName":
-        setAppState((state) => ({
-          ...state,
-          aiContent: {
-            ...state.aiContent,
-            ["businessName"]: value,
-          },
-        }));
-        break;
-      case "ctaLink":
-        setAppState((state) => ({
-          ...state,
-          aiContent: {
-            ...state.aiContent,
-            ["hero"]: {
-              ...state.aiContent["hero"],
-              ["ctaLink"]: value,
-            },
-          },
-        }));
-        break;
-      case "heading":
-        setAppState((state) => ({
-          ...state,
-          aiContent: {
-            ...state.aiContent,
-            ["hero"]: {
-              ...state.aiContent["hero"],
-              ["heading"]: value,
-            },
-          },
-        }));
-        break;
-      case "subheading":
-        setAppState((state) => ({
-          ...state,
-          aiContent: {
-            ...state.aiContent,
-            ["hero"]: {
-              ...state.aiContent["hero"],
-              ["subheading"]: value,
-            },
-          },
-        }));
-        break;
-      case "imageUrl":
-        setAppState((state) => ({
-          ...state,
-          aiContent: {
-            ...state.aiContent,
-            ["hero"]: {
-              ...state.aiContent["hero"],
-              ["imageUrl"]: value,
-            },
-          },
-        }));
-        break;
-      case "cta":
-        setAppState((state) => ({
-          ...state,
-          aiContent: {
-            ...state.aiContent,
-            ["hero"]: {
-              ...state.aiContent["hero"],
-              ["cta"]: value,
-            },
-          },
-        }));
-        break;
-      case "primary":
-        setAppState((state) => ({
-          ...state,
-          aiContent: {
-            ...state.aiContent,
-            ["colors"]: {
-              ...state.aiContent["colors"],
-              ["primary"]: value,
-            },
-          },
-        }));
-        break;
-      case "colors":
-        setAppState((state) => ({
-          ...state,
-          aiContent: {
-            ...state.aiContent,
-            ["colors"]: value,
-          },
-        }));
-        break;
-      case "title":
-        setAppState((state) => ({
-          ...state,
-          meta: {
-            ...state.meta,
-            title: value,
-          },
-        }));
-        break;
-      case "description":
-        setAppState((state) => ({
-          ...state,
-          meta: {
-            ...state.meta,
-            description: value,
-          },
-        }));
-        break;
-      case "secondary":
-        setAppState((state) => ({
-          ...state,
-          aiContent: {
-            ...state.aiContent,
-            ["colors"]: {
-              ...state.aiContent["colors"],
-              ["secondary"]: value,
-            },
-          },
-        }));
-        break;
-      default:
-        break;
-    }
+    handleChangeAppState(setAppState, name, value);
   }, 300);
 
   useEffect(() => {
