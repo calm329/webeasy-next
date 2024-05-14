@@ -1,9 +1,10 @@
-import { Dispatch, SetStateAction } from "react";
-import { SecondaryFeatures } from "../components/services/post-based-services";
-import { Testimonials } from "../components/posts/post-based-posts";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { Speakers } from "../../components/posts/blue-based-posts";
+import { Schedule } from "../../components/services/blue-based-services";
 import { TFields, TSection } from "@/types";
-import { Header } from "@/components/header/post-based-header";
-import { Hero } from "@/components/hero/post-based-hero";
+import { Header } from "@/components/header/blue-based-header";
+import { Hero } from "@/components/hero/blue-based-hero";
+
 type TProps = {
   logo: {
     link: string;
@@ -31,7 +32,7 @@ type TProps = {
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
 };
 
-export default function PostBasedTemplate(props: TProps) {
+const BlueBasedTemplate = (props: TProps) => {
   const {
     logo,
     businessName,
@@ -45,6 +46,7 @@ export default function PostBasedTemplate(props: TProps) {
     editable,
     setFocusedField,
   } = props;
+
   return (
     <>
       <Header
@@ -53,11 +55,11 @@ export default function PostBasedTemplate(props: TProps) {
         cta={cta}
         colors={colors}
       />
-      <main>
-        <Hero hero={hero} cta={cta} colors={colors} />
-        <SecondaryFeatures services={services} />
-        <Testimonials posts={posts} />
-      </main>
+      <Hero hero={hero} cta={cta} colors={colors} />
+      <Schedule services={services} colors={colors} />
+      <Speakers posts={posts} colors={colors} />
     </>
   );
-}
+};
+
+export default BlueBasedTemplate;
