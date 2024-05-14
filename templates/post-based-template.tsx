@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-import { SecondaryFeatures } from "./SecondaryFeatures";
-import { Testimonials } from "./Testimonials";
+import { SecondaryFeatures } from "../components/services/post-based-services";
+import { Testimonials } from "../components/posts/post-based-posts";
 import { TFields, TSection } from "@/types";
 import { Header } from "@/components/header/post-based-header";
 import { Hero } from "@/components/hero/post-based-hero";
