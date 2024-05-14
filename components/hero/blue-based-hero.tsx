@@ -1,6 +1,6 @@
 import { BackgroundImage } from "@/templates/blue-based/BackgroundImage";
 import { Button } from "../ui/button/template-button";
-import { Container } from "../container/Container";
+import { Container } from "../container";
 import Image from "next/image";
 
 type TProps = {
