@@ -1,6 +1,8 @@
 "use client";
 import Loader from "@/components/ui/loader";
-import { getAccessTokenByUserId, getSitesByUserId } from "@/lib/fetchers";
+import { getAccessTokenBySiteId, getSitesByUserId } from "@/lib/fetchers";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { fetchAccessToken } from "@/lib/store/slices/accesstoken-slice";
 import { getUsernameFromPosts } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,6 +50,7 @@ export default function MyWebsites() {
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const getData = async () => {
     try {
       setIsLoading(true);
@@ -66,8 +69,10 @@ export default function MyWebsites() {
 
   const redirectToAuth = async (siteId: string) => {
     try {
-      const accessToken = await getAccessTokenByUserId(siteId);
-      console.log("accessToken", accessToken);
+      const accessToken = await getAccessTokenBySiteId(siteId);
+      const res = await dispatch(fetchAccessToken({ siteId })).unwrap();
+
+      console.log("accessToken", res);
       if (accessToken) {
         const newURLSearchParams = new URLSearchParams(searchParams);
         newURLSearchParams.set("access_token", accessToken.token);
@@ -75,7 +80,9 @@ export default function MyWebsites() {
 
         router.replace(`/auth?${newURLSearchParams.toString()}`);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   return (

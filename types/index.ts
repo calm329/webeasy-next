@@ -107,3 +107,13 @@ export type TTemplate = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type TAccessToken = {
+  id: string;
+  token: string;
+  userId: string;
+  siteId: string;
+  expires: Date;
+  createdAt: Date;
+  updatedAt: Date;
+};
