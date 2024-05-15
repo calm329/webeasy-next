@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { getAllTemplates } from "../fetchers";
 
 class TemplateApiService {
   /**
@@ -6,22 +7,8 @@ class TemplateApiService {
    * @returns List of templates
    */
   public async getAll() {
-    try {
-      const templates = await prisma.template.findMany();
-      return templates;
-    } catch (error) {
-      console.log(error);
-
-      return [];
-    }
+    return getAllTemplates();
   }
-
-  /**
-   * Get template
-   * @params id
-   * @returns template
-   */
-  //   public async get(id: string) {}
 }
 const TemplateApi = new TemplateApiService();
 export default TemplateApi;

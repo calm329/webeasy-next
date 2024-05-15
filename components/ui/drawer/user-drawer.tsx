@@ -1,10 +1,9 @@
 import * as React from "react";
 import CustomizePanel from "@/components/customize/panel";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import { FormField, TFields, TSection } from "@/types";
+import { FormField, TFields, TSection, TUser } from "@/types";
 import { DebouncedState } from "use-debounce";
 import UpdateUser from "../form/update-user";
-import { TUser } from "@/app/(main)/settings/page";
 type TProps = {
   open: TFields;
   setOpen: React.Dispatch<React.SetStateAction<TFields>>;

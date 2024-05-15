@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./slices/user-slice";
+import templateSlice from "./slices/template-slice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       userSlice,
+      templateSlice,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

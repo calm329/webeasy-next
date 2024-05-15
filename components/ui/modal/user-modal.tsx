@@ -1,6 +1,6 @@
 "use client";
 
-import { FormField, TFields, TMeta } from "@/types";
+import { FormField, TFields, TMeta, TUser } from "@/types";
 import { Dialog, Transition } from "@headlessui/react";
 import React, {
   Dispatch,
@@ -11,7 +11,6 @@ import React, {
 } from "react";
 import DynamicForm from "../form/dynamic-form";
 import { toast } from "sonner";
-import { TUser } from "@/app/(main)/settings/page";
 import { useSession } from "next-auth/react";
 import UpdateUser from "../form/update-user";
 

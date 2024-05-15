@@ -13,10 +13,11 @@ import { getUsernameFromPosts } from "@/lib/utils";
 import { DebouncedState } from "use-debounce";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useMediaQuery } from "usehooks-ts";
-import { TMeta, TTemplateName, AppState } from "@/types";
-import { TUser } from "@/app/(main)/settings/page";
+import { TMeta, TTemplateName, AppState, TUser } from "@/types";
 import { getAllTemplates, getUserById } from "@/lib/fetchers";
 import { usePathname } from "next/navigation";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { fetchTemplates } from "@/lib/store/slices/template-slice";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -56,11 +57,13 @@ export default function SiteHeader(props: TProps) {
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState<TTemplate | null>(null);
   const [hideNavigation, setHideNavigation] = useState(false);
+  const dispatch = useAppDispatch();
 
   const fetchData = async () => {
     try {
       const response = await getAllTemplates();
-      console.log("templates", response);
+      const templates = await dispatch(fetchTemplates()).unwrap();
+      console.log("templates", templates);
       setTemplates(response);
     } catch (error) {}
   };

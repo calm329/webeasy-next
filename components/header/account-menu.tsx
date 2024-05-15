@@ -1,6 +1,6 @@
 "use client";
 
-import { TUser } from "@/app/(main)/settings/page";
+import { TUser } from "@/types";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { signOut, useSession } from "next-auth/react";
