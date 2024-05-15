@@ -69,10 +69,8 @@ export default function MyWebsites() {
 
   const redirectToAuth = async (siteId: string) => {
     try {
-      const accessToken = await getAccessTokenBySiteId(siteId);
-      const res = await dispatch(fetchAccessToken({ siteId })).unwrap();
+      const accessToken = await dispatch(fetchAccessToken({ siteId })).unwrap();
 
-      console.log("accessToken", res);
       if (accessToken) {
         const newURLSearchParams = new URLSearchParams(searchParams);
         newURLSearchParams.set("access_token", accessToken.token);

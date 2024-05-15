@@ -21,10 +21,7 @@ export default function General() {
   const getUserData = async () => {
     setLoading(true);
     try {
-      const user = await getUserById();
-      const res = await dispatch(fetchUser()).unwrap();
-      console.log("user", res);
-      // console.log("user", user);
+      const user = await dispatch(fetchUser()).unwrap();
       setUser({ ...user });
     } catch (error) {
       console.log("error", error);
