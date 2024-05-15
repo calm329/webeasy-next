@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaInstagram } from "react-icons/fa";
 import { FaAmazon, FaEdit } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
 
 type TSectionObject = Array<{
   logo: React.ReactNode;
@@ -116,13 +117,13 @@ export default function MyWebsites() {
                   {sites?.map((site) => (
                     <div
                       key={site.id}
-                      className=" flex aspect-1 max-w-80 flex-col items-center justify-center rounded-lg border   shadow"
+                      className=" flex  max-w-80 flex-col items-center justify-center rounded-lg border   shadow"
                     >
                       <Image
                         src={JSON.parse(site?.aiResult)["hero"]["imageUrl"]}
                         height={200}
                         width={500}
-                        className="rounded-t-lg"
+                        className="cover rounded-t-lg"
                         alt=""
                       />
                       <div className="flex flex-col gap-5 p-5">
@@ -155,6 +156,9 @@ export default function MyWebsites() {
                       </div>
                     </div>
                   ))}
+                  <div className=" flex  w-80 max-w-80 flex-col items-center justify-center rounded-lg border   shadow">
+                    <IoMdAdd size={100} />
+                  </div>
                 </div>
               )}
               {selectedSection === "Amazon" && <div>Amazon</div>}
