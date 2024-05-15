@@ -18,6 +18,7 @@ import { getAllTemplates, getUserById } from "@/lib/fetchers";
 import { usePathname } from "next/navigation";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { fetchTemplates } from "@/lib/store/slices/template-slice";
+import { fetchUser } from "@/lib/store/slices/user-slice";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -84,7 +85,7 @@ export default function SiteHeader(props: TProps) {
   const getUserData = async () => {
     setLoading(true);
     try {
-      const user = await getUserById();
+      const user = await dispatch(fetchUser()).unwrap();
       setUser({ ...user });
     } catch (error) {
       console.log("error", error);
