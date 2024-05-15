@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./slices/user-slice";
 import templateSlice from "./slices/template-slice";
 import accessTokenSlice from "./slices/accesstoken-slice";
+import siteSlice from "./slices/site-slice";
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       userSlice,
       templateSlice,
       accessTokenSlice,
+      siteSlice,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

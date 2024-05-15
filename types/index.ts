@@ -117,3 +117,17 @@ export type TAccessToken = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type TSite = {
+  id: string;
+  subdomain: string;
+  title: string;
+  description: string;
+  userId: string | null;
+  templateId: string;
+  logo: string | null;
+  posts: string;
+  aiResult: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
