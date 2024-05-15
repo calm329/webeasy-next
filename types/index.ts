@@ -88,3 +88,14 @@ export type TData = Partial<{
   imageUrl: string;
   cta: string;
 }>;
+
+export type TUser = {
+  id: string;
+  name: string | null;
+  image: string | null;
+  emailVerified: boolean | null;
+  email: string | null;
+  password: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+} | null;

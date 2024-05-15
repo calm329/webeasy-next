@@ -5,32 +5,26 @@ import { useSession } from "next-auth/react";
 import { getUserById } from "@/lib/fetchers";
 import { useEffect, useState } from "react";
 import Loader from "@/components/ui/loader";
-import { FormField, TFields } from "@/types";
+import { FormField, TFields, TUser } from "@/types";
 import UserModal from "@/components/ui/modal/user-modal";
 import { UserDrawer } from "@/components/ui/drawer/user-drawer";
 import { useMediaQuery } from "usehooks-ts";
-
-export type TUser = {
-  id: string;
-  name: string;
-  image: string | null;
-  emailVerified: boolean | null;
-  email: string;
-  password: string;
-  createdAt: Date;
-  updatedAt: Date;
-} | null;
+import { useAppDispatch } from "@/lib/store/hooks";
+import { fetchUser } from "@/lib/store/slices/user-slice";
 
 export default function General() {
   const { data: session } = useSession();
   const [user, setUser] = useState<TUser>(null);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState<TFields>(null);
+  const dispatch = useAppDispatch();
   const getUserData = async () => {
     setLoading(true);
     try {
       const user = await getUserById();
-      console.log("user", user);
+      const res = await dispatch(fetchUser()).unwrap();
+      console.log("user", res);
+      // console.log("user", user);
       setUser({ ...user });
     } catch (error) {
       console.log("error", error);
