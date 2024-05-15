@@ -1,8 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
+import userSlice from "./slices/user-slice";
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {},
+    reducer: {
+      userSlice,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
   });
 };
 

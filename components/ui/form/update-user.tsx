@@ -1,8 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import DynamicForm from "./dynamic-form";
 import { toast } from "sonner";
-import { FormField, TFields } from "@/types";
-import { TUser } from "@/app/(main)/settings/page";
+import { FormField, TFields, TUser } from "@/types";
 import { useMediaQuery } from "usehooks-ts";
 type TProps = {
   open: TFields;
@@ -50,8 +49,8 @@ const UpdateUser = (props: TProps) => {
       if (user.image) {
         tempUserFields[0].defaultValue = user.image;
       }
-      tempUserFields[1].defaultValue = user.name;
-      tempUserFields[2].defaultValue = user.email;
+      tempUserFields[1].defaultValue = user.name as string;
+      tempUserFields[2].defaultValue = user.email as string;
       setUserFields([...tempUserFields]);
     }
   }, [user]);
