@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./slices/user-slice";
 import templateSlice from "./slices/template-slice";
+import accessTokenSlice from "./slices/accesstoken-slice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       userSlice,
       templateSlice,
+      accessTokenSlice,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

@@ -49,7 +49,7 @@ export async function getSitesByUserId() {
   )();
 }
 
-export async function getAccessTokenByUserId(siteId: string) {
+export async function getAccessTokenBySiteId(siteId: string) {
   return await unstable_cache(
     async () => {
       return prisma.accessToken.findFirst({
