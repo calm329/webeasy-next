@@ -99,3 +99,11 @@ export type TUser = {
   createdAt: Date;
   updatedAt: Date;
 } | null;
+
+export type TTemplate = {
+  id: string;
+  name: string;
+  previewUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

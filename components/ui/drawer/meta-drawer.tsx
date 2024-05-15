@@ -4,7 +4,6 @@ import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { AppState, FormField, TFields, TMeta, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
 import UpdateUser from "../form/update-user";
-import { TUser } from "@/app/(main)/settings/page";
 import CustomizeMeta from "../../customize/meta";
 type TProps = {
   open: boolean;
