@@ -61,9 +61,8 @@ export default function SiteHeader(props: TProps) {
 
   const fetchData = async () => {
     try {
-      const response = await getAllTemplates();
-      const templates = await dispatch(fetchTemplates()).unwrap();
-      console.log("templates", templates);
+      const response = await dispatch(fetchTemplates()).unwrap();
+      console.log("templates", response);
       setTemplates(response);
     } catch (error) {}
   };
