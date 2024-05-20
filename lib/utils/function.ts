@@ -79,8 +79,8 @@ export const getData = async (params: TParams) => {
       aiContent: aiContent,
       iPosts: JSON.parse(siteData.posts),
       logo: {
-        link: siteData.logo ?? state.logo.link ?? "",
-        alt: state.logo.alt,
+        link: siteData.logo ?? state.aiContent.banner.logo.link ?? "",
+        alt: state.aiContent.banner.logo.alt ?? "",
       },
       meta: { title: siteData.title, description: siteData.description },
     }));
@@ -233,7 +233,7 @@ export const handleChangeAppState = (
       setAppState((state) => ({
         ...state,
         logo: {
-          ...state.logo,
+          ...state.aiContent.banner.logo,
           alt: value,
         },
       }));
@@ -242,7 +242,7 @@ export const handleChangeAppState = (
       setAppState((state) => ({
         ...state,
         logo: {
-          ...state.logo,
+          ...state.aiContent.banner.logo,
           link: value,
         },
       }));
@@ -328,15 +328,15 @@ export const handleChangeAppState = (
         },
       }));
       break;
-    case "colors":
-      setAppState((state) => ({
-        ...state,
-        aiContent: {
-          ...state.aiContent,
-          ["colors"]: value,
-        },
-      }));
-      break;
+    // case "colors":
+    //   setAppState((state) => ({
+    //     ...state,
+    //     aiContent:{
+    //       ...state.aiContent,
+    //       colors :value
+    //     },
+    //   }));
+    //   break;
     case "title":
       setAppState((state) => ({
         ...state,

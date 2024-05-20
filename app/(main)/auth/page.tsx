@@ -18,11 +18,34 @@ import EditWebsiteHeader from "@/components/header/edit-website-header";
 const initialState: AppState = {
   status: "Loading Instagram",
   iPosts: [],
-  aiContent: {},
-  logo: {
-    link: "",
-    alt: "",
+  aiContent: {
+    banner:{
+      businessName:"",
+      button:[],
+      logo: {
+        link: "",
+        alt: "",
+      },
+    },
+    hero:{
+      heroImagePrompt:"",
+      button:[],
+      heading:"",
+      imageId:"",
+      imageUrl:"",
+      subheading:""
+    },
+    colors:{
+      primary:"",
+      secondary:""
+    },
+    services:{
+      description:"",
+      list:[],
+      title:""
+    }
   },
+
   editable: false,
   meta: {
     title: "",
