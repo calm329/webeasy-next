@@ -9,9 +9,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <PrivateRoute>
       <SiteHeader showNavigation={true} />
-      <div className="flex flex-row">
+      <div className="flex flex-col lg:flex-row">
         <Navlink />
-        {children}
+        <div className="p-4">{children}</div>
       </div>
     </PrivateRoute>
   );
