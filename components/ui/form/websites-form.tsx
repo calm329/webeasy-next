@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaInstagram } from "react-icons/fa";
 import { FaAmazon, FaEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
+import SelectSourceModal from "../modal/select-source-modal";
 
 type TSectionObject = Array<{
   logo: React.ReactNode;
@@ -50,6 +51,8 @@ export default function WebsitesForm() {
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [showMobileMenu, setMobileMenuOpen] = useState(false);
+  const [showSelectSourceModal, setSelectSourceModal] = useState(false);
   const dispatch = useAppDispatch();
   const getData = async () => {
     try {
@@ -154,8 +157,19 @@ export default function WebsitesForm() {
                 </div>
               ))}
               <div className=" flex  w-80 max-w-80 flex-col items-center justify-center rounded-lg border   shadow">
-                <IoMdAdd size={100} />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectSourceModal(true), setMobileMenuOpen(false);
+                  }}
+                >
+                  <IoMdAdd size={100} />
+                </button>
               </div>
+              <SelectSourceModal
+                open={showSelectSourceModal}
+                setOpen={setSelectSourceModal}
+              />
             </div>
           )}
           {selectedSection === "Amazon" && <div>Amazon</div>}
