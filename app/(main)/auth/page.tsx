@@ -13,6 +13,7 @@ import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
 import SelectedTemplate from "@/components/selected-template";
 import { getData, handleChangeAppState } from "@/lib/utils/function";
+import EditWebsiteHeader from "@/components/header/edit-website-header";
 
 const initialState: AppState = {
   status: "Loading Instagram",
@@ -223,6 +224,7 @@ export default function Page() {
             handleChange={handleChange}
             setSelectedTemplate={setSelectedTemplate}
           />
+          <EditWebsiteHeader />
           <div className="relative flex size-full ">
             <SelectedTemplate
               appState={appState}
