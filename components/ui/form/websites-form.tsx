@@ -87,7 +87,10 @@ export default function WebsitesForm() {
       console.log("error", error);
     }
   };
+  if(sites){
 
+    console.log("sites",sites[0]?.aiResult)
+  }
   return (
     <div className="">
       <div className="">
@@ -120,7 +123,7 @@ export default function WebsitesForm() {
                   className=" flex  max-w-80 flex-col items-center justify-center rounded-lg border   shadow"
                 >
                   <Image
-                    src={JSON.parse(site?.aiResult)["hero"]["imageUrl"]}
+                    src={JSON.parse(site?.aiResult)?.hero?.imageUrl}
                     height={200}
                     width={500}
                     className="cover rounded-t-lg"
