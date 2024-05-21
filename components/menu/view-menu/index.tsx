@@ -2,24 +2,48 @@ import { Fragment } from "react";
 import { ChevronDownIcon, LinkIcon } from "@heroicons/react/20/solid";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
+import { useMediaQuery } from "usehooks-ts";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+
 export default function ViewMenu() {
+  const matches = useMediaQuery("(max-width: 500px)");
+  const isMobile = useMediaQuery("(max-width: 900px)");
+
   return (
-    <Menu as="div" className="relative ml-3 hidden sm:block">
+    <Menu
+      as="div"
+      className={`relative ml-3 `}
+    >
       <Menu.Button className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-        <LinkIcon
-          className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400"
-          aria-hidden="true"
-        />
-        View
-        <ChevronDownIcon
-          className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
-          aria-hidden="true"
-        />
+        <div className="flex items-center justify-center gap-1 max-sm:flex-col sm:hidden">
+          <div className="flex">
+            <LinkIcon
+              className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+
+            <ChevronDownIcon
+              className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </div>
+          View
+        </div>
+        <div className={`flex  max-sm:hidden` }>
+          <LinkIcon
+            className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400"
+            aria-hidden="true"
+          />
+          View
+          <ChevronDownIcon
+            className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
+            aria-hidden="true"
+          />
+        </div>
       </Menu.Button>
 
       <Transition

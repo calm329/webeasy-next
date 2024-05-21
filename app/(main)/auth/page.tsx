@@ -16,6 +16,7 @@ import { getData, handleChangeAppState } from "@/lib/utils/function";
 import EditWebsiteHeader from "@/components/header/edit-website-header";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
+import BottomToolBar from "@/components/bottom-bar";
 
 export default function Page() {
   const router = useRouter();
@@ -197,10 +198,13 @@ export default function Page() {
 
   const matches = useMediaQuery("(min-width: 768px)");
 
+
   return (
     <>
+   
       {appState.status === "Done" ? (
         <>
+          
           <SiteHeader
             showNavigation={false}
             isAuth={true}

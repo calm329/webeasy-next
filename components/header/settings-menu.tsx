@@ -96,12 +96,24 @@ export default function SettingMenu(props: TProps) {
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 ">
-            <IoMdSettings />
-            {matches ? "" : "Settings"}
-            <ChevronDownIcon
-              className="-mr-1 h-5 w-5 text-white"
-              aria-hidden="true"
-            />
+            <div className="flex items-center justify-center gap-2 max-sm:flex-col sm:hidden">
+              <div className="flex">
+                <IoMdSettings size={18} />
+                <ChevronDownIcon
+                  className="-mr-1 ml-1.5 h-5 w-5 text-white"
+                  aria-hidden="true"
+                />
+              </div>
+              Settings
+            </div>
+            <div className="flex max-sm:hidden gap-2">
+              <IoMdSettings size={18} />
+              Settings
+              <ChevronDownIcon
+                className="-mr-1 ml-1.5 h-5 w-5 text-white"
+                aria-hidden="true"
+              />
+            </div>
           </Menu.Button>
         </div>
 
