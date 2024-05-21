@@ -33,7 +33,7 @@ function SlideOver(props: TProps) {
   } = props;
   const [showButtonForm, setShowButtonForm] = useState({
     edit: "",
-    show: true,
+    show: false,
   });
   return (
     <div className="pointer-events-none fixed right-0  z-10 flex max-w-full  pl-10  sm:pl-16">

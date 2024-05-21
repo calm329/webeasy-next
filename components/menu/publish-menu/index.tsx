@@ -19,19 +19,19 @@ export default function PublishMenu() {
       as="div"
       className={`relative ml-3`}
     >
-      <Menu.Button className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ">
+      <Menu.Button className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-sm:bg-transparent max-sm:text-black max-sm:text-xs max-sm:shadow-none ">
 
-        <div className="flex items-center justify-center gap-1 max-sm:flex-col sm:hidden">
+        <div className="flex items-center justify-center gap-1 max-sm:flex-col sm:hidden max-sm:gap-3">
           <div className="flex">
           <FaExternalLinkAlt
-            className="-ml-0.5 mr-1.5 h-4 w-4 text-gray-400"
+            className="-ml-0.5 mr-1.5 h-4 w-4 max-sm:m-0"
             aria-hidden="true"
           />
 
-            <ChevronUpIcon
+            {/* <ChevronUpIcon
               className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
               aria-hidden="true"
-            />
+            /> */}
           </div>
           Publish
         </div>
