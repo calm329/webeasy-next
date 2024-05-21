@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
+import { MdDomain } from "react-icons/md";
 
 const secondaryNavigation = [
   { name: "General", href: "/settings", icon: UserCircleIcon },
@@ -19,6 +20,7 @@ const secondaryNavigation = [
     icon: FingerPrintIcon,
   },
   { name: "My Websites", href: "/settings/websites", icon: GlobeAltIcon },
+  { name: "Domain", href: "/settings/domain", icon: MdDomain },
 ];
 
 function classNames(...classes: any[]) {

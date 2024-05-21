@@ -9,10 +9,10 @@ import { updateAppState } from "../store/slices/site-slice";
 type TParams = {
   flag: "init" | "regenerate" | "refresh";
   searchParams: ReadonlyURLSearchParams;
-  dispatch:any,
-  appState:AppState
-  setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
-  setHeroCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
+  dispatch: any;
+  appState: AppState;
+  setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>;
+  setHeroCustomizeFields: Dispatch<SetStateAction<FormField[]>>;
 };
 
 const updateDefaultValues = (
@@ -44,20 +44,24 @@ export const getData = async (params: TParams) => {
     setHeroCustomizeFields,
   } = params;
   // dispatch(updateAppState())
-  dispatch(updateAppState({
-    ...appState,
-    status: "Loading Instagram",
-  }))
+  dispatch(
+    updateAppState({
+      ...appState,
+      status: "Loading Instagram",
+    }),
+  );
   const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
     userId: searchParams.get("user_id") || "",
   });
 
-  console.log('editable',editable)
-  dispatch(updateAppState({
-    ...appState,
-    status: "Loading Instagram",
-    editable,
-  }))
+  console.log("editable", editable);
+  dispatch(
+    updateAppState({
+      ...appState,
+      status: "Loading Instagram",
+      editable,
+    }),
+  );
 
   // check if user data exists
   // const userData = flag === "init" ? await getUserData() : null;
@@ -74,49 +78,50 @@ export const getData = async (params: TParams) => {
     });
     const aiContent = JSON.parse(siteData.aiResult);
 
-    console.log("aiContent",aiContent);
+    console.log("aiContent", aiContent);
     // if (!aiContent["hero"]["ctaLink"]) {
     //   aiContent["hero"]["ctaLink"] = "https://domain.com";
     // }
-    dispatch(updateAppState({
-      ...appState,
-      status: "Done",
-      aiContent: {
-        banner:{
-          businessName:aiContent["businessName"],
-          button:[
-            {
-              label:"Explore More",
-              type:"External",
-              value:"#"
-            }
-          ],
-          logo: {
-            link: siteData.logo ?? appState.aiContent.banner.logo.link ?? "",
-            alt: appState.aiContent.banner.logo.alt ?? "",
+    dispatch(
+      updateAppState({
+        ...appState,
+        status: "Done",
+        aiContent: {
+          banner: {
+            businessName: aiContent["businessName"],
+            button: [
+              {
+                label: "Explore More",
+                type: "External",
+                value: "#",
+              },
+            ],
+            logo: {
+              link: siteData.logo ?? appState.aiContent.banner.logo.link ?? "",
+              alt: appState.aiContent.banner.logo.alt ?? "",
+            },
           },
+          colors: aiContent["colors"],
+          hero: {
+            button: [
+              {
+                label: "Explore More",
+                type: "External",
+                value: "#",
+              },
+            ],
+            heading: aiContent["hero"]["heading"],
+            heroImagePrompt: aiContent["heroImagePrompt"],
+            imageId: aiContent["hero"]["imageId"],
+            imageUrl: aiContent["hero"]["imageUrl"],
+            subheading: aiContent["hero"]["subheading"],
+          },
+          services: aiContent["services"],
         },
-        colors:aiContent["colors"],
-        hero:{
-          button:[
-            {
-              label:"Explore More",
-              type:"External",
-              value:"#"
-            }
-          ],
-          heading:aiContent["hero"]["heading"],
-          heroImagePrompt:aiContent["heroImagePrompt"],
-          imageId:aiContent["hero"]["imageId"],
-          imageUrl:aiContent["hero"]["imageUrl"],
-          subheading:aiContent["hero"]["subheading"]
-        },
-        services:aiContent["services"]
-      },
-      iPosts: JSON.parse(siteData.posts),
-      meta: { title: siteData.title, description: siteData.description },
-    }))
-
+        iPosts: JSON.parse(siteData.posts),
+        meta: { title: siteData.title, description: siteData.description },
+      }),
+    );
 
     // update default values
     updateDefaultValues(
@@ -160,10 +165,12 @@ export const getData = async (params: TParams) => {
     mediaCaption = _mediaCaption || mediaCaption;
     imageIds = _imageIds || imageIds;
     iPosts = _posts || iPosts;
-    dispatch(updateAppState({
-      ...appState,
-      status: flag === "refresh" ? "Done" : "Generating Content",
-    }))
+    dispatch(
+      updateAppState({
+        ...appState,
+        status: flag === "refresh" ? "Done" : "Generating Content",
+      }),
+    );
   }
 
   // generate content from user media using openai
@@ -193,10 +200,12 @@ export const getData = async (params: TParams) => {
       aiContent["hero"]["imageUrl"] = imageIds[aiContent["hero"]["imageId"]];
     } // else return;
 
-    dispatch(updateAppState({
-      ...appState,
-      status: "Choosing Colors",
-    }))
+    dispatch(
+      updateAppState({
+        ...appState,
+        status: "Choosing Colors",
+      }),
+    );
   }
 
   // generate colors from content using openai
@@ -211,46 +220,51 @@ export const getData = async (params: TParams) => {
       aiContent = { ...aiContent, colors: aiColors };
     } // else return;
 
-    dispatch(updateAppState({
-      ...appState,
-      status: "Done",
-    }))
+    dispatch(
+      updateAppState({
+        ...appState,
+        status: "Done",
+      }),
+    );
   }
 
-  dispatch(updateAppState({
-    ...appState,
-    aiContent: Object.keys(aiContent).length ?  {
-      banner:{
-        ...aiContent.banner,
-        businessName:aiContent["businessName"],
-        button:[
-          {
-            label:"Explore More",
-            type:"External",
-            value:"#"
+  dispatch(
+    updateAppState({
+      ...appState,
+      aiContent: Object.keys(aiContent).length
+        ? {
+            banner: {
+              ...aiContent.banner,
+              businessName: aiContent["businessName"],
+              button: [
+                {
+                  label: "Explore More",
+                  type: "External",
+                  value: "#",
+                },
+              ],
+            },
+            colors: aiContent["colors"],
+            hero: {
+              button: [
+                {
+                  label: "Explore More",
+                  type: "External",
+                  value: "#",
+                },
+              ],
+              heading: aiContent["hero"]["heading"],
+              heroImagePrompt: aiContent["heroImagePrompt"],
+              imageId: aiContent["hero"]["imageId"],
+              imageUrl: aiContent["hero"]["imageUrl"],
+              subheading: aiContent["hero"]["subheading"],
+            },
+            services: aiContent["services"],
           }
-        ],
-      },
-      colors:aiContent["colors"],
-      hero:{
-        button:[
-          {
-            label:"Explore More",
-            type:"External",
-            value:"#"
-          }
-        ],
-        heading:aiContent["hero"]["heading"],
-        heroImagePrompt:aiContent["heroImagePrompt"],
-        imageId:aiContent["hero"]["imageId"],
-        imageUrl:aiContent["hero"]["imageUrl"],
-        subheading:aiContent["hero"]["subheading"]
-      },
-      services:aiContent["services"]
-    } : appState.aiContent,
-    iPosts: iPosts,
-  }))
-
+        : appState.aiContent,
+      iPosts: iPosts,
+    }),
+  );
 
   if (!siteAvailable && flag === "init") {
     await createNewSite({
@@ -285,114 +299,132 @@ export const getData = async (params: TParams) => {
 };
 
 export const handleChangeAppState = (
- dispatch:any,
- appState:AppState,
+  dispatch: any,
+  appState: AppState,
   name: string,
   value: string,
 ) => {
-  console.log("name",name,value)
+  console.log("name", name, value);
   switch (name) {
     case "alt":
-      dispatch(updateAppState({
-        ...appState,
-        logo: {
-          ...appState.aiContent.banner.logo,
-          alt: value,
-        },
-      }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          logo: {
+            ...appState.aiContent.banner.logo,
+            alt: value,
+          },
+        }),
+      );
       break;
     case "logo":
-      dispatch(updateAppState({
-        ...appState,
-        logo: {
-          ...appState.aiContent.banner.logo,
-          link: value,
-        },
-      }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          logo: {
+            ...appState.aiContent.banner.logo,
+            link: value,
+          },
+        }),
+      );
       break;
     case "businessName":
-      dispatch(updateAppState({
-        ...appState,
-        aiContent:{
-          ...appState.aiContent,
-          banner:{
-            ...appState.aiContent.banner,
-            businessName:value
-          }    
-        }
-      }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            banner: {
+              ...appState.aiContent.banner,
+              businessName: value,
+            },
+          },
+        }),
+      );
       break;
     case "ctaLink":
-      dispatch(updateAppState({
-        ...appState,
-        aiContent: {
-          ...appState.aiContent,
-          ["hero"]: {
-            ...appState.aiContent["hero"],
-            ["ctaLink"]: value,
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            ["hero"]: {
+              ...appState.aiContent["hero"],
+              ["ctaLink"]: value,
+            },
           },
-        },
-      }));
+        }),
+      );
       break;
     case "heading":
-      dispatch(updateAppState({
-        ...appState,
-        aiContent: {
-          ...appState.aiContent,
-          ["hero"]: {
-            ...appState.aiContent["hero"],
-            ["heading"]: value,
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            ["hero"]: {
+              ...appState.aiContent["hero"],
+              ["heading"]: value,
+            },
           },
-        },
-      }));
+        }),
+      );
       break;
     case "subheading":
-      dispatch(updateAppState({
-        ...appState,
-        aiContent: {
-          ...appState.aiContent,
-          ["hero"]: {
-            ...appState.aiContent["hero"],
-            ["subheading"]: value,
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            ["hero"]: {
+              ...appState.aiContent["hero"],
+              ["subheading"]: value,
+            },
           },
-        },
-      }));
+        }),
+      );
       break;
     case "imageUrl":
-      dispatch(updateAppState({
-        ...appState,
-        aiContent: {
-          ...appState.aiContent,
-          ["hero"]: {
-            ...appState.aiContent["hero"],
-            ["imageUrl"]: value,
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            ["hero"]: {
+              ...appState.aiContent["hero"],
+              ["imageUrl"]: value,
+            },
           },
-        },
-      }));
+        }),
+      );
       break;
     case "cta":
-      dispatch(updateAppState({
-        ...appState,
-        aiContent: {
-          ...appState.aiContent,
-          ["hero"]: {
-            ...appState.aiContent["hero"],
-            ["cta"]: value,
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            ["hero"]: {
+              ...appState.aiContent["hero"],
+              ["cta"]: value,
+            },
           },
-        },
-      }));
+        }),
+      );
       break;
     case "primary":
-      dispatch(updateAppState({
-        ...appState,
-        aiContent: {
-          ...appState.aiContent,
-          ["colors"]: {
-            ...appState.aiContent["colors"],
-            ["primary"]: value,
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            ["colors"]: {
+              ...appState.aiContent["colors"],
+              ["primary"]: value,
+            },
           },
-        },
-      }));
+        }),
+      );
       break;
     // case "colors":
     //   dispatch(updateAppState({
@@ -404,34 +436,40 @@ export const handleChangeAppState = (
     //   }));
     //   break;
     case "title":
-      dispatch(updateAppState({
-        ...appState,
-        meta: {
-          ...appState.meta,
-          title: value,
-        },
-      }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          meta: {
+            ...appState.meta,
+            title: value,
+          },
+        }),
+      );
       break;
     case "description":
-      dispatch(updateAppState({
-        ...appState,
-        meta: {
-          ...appState.meta,
-          description: value,
-        },
-      }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          meta: {
+            ...appState.meta,
+            description: value,
+          },
+        }),
+      );
       break;
     case "secondary":
-      dispatch(updateAppState({
-        ...appState,
-        aiContent: {
-          ...appState.aiContent,
-          ["colors"]: {
-            ...appState.aiContent["colors"],
-            ["secondary"]: value,
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            ["colors"]: {
+              ...appState.aiContent["colors"],
+              ["secondary"]: value,
+            },
           },
-        },
-      }));
+        }),
+      );
       break;
     default:
       break;

@@ -18,33 +18,33 @@ const initialState: TInitialState = {
       status: "Loading Instagram",
       iPosts: [],
       aiContent: {
-        banner:{
-          businessName:"",
-          button:[],
+        banner: {
+          businessName: "",
+          button: [],
           logo: {
             link: "",
             alt: "",
           },
         },
-        hero:{
-          heroImagePrompt:"",
-          button:[],
-          heading:"",
-          imageId:"",
-          imageUrl:"",
-          subheading:""
+        hero: {
+          heroImagePrompt: "",
+          button: [],
+          heading: "",
+          imageId: "",
+          imageUrl: "",
+          subheading: "",
         },
-        colors:{
-          primary:"",
-          secondary:""
+        colors: {
+          primary: "",
+          secondary: "",
         },
-        services:{
-          description:"",
-          list:[],
-          title:""
-        }
+        services: {
+          description: "",
+          list: [],
+          title: "",
+        },
       },
-    
+
       editable: true,
       meta: {
         title: "",
@@ -138,9 +138,9 @@ const siteSlice = createSlice({
   name: "site",
   initialState,
   reducers: {
-    updateAppState(state,action){
-      state.sites.domain = action.payload
-    }
+    updateAppState(state, action) {
+      state.sites.domain = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSitesByDomain.pending, (state) => {
@@ -148,41 +148,55 @@ const siteSlice = createSlice({
     });
     builder.addCase(fetchSitesByDomain.fulfilled, (state, action) => {
       state.loading = false;
-      state.sites.domain.meta = {title:action.payload?.title ??"",description:action.payload?.description ??""};
-      state.sites.domain.status = "Done",
-      state.sites.domain.iPosts = JSON.parse(action.payload?.posts??"") ,
-      state.sites.domain.aiContent = {
-        banner:{
-          businessName:JSON.parse(action.payload?.aiResult??"").businessName,
-          button:[
-            {
-              label:"Explore More",
-              type:"External",
-              value:"#"
-            }
-          ],
-          logo: {
-            link: action.payload?.logo ?? action.payload?.logo ?? "",
-            alt: action.payload?.logo ?? "",
+      state.sites.domain.meta = {
+        title: action.payload?.title ?? "",
+        description: action.payload?.description ?? "",
+      };
+      (state.sites.domain.status = "Done"),
+        (state.sites.domain.iPosts = JSON.parse(action.payload?.posts ?? "")),
+        (state.sites.domain.aiContent = {
+          banner: {
+            businessName: JSON.parse(action.payload?.aiResult ?? "")
+              .businessName,
+            button: [
+              {
+                label: "Explore More",
+                type: "External",
+                value: "#",
+              },
+            ],
+            logo: {
+              link: action.payload?.logo ?? action.payload?.logo ?? "",
+              alt: action.payload?.logo ?? "",
+            },
           },
-        },
-        colors:JSON.parse(action.payload?.aiResult??"")["colors"],
-        hero:{
-          button:[
-            {
-              label:"Explore More",
-              type:"External",
-              value:"#"
-            }
-          ],
-          heading:JSON.parse(action.payload?.aiResult??"")["hero"]["heading"],
-          heroImagePrompt:JSON.parse(action.payload?.aiResult??"")["heroImagePrompt"],
-          imageId:JSON.parse(action.payload?.aiResult??"")["hero"]["imageId"],
-          imageUrl:JSON.parse(action.payload?.aiResult??"")["hero"]["imageUrl"],
-          subheading:JSON.parse(action.payload?.aiResult??"")["hero"]["subheading"]
-        },
-        services:JSON.parse(action.payload?.aiResult??"")["services"]
-      }
+          colors: JSON.parse(action.payload?.aiResult ?? "")["colors"],
+          hero: {
+            button: [
+              {
+                label: "Explore More",
+                type: "External",
+                value: "#",
+              },
+            ],
+            heading: JSON.parse(action.payload?.aiResult ?? "")["hero"][
+              "heading"
+            ],
+            heroImagePrompt: JSON.parse(action.payload?.aiResult ?? "")[
+              "heroImagePrompt"
+            ],
+            imageId: JSON.parse(action.payload?.aiResult ?? "")["hero"][
+              "imageId"
+            ],
+            imageUrl: JSON.parse(action.payload?.aiResult ?? "")["hero"][
+              "imageUrl"
+            ],
+            subheading: JSON.parse(action.payload?.aiResult ?? "")["hero"][
+              "subheading"
+            ],
+          },
+          services: JSON.parse(action.payload?.aiResult ?? "")["services"],
+        });
     });
     builder.addCase(fetchSitesByDomain.rejected, (state) => {
       state.loading = false;
@@ -202,7 +216,7 @@ const siteSlice = createSlice({
 
 //export async thunks
 export { fetchSitesByDomain, createSite, updateSite, fetchSitesByUser };
-export const {updateAppState}  = siteSlice.actions
+export const { updateAppState } = siteSlice.actions;
 export const appState = (state: RootState) => state.siteSlice.sites.domain;
 export const sitesData = (state: RootState) => state.siteSlice.sites.user;
 export const loading = (state: RootState) => state.siteSlice.loading;

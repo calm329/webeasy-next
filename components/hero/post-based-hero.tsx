@@ -4,8 +4,8 @@ import { Button } from "../ui/button/template-button";
 import { Container } from "../container";
 import { TColors, THero } from "@/types";
 type TProps = {
-  hero: THero
-  colors: TColors
+  hero: THero;
+  colors: TColors;
 };
 export function Hero(props: TProps) {
   const { hero, colors } = props;
@@ -29,12 +29,15 @@ export function Hero(props: TProps) {
           {hero.subheading}
         </p>
         <div className="mx-auto ml-0 mt-10 flex justify-center gap-x-6">
-          {hero.button.map((data,i) =>
-    <div key={i}>
-    <Button href={data.value} text={data.label} bgColor={colors.secondary} />
-    </div>
-          )}
-
+          {hero.button.map((data, i) => (
+            <div key={i}>
+              <Button
+                href={data.value}
+                text={data.label}
+                bgColor={colors.secondary}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </Container>

@@ -3,7 +3,7 @@ import { TBanner, TColors, TFields, TSection } from "@/types";
 import React, { Dispatch, SetStateAction } from "react";
 
 type TProps = {
-  banner: TBanner
+  banner: TBanner;
   colors: TColors;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
@@ -12,14 +12,8 @@ type TProps = {
 };
 
 const EditableBanner = (props: TProps) => {
-  const {
-    banner,
-    colors,
-    setIsOpen,
-    setSection,
-    editable,
-    setFocusedField,
-  } = props;
+  const { banner, colors, setIsOpen, setSection, editable, setFocusedField } =
+    props;
   return (
     <div
       className={`container mx-auto px-4 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}

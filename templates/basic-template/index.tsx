@@ -35,23 +35,20 @@ export default function BasicTemplate(props: BasicTemplateProps) {
       <section className="bg-white py-6">
         <div className={`container mx-auto px-4`}>
           <TopBar
-            banner={
-              {
-                businessName: businessName,
-                logo: logo ?? {
-                  alt: "",
-                  link: ""
+            banner={{
+              businessName: businessName,
+              logo: logo ?? {
+                alt: "",
+                link: "",
+              },
+              button: [
+                {
+                  label: cta.text,
+                  type: "External",
+                  value: cta.link,
                 },
-                button: [
-                  {
-                    label: cta.text,
-                    type: "External",
-                    value: cta.link
-                  }
-                ]
-
-              }
-            }
+              ],
+            }}
             colors={colors}
           />
         </div>

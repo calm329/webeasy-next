@@ -5,9 +5,9 @@ import { TBanner, TColors, TFields, THero, TSection } from "@/types";
 import { Header } from "@/components/header/post-based-header";
 import { Hero } from "@/components/hero/post-based-hero";
 type TProps = {
-  hero:THero,
-  banner:TBanner,
-  colors:TColors,
+  hero: THero;
+  banner: TBanner;
+  colors: TColors;
   services: any[];
   posts: any[];
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -18,7 +18,7 @@ type TProps = {
 
 export default function PostBasedTemplate(props: TProps) {
   const {
-banner,
+    banner,
     hero,
     colors,
     services,
@@ -30,10 +30,7 @@ banner,
   } = props;
   return (
     <>
-      <Header
-        banner={banner}
-        colors={colors}
-      />
+      <Header banner={banner} colors={colors} />
       <main>
         <Hero hero={hero} colors={colors} />
         <SecondaryFeatures services={services} />

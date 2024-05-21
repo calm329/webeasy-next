@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import Search from "@/components/ui/search";
 
 export default function LearnMoreButton() {
   return (

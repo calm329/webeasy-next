@@ -5,8 +5,8 @@ import { TBanner, TColors, TFields, TSection } from "@/types";
 import Image from "next/image";
 
 type TopBarProps = {
-  banner: TBanner
-  colors: TColors
+  banner: TBanner;
+  colors: TColors;
 
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
@@ -95,27 +95,29 @@ export default function TopBar(props: TopBarProps) {
                     }
                   }}
                 >
-                  {
-                    banner.button.map((data, i) => <div key={i}><CTA
-                      text={data.label}
-                      bgColor={colors.secondary}
-                      link={editable ? "#" : data.value}
-                      external={data.type === "External"}
-
-                    /></div>)
-                  }
+                  {banner.button.map((data, i) => (
+                    <div key={i}>
+                      <CTA
+                        text={data.label}
+                        bgColor={colors.secondary}
+                        link={editable ? "#" : data.value}
+                        external={data.type === "External"}
+                      />
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <div className={`w-full p-2 md:w-auto`}>
-                  {
-                    banner.button.map((data, i) => <div key={i}><CTA
-                      text={data.label}
-                      bgColor={colors.secondary}
-                      link={editable ? "#" : data.value}
-                      external={data.type === "External"}
-
-                    /></div>)
-                  }
+                  {banner.button.map((data, i) => (
+                    <div key={i}>
+                      <CTA
+                        text={data.label}
+                        bgColor={colors.secondary}
+                        link={editable ? "#" : data.value}
+                        external={data.type === "External"}
+                      />
+                    </div>
+                  ))}
                 </div>
               )}
             </div>

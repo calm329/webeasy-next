@@ -6,7 +6,7 @@ import { Container } from "../container/nested-container";
 import { Button } from "../ui/button/template-button";
 import { TBanner } from "@/types";
 type TProps = {
-  banner:TBanner,
+  banner: TBanner;
   colors: {
     primary: string;
     secondary: string;
@@ -57,11 +57,15 @@ export function Header(props: TProps) {
                         {banner.businessName}
                       </h2>
                     </div>
-                    {banner.button.map((data,i) =>
-    <div key={i}>
-    <Button href={data.value} text={data.label} bgColor={colors.secondary} />
-    </div>
-)}
+                    {banner.button.map((data, i) => (
+                      <div key={i}>
+                        <Button
+                          href={data.value}
+                          text={data.label}
+                          bgColor={colors.secondary}
+                        />
+                      </div>
+                    ))}
                   </div>
                 </nav>
               </div>
