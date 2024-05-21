@@ -19,16 +19,11 @@ export default function ViewMenu() {
       as="div"
       className={`relative ml-3 `}
     >
-      <Menu.Button className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-        <div className="flex items-center justify-center gap-1 max-sm:flex-col sm:hidden">
+      <Menu.Button className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 max-sm:ring-0 max-sm:text-black max-sm:text-xs max-sm:shadow-none">
+        <div className="flex items-center justify-center gap-1 max-sm:flex-col sm:hidden max-sm:gap-2">
           <div className="flex">
             <LinkIcon
-              className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400"
-              aria-hidden="true"
-            />
-
-            <ChevronUpIcon
-              className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
+              className="-ml-0.5 mr-1.5 h-5 w-5 max-sm:m-0"
               aria-hidden="true"
             />
           </div>
