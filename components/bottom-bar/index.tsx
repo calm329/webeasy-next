@@ -63,9 +63,9 @@ const BottomToolBar = (props: TProps) => {
         </button>
       </span>
       <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
-      <ViewMenu bottom={true}/>
+      <ViewMenu />
 
-      <PublishMenu bottom={true}/>
+      <PublishMenu />
     </div>
   );
 };
