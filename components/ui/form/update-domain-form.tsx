@@ -7,11 +7,20 @@ import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const UpdateDomainForm = ({ subdomain }: { subdomain: string }) => {
+type TProps =  {
+  subdomain: string;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const UpdateDomainForm = (props: TProps) => {
+  const {
+    subdomain,
+    setOpen,
+  } = props;
   const loading = useAppSelector(LD);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const formSchema = z.object({
-    subdomain: z.string().min(1,"required"),
+    subdomain: z.string().min(1, "required"),
   });
 
   const defaultValues = {
@@ -30,16 +39,19 @@ const UpdateDomainForm = ({ subdomain }: { subdomain: string }) => {
 
   const onSubmit = async () => {
     try {
-      const res = await dispatch(updateSite({
-        subdomain,
-        data: {
-          subdomain: getValues("subdomain"),
-        },
-        keys: ["subdomain"],
-      })).unwrap();
+      const res = await dispatch(
+        updateSite({
+          subdomain,
+          data: {
+            subdomain: getValues("subdomain"),
+          },
+          keys: ["subdomain"],
+        }),
+      ).unwrap();
       toast.success("Domain successfully Updated", {
         position: "top-right",
       });
+      setOpen(false);
     } catch (error) {
       console.error("Error:", error);
       toast.error("Something went wrong", {
