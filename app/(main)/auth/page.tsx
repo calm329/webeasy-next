@@ -80,6 +80,7 @@ export default function Page() {
     {
       name: "imageUrl",
       type: "image",
+      show: true,
       label: "Banner Image",
       defaultValue: "",
       alt: "",
