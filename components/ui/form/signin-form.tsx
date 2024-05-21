@@ -7,6 +7,7 @@ import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
 import { z } from "zod";
 import CryptoJS from "crypto-js";
+import { useRouter } from "next/navigation";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -37,7 +38,7 @@ export default function SigninForm(props: TProps) {
     resolver: zodResolver(formSchema),
     defaultValues,
   });
-
+  const router = useRouter()
   const encryptData = (email: string, password: string) => {
     const encryptedEmail = CryptoJS.AES.encrypt(email, "secretKey").toString();
     const encryptedPassword = CryptoJS.AES.encrypt(
@@ -60,6 +61,8 @@ export default function SigninForm(props: TProps) {
       password: data.password,
       redirect: false,
     });
+
+    router.push("/settings/websites")
 
     if (status?.error) {
       toast.error(status?.error, {
