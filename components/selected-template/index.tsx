@@ -36,23 +36,14 @@ const SelectedTemplate = (props: TProps) => {
           setFocusedField={setFocusedField}
         />
       )}
-      {/* {selectedTemplate === "Blue-Based template" && (
+      {selectedTemplate === "Blue-Based template" && (
         <BlueBasedTemplate
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          logo={appState.logo}
-          businessName={appState.aiContent["businessName"]}
-          hero={{
-            heading: appState.aiContent["hero"]["heading"],
-            subheading: appState.aiContent["hero"]["subheading"],
-            imageUrl: appState.aiContent["hero"]["imageUrl"],
-          }}
+          banner={appState.aiContent.banner}
+          hero={appState.aiContent.hero}
           colors={appState.aiContent["colors"]}
-          cta={{
-            text: appState.aiContent["hero"]["cta"],
-            link: appState.aiContent["hero"]["ctaLink"] || "#",
-          }}
           services={appState.aiContent["services"]["list"]}
           posts={appState.iPosts}
           setFocusedField={setFocusedField}
@@ -63,18 +54,9 @@ const SelectedTemplate = (props: TProps) => {
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          logo={appState.logo}
-          businessName={appState.aiContent["businessName"]}
-          hero={{
-            heading: appState.aiContent["hero"]["heading"],
-            subheading: appState.aiContent["hero"]["subheading"],
-            imageUrl: appState.aiContent["hero"]["imageUrl"],
-          }}
+          banner={appState.aiContent.banner}
+          hero={appState.aiContent.hero}
           colors={appState.aiContent["colors"]}
-          cta={{
-            text: appState.aiContent["hero"]["cta"],
-            link: appState.aiContent["hero"]["ctaLink"] || "#",
-          }}
           services={appState.aiContent["services"]["list"]}
           posts={appState.iPosts}
           setFocusedField={setFocusedField}
@@ -85,23 +67,14 @@ const SelectedTemplate = (props: TProps) => {
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          logo={appState.logo}
-          businessName={appState.aiContent["businessName"]}
-          hero={{
-            heading: appState.aiContent["hero"]["heading"],
-            subheading: appState.aiContent["hero"]["subheading"],
-            imageUrl: appState.aiContent["hero"]["imageUrl"],
-          }}
+          banner={appState.aiContent.banner}
+          hero={appState.aiContent.hero}
           colors={appState.aiContent["colors"]}
-          cta={{
-            text: appState.aiContent["hero"]["cta"],
-            link: appState.aiContent["hero"]["ctaLink"] || "#",
-          }}
           services={appState.aiContent["services"]["list"]}
           posts={appState.iPosts}
           setFocusedField={setFocusedField}
         />
-      )} */}
+      )}
     </div>
   );
 };

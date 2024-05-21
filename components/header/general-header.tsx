@@ -4,16 +4,9 @@ import clsx from "clsx";
 
 import { Container } from "../container/nested-container";
 import { Button } from "../ui/button/template-button";
+import { TBanner } from "@/types";
 type TProps = {
-  logo: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  cta: {
-    text: string;
-    link: string;
-  };
+  banner:TBanner,
   colors: {
     primary: string;
     secondary: string;
@@ -21,7 +14,7 @@ type TProps = {
 };
 
 export function Header(props: TProps) {
-  const { logo, businessName, cta, colors } = props;
+  const { banner, colors } = props;
   return (
     <>
       <header
@@ -55,20 +48,20 @@ export function Header(props: TProps) {
                       style={{ color: colors.primary }}
                     >
                       <Image
-                        src={logo.link ?? ""}
-                        alt={logo.alt}
+                        src={banner.logo.link ?? ""}
+                        alt={banner.logo.alt}
                         height={100}
                         width={100}
                       />
                       <h2 className="text-xl max-md:text-base">
-                        {businessName}
+                        {banner.businessName}
                       </h2>
                     </div>
-                    <Button
-                      href={cta.link}
-                      bgColor={colors.secondary}
-                      text={cta.text}
-                    />
+                    {banner.button.map((data,i) =>
+    <div key={i}>
+    <Button href={data.value} text={data.label} bgColor={colors.secondary} />
+    </div>
+)}
                   </div>
                 </nav>
               </div>

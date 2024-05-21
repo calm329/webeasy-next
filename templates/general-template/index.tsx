@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card/general-card";
 import { Container } from "@/components/container/nested-container";
 import { Header } from "@/components/header/general-header";
 import { Dispatch, SetStateAction } from "react";
-import { TFields, TSection } from "@/types";
+import { TBanner, TColors, TFields, THero, TSection } from "@/types";
 
 function Service({
   service,
@@ -66,24 +66,9 @@ function Photos(props: TPostProps) {
 }
 
 type TProps = {
-  logo: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  hero: {
-    heading: string;
-    subheading: string;
-    imageUrl: string;
-  };
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  cta: {
-    text: string;
-    link: string;
-  };
+  hero: THero,
+  banner: TBanner,
+  colors: TColors,
   services: any[];
   posts: any[];
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -94,11 +79,9 @@ type TProps = {
 
 export default function General(props: TProps) {
   const {
-    logo,
-    businessName,
+    banner,
     hero,
     colors,
-    cta,
     services,
     posts,
     setIsOpen,
@@ -115,9 +98,7 @@ export default function General(props: TProps) {
       </div>
       <div className="relative flex w-full flex-col">
         <Header
-          logo={logo}
-          businessName={businessName}
-          cta={cta}
+          banner={banner}
           colors={colors}
         />
         <main className="flex-auto max-sm:mt-20">
@@ -133,12 +114,12 @@ export default function General(props: TProps) {
                 <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
                   {hero.subheading}
                 </p>
-                <Button
-                  href={cta.link}
-                  className="mt-10  "
-                  bgColor={colors.secondary}
-                  text={cta.text}
-                />
+                {hero.button.map((data, i) =>
+                  <div key={i}>
+                    <Button href={data.value} text={data.label} bgColor={colors.secondary} className="mt-10  " />
+                  </div>
+                )}
+
               </div>
               <div>
                 <Image

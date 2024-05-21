@@ -1,25 +1,15 @@
 import Image from "next/image";
 import { Button } from "../ui/button/template-button";
 import { Container } from "../container";
+import { TBanner, TColors } from "@/types";
 
 type TProps = {
-  logo: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  cta: {
-    text: string;
-    link: string;
-  };
-  colors: {
-    primary: string;
-    secondary: string;
-  };
+ banner:TBanner
+  colors:TColors
 };
 
 export function Header(props: TProps) {
-  const { logo, businessName, cta, colors } = props;
+  const { banner, colors } = props;
   return (
     <header className={`relative z-10 flex-none lg:pt-20 `}>
       <Container
@@ -28,15 +18,19 @@ export function Header(props: TProps) {
       >
         <div className="mt-10 flex items-center  gap-2 text-xl lg:mt-0 lg:grow lg:basis-0">
           <Image
-            src={logo.link ?? ""}
-            alt={logo.alt}
+            src={banner.logo.link ?? ""}
+            alt={banner.logo.alt}
             height={100}
             width={100}
           />
-          {businessName}
+          {banner.businessName}
         </div>
         <div className="hidden sm:mt-10 sm:flex lg:mt-0 lg:grow lg:basis-0 lg:justify-end">
-          <Button href={cta.link} text={cta.text} bgColor={colors.secondary} />
+        {banner.button.map((data,i)=>
+      <div key={i}>
+          <Button href={data.value} text={data.label} bgColor={colors.secondary} />
+          </div>
+        )}
         </div>
       </Container>
     </header>

@@ -2,6 +2,7 @@ import { Button } from "../ui/button/template-button";
 import { Container } from "../container";
 import clsx from "clsx";
 import Image from "next/image";
+import { TColors, THero } from "@/types";
 
 export function BackgroundImage({
   className,
@@ -39,23 +40,12 @@ export function BackgroundImage({
 }
 
 type TProps = {
-  hero: {
-    heading: string;
-    subheading: string;
-    imageUrl: string;
-  };
-  cta: {
-    link: string;
-    text: string;
-  };
-  colors: {
-    primary: string;
-    secondary: string;
-  };
+  hero: THero
+  colors: TColors
 };
 
 export function Hero(props: TProps) {
-  const { hero, cta, colors } = props;
+  const { hero, colors } = props;
   return (
     <div className="relative py-20 sm:pb-24 sm:pt-36 ">
       <BackgroundImage className="-bottom-14 -top-36 " />
@@ -78,12 +68,11 @@ export function Hero(props: TProps) {
           <div className="font-display mt-6 space-y-6 text-2xl tracking-tight text-blue-900">
             <p>{hero.subheading}</p>
           </div>
-          <Button
-            href={cta.link}
-            className="mt-10 w-full "
-            text={cta.text}
-            bgColor={colors.secondary}
-          />
+          {hero.button.map((data,i)=>
+          <div key={i}>
+          <Button href={data.value} text={data.label} bgColor={colors.secondary} className="mt-10 w-full " />
+          </div>
+    )}
         </div>
       </Container>
     </div>

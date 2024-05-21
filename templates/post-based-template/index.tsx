@@ -1,28 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 import { SecondaryFeatures } from "../../components/services/post-based-services";
 import { Testimonials } from "../../components/posts/post-based-posts";
-import { TFields, TSection } from "@/types";
+import { TBanner, TColors, TFields, THero, TSection } from "@/types";
 import { Header } from "@/components/header/post-based-header";
 import { Hero } from "@/components/hero/post-based-hero";
 type TProps = {
-  logo: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  hero: {
-    heading: string;
-    subheading: string;
-    imageUrl: string;
-  };
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  cta: {
-    text: string;
-    link: string;
-  };
+  hero:THero,
+  banner:TBanner,
+  colors:TColors,
   services: any[];
   posts: any[];
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -33,11 +18,9 @@ type TProps = {
 
 export default function PostBasedTemplate(props: TProps) {
   const {
-    logo,
-    businessName,
+banner,
     hero,
     colors,
-    cta,
     services,
     posts,
     setIsOpen,
@@ -48,13 +31,11 @@ export default function PostBasedTemplate(props: TProps) {
   return (
     <>
       <Header
-        logo={logo}
-        businessName={businessName}
-        cta={cta}
+        banner={banner}
         colors={colors}
       />
       <main>
-        <Hero hero={hero} cta={cta} colors={colors} />
+        <Hero hero={hero} colors={colors} />
         <SecondaryFeatures services={services} />
         <Testimonials posts={posts} />
       </main>
