@@ -40,7 +40,7 @@ type TProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
 };
-function classNames(...classes) {
+function classNames(...classes:any[]) {
   return classes.filter(Boolean).join(" ");
 }
 
