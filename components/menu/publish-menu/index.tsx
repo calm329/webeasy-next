@@ -3,24 +3,48 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { useMediaQuery } from "usehooks-ts";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+
 export default function PublishMenu() {
+  const matches = useMediaQuery("(max-width: 500px)");
+  const isMobile = useMediaQuery("(max-width: 900px)");
   return (
-    <Menu as="div" className="relative mr-5 hidden sm:ml-3 sm:block">
-      <Menu.Button className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+    <Menu
+      as="div"
+      className={`relative ml-3`}
+    >
+      <Menu.Button className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ">
+
+        <div className="flex items-center justify-center gap-1 max-sm:flex-col sm:hidden">
+          <div className="flex">
+          <FaExternalLinkAlt
+            className="-ml-0.5 mr-1.5 h-4 w-4 text-gray-400"
+            aria-hidden="true"
+          />
+
+            <ChevronDownIcon
+              className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </div>
+          Publish
+        </div>
+        <div className={`flex  max-sm:hidden` }>
         <FaExternalLinkAlt
-          className="-ml-0.5 mr-1.5 h-4 w-4 text-gray-400"
-          aria-hidden="true"
-        />
-        Publish
-        <ChevronDownIcon
-          className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
-          aria-hidden="true"
-        />
+            className="-ml-0.5 mr-1.5 h-4 w-4 text-gray-400"
+            aria-hidden="true"
+          />
+          Publish
+          <ChevronDownIcon
+            className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
+            aria-hidden="true"
+          />
+        </div>
       </Menu.Button>
 
       <Transition

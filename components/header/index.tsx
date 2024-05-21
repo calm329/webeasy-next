@@ -32,6 +32,7 @@ import WidgetModal from "../ui/modal/widget-modal";
 import { useState } from "react";
 import ViewMenu from "../menu/view-menu";
 import PublishMenu from "../menu/publish-menu";
+import BottomToolBar from "../bottom-bar";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -84,7 +85,7 @@ export default function SiteHeader(props: TProps) {
       const templates = await dispatch(fetchTemplates()).unwrap();
       console.log("templates", templates);
       setTemplates(response);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -112,7 +113,7 @@ export default function SiteHeader(props: TProps) {
       setLoading(false);
     }
   };
-
+  const isMobile = useMediaQuery("(min-width: 900px)");
   useEffect(() => {
     getUserData();
   }, [status]);
@@ -120,17 +121,28 @@ export default function SiteHeader(props: TProps) {
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-10 bg-white`}
     >
+      {!isMobile && (
+        <BottomToolBar
+          showNavigation={showNavigation}
+          appState={appState}
+          getData={getData}
+          handleChange={handleChange}
+          isAuth={isAuth}
+          setShowAuthModal={setShowAuthModal}
+          setSelectedTemplate={setSelectedTemplate}
+        />
+      )}
       <nav
-        className={`mx-auto flex max-w-7xl items-center ${!isAuth && "justify-between"} p-6 px-0`}
+        className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0`}
         aria-label="Global"
       >
         <div className="flex items-center gap-x-12 ">
           {isAuth && (
             <Link
               href="#"
-              className="relative -ml-8 flex inline-flex items-center items-center rounded-md border border-gray-300 bg-white px-2 py-2 text-sm text-sm font-medium font-medium text-gray-500 text-gray-700 hover:bg-gray-50"
+              className="relative  flex  items-center  rounded-md border border-gray-300 bg-white px-2 py-2 text-sm  font-medium  text-gray-700 hover:bg-gray-50"
             >
-              <span className="sr-only">Previous</span>
+              <span className="sr-only"> Previous</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
               Back
             </Link>
@@ -162,7 +174,7 @@ export default function SiteHeader(props: TProps) {
         </div>
         {isAuth && (
           <>
-            <div className="ml-auto flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2">
+            <div className={`ml-auto ${!isMobile && "hidden"}  flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2`}>
               {getData && setSelectedTemplate && appState && (
                 <SettingMenu
                   getData={getData}
@@ -174,7 +186,7 @@ export default function SiteHeader(props: TProps) {
                 />
               )}
             </div>
-            <div className="mt-5 flex lg:ml-5 lg:mt-0">
+            <div className={` ml-3 flex ${!isMobile && "hidden"}`}>
               <span className="hidden sm:block">
                 <button
                   type="button"
