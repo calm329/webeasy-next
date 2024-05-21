@@ -42,8 +42,8 @@ export default function DomainForm() {
           Existing Domain
         </h2>
 
-        <div className="flex items-center justify-between  pt-6 sm:flex">
-          <div className=" inline-flex items-center font-medium   sm:flex-none">
+        <div className="flex items-center justify-between  pt-6 sm:flex flex-wrap">
+          <div className=" inline-flex items-center font-medium   sm:flex-none ">
             Link your existing domain name with Entri. It’s fast and secure.
             <Link
               href="/settings"
