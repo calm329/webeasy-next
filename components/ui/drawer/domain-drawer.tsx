@@ -14,7 +14,7 @@ export function DomainDrawer(props: TProps) {
     <Drawer open={!!open} onOpenChange={setOpen}>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm px-5 pb-10">
-          <UpdateDomainForm subdomain={subdomain}/>
+          <UpdateDomainForm subdomain={subdomain} setOpen={setOpen}/>
         </div>
       </DrawerContent>
     </Drawer>
