@@ -1,7 +1,7 @@
 import Profileform from "@/components/ui/form/profile-form";
 export default function General() {
   return (
-    <main className="mt-10 grid w-full grid-flow-row gap-4">
+    <main className="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 bg-white shadow p-5">
       <div className="mt-1">
         <h2 className="text-base font-semibold leading-7 text-gray-900">
           Profile

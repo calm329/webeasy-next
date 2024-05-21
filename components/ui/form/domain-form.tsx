@@ -11,7 +11,8 @@ export default function DomainForm() {
         <div className="flex items-center justify-between  pt-6 sm:flex">
           <div className=" inline-flex items-center font-medium text-indigo-600 hover:text-indigo-500  sm:flex-none">
             <Link
-              href="/settings"
+              href="https://floristpot.webeasy.ai"
+              target="_blank"
               className="group flex gap-x-3 rounded-md py-2 pl-2 pr-3 text-sm font-semibold leading-6"
             >
               floristpot.webeasy.ai
