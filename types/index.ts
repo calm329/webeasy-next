@@ -127,6 +127,33 @@ export interface AppState {
 
 }
 
+export type TBanner ={
+  logo: {
+    link: string;
+    alt: string;
+  };
+  businessName: string;
+
+  button: Array<{
+    type: string;
+    value: string;
+    label: string;
+  }>;
+}
+
+export type THero ={
+  heading: string;
+  heroImagePrompt: string;
+  subheading: string;
+  imageId: string;
+  imageUrl: string;
+  button: Array<{
+    type: string;
+    value: string;
+    label: string;
+  }>;
+}
+
 export type TData = Partial<{
   logo: string;
   businessName: string;
@@ -147,6 +174,11 @@ export type TUser = {
   createdAt: Date;
   updatedAt: Date;
 } | null;
+
+export type TColors = {
+  primary: string;
+  secondary: string;
+}
 
 export type TTemplate = {
   id: string;

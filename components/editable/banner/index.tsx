@@ -1,21 +1,10 @@
 import TopBar from "@/components/top-bar";
-import { TFields, TSection } from "@/types";
+import { TBanner, TColors, TFields, TSection } from "@/types";
 import React, { Dispatch, SetStateAction } from "react";
 
 type TProps = {
-  logo?: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  cta: {
-    text: string;
-    link: string;
-  };
+  banner: TBanner
+  colors: TColors;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
@@ -24,10 +13,8 @@ type TProps = {
 
 const EditableBanner = (props: TProps) => {
   const {
-    logo,
-    businessName,
+    banner,
     colors,
-    cta,
     setIsOpen,
     setSection,
     editable,
@@ -44,10 +31,8 @@ const EditableBanner = (props: TProps) => {
       }}
     >
       <TopBar
-        logo={logo!}
-        businessName={businessName}
+        banner={banner}
         colors={colors}
-        cta={cta}
         editable={editable}
         setFocusedField={setFocusedField}
         setSection={setSection}

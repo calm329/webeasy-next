@@ -69,19 +69,46 @@ export const getData = async (params: TParams) => {
     });
     const aiContent = JSON.parse(siteData.aiResult);
 
-    console.log(aiContent);
-    if (!aiContent["hero"]["ctaLink"]) {
-      aiContent["hero"]["ctaLink"] = "https://domain.com";
-    }
+    console.log("aiContent",aiContent);
+    // if (!aiContent["hero"]["ctaLink"]) {
+    //   aiContent["hero"]["ctaLink"] = "https://domain.com";
+    // }
     setAppState((state) => ({
       ...state,
       status: "Done",
-      aiContent: aiContent,
-      iPosts: JSON.parse(siteData.posts),
-      logo: {
-        link: siteData.logo ?? state.aiContent.banner.logo.link ?? "",
-        alt: state.aiContent.banner.logo.alt ?? "",
+      aiContent: {
+        banner:{
+          businessName:aiContent["businessName"],
+          button:[
+            {
+              label:"Explore More",
+              type:"External",
+              value:"#"
+            }
+          ],
+          logo: {
+            link: siteData.logo ?? state.aiContent.banner.logo.link ?? "",
+            alt: state.aiContent.banner.logo.alt ?? "",
+          },
+        },
+        colors:aiContent["colors"],
+        hero:{
+          button:[
+            {
+              label:"Explore More",
+              type:"External",
+              value:"#"
+            }
+          ],
+          heading:aiContent["hero"]["heading"],
+          heroImagePrompt:aiContent["heroImagePrompt"],
+          imageId:aiContent["hero"]["imageId"],
+          imageUrl:aiContent["hero"]["imageUrl"],
+          subheading:aiContent["hero"]["subheading"]
+        },
+        services:aiContent["services"]
       },
+      iPosts: JSON.parse(siteData.posts),
       meta: { title: siteData.title, description: siteData.description },
     }));
 
@@ -187,7 +214,35 @@ export const getData = async (params: TParams) => {
 
   setAppState((state) => ({
     ...state,
-    aiContent: Object.keys(aiContent).length ? aiContent : state.aiContent,
+    aiContent: Object.keys(aiContent).length ?  {
+      banner:{
+        ...aiContent.banner,
+        businessName:aiContent["businessName"],
+        button:[
+          {
+            label:"Explore More",
+            type:"External",
+            value:"#"
+          }
+        ],
+      },
+      colors:aiContent["colors"],
+      hero:{
+        button:[
+          {
+            label:"Explore More",
+            type:"External",
+            value:"#"
+          }
+        ],
+        heading:aiContent["hero"]["heading"],
+        heroImagePrompt:aiContent["heroImagePrompt"],
+        imageId:aiContent["hero"]["imageId"],
+        imageUrl:aiContent["hero"]["imageUrl"],
+        subheading:aiContent["hero"]["subheading"]
+      },
+      services:aiContent["services"]
+    } : state.aiContent,
     iPosts: iPosts,
   }));
 
