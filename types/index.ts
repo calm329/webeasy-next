@@ -85,6 +85,7 @@ export interface AppState {
       };
       businessName: string;
    
+
       button: Array<{
         type: string;
         value: string;
@@ -124,10 +125,9 @@ export interface AppState {
     title: string;
     description: string;
   };
-
 }
 
-export type TBanner ={
+export type TBanner = {
   logo: {
     link: string;
     alt: string;
@@ -139,9 +139,9 @@ export type TBanner ={
     value: string;
     label: string;
   }>;
-}
+};
 
-export type THero ={
+export type THero = {
   heading: string;
   heroImagePrompt: string;
   subheading: string;
@@ -152,7 +152,7 @@ export type THero ={
     value: string;
     label: string;
   }>;
-}
+};
 
 export type TData = Partial<{
   logo: string;
@@ -178,7 +178,7 @@ export type TUser = {
 export type TColors = {
   primary: string;
   secondary: string;
-}
+};
 
 export type TTemplate = {
   id: string;

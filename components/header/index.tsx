@@ -26,7 +26,6 @@ import {
 } from "@heroicons/react/20/solid";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { Menu, Transition } from "@headlessui/react";
-import { ChefHatIcon } from "lucide-react";
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import WidgetModal from "../ui/modal/widget-modal";
@@ -134,7 +133,8 @@ export default function SiteHeader(props: TProps) {
               <span className="sr-only">Previous</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
               Back
-            </Link>)}
+            </Link>
+          )}
           <Link href="/" className="-m-1.5 p-1.5">
             <Image
               src={"/WebEasy-logo-dark.svg"}
@@ -192,7 +192,6 @@ export default function SiteHeader(props: TProps) {
               <ViewMenu />
 
               <PublishMenu />
-
             </div>
             {status === "authenticated" ? (
               <div className="max-lg:hidden">

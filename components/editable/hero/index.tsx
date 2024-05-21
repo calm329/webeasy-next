@@ -14,14 +14,8 @@ type TProps = {
 };
 
 const EditableHero = (props: TProps) => {
-  const {
-    hero,
-    colors,
-    setIsOpen,
-    setSection,
-    editable,
-    setFocusedField,
-  } = props;
+  const { hero, colors, setIsOpen, setSection, editable, setFocusedField } =
+    props;
   return (
     <div
       className={`-m-8 mb-10 flex flex-wrap ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -70,16 +64,16 @@ const EditableHero = (props: TProps) => {
                 }
               }}
             >
-              {
-                hero.button.map((data, i) => <div key={i}><CTA
-                  text={data.label}
-                  bgColor={colors.secondary}
-                  link={editable ? "#" : data.value}
-                  external={data.type === "External"}
-
-                /></div>)
-              }
-
+              {hero.button.map((data, i) => (
+                <div key={i}>
+                  <CTA
+                    text={data.label}
+                    bgColor={colors.secondary}
+                    link={editable ? "#" : data.value}
+                    external={data.type === "External"}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>

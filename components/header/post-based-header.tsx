@@ -8,8 +8,8 @@ import { Container } from "@/components/container";
 import { TBanner, TColors } from "@/types";
 
 type TProps = {
-  banner: TBanner
-  colors: TColors
+  banner: TBanner;
+  colors: TColors;
 };
 
 export function Header(props: TProps) {
@@ -37,12 +37,15 @@ export function Header(props: TProps) {
             </Link>
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
-            {banner.button.map((data,i) =>
-
-<div key={i}>
-<Button href={data.value} text={data.label} bgColor={colors.secondary} />
-</div>
-            )}
+            {banner.button.map((data, i) => (
+              <div key={i}>
+                <Button
+                  href={data.value}
+                  text={data.label}
+                  bgColor={colors.secondary}
+                />
+              </div>
+            ))}
             <div className="-mr-1 md:hidden">{/* <MobileNavigation /> */}</div>
           </div>
         </nav>

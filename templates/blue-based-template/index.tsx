@@ -6,9 +6,9 @@ import { Header } from "@/components/header/blue-based-header";
 import { Hero } from "@/components/hero/blue-based-hero";
 
 type TProps = {
-  hero:THero,
-  banner:TBanner,
-  colors:TColors,
+  hero: THero;
+  banner: TBanner;
+  colors: TColors;
   services: any[];
   posts: any[];
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -19,7 +19,7 @@ type TProps = {
 
 const BlueBasedTemplate = (props: TProps) => {
   const {
-hero,
+    hero,
     banner,
     colors,
     services,
@@ -32,10 +32,7 @@ hero,
 
   return (
     <>
-      <Header
-        banner={banner}
-        colors={colors}
-      />
+      <Header banner={banner} colors={colors} />
       <Hero hero={hero} colors={colors} />
       <Schedule services={services} colors={colors} />
       <Speakers posts={posts} colors={colors} />

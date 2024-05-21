@@ -66,9 +66,9 @@ function Photos(props: TPostProps) {
 }
 
 type TProps = {
-  hero: THero,
-  banner: TBanner,
-  colors: TColors,
+  hero: THero;
+  banner: TBanner;
+  colors: TColors;
   services: any[];
   posts: any[];
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -97,10 +97,7 @@ export default function General(props: TProps) {
         </div>
       </div>
       <div className="relative flex w-full flex-col">
-        <Header
-          banner={banner}
-          colors={colors}
-        />
+        <Header banner={banner} colors={colors} />
         <main className="flex-auto max-sm:mt-20">
           <Container className="mt-9 flex w-full">
             <div className="flex gap-10 max-lg:flex-col">
@@ -114,12 +111,16 @@ export default function General(props: TProps) {
                 <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
                   {hero.subheading}
                 </p>
-                {hero.button.map((data, i) =>
+                {hero.button.map((data, i) => (
                   <div key={i}>
-                    <Button href={data.value} text={data.label} bgColor={colors.secondary} className="mt-10  " />
+                    <Button
+                      href={data.value}
+                      text={data.label}
+                      bgColor={colors.secondary}
+                      className="mt-10  "
+                    />
                   </div>
-                )}
-
+                ))}
               </div>
               <div>
                 <Image

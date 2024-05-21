@@ -9,9 +9,9 @@ import EditableBanner from "@/components/editable/banner";
 import EditableHero from "@/components/editable/hero";
 
 type BasicTemplateProps = {
-  hero:THero,
-  banner:TBanner,
-  colors:TColors,
+  hero: THero;
+  banner: TBanner;
+  colors: TColors;
   services: any[];
   posts: any[];
   setIsOpen?: Dispatch<SetStateAction<boolean>>;

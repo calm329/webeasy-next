@@ -40,8 +40,8 @@ export function BackgroundImage({
 }
 
 type TProps = {
-  hero: THero
-  colors: TColors
+  hero: THero;
+  colors: TColors;
 };
 
 export function Hero(props: TProps) {
@@ -68,11 +68,16 @@ export function Hero(props: TProps) {
           <div className="font-display mt-6 space-y-6 text-2xl tracking-tight text-blue-900">
             <p>{hero.subheading}</p>
           </div>
-          {hero.button.map((data,i)=>
-          <div key={i}>
-          <Button href={data.value} text={data.label} bgColor={colors.secondary} className="mt-10 w-full " />
-          </div>
-    )}
+          {hero.button.map((data, i) => (
+            <div key={i}>
+              <Button
+                href={data.value}
+                text={data.label}
+                bgColor={colors.secondary}
+                className="mt-10 w-full "
+              />
+            </div>
+          ))}
         </div>
       </Container>
     </div>
