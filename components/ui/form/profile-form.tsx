@@ -59,11 +59,11 @@ export default function Profileform() {
 
       <div>
         {loading ? (
-          <div className="flex items-center justify-center ">
+          <div className="flex h-96 items-center justify-center">
             <Loader text="Fetching User Data" />
           </div>
         ) : (
-          <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
+          <dl className="mt-6 space-y-6 divide-y divide-gray-100 text-sm leading-6">
             <div className="pt-6 sm:flex">
               <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
                 Avatar
