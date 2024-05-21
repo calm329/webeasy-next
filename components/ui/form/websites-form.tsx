@@ -1,7 +1,7 @@
 "use client";
 import Loader from "@/components/ui/loader";
 import { getAccessTokenBySiteId, getSitesByUserId } from "@/lib/fetchers";
-import { useAppDispatch } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchAccessToken } from "@/lib/store/slices/accesstoken-slice";
 import { getUsernameFromPosts } from "@/lib/utils";
 import Image from "next/image";
@@ -12,6 +12,7 @@ import { FaExternalLinkAlt, FaInstagram } from "react-icons/fa";
 import { FaAmazon, FaEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import SelectSourceModal from "../modal/select-source-modal";
+import { fetchSitesByUser, loading as LD, sitesData as SD } from "@/lib/store/slices/site-slice";
 
 type TSectionObject = Array<{
   logo: React.ReactNode;
@@ -47,23 +48,17 @@ type TSites = Array<{
 export default function WebsitesForm() {
   const [selectedSection, setSelectedSection] =
     useState<TSectionName>("Instagram");
-  const [sites, setSites] = useState<TSites>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const [showMobileMenu, setMobileMenuOpen] = useState(false);
   const [showSelectSourceModal, setSelectSourceModal] = useState(false);
+  const sites = useAppSelector(SD)
+  const isLoading = useAppSelector(LD)
   const dispatch = useAppDispatch();
   const getData = async () => {
     try {
-      setIsLoading(true);
-      const siteData = await getSitesByUserId();
-      console.log("sites", siteData);
-
-      setSites(siteData);
-
-      setIsLoading(false);
-    } catch (error) {}
+      const siteData = await dispatch(fetchSitesByUser()).unwrap();
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -87,9 +82,9 @@ export default function WebsitesForm() {
       console.log("error", error);
     }
   };
-  if(sites){
+  if (sites) {
 
-    console.log("sites",sites[0]?.aiResult)
+    console.log("sites", sites[0]?.aiResult)
   }
   return (
     <div className="">
