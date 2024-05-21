@@ -136,15 +136,11 @@ export async function updateSite(
     });
 
     if (!site) {
-      return {
-        error: "Site not found",
-      };
+      throw new Error("Site not found");
     }
 
     if (user && site.userId !== user.id) {
-      return {
-        error: "You are not authorized to update this site",
-      };
+      throw new Error("You are not authorized to update this site");
     }
 
     let newData: any = {
@@ -153,6 +149,9 @@ export async function updateSite(
 
     for (const key of keys) {
       switch (key) {
+        case "subdomain":
+          newData["subdomain"] = data[key];
+          break;
         case "title":
           newData["title"] = data[key];
           break;

@@ -211,6 +211,22 @@ const siteSlice = createSlice({
     builder.addCase(fetchSitesByUser.rejected, (state) => {
       state.loading = false;
     });
+    builder.addCase(updateSite.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateSite.fulfilled, (state, action) => {
+      state.loading = false;
+      state.sites.user?.forEach((site, index) => {
+        if (site.id === action?.payload?.id) {
+          if (state.sites.user) {
+            state.sites.user[index] = {...action.payload};
+          }
+        }
+      });
+    });
+    builder.addCase(updateSite.rejected, (state) => {
+      state.loading = false;
+    });
   },
 });
 
