@@ -1,29 +1,14 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Speakers } from "../../components/posts/blue-based-posts";
 import { Schedule } from "../../components/services/blue-based-services";
-import { TFields, TSection } from "@/types";
+import { TBanner, TColors, TFields, THero, TSection } from "@/types";
 import { Header } from "@/components/header/blue-based-header";
 import { Hero } from "@/components/hero/blue-based-hero";
 
 type TProps = {
-  logo: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  hero: {
-    heading: string;
-    subheading: string;
-    imageUrl: string;
-  };
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  cta: {
-    text: string;
-    link: string;
-  };
+  hero: THero;
+  banner: TBanner;
+  colors: TColors;
   services: any[];
   posts: any[];
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -34,11 +19,9 @@ type TProps = {
 
 const BlueBasedTemplate = (props: TProps) => {
   const {
-    logo,
-    businessName,
     hero,
+    banner,
     colors,
-    cta,
     services,
     posts,
     setIsOpen,
@@ -49,13 +32,8 @@ const BlueBasedTemplate = (props: TProps) => {
 
   return (
     <>
-      <Header
-        logo={logo}
-        businessName={businessName}
-        cta={cta}
-        colors={colors}
-      />
-      <Hero hero={hero} cta={cta} colors={colors} />
+      <Header banner={banner} colors={colors} />
+      <Hero hero={hero} colors={colors} />
       <Schedule services={services} colors={colors} />
       <Speakers posts={posts} colors={colors} />
     </>

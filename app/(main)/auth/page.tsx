@@ -14,32 +14,21 @@ import SiteHeader from "@/components/header";
 import SelectedTemplate from "@/components/selected-template";
 import { getData, handleChangeAppState } from "@/lib/utils/function";
 import EditWebsiteHeader from "@/components/header/edit-website-header";
-
-const initialState: AppState = {
-  status: "Loading Instagram",
-  iPosts: [],
-  aiContent: {},
-  logo: {
-    link: "",
-    alt: "",
-  },
-  editable: false,
-  meta: {
-    title: "",
-    description: "",
-  },
-};
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 
 export default function Page() {
   const router = useRouter();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
-  const [appState, setAppState] = useState<AppState>(initialState);
+  // const [appState, setAppState] = useState<AppState>(initialState);
+  const appState = useAppSelector(AS);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<TFields>(null);
   const [section, setSection] = useState<TSection>("Banner");
   const [selectedTemplate, setSelectedTemplate] =
     useState<TTemplateName>("Basic template");
+  const dispatch = useAppDispatch();
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
       {
@@ -149,7 +138,7 @@ export default function Page() {
   ]);
 
   const handleChange = useDebouncedCallback((name: string, value: string) => {
-    handleChangeAppState(setAppState, name, value);
+    handleChangeAppState(dispatch, appState, name, value);
   }, 300);
 
   useEffect(() => {
@@ -179,7 +168,9 @@ export default function Page() {
       getData({
         flag: "init",
         searchParams,
-        setAppState,
+        appState,
+        dispatch,
+        // setAppState,
         setBrandCustomizeFields,
         setHeroCustomizeFields,
       });
@@ -193,10 +184,12 @@ export default function Page() {
           userId: searchParams.get("user_id") || "",
         });
 
-      setAppState((state) => ({
-        ...state,
-        editable: editable,
-      }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          editable: editable,
+        }),
+      );
     }
 
     checkSiteEditable();
@@ -215,7 +208,9 @@ export default function Page() {
               getData({
                 flag: flag ?? "init",
                 searchParams,
-                setAppState,
+                dispatch,
+                appState,
+                // setAppState,
                 setBrandCustomizeFields,
                 setHeroCustomizeFields,
               })

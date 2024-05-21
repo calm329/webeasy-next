@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
+import { MdDomain } from "react-icons/md";
 
 const secondaryNavigation = [
   { name: "General", href: "/settings", icon: UserCircleIcon },
@@ -19,6 +20,7 @@ const secondaryNavigation = [
     icon: FingerPrintIcon,
   },
   { name: "My Websites", href: "/settings/websites", icon: GlobeAltIcon },
+  { name: "Domain", href: "/settings/domain", icon: MdDomain },
 ];
 
 function classNames(...classes: any[]) {
@@ -28,7 +30,7 @@ function classNames(...classes: any[]) {
 export default function Navlink() {
   const pathname = usePathname();
   return (
-    <div className="mx-10 max-w-7xl md:mx-auto lg:flex lg:gap-x-16 lg:px-8">
+    <div className="mx-10 max-w-7xl lg:flex lg:gap-x-16 lg:px-8">
       <h1 className="sr-only text-black">User Settings</h1>
       <aside className="flex overflow-x-auto border-b border-gray-900/5 py-4 lg:block lg:w-64 lg:flex-none lg:border-0 lg:py-10">
         <nav className="flex-none px-4 sm:px-6 lg:px-0">

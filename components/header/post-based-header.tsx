@@ -5,25 +5,15 @@ import Link from "next/link";
 import { Button } from "../ui/button/template-button";
 import Image from "next/image";
 import { Container } from "@/components/container";
+import { TBanner, TColors } from "@/types";
 
 type TProps = {
-  logo: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  cta: {
-    text: string;
-    link: string;
-  };
-  colors: {
-    primary: string;
-    secondary: string;
-  };
+  banner: TBanner;
+  colors: TColors;
 };
 
 export function Header(props: TProps) {
-  const { logo, businessName, cta, colors } = props;
+  const { banner, colors } = props;
   return (
     <header className="py-10">
       <Container>
@@ -38,20 +28,24 @@ export function Header(props: TProps) {
               className="flex items-center gap-5"
             >
               <Image
-                src={logo.link ?? ""}
-                alt={logo.alt}
+                src={banner.logo.link ?? ""}
+                alt={banner.logo.alt}
                 height={100}
                 width={100}
               />
-              {businessName}
+              {banner.businessName}
             </Link>
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
-            <Button
-              href={cta.link}
-              bgColor={colors.secondary}
-              text={cta.text}
-            />
+            {banner.button.map((data, i) => (
+              <div key={i}>
+                <Button
+                  href={data.value}
+                  text={data.label}
+                  bgColor={colors.secondary}
+                />
+              </div>
+            ))}
             <div className="-mr-1 md:hidden">{/* <MobileNavigation /> */}</div>
           </div>
         </nav>

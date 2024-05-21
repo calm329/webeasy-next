@@ -69,15 +69,89 @@ export type TTemplateName =
 
 export interface AppState {
   status: string;
-  iPosts: any[];
-  aiContent: any;
+  iPosts: Array<{
+    id: string;
+    media_url: string;
+    permalink: string;
+    caption: string;
+    media_type: string;
+    username: string;
+  }>;
+  aiContent: {
+    banner: {
+      logo: {
+        link: string;
+        alt: string;
+      };
+      businessName: string;
+
+      button: Array<{
+        type: string;
+        value: string;
+        label: string;
+      }>;
+    };
+
+    hero: {
+      heading: string;
+      heroImagePrompt: string;
+      subheading: string;
+      imageId: string;
+      imageUrl: string;
+      button: Array<{
+        type: string;
+        value: string;
+        label: string;
+      }>;
+    };
+    services: {
+      title: string;
+      description: string;
+      list: Array<{
+        name: string;
+        description: string;
+        image: string;
+      }>;
+    };
+    colors: {
+      primary: string;
+      secondary: string;
+    };
+  };
+
+  editable: boolean;
+  meta: {
+    title: string;
+    description: string;
+  };
+}
+
+export type TBanner = {
   logo: {
     link: string;
     alt: string;
   };
-  editable: boolean;
-  meta: TMeta;
-}
+  businessName: string;
+
+  button: Array<{
+    type: string;
+    value: string;
+    label: string;
+  }>;
+};
+
+export type THero = {
+  heading: string;
+  heroImagePrompt: string;
+  subheading: string;
+  imageId: string;
+  imageUrl: string;
+  button: Array<{
+    type: string;
+    value: string;
+    label: string;
+  }>;
+};
 
 export type TData = Partial<{
   logo: string;
@@ -99,6 +173,11 @@ export type TUser = {
   createdAt: Date;
   updatedAt: Date;
 } | null;
+
+export type TColors = {
+  primary: string;
+  secondary: string;
+};
 
 export type TTemplate = {
   id: string;

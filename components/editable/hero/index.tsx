@@ -1,23 +1,12 @@
 import Image from "next/image";
 import TopBar from "@/components/top-bar";
-import { TFields, TSection } from "@/types";
+import { TColors, TFields, THero, TSection } from "@/types";
 import React, { Dispatch, SetStateAction } from "react";
 import CTA from "@/components/cta";
 
 type TProps = {
-  hero: {
-    heading: string;
-    subheading: string;
-    imageUrl: string;
-  };
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  cta: {
-    text: string;
-    link: string;
-  };
+  hero: THero;
+  colors: TColors;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
@@ -25,15 +14,8 @@ type TProps = {
 };
 
 const EditableHero = (props: TProps) => {
-  const {
-    hero,
-    colors,
-    cta,
-    setIsOpen,
-    setSection,
-    editable,
-    setFocusedField,
-  } = props;
+  const { hero, colors, setIsOpen, setSection, editable, setFocusedField } =
+    props;
   return (
     <div
       className={`-m-8 mb-10 flex flex-wrap ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -82,11 +64,16 @@ const EditableHero = (props: TProps) => {
                 }
               }}
             >
-              <CTA
-                text={cta.text}
-                bgColor={colors.secondary}
-                link={editable ? "#" : cta.link}
-              />
+              {hero.button.map((data, i) => (
+                <div key={i}>
+                  <CTA
+                    text={data.label}
+                    bgColor={colors.secondary}
+                    link={editable ? "#" : data.value}
+                    external={data.type === "External"}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>

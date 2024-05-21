@@ -1,28 +1,47 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import AuthModal from "../ui/modal/auth-modal";
 import AccountMenu from "./account-menu";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import SettingMenu from "./settings-menu";
 import { getUsernameFromPosts } from "@/lib/utils";
 import { DebouncedState } from "use-debounce";
-import { FaExternalLinkAlt } from "react-icons/fa";
 import { useMediaQuery } from "usehooks-ts";
 import { TMeta, TTemplateName, AppState, TUser } from "@/types";
 import { getAllTemplates, getUserById } from "@/lib/fetchers";
 import { usePathname } from "next/navigation";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { fetchTemplates } from "@/lib/store/slices/template-slice";
+import { Fragment } from "react";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  LinkIcon,
+  PencilIcon,
+} from "@heroicons/react/20/solid";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { Menu, Transition } from "@headlessui/react";
+import { ChefHatIcon } from "lucide-react";
+import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import WidgetModal from "../ui/modal/widget-modal";
+import { useState } from "react";
+import ViewMenu from "../menu/view-menu";
+import PublishMenu from "../menu/publish-menu";
 
 const navigation = [
   { name: "Customization", href: "#" },
   { name: "Analytics", href: "#" },
 ];
+
+function classNames(...classes: any[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
 type TProps = {
   showNavigation: boolean;
@@ -57,6 +76,7 @@ export default function SiteHeader(props: TProps) {
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState<TTemplate | null>(null);
   const [hideNavigation, setHideNavigation] = useState(false);
+  const [showWidgetModal, setWidgetModal] = useState(false);
   const dispatch = useAppDispatch();
 
   const fetchData = async () => {
@@ -102,10 +122,20 @@ export default function SiteHeader(props: TProps) {
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-10 bg-white`}
     >
       <nav
-        className={`mx-auto flex max-w-7xl items-center ${!isAuth && "justify-between"} p-6  lg:px-8`}
+        className={`mx-auto flex max-w-7xl items-center ${!isAuth && "justify-between"} p-6 px-0`}
         aria-label="Global"
       >
         <div className="flex items-center gap-x-12 ">
+          {isAuth && (
+            <Link
+              href="#"
+              className="relative -ml-8 flex inline-flex items-center items-center rounded-md border border-gray-300 bg-white px-2 py-2 text-sm text-sm font-medium font-medium text-gray-500 text-gray-700 hover:bg-gray-50"
+            >
+              <span className="sr-only">Previous</span>
+              <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+              Back
+            </Link>
+          )}
           <Link href="/" className="-m-1.5 p-1.5">
             <Image
               src={"/WebEasy-logo-dark.svg"}
@@ -144,14 +174,25 @@ export default function SiteHeader(props: TProps) {
                   setShowAuthModal={setShowAuthModal}
                 />
               )}
-              <Link
-                href={`https://${getUsernameFromPosts(JSON.stringify(appState?.iPosts))}.webeasy.ai`}
-                target="_blank"
-                className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm  hover:bg-gray-100"
-              >
-                <FaExternalLinkAlt />
-                {matches ? "" : "Preview"}
-              </Link>
+            </div>
+            <div className="mt-5 flex lg:ml-5 lg:mt-0">
+              <span className="hidden sm:block">
+                <button
+                  type="button"
+                  className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  onClick={() => setWidgetModal(true)}
+                >
+                  <ChatBubbleLeftIcon
+                    className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                  Widget
+                </button>
+              </span>
+              <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
+              <ViewMenu />
+
+              <PublishMenu />
             </div>
             {status === "authenticated" ? (
               <div className="max-lg:hidden">

@@ -1,24 +1,13 @@
 import Link from "next/link";
 import CTA from "../cta";
 import { Dispatch, SetStateAction } from "react";
-import { TFields, TSection } from "@/types";
+import { TBanner, TColors, TFields, TSection } from "@/types";
 import Image from "next/image";
 
 type TopBarProps = {
-  logo: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  cta: {
-    text: string;
-    link: string;
-    external?: boolean;
-  };
+  banner: TBanner;
+  colors: TColors;
+
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
@@ -27,10 +16,10 @@ type TopBarProps = {
 
 export default function TopBar(props: TopBarProps) {
   const {
-    logo,
-    businessName,
+    banner,
+
     colors,
-    cta,
+
     editable,
     setFocusedField,
     setIsOpen,
@@ -45,10 +34,10 @@ export default function TopBar(props: TopBarProps) {
             style={{ color: colors.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {logo && editable ? (
+            {banner.logo && editable ? (
               <Image
-                src={logo.link}
-                alt={logo.alt}
+                src={banner.logo.link}
+                alt={banner.logo.alt}
                 className={`h-8 w-auto ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
                 onClick={() => {
                   if (setIsOpen && setSection && setFocusedField) {
@@ -61,10 +50,10 @@ export default function TopBar(props: TopBarProps) {
                 width={200}
               />
             ) : (
-              logo && (
+              banner.logo && (
                 <Image
-                  src={logo.link}
-                  alt={logo.alt}
+                  src={banner.logo.link}
+                  alt={banner.logo.alt}
                   className={`h-8 w-auto `}
                   height={32}
                   width={200}
@@ -83,10 +72,10 @@ export default function TopBar(props: TopBarProps) {
                   }
                 }}
               >
-                {businessName}
+                {banner.businessName}
               </Link>
             ) : (
-              <Link href="#">{businessName}</Link>
+              <Link href="#">{banner.businessName}</Link>
             )}
           </div>
         </div>
@@ -106,21 +95,29 @@ export default function TopBar(props: TopBarProps) {
                     }
                   }}
                 >
-                  <CTA
-                    text={cta.text}
-                    bgColor={colors.secondary}
-                    link={editable ? "#" : cta.link}
-                    external={cta.external}
-                  />
+                  {banner.button.map((data, i) => (
+                    <div key={i}>
+                      <CTA
+                        text={data.label}
+                        bgColor={colors.secondary}
+                        link={editable ? "#" : data.value}
+                        external={data.type === "External"}
+                      />
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <div className={`w-full p-2 md:w-auto`}>
-                  <CTA
-                    text={cta.text}
-                    bgColor={colors.secondary}
-                    link={editable ? "#" : cta.link}
-                    external={cta.external}
-                  />
+                  {banner.button.map((data, i) => (
+                    <div key={i}>
+                      <CTA
+                        text={data.label}
+                        bgColor={colors.secondary}
+                        link={editable ? "#" : data.value}
+                        external={data.type === "External"}
+                      />
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
