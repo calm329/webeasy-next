@@ -121,7 +121,7 @@ export default function SiteHeader(props: TProps) {
   }, [status]);
   return (
     <header
-      className={`${isAuth ? " w-full" : "relative"} border-b-1 z-10 bg-white`}
+      className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
     >
       {!isBottomBar && (
         <BottomToolBar
