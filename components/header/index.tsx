@@ -33,6 +33,7 @@ import { useState } from "react";
 import ViewMenu from "../menu/view-menu";
 import PublishMenu from "../menu/publish-menu";
 import BottomToolBar from "../bottom-bar";
+import { WidgetDrawer } from "../ui/drawer/widget-drawer";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -113,7 +114,8 @@ export default function SiteHeader(props: TProps) {
       setLoading(false);
     }
   };
-  const isMobile = useMediaQuery("(min-width: 900px)");
+  const isBottomBar = useMediaQuery("(min-width: 900px)");
+  const isMobile = useMediaQuery("(max-width: 1024px)");
   useEffect(() => {
     getUserData();
   }, [status]);
@@ -121,7 +123,7 @@ export default function SiteHeader(props: TProps) {
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-10 bg-white`}
     >
-      {!isMobile && (
+      {!isBottomBar && (
         <BottomToolBar
           showNavigation={showNavigation}
           appState={appState}
@@ -174,7 +176,9 @@ export default function SiteHeader(props: TProps) {
         </div>
         {isAuth && (
           <>
-            <div className={`ml-auto ${!isMobile && "hidden"}  flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2`}>
+            <div
+              className={`ml-auto ${!isBottomBar && "hidden"}  flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2`}
+            >
               {getData && setSelectedTemplate && appState && (
                 <SettingMenu
                   getData={getData}
@@ -186,7 +190,7 @@ export default function SiteHeader(props: TProps) {
                 />
               )}
             </div>
-            <div className={` ml-3 flex ${!isMobile && "hidden"}`}>
+            <div className={` ml-3 flex ${!isBottomBar && "hidden"}`}>
               <span className="hidden sm:block">
                 <button
                   type="button"
@@ -200,7 +204,11 @@ export default function SiteHeader(props: TProps) {
                   Widget
                 </button>
               </span>
-              <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
+              {isMobile ? (
+                <WidgetDrawer open={showWidgetModal} setOpen={setWidgetModal} />
+              ) : (
+                <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
+              )}
               <ViewMenu />
 
               <PublishMenu />
