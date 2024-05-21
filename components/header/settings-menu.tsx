@@ -13,6 +13,7 @@ import { ColorDrawer } from "../ui/drawer/color-drawer";
 import SelectTemplateModal from "../ui/modal/select-template-modal";
 import { TTemplate } from ".";
 import SelectTemplateDrawer from "../ui/drawer/select-template-drawer";
+import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -99,7 +100,7 @@ export default function SettingMenu(props: TProps) {
             <div className="flex items-center justify-center gap-2 max-sm:flex-col sm:hidden">
               <div className="flex">
                 <IoMdSettings size={18} />
-                <ChevronDownIcon
+                <ChevronUpIcon
                   className="-mr-1 ml-1.5 h-5 w-5 text-white"
                   aria-hidden="true"
                 />
@@ -109,7 +110,7 @@ export default function SettingMenu(props: TProps) {
             <div className="flex max-sm:hidden gap-2">
               <IoMdSettings size={18} />
               Settings
-              <ChevronDownIcon
+              <ChevronUpIcon
                 className="-mr-1 ml-1.5 h-5 w-5 text-white"
                 aria-hidden="true"
               />

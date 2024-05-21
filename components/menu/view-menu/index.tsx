@@ -3,6 +3,7 @@ import { ChevronDownIcon, LinkIcon } from "@heroicons/react/20/solid";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { useMediaQuery } from "usehooks-ts";
+import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -26,7 +27,7 @@ export default function ViewMenu() {
               aria-hidden="true"
             />
 
-            <ChevronDownIcon
+            <ChevronUpIcon
               className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
               aria-hidden="true"
             />
@@ -39,7 +40,7 @@ export default function ViewMenu() {
             aria-hidden="true"
           />
           View
-          <ChevronDownIcon
+          <ChevronUpIcon
             className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
             aria-hidden="true"
           />
