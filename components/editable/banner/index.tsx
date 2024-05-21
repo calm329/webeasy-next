@@ -1,21 +1,10 @@
 import TopBar from "@/components/top-bar";
-import { TFields, TSection } from "@/types";
+import { TBanner, TColors, TFields, TSection } from "@/types";
 import React, { Dispatch, SetStateAction } from "react";
 
 type TProps = {
-  logo?: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  cta: {
-    text: string;
-    link: string;
-  };
+  banner: TBanner;
+  colors: TColors;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
@@ -23,16 +12,8 @@ type TProps = {
 };
 
 const EditableBanner = (props: TProps) => {
-  const {
-    logo,
-    businessName,
-    colors,
-    cta,
-    setIsOpen,
-    setSection,
-    editable,
-    setFocusedField,
-  } = props;
+  const { banner, colors, setIsOpen, setSection, editable, setFocusedField } =
+    props;
   return (
     <div
       className={`container mx-auto px-4 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -44,10 +25,8 @@ const EditableBanner = (props: TProps) => {
       }}
     >
       <TopBar
-        logo={logo!}
-        businessName={businessName}
+        banner={banner}
         colors={colors}
-        cta={cta}
         editable={editable}
         setFocusedField={setFocusedField}
         setSection={setSection}

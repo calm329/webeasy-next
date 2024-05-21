@@ -4,29 +4,14 @@ import ServiceCard from "@/components/ui/card/service-card";
 import CTA from "@/components/cta";
 import TopBar from "@/components/top-bar";
 import { Dispatch, SetStateAction } from "react";
-import { TFields, TSection } from "@/types";
+import { TBanner, TColors, TFields, THero, TSection } from "@/types";
 import EditableBanner from "@/components/editable/banner";
 import EditableHero from "@/components/editable/hero";
 
 type BasicTemplateProps = {
-  logo?: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  hero: {
-    heading: string;
-    subheading: string;
-    imageUrl: string;
-  };
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  cta: {
-    text: string;
-    link: string;
-  };
+  hero: THero;
+  banner: TBanner;
+  colors: TColors;
   services: any[];
   posts: any[];
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -37,11 +22,9 @@ type BasicTemplateProps = {
 
 export default function BasicTemplate(props: BasicTemplateProps) {
   const {
-    logo,
-    businessName,
     hero,
+    banner,
     colors,
-    cta,
     services,
     posts,
     setIsOpen,
@@ -54,11 +37,9 @@ export default function BasicTemplate(props: BasicTemplateProps) {
     <>
       <section className="bg-white py-6">
         <EditableBanner
-          businessName={businessName}
+          banner={banner}
           colors={colors}
-          cta={cta}
           editable={editable}
-          logo={logo}
           setFocusedField={setFocusedField}
           setIsOpen={setIsOpen}
           setSection={setSection}
@@ -70,7 +51,6 @@ export default function BasicTemplate(props: BasicTemplateProps) {
             <div className="mx-auto max-w-7xl">
               <EditableHero
                 colors={colors}
-                cta={cta}
                 hero={hero}
                 editable={editable}
                 setFocusedField={setFocusedField}
