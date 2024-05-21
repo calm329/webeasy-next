@@ -2,11 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from "..";
 import SiteApi from "@/lib/api/site-api";
-import { TSite } from "@/types";
+import { AppState, TSite } from "@/types";
 
 type TInitialState = {
   sites: {
-    domain: TSite | null;
+    domain: AppState;
     user: Array<TSite> | null;
   };
   loading: boolean;
@@ -14,7 +14,43 @@ type TInitialState = {
 
 const initialState: TInitialState = {
   sites: {
-    domain: null,
+    domain: {
+      status: "Loading Instagram",
+      iPosts: [],
+      aiContent: {
+        banner:{
+          businessName:"",
+          button:[],
+          logo: {
+            link: "",
+            alt: "",
+          },
+        },
+        hero:{
+          heroImagePrompt:"",
+          button:[],
+          heading:"",
+          imageId:"",
+          imageUrl:"",
+          subheading:""
+        },
+        colors:{
+          primary:"",
+          secondary:""
+        },
+        services:{
+          description:"",
+          list:[],
+          title:""
+        }
+      },
+    
+      editable: true,
+      meta: {
+        title: "",
+        description: "",
+      },
+    },
     user: null,
   },
   loading: false,
@@ -101,14 +137,52 @@ const updateSite = createAsyncThunk(
 const siteSlice = createSlice({
   name: "site",
   initialState,
-  reducers: {},
+  reducers: {
+    updateAppState(state,action){
+      state.sites.domain = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchSitesByDomain.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(fetchSitesByDomain.fulfilled, (state, action) => {
       state.loading = false;
-      state.sites.domain = action.payload;
+      state.sites.domain.meta = {title:action.payload?.title ??"",description:action.payload?.description ??""};
+      state.sites.domain.status = "Done",
+      state.sites.domain.iPosts = JSON.parse(action.payload?.posts??"") ,
+      state.sites.domain.aiContent = {
+        banner:{
+          businessName:JSON.parse(action.payload?.aiResult??"").businessName,
+          button:[
+            {
+              label:"Explore More",
+              type:"External",
+              value:"#"
+            }
+          ],
+          logo: {
+            link: action.payload?.logo ?? action.payload?.logo ?? "",
+            alt: action.payload?.logo ?? "",
+          },
+        },
+        colors:JSON.parse(action.payload?.aiResult??"")["colors"],
+        hero:{
+          button:[
+            {
+              label:"Explore More",
+              type:"External",
+              value:"#"
+            }
+          ],
+          heading:JSON.parse(action.payload?.aiResult??"")["hero"]["heading"],
+          heroImagePrompt:JSON.parse(action.payload?.aiResult??"")["heroImagePrompt"],
+          imageId:JSON.parse(action.payload?.aiResult??"")["hero"]["imageId"],
+          imageUrl:JSON.parse(action.payload?.aiResult??"")["hero"]["imageUrl"],
+          subheading:JSON.parse(action.payload?.aiResult??"")["hero"]["subheading"]
+        },
+        services:JSON.parse(action.payload?.aiResult??"")["services"]
+      }
     });
     builder.addCase(fetchSitesByDomain.rejected, (state) => {
       state.loading = false;
@@ -128,6 +202,8 @@ const siteSlice = createSlice({
 
 //export async thunks
 export { fetchSitesByDomain, createSite, updateSite, fetchSitesByUser };
-export const SitesData = (state: RootState) => state.siteSlice.sites;
+export const {updateAppState}  = siteSlice.actions
+export const appState = (state: RootState) => state.siteSlice.sites.domain;
+export const sitesData = (state: RootState) => state.siteSlice.sites.user;
 export const loading = (state: RootState) => state.siteSlice.loading;
 export default siteSlice.reducer;

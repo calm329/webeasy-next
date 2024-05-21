@@ -4,13 +4,15 @@ import { Dispatch, SetStateAction } from "react";
 import { checkSiteAvailability, createNewSite, updateSite } from "../actions";
 import { getSiteData } from "../fetchers";
 import { fetchData } from "../utils";
+import { updateAppState } from "../store/slices/site-slice";
 
 type TParams = {
-  setAppState: Dispatch<SetStateAction<AppState>>;
   flag: "init" | "regenerate" | "refresh";
   searchParams: ReadonlyURLSearchParams;
-  setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>;
-  setHeroCustomizeFields: Dispatch<SetStateAction<FormField[]>>;
+  dispatch:any,
+  appState:AppState
+  setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
+  setHeroCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
 };
 
 const updateDefaultValues = (
@@ -35,24 +37,27 @@ const updateDefaultValues = (
 export const getData = async (params: TParams) => {
   const {
     flag,
-    setAppState,
     searchParams,
+    dispatch,
+    appState,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
   } = params;
-  setAppState((state) => ({
-    ...state,
+  // dispatch(updateAppState())
+  dispatch(updateAppState({
+    ...appState,
     status: "Loading Instagram",
-  }));
+  }))
   const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
     userId: searchParams.get("user_id") || "",
   });
 
-  setAppState((state) => ({
-    ...state,
+  console.log('editable',editable)
+  dispatch(updateAppState({
+    ...appState,
     status: "Loading Instagram",
     editable,
-  }));
+  }))
 
   // check if user data exists
   // const userData = flag === "init" ? await getUserData() : null;
@@ -73,8 +78,8 @@ export const getData = async (params: TParams) => {
     // if (!aiContent["hero"]["ctaLink"]) {
     //   aiContent["hero"]["ctaLink"] = "https://domain.com";
     // }
-    setAppState((state) => ({
-      ...state,
+    dispatch(updateAppState({
+      ...appState,
       status: "Done",
       aiContent: {
         banner:{
@@ -87,8 +92,8 @@ export const getData = async (params: TParams) => {
             }
           ],
           logo: {
-            link: siteData.logo ?? state.aiContent.banner.logo.link ?? "",
-            alt: state.aiContent.banner.logo.alt ?? "",
+            link: siteData.logo ?? appState.aiContent.banner.logo.link ?? "",
+            alt: appState.aiContent.banner.logo.alt ?? "",
           },
         },
         colors:aiContent["colors"],
@@ -110,7 +115,8 @@ export const getData = async (params: TParams) => {
       },
       iPosts: JSON.parse(siteData.posts),
       meta: { title: siteData.title, description: siteData.description },
-    }));
+    }))
+
 
     // update default values
     updateDefaultValues(
@@ -154,11 +160,10 @@ export const getData = async (params: TParams) => {
     mediaCaption = _mediaCaption || mediaCaption;
     imageIds = _imageIds || imageIds;
     iPosts = _posts || iPosts;
-
-    setAppState((state) => ({
-      ...state,
+    dispatch(updateAppState({
+      ...appState,
       status: flag === "refresh" ? "Done" : "Generating Content",
-    }));
+    }))
   }
 
   // generate content from user media using openai
@@ -188,10 +193,10 @@ export const getData = async (params: TParams) => {
       aiContent["hero"]["imageUrl"] = imageIds[aiContent["hero"]["imageId"]];
     } // else return;
 
-    setAppState((state) => ({
-      ...state,
+    dispatch(updateAppState({
+      ...appState,
       status: "Choosing Colors",
-    }));
+    }))
   }
 
   // generate colors from content using openai
@@ -206,14 +211,14 @@ export const getData = async (params: TParams) => {
       aiContent = { ...aiContent, colors: aiColors };
     } // else return;
 
-    setAppState((state) => ({
-      ...state,
+    dispatch(updateAppState({
+      ...appState,
       status: "Done",
-    }));
+    }))
   }
 
-  setAppState((state) => ({
-    ...state,
+  dispatch(updateAppState({
+    ...appState,
     aiContent: Object.keys(aiContent).length ?  {
       banner:{
         ...aiContent.banner,
@@ -242,9 +247,10 @@ export const getData = async (params: TParams) => {
         subheading:aiContent["hero"]["subheading"]
       },
       services:aiContent["services"]
-    } : state.aiContent,
+    } : appState.aiContent,
     iPosts: iPosts,
-  }));
+  }))
+
 
   if (!siteAvailable && flag === "init") {
     await createNewSite({
@@ -279,144 +285,149 @@ export const getData = async (params: TParams) => {
 };
 
 export const handleChangeAppState = (
-  setAppState: Dispatch<SetStateAction<AppState>>,
+ dispatch:any,
+ appState:AppState,
   name: string,
   value: string,
 ) => {
+  console.log("name",name,value)
   switch (name) {
     case "alt":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         logo: {
-          ...state.aiContent.banner.logo,
+          ...appState.aiContent.banner.logo,
           alt: value,
         },
       }));
       break;
     case "logo":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         logo: {
-          ...state.aiContent.banner.logo,
+          ...appState.aiContent.banner.logo,
           link: value,
         },
       }));
       break;
     case "businessName":
-      setAppState((state) => ({
-        ...state,
-        aiContent: {
-          ...state.aiContent,
-          ["businessName"]: value,
-        },
+      dispatch(updateAppState({
+        ...appState,
+        aiContent:{
+          ...appState.aiContent,
+          banner:{
+            ...appState.aiContent.banner,
+            businessName:value
+          }    
+        }
       }));
       break;
     case "ctaLink":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         aiContent: {
-          ...state.aiContent,
+          ...appState.aiContent,
           ["hero"]: {
-            ...state.aiContent["hero"],
+            ...appState.aiContent["hero"],
             ["ctaLink"]: value,
           },
         },
       }));
       break;
     case "heading":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         aiContent: {
-          ...state.aiContent,
+          ...appState.aiContent,
           ["hero"]: {
-            ...state.aiContent["hero"],
+            ...appState.aiContent["hero"],
             ["heading"]: value,
           },
         },
       }));
       break;
     case "subheading":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         aiContent: {
-          ...state.aiContent,
+          ...appState.aiContent,
           ["hero"]: {
-            ...state.aiContent["hero"],
+            ...appState.aiContent["hero"],
             ["subheading"]: value,
           },
         },
       }));
       break;
     case "imageUrl":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         aiContent: {
-          ...state.aiContent,
+          ...appState.aiContent,
           ["hero"]: {
-            ...state.aiContent["hero"],
+            ...appState.aiContent["hero"],
             ["imageUrl"]: value,
           },
         },
       }));
       break;
     case "cta":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         aiContent: {
-          ...state.aiContent,
+          ...appState.aiContent,
           ["hero"]: {
-            ...state.aiContent["hero"],
+            ...appState.aiContent["hero"],
             ["cta"]: value,
           },
         },
       }));
       break;
     case "primary":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         aiContent: {
-          ...state.aiContent,
+          ...appState.aiContent,
           ["colors"]: {
-            ...state.aiContent["colors"],
+            ...appState.aiContent["colors"],
             ["primary"]: value,
           },
         },
       }));
       break;
     // case "colors":
-    //   setAppState((state) => ({
-    //     ...state,
+    //   dispatch(updateAppState({
+    //     ...appState,
     //     aiContent:{
-    //       ...state.aiContent,
+    //       ...appState.aiContent,
     //       colors :value
     //     },
     //   }));
     //   break;
     case "title":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         meta: {
-          ...state.meta,
+          ...appState.meta,
           title: value,
         },
       }));
       break;
     case "description":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         meta: {
-          ...state.meta,
+          ...appState.meta,
           description: value,
         },
       }));
       break;
     case "secondary":
-      setAppState((state) => ({
-        ...state,
+      dispatch(updateAppState({
+        ...appState,
         aiContent: {
-          ...state.aiContent,
+          ...appState.aiContent,
           ["colors"]: {
-            ...state.aiContent["colors"],
+            ...appState.aiContent["colors"],
             ["secondary"]: value,
           },
         },
