@@ -124,7 +124,7 @@ export default function SiteHeader(props: TProps) {
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
     >
-      {!isBottomBar && (
+      {!isBottomBar && pathname.startsWith("/auth") && (
         <BottomToolBar
           showNavigation={showNavigation}
           appState={appState}
