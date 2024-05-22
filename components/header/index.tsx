@@ -142,7 +142,7 @@ export default function SiteHeader(props: TProps) {
         <div className="flex items-center gap-x-12 ">
           {isAuth && (
             <button
-              onClick={() => router.back()}
+              onClick={() => router.push("/settings/websites")}
               className="relative  flex  items-center  rounded-md border border-gray-300 bg-white px-2 py-2 text-sm  font-medium  text-gray-700 hover:bg-gray-50"
             >
               <span className="sr-only"> Previous</span>
