@@ -1,6 +1,6 @@
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { ChevronDownIcon,ChevronUpIcon } from "@heroicons/react/20/solid";
 import { signOut, useSession } from "next-auth/react";
 import { IoMdSettings } from "react-icons/io";
 import CustomizeMetaModal from "../ui/modal/meta-modal";
@@ -13,7 +13,6 @@ import { ColorDrawer } from "../ui/drawer/color-drawer";
 import SelectTemplateModal from "../ui/modal/select-template-modal";
 import { TTemplate } from ".";
 import SelectTemplateDrawer from "../ui/drawer/select-template-drawer";
-import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -41,7 +40,7 @@ export default function SettingMenu(props: TProps) {
   const [open, setOpen] = useState(false);
   const [isColorOpen, setIsColorOpen] = useState(false);
   const [isTemplateOpen, setIsTemplateOpen] = useState(false);
-  const matches = useMediaQuery("(max-width: 500px)");
+  const matches = useMediaQuery("(max-width: 900px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
   return (
     <>
@@ -96,24 +95,27 @@ export default function SettingMenu(props: TProps) {
         ))}
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm max-sm:text-xs font-semibold text-white hover:bg-indigo-500 max-sm:border-none max-sm:bg-transparent max-sm:text-black">
+          <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 max-sm:border-none max-sm:bg-transparent max-sm:text-xs max-sm:text-black">
             <div className="flex items-center justify-center gap-2 max-sm:flex-col sm:hidden">
               <div className="flex">
                 <IoMdSettings size={18} />
-                {/* <ChevronUpIcon
-                  className="-mr-1 ml-1.5 h-5 w-5 "
-                  aria-hidden="true"
-                /> */}
               </div>
               Settings
             </div>
-            <div className="flex max-sm:hidden gap-2">
+            <div className="flex gap-2 max-sm:hidden">
               <IoMdSettings size={18} />
               Settings
-              <ChevronUpIcon
-                className="-mr-1 ml-1.5 h-5 w-5 "
-                aria-hidden="true"
-              />
+              {matches ? (
+                <ChevronUpIcon
+                  className="-mr-1 ml-1.5 h-5 w-5 "
+                  aria-hidden="true"
+                />
+              ) : (
+                <ChevronDownIcon
+                  className="-mr-1 ml-1.5 h-5 w-5 "
+                  aria-hidden="true"
+                />
+              )}
             </div>
           </Menu.Button>
         </div>

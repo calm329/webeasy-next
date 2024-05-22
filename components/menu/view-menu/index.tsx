@@ -1,26 +1,25 @@
 import { Fragment } from "react";
-import { ChevronDownIcon, LinkIcon } from "@heroicons/react/20/solid";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  LinkIcon,
+} from "@heroicons/react/20/solid";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { useMediaQuery } from "usehooks-ts";
-import { ChevronUpIcon } from "@heroicons/react/24/outline";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
-
 
 export default function ViewMenu() {
   const matches = useMediaQuery("(max-width: 500px)");
   const isMobile = useMediaQuery("(max-width: 900px)");
 
   return (
-    <Menu
-      as="div"
-      className={`relative ml-3 `}
-    >
-      <Menu.Button className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 max-sm:ring-0 max-sm:text-black max-sm:text-xs max-sm:shadow-none">
-        <div className="flex items-center justify-center gap-1 max-sm:flex-col sm:hidden max-sm:gap-2">
+    <Menu as="div" className={`relative ml-3 `}>
+      <Menu.Button className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 max-sm:text-xs max-sm:text-black max-sm:shadow-none max-sm:ring-0">
+        <div className="flex items-center justify-center gap-1 max-sm:flex-col max-sm:gap-2 sm:hidden">
           <div className="flex">
             <LinkIcon
               className="-ml-0.5 mr-1.5 h-5 w-5 max-sm:m-0"
@@ -29,16 +28,23 @@ export default function ViewMenu() {
           </div>
           View
         </div>
-        <div className={`flex  max-sm:hidden` }>
+        <div className={`flex  max-sm:hidden`}>
           <LinkIcon
             className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400"
             aria-hidden="true"
           />
           View
-          <ChevronUpIcon
-            className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
+          {isMobile ? (
+            <ChevronUpIcon
+              className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          ) : (
+            <ChevronDownIcon
+              className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          )}
         </div>
       </Menu.Button>
 

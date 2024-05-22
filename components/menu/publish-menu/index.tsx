@@ -1,10 +1,9 @@
 import { Fragment } from "react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useMediaQuery } from "usehooks-ts";
-import { ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useAppSelector } from "@/lib/store/hooks";
 import { appState as AS } from "@/lib/store/slices/site-slice";
 
@@ -27,22 +26,29 @@ export default function PublishMenu() {
             />
 
             {/* <ChevronUpIcon
-              className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
+              className="-mr-1 ml-1.5 h-5 w-5 "
               aria-hidden="true"
             /> */}
           </div>
           Publish
         </div>
-        <div className={`flex  max-sm:hidden`}>
+        <div className={`flex  max-sm:hidden text-white`}>
           <FaExternalLinkAlt
-            className="-ml-0.5 mr-1.5 h-4 w-4 text-gray-400"
+            className="mr-2 h-4 w-4 "
             aria-hidden="true"
           />
           Publish
-          <ChevronUpIcon
-            className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
+          {isMobile ? (
+            <ChevronUpIcon
+              className="-mr-1 ml-1.5 h-5 w-5 "
+              aria-hidden="true"
+            />
+          ) : (
+            <ChevronDownIcon
+              className="-mr-1 ml-1.5 h-5 w-5 "
+              aria-hidden="true"
+            />
+          )}
         </div>
       </Menu.Button>
 
