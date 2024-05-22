@@ -168,9 +168,9 @@ const siteSlice = createSlice({
               ...state.sites.domain.aiContent.banner.button,
               list: [
                 {
-                  label: "Explore More",
+                  label: JSON.parse(action.payload?.aiResult ?? "")["hero"]["cta"],
                   type: "External",
-                  value: "#",
+                  value: JSON.parse(action.payload?.aiResult ?? "")["hero"]["ctaLink"],
                 },
               ],
             },
@@ -186,9 +186,9 @@ const siteSlice = createSlice({
               ...state.sites.domain.aiContent.hero.button,
               list: [
                 {
-                  label: "Explore More",
+                  label: JSON.parse(action.payload?.aiResult ?? "")["hero"]["cta"],
                   type: "External",
-                  value: "#",
+                  value: JSON.parse(action.payload?.aiResult ?? "")["hero"]["ctaLink"],
                 },
               ],
             },
