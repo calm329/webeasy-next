@@ -5,7 +5,7 @@ import CTA from "@/components/cta";
 import TopBar from "@/components/top-bar";
 
 type BasicTemplateProps = {
-  logo?: {
+  logo: {
     link: string;
     alt: string;
   };
@@ -38,8 +38,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
             banner={{
               businessName: businessName,
               logo: {
-                alt: "",
-                link: "",
+                alt: logo?.alt,
+                link: logo?.link,
                 show: true,
               },
               button: {
