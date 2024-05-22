@@ -9,6 +9,7 @@ import { DebouncedState, useMediaQuery } from "usehooks-ts";
 import { AppState, TTemplateName } from "@/types";
 import { useAppSelector } from "@/lib/store/hooks";
 import { TemplatesData as TD } from "@/lib/store/slices/template-slice";
+import { WidgetDrawer } from "../ui/drawer/widget-drawer";
 
 type TProps = {
   showNavigation: boolean;
@@ -33,6 +34,7 @@ const BottomToolBar = (props: TProps) => {
     setSelectedTemplate,
   } = props;
   const matches = useMediaQuery("(max-width: 500px)");
+  const isMobile = useMediaQuery("(max-width: 1024px)");
   return (
     <div className="fixed bottom-0 z-10   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
       <div className=" flex justify-end gap-5  max-sm:gap-2">
@@ -62,7 +64,13 @@ const BottomToolBar = (props: TProps) => {
      
         </button>
       </span>
-      <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
+      {isMobile ? (
+                <WidgetDrawer open={showWidgetModal} setOpen={setWidgetModal} />
+              ) : (
+                <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
+      
+              )}
+ 
       <ViewMenu />
 
       <PublishMenu />

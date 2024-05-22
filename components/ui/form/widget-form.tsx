@@ -1,4 +1,5 @@
 import React from "react";
+import { useMediaQuery } from "usehooks-ts";
 import { FaFacebookMessenger, FaTelegram, FaWhatsapp } from "react-icons/fa";
 import { MdCookie } from "react-icons/md";
 
@@ -34,12 +35,14 @@ function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 const WidgetForm = () => {
+  const isMobile = useMediaQuery("(max-width: 1024px)");
   return (
     <div>
+     { !isMobile&&
       <h2 className="mt-3 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
         Widgets
-      </h2>
-      <div className="mt-5 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 bg-gray-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
+      </h2>}
+      <div className="mt-5 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 bg-gray-200 shadow grid grid-cols-2 max-sm:grid-cols-1 sm:gap-px sm:divide-y-0">
         {widgets.map((widget, widgetIdx) => (
           <div
             key={widget.name}
@@ -52,7 +55,7 @@ const WidgetForm = () => {
               widgetIdx === widgets.length - 1
                 ? "rounded-bl-lg rounded-br-lg sm:rounded-bl-none"
                 : "",
-              "group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500",
+              "group relative bg-white p-6 max-sm:px-5 max-sm:py-2 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500",
             )}
           >
             <div>
@@ -64,7 +67,7 @@ const WidgetForm = () => {
                 <widget.icon className="h-6 w-6" aria-hidden="true" />
               </span>
             </div>
-            <div className="mt-8">
+            <div className="mt-8 max-sm:mt-2">
               <h3 className="text-base font-semibold leading-6 text-gray-900">
                 <a href={widget.href} className="focus:outline-none">
                   {/* Extend touch target to entire panel */}

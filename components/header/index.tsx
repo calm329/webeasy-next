@@ -209,6 +209,7 @@ export default function SiteHeader(props: TProps) {
                 <WidgetDrawer open={showWidgetModal} setOpen={setWidgetModal} />
               ) : (
                 <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
+                
               )}
               <ViewMenu />
 
