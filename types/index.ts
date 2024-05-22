@@ -68,6 +68,7 @@ export type TTemplateName =
   | "General template";
 
 export interface AppState {
+  subdomain:string;
   status: string;
   iPosts: Array<{
     id: string;

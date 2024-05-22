@@ -104,6 +104,7 @@ export const getData = async (params: TParams) => {
   dispatch(
     updateAppState({
       ...appState,
+      subdomain:siteAvailable,
       status: "Loading Instagram",
       editable,
     }),
@@ -128,6 +129,7 @@ export const getData = async (params: TParams) => {
     dispatch(
       updateAppState({
         ...appState,
+        subdomain:siteAvailable,
         status: "Done",
         aiContent: {
           banner: {
@@ -223,6 +225,7 @@ export const getData = async (params: TParams) => {
     dispatch(
       updateAppState({
         ...appState,
+        subdomain:siteAvailable,
         status: flag === "refresh" ? "Done" : "Generating Content",
       }),
     );
@@ -258,6 +261,7 @@ export const getData = async (params: TParams) => {
     dispatch(
       updateAppState({
         ...appState,
+        subdomain:siteAvailable,
         status: "Choosing Colors",
       }),
     );
@@ -278,6 +282,7 @@ export const getData = async (params: TParams) => {
     dispatch(
       updateAppState({
         ...appState,
+        subdomain:siteAvailable,
         status: "Done",
       }),
     );
@@ -286,6 +291,7 @@ export const getData = async (params: TParams) => {
   dispatch(
     updateAppState({
       ...appState,
+      subdomain:siteAvailable,
       aiContent: Object.keys(aiContent).length
         ? {
             banner: {

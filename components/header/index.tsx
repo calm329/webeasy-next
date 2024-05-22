@@ -13,7 +13,7 @@ import { DebouncedState } from "use-debounce";
 import { useMediaQuery } from "usehooks-ts";
 import { TMeta, TTemplateName, AppState, TUser } from "@/types";
 import { getAllTemplates, getUserById } from "@/lib/fetchers";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { fetchTemplates } from "@/lib/store/slices/template-slice";
 import { Fragment } from "react";
@@ -69,6 +69,7 @@ export default function SiteHeader(props: TProps) {
     handleChange,
     setSelectedTemplate,
   } = props;
+  const router = useRouter();
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -140,14 +141,14 @@ export default function SiteHeader(props: TProps) {
       >
         <div className="flex items-center gap-x-12 ">
           {isAuth && (
-            <Link
-              href="#"
+            <button
+              onClick={() => router.back()}
               className="relative  flex  items-center  rounded-md border border-gray-300 bg-white px-2 py-2 text-sm  font-medium  text-gray-700 hover:bg-gray-50"
             >
               <span className="sr-only"> Previous</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
               Back
-            </Link>
+            </button>
           )}
           <Link href="/" className="-m-1.5 p-1.5">
             <Image
