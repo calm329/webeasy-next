@@ -24,7 +24,7 @@ import {
   LinkIcon,
   PencilIcon,
 } from "@heroicons/react/20/solid";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaExternalLinkAlt, FaRedoAlt, FaUndoAlt } from "react-icons/fa";
 import { Menu, Transition } from "@headlessui/react";
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -34,6 +34,10 @@ import ViewMenu from "../menu/view-menu";
 import PublishMenu from "../menu/publish-menu";
 import BottomToolBar from "../bottom-bar";
 import { WidgetDrawer } from "../ui/drawer/widget-drawer";
+import { isBot } from "next/dist/server/web/spec-extension/user-agent";
+import { ImCancelCircle } from "react-icons/im";
+import { MdOutlineDownloadDone } from "react-icons/md";
+import { IoMdAdd, IoMdArrowRoundBack } from "react-icons/io";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -124,7 +128,7 @@ export default function SiteHeader(props: TProps) {
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
     >
-      {!isBottomBar && pathname.startsWith("/auth") && (
+      {pathname.startsWith("/auth") && (
         <BottomToolBar
           showNavigation={showNavigation}
           appState={appState}
@@ -135,12 +139,40 @@ export default function SiteHeader(props: TProps) {
           setSelectedTemplate={setSelectedTemplate}
         />
       )}
+      {!isBottomBar && (
+        <div className="mt-5 flex w-full justify-around border-b pb-5">
+          <button className="flex flex-col items-center">
+            <IoMdArrowRoundBack size={20} />
+            {/* Undo */}
+          </button>
+          <button className="flex flex-col items-center">
+            <IoMdAdd size={20} />
+            {/* Undo */}
+          </button>
+          <button className="flex flex-col items-center">
+            <FaUndoAlt />
+            {/* Undo */}
+          </button>
+          <button className="flex flex-col items-center">
+            <FaRedoAlt />
+            {/* Redo */}
+          </button>
+          <button className="flex flex-col items-center">
+            <ImCancelCircle size={18} />
+            {/* Cancel */}
+          </button>
+          <button className="flex flex-col items-center">
+            <MdOutlineDownloadDone size={20} />
+            {/* Done */}
+          </button>
+        </div>
+      )}
       <nav
-        className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0`}
+        className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "w-full max-w-full justify-between"}`}
         aria-label="Global"
       >
         <div className="flex items-center gap-x-12 ">
-          {isAuth && (
+          {isAuth && isBottomBar && (
             <button
               onClick={() => router.push("/settings/websites")}
               className="relative  flex  items-center  rounded-md border border-gray-300 bg-white px-2 py-2 text-sm  font-medium  text-gray-700 hover:bg-gray-50"
@@ -209,7 +241,6 @@ export default function SiteHeader(props: TProps) {
                 <WidgetDrawer open={showWidgetModal} setOpen={setWidgetModal} />
               ) : (
                 <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
-                
               )}
               <ViewMenu />
 
