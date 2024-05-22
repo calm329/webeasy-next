@@ -57,7 +57,7 @@ export function Header(props: TProps) {
                         {banner.businessName}
                       </h2>
                     </div>
-                    {banner.button.map((data, i) => (
+                    {banner.button.list.map((data, i) => (
                       <div key={i}>
                         <Button
                           href={data.value}

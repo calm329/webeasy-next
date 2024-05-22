@@ -37,7 +37,7 @@ export function Header(props: TProps) {
             </Link>
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
-            {banner.button.map((data, i) => (
+            {banner.button.list.map((data, i) => (
               <div key={i}>
                 <Button
                   href={data.value}

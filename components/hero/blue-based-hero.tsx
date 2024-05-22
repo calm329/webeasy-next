@@ -51,7 +51,7 @@ export function Hero(props: TProps) {
       <BackgroundImage className="-bottom-14 -top-36 " />
       <Container className="relative flex max-lg:flex-col-reverse">
         <Image
-          src={hero.imageUrl}
+          src={hero.image.imageUrl}
           alt=""
           height={400}
           width={300}
@@ -68,7 +68,7 @@ export function Hero(props: TProps) {
           <div className="font-display mt-6 space-y-6 text-2xl tracking-tight text-blue-900">
             <p>{hero.subheading}</p>
           </div>
-          {hero.button.map((data, i) => (
+          {hero.button.list.map((data, i) => (
             <div key={i}>
               <Button
                 href={data.value}

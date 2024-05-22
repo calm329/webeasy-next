@@ -37,17 +37,21 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           <TopBar
             banner={{
               businessName: businessName,
-              logo: logo ?? {
+              logo: {
                 alt: "",
                 link: "",
+                show: true,
               },
-              button: [
-                {
-                  label: cta.text,
-                  type: "External",
-                  value: cta.link,
-                },
-              ],
+              button: {
+                show: true,
+                list: [
+                  {
+                    label: cta.text,
+                    type: "External",
+                    value: cta.link,
+                  },
+                ],
+              },
             }}
             colors={colors}
           />

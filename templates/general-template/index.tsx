@@ -111,7 +111,7 @@ export default function General(props: TProps) {
                 <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
                   {hero.subheading}
                 </p>
-                {hero.button.map((data, i) => (
+                {hero.button.list.map((data, i) => (
                   <div key={i}>
                     <Button
                       href={data.value}
@@ -124,7 +124,7 @@ export default function General(props: TProps) {
               </div>
               <div>
                 <Image
-                  src={hero.imageUrl}
+                  src={hero.image.imageUrl}
                   alt=""
                   height={400}
                   width={300}
