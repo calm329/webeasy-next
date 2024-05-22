@@ -17,7 +17,7 @@ export default function PublishMenu() {
   const appState = useAppSelector(AS);
   return (
     <Menu as="div" className={`relative ml-3`}>
-      <Menu.Button className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-sm:bg-transparent max-sm:text-xs max-sm:text-black max-sm:shadow-none ">
+      <Menu.Button className={`inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-sm:bg-transparent max-sm:text-xs max-sm:text-black max-sm:shadow-none ${isMobile && "hover:bg-transparent"}`}>
         <div className="flex items-center justify-center gap-1 max-sm:flex-col max-sm:gap-3 sm:hidden">
           <div className="flex">
             <FaExternalLinkAlt
@@ -61,7 +61,7 @@ export default function PublishMenu() {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute left-0 z-10 -mr-1 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className={`absolute left-0 z-10 -mr-1 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${isMobile && "-top-28 right-0 left-auto"}`}>
           <Menu.Item>
             {({ active }) => (
               <Link
