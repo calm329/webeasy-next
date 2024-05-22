@@ -11,7 +11,7 @@ type TProps = {
 export function Header(props: TProps) {
   const { banner, colors } = props;
   return (
-    <header className={`relative z-10 flex-none lg:pt-20 `}>
+    <header className={`relative z-1 flex-none lg:pt-20 `}>
       <Container
         className="flex flex-wrap items-center justify-center sm:justify-between lg:flex-nowrap"
         style={{ color: colors.primary }}
