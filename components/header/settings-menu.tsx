@@ -95,7 +95,7 @@ export default function SettingMenu(props: TProps) {
         ))}
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 max-sm:border-none max-sm:bg-transparent max-sm:text-xs max-sm:text-black">
+          <Menu.Button className={`inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 max-sm:border-none max-sm:bg-transparent max-sm:text-xs max-sm:text-black ${matches && "hover:bg-transparent"}`}>
             <div className="flex items-center justify-center gap-2 max-sm:flex-col sm:hidden">
               <div className="flex">
                 <IoMdSettings size={18} />
@@ -129,7 +129,7 @@ export default function SettingMenu(props: TProps) {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 z-20 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className={`absolute left-0 z-20 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${matches && "-top-52"} `}>
             {/* <div className="px-4 py-3">
             <p className="text-sm">Signed in as</p>
             <p className="truncate text-sm font-medium text-gray-900">
