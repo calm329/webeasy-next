@@ -17,7 +17,7 @@ export default function PublishMenu() {
   const appState = useAppSelector(AS);
   return (
     <Menu as="div" className={`relative ml-3`}>
-      <Menu.Button className={`inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-sm:bg-transparent max-sm:text-xs max-sm:text-black max-sm:shadow-none ${isMobile && "hover:bg-transparent"}`}>
+      <Menu.Button className={`inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-sm:bg-transparent max-sm:text-xs max-sm:text-black max-sm:shadow-none max-sm:hover:bg-transparent`}>
         <div className="flex items-center justify-center gap-1 max-sm:flex-col max-sm:gap-3 sm:hidden">
           <div className="flex">
             <FaExternalLinkAlt

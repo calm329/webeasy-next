@@ -139,12 +139,13 @@ export default function SiteHeader(props: TProps) {
           setSelectedTemplate={setSelectedTemplate}
         />
       )}
-      {!isBottomBar && (
+      <nav>
+      {!isBottomBar && pathname.startsWith("/auth") && (
         <div className="mt-5 flex w-full justify-around border-b pb-5">
-          <button className="flex flex-col items-center">
+          <Link href={"/settings/websites"} className="flex flex-col items-center" >
             <IoMdArrowRoundBack size={20} />
             {/* Undo */}
-          </button>
+          </Link>
           <button className="flex flex-col items-center">
             <IoMdAdd size={20} />
             {/* Undo */}
@@ -167,7 +168,7 @@ export default function SiteHeader(props: TProps) {
           </button>
         </div>
       )}
-      <nav
+      <div
         className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "w-full max-w-full justify-between"}`}
         aria-label="Global"
       >
@@ -306,6 +307,7 @@ export default function SiteHeader(props: TProps) {
             </button>
           )}
         </div>
+      </div>
       </nav>
       <AuthModal open={showAuthModal} setOpen={setShowAuthModal} />
       <Dialog
