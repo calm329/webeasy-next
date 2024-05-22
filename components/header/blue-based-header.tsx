@@ -19,7 +19,7 @@ export function Header(props: TProps) {
         <div className="mt-10 flex items-center  gap-2 text-xl lg:mt-0 lg:grow lg:basis-0">
           <Image
             src={banner.logo.link ?? ""}
-            alt={banner.logo.alt}
+            alt={banner.logo.alt??""}
             height={100}
             width={100}
           />
@@ -29,7 +29,7 @@ export function Header(props: TProps) {
           {banner.button.list.map((data, i) => (
             <div key={i}>
               <Button
-                href={data.value}
+                href={data.value ?? "#"}
                 text={data.label}
                 bgColor={colors.secondary}
               />
