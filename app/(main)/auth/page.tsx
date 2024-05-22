@@ -58,17 +58,7 @@ export default function Page() {
         name: "cta",
         show: true,
         type: "button",
-        children: [
-          {
-            name: "cta",
-            type: "External",
-            defaultValue: "",
-            label: "Learn More",
-            validation: { required: true, link: true },
-            link: "#",
-            placeholder: "Enter",
-          },
-        ],
+        children: [],
         validation: {
           required: true,
         },
@@ -116,26 +106,7 @@ export default function Page() {
       validation: {
         required: true,
       },
-      children: [
-        {
-          name: "cta",
-          type: "External",
-          defaultValue: "",
-          label: "Learn More",
-          validation: { required: true, link: true },
-          link: "#",
-          placeholder: "Enter",
-        },
-        {
-          name: "cta2",
-          type: "External",
-          defaultValue: "",
-          label: "Learn More",
-          validation: { required: true, link: true },
-          link: "#",
-          placeholder: "Enter",
-        },
-      ],
+      children: [],
     },
   ]);
 

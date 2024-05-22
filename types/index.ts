@@ -115,7 +115,7 @@ export type TBanner = {
     button: {
       show: boolean;
       list: Array<{
-        type: string;
+        type: "External" | "Section";
         value: string;
         label: string;
       }>;
@@ -136,7 +136,7 @@ export type THero ={
   button: {
     show: boolean;
     list: Array<{
-      type: string;
+      type: "External" | "Section";
       value: string;
       label: string;
     }>;

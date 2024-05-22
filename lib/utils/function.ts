@@ -19,6 +19,7 @@ const updateDefaultValues = (
   data: TData,
   setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
   setHeroCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
+  appState: AppState,
 ) => {
   setBrandCustomizeFields((currentFields) =>
     currentFields.map((field) => ({
@@ -32,6 +33,52 @@ const updateDefaultValues = (
       defaultValue: data[field.name as keyof typeof data] ?? field.defaultValue,
     })),
   );
+
+  setBrandCustomizeFields((prevFields) =>
+    prevFields.map((field) => {
+      if (field.name === "cta") {
+        // If the field is cta, update its children
+        return {
+          ...field,
+          children: appState.aiContent.banner.button.list.map((item) => ({
+            name: item.label,
+            type: item.type,
+            defaultValue: item.value,
+            label: item.label,
+            validation: { required: true, link: true },
+            link: item.value,
+            placeholder: "Enter",
+          })),
+        };
+      } else {
+        // If it's not cta, just return the field as it is
+        return field;
+      }
+    }),
+  );
+
+  setHeroCustomizeFields((prevFields) =>
+    prevFields.map((field) => {
+      if (field.name === "cta") {
+        // If the field is cta, update its children
+        return {
+          ...field,
+          children: appState.aiContent.hero.button.list.map((item) => ({
+            name: item.label,
+            type: item.type,
+            defaultValue: item.value,
+            label: item.label,
+            validation: { required: true, link: true },
+            link: item.value,
+            placeholder: "Enter",
+          })),
+        };
+      } else {
+        // If it's not cta, just return the field as it is
+        return field;
+      }
+    }),
+  );
 };
 
 export const getData = async (params: TParams) => {
@@ -42,8 +89,7 @@ export const getData = async (params: TParams) => {
     appState,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
-  } = params;
-  // dispatch(updateAppState())
+  } = params
   dispatch(
     updateAppState({
       ...appState,
@@ -79,9 +125,6 @@ export const getData = async (params: TParams) => {
     const aiContent = JSON.parse(siteData.aiResult);
 
     console.log("aiContent", aiContent);
-    // if (!aiContent["hero"]["ctaLink"]) {
-    //   aiContent["hero"]["ctaLink"] = "https://domain.com";
-    // }
     dispatch(
       updateAppState({
         ...appState,
@@ -93,9 +136,9 @@ export const getData = async (params: TParams) => {
               show: true,
               list: [
                 {
-                  label: "Explore More",
+                  label: aiContent["hero"]["cta"],
                   type: "External",
-                  value: "#",
+                  value: aiContent["hero"]["ctaLink"],
                 },
               ],
             },
@@ -111,9 +154,9 @@ export const getData = async (params: TParams) => {
               show: true,
               list: [
                 {
-                  label: "Explore More",
+                  label: aiContent["hero"]["cta"],
                   type: "External",
-                  value: "#",
+                  value: aiContent["hero"]["ctaLink"],
                 },
               ],
             },
@@ -122,7 +165,7 @@ export const getData = async (params: TParams) => {
               imageId: aiContent["hero"]["imageId"],
               imageUrl: aiContent["hero"]["imageUrl"],
               alt: "",
-              show:true
+              show: true,
             },
             heading: aiContent["hero"]["heading"],
             subheading: aiContent["hero"]["subheading"],
@@ -147,6 +190,7 @@ export const getData = async (params: TParams) => {
       },
       setBrandCustomizeFields,
       setHeroCustomizeFields,
+      appState,
     );
 
     return;
@@ -251,9 +295,9 @@ export const getData = async (params: TParams) => {
                 show: appState.aiContent.hero.button.show,
                 list: [
                   {
-                    label: "Explore More",
+                    label: aiContent["hero"]["cta"],
                     type: "External",
-                    value: "#",
+                    value: aiContent["hero"]["ctaLink"],
                   },
                 ],
               },
@@ -264,9 +308,9 @@ export const getData = async (params: TParams) => {
                 show: appState.aiContent.hero.button.show,
                 list: [
                   {
-                    label: "Explore More",
+                    label: aiContent["hero"]["cta"],
                     type: "External",
-                    value: "#",
+                    value: aiContent["hero"]["ctaLink"],
                   },
                 ],
               },
@@ -316,6 +360,7 @@ export const getData = async (params: TParams) => {
     },
     setBrandCustomizeFields,
     setHeroCustomizeFields,
+    appState,
   );
 };
 
