@@ -1,6 +1,8 @@
 import Uploader from "@/components/ui/form/uploader";
 import { Switch } from "@/components/ui/switch";
 import { updateSite } from "@/lib/actions";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { generateZodSchema } from "@/lib/utils";
 import { FormField, TFields, TSection } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +15,8 @@ import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
 import { RxDragHandleDots2 } from "react-icons/rx";
 import { toast } from "sonner";
 import { DebouncedState } from "usehooks-ts";
+import { appState } from "../../../../lib/store/slices/site-slice";
+import { useSelector } from "react-redux";
 type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
@@ -29,6 +33,7 @@ type TProps = {
 };
 
 const BannerContent = (props: TProps) => {
+  const appState = useAppSelector(AS);
   const {
     section,
     handleChange,
@@ -41,7 +46,7 @@ const BannerContent = (props: TProps) => {
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
-
+  const dispatch = useAppDispatch();
   const zodSchema = generateZodSchema(brandCustomizeFields);
   const {
     control,
@@ -141,11 +146,27 @@ const BannerContent = (props: TProps) => {
                               {data.label}
                             </h3>
                             <Switch
-                              onCheckedChange={setShowImage}
-                              checked={showImage}
+                              onCheckedChange={(checked) =>
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      banner: {
+                                        ...appState.aiContent.banner,
+                                        logo: {
+                                          ...appState.aiContent.banner.logo,
+                                          show: checked,
+                                        },
+                                      },
+                                    },
+                                  }),
+                                )
+                              }
+                              checked={appState.aiContent.banner.logo.show}
                             />
                           </div>
-                          {showImage && (
+                          {appState.aiContent.banner.logo.show && (
                             <div>
                               <Uploader
                                 defaultValue={data.defaultValue}
@@ -223,11 +244,27 @@ const BannerContent = (props: TProps) => {
                               </p>
                             </div>
                             <Switch
-                              onCheckedChange={setShowButtons}
-                              checked={showButtons}
+                              onCheckedChange={(checked) =>
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      banner: {
+                                        ...appState.aiContent.banner,
+                                        button: {
+                                          ...appState.aiContent.banner.button,
+                                          show: checked,
+                                        },
+                                      },
+                                    },
+                                  }),
+                                )
+                              }
+                              checked={appState.aiContent.banner.button.show}
                             />
                           </div>
-                          {showButtons && (
+                          {appState.aiContent.banner.button.show && (
                             <>
                               {data.children?.map((child) => (
                                 <div
@@ -284,7 +321,7 @@ const BannerContent = (props: TProps) => {
           />
         ))}
 
-        <button
+        {/* <button
           type="submit"
           className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
           disabled={loading}
@@ -293,7 +330,7 @@ const BannerContent = (props: TProps) => {
             <ImSpinner2 className="animate-spin text-lg text-white" />
           )}
           Save
-        </button>
+        </button> */}
       </form>
     </div>
   );

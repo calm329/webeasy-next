@@ -34,32 +34,32 @@ export default function TopBar(props: TopBarProps) {
             style={{ color: colors.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {banner.logo && editable ? (
-              <Image
-                src={banner.logo.link}
-                alt={banner.logo.alt}
-                className={`h-8 w-auto ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
-                onClick={() => {
-                  if (setIsOpen && setSection && setFocusedField) {
-                    setSection("Banner");
-                    setIsOpen(true);
-                    setFocusedField("logo");
-                  }
-                }}
-                height={32}
-                width={200}
-              />
-            ) : (
-              banner.logo && (
-                <Image
-                  src={banner.logo.link}
-                  alt={banner.logo.alt}
-                  className={`h-8 w-auto `}
-                  height={32}
-                  width={200}
-                />
-              )
-            )}
+            {banner.logo && editable
+              ? banner.logo.show && (
+                  <Image
+                    src={banner.logo.link}
+                    alt={banner.logo.alt}
+                    className={`h-8 w-auto ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
+                    onClick={() => {
+                      if (setIsOpen && setSection && setFocusedField) {
+                        setSection("Banner");
+                        setIsOpen(true);
+                        setFocusedField("logo");
+                      }
+                    }}
+                    height={32}
+                    width={200}
+                  />
+                )
+              : banner.logo && (
+                  <Image
+                    src={banner.logo.link}
+                    alt={banner.logo.alt}
+                    className={`h-8 w-auto `}
+                    height={32}
+                    width={200}
+                  />
+                )}
             {editable ? (
               <Link
                 href="#"
@@ -85,30 +85,32 @@ export default function TopBar(props: TopBarProps) {
           <div className="w-auto lg:block">
             <div className="-m-2 flex flex-wrap">
               {editable ? (
-                <div
-                  className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                  onClick={() => {
-                    if (setIsOpen && setSection && setFocusedField) {
-                      setSection("Banner");
-                      setIsOpen(true);
-                      setFocusedField("cta");
-                    }
-                  }}
-                >
-                  {banner.button.map((data, i) => (
-                    <div key={i}>
-                      <CTA
-                        text={data.label}
-                        bgColor={colors.secondary}
-                        link={editable ? "#" : data.value}
-                        external={data.type === "External"}
-                      />
-                    </div>
-                  ))}
-                </div>
+                banner.button.show && (
+                  <div
+                    className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    onClick={() => {
+                      if (setIsOpen && setSection && setFocusedField) {
+                        setSection("Banner");
+                        setIsOpen(true);
+                        setFocusedField("cta");
+                      }
+                    }}
+                  >
+                    {banner.button.list.map((data, i) => (
+                      <div key={i}>
+                        <CTA
+                          text={data.label}
+                          bgColor={colors.secondary}
+                          link={editable ? "#" : data.value}
+                          external={data.type === "External"}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )
               ) : (
                 <div className={`w-full p-2 md:w-auto`}>
-                  {banner.button.map((data, i) => (
+                  {banner.button.list.map((data, i) => (
                     <div key={i}>
                       <CTA
                         text={data.label}

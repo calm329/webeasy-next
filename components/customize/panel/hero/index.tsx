@@ -20,6 +20,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { generateZodSchema } from "@/lib/utils";
 import { updateSite } from "@/lib/actions";
 import { toast } from "sonner";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
@@ -50,6 +52,8 @@ const getItemStyle = (
 const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
 
 const HeroContent = (props: TProps) => {
+  const appState = useAppSelector(AS)
+  const dispatch = useAppDispatch()
   const {
     section,
     handleChange,
@@ -184,11 +188,27 @@ const HeroContent = (props: TProps) => {
                               {data.label}
                             </h3>
                             <Switch
-                              onCheckedChange={setShowImage}
-                              checked={showImage}
+                              onCheckedChange={(checked) =>
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      hero: {
+                                        ...appState.aiContent.hero,
+                                        image: {
+                                          ...appState.aiContent.hero.image,
+                                          show: checked,
+                                        },
+                                      },
+                                    },
+                                  }),
+                                )
+                              }
+                              checked={appState.aiContent.hero.image.show}
                             />
                           </div>
-                          {showImage && (
+                          {appState.aiContent.hero.image.show && (
                             <div>
                               <Uploader
                                 defaultValue={data.defaultValue}
@@ -291,11 +311,27 @@ const HeroContent = (props: TProps) => {
                               </p>
                             </div>
                             <Switch
-                              onCheckedChange={setShowButtons}
-                              checked={showButtons}
+                              onCheckedChange={(checked) =>
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      hero: {
+                                        ...appState.aiContent.hero,
+                                        button: {
+                                          ...appState.aiContent.hero.button,
+                                          show: checked,
+                                        },
+                                      },
+                                    },
+                                  }),
+                                )
+                              }
+                              checked={appState.aiContent.hero.button.show}
                             />
                           </div>
-                          {showButtons && (
+                          {appState.aiContent.hero.button.show && (
                             <>
                               <DragDropContext
                                 onDragEnd={onDragEnd}
@@ -391,7 +427,7 @@ const HeroContent = (props: TProps) => {
             )}
           />
         ))}
-        <button
+        {/* <button
           type="submit"
           className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
           disabled={loading}
@@ -400,7 +436,7 @@ const HeroContent = (props: TProps) => {
             <ImSpinner2 className="animate-spin text-lg text-white" />
           )}
           Save
-        </button>
+        </button> */}
       </form>
     </div>
   );

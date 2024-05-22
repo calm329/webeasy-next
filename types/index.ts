@@ -78,33 +78,9 @@ export interface AppState {
     username: string;
   }>;
   aiContent: {
-    banner: {
-      logo: {
-        link: string;
-        alt: string;
-      };
-      businessName: string;
-   
+    banner: TBanner
 
-      button: Array<{
-        type: string;
-        value: string;
-        label: string;
-      }>;
-    };
-
-    hero: {
-      heading: string;
-      heroImagePrompt: string;
-      subheading: string;
-      imageId: string;
-      imageUrl: string;
-      button: Array<{
-        type: string;
-        value: string;
-        label: string;
-      }>;
-    };
+    hero: THero;
     services: {
       title: string;
       description: string;
@@ -128,31 +104,44 @@ export interface AppState {
 }
 
 export type TBanner = {
-  logo: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
+ 
+    logo: {
+      link: string;
+      alt: string;
+      show: boolean;
+    };
+    businessName: string;
 
-  button: Array<{
-    type: string;
-    value: string;
-    label: string;
-  }>;
+    button: {
+      show: boolean;
+      list: Array<{
+        type: string;
+        value: string;
+        label: string;
+      }>;
+    };
+ 
 };
 
-export type THero = {
+export type THero ={
   heading: string;
-  heroImagePrompt: string;
   subheading: string;
-  imageId: string;
-  imageUrl: string;
-  button: Array<{
-    type: string;
-    value: string;
-    label: string;
-  }>;
-};
+  image: {
+    heroImagePrompt: string;
+    imageId: string;
+    imageUrl: string;
+    alt: string;
+    show: boolean;
+  };
+  button: {
+    show: boolean;
+    list: Array<{
+      type: string;
+      value: string;
+      label: string;
+    }>;
+  };
+}
 
 export type TData = Partial<{
   logo: string;

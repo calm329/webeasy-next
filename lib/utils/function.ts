@@ -89,31 +89,42 @@ export const getData = async (params: TParams) => {
         aiContent: {
           banner: {
             businessName: aiContent["businessName"],
-            button: [
-              {
-                label: "Explore More",
-                type: "External",
-                value: "#",
-              },
-            ],
+            button: {
+              show: true,
+              list: [
+                {
+                  label: "Explore More",
+                  type: "External",
+                  value: "#",
+                },
+              ],
+            },
             logo: {
               link: siteData.logo ?? appState.aiContent.banner.logo.link ?? "",
               alt: appState.aiContent.banner.logo.alt ?? "",
+              show: true,
             },
           },
           colors: aiContent["colors"],
           hero: {
-            button: [
-              {
-                label: "Explore More",
-                type: "External",
-                value: "#",
-              },
-            ],
+            button: {
+              show: true,
+              list: [
+                {
+                  label: "Explore More",
+                  type: "External",
+                  value: "#",
+                },
+              ],
+            },
+            image: {
+              heroImagePrompt: aiContent["heroImagePrompt"],
+              imageId: aiContent["hero"]["imageId"],
+              imageUrl: aiContent["hero"]["imageUrl"],
+              alt: "",
+              show:true
+            },
             heading: aiContent["hero"]["heading"],
-            heroImagePrompt: aiContent["heroImagePrompt"],
-            imageId: aiContent["hero"]["imageId"],
-            imageUrl: aiContent["hero"]["imageUrl"],
             subheading: aiContent["hero"]["subheading"],
           },
           services: aiContent["services"],
@@ -236,27 +247,37 @@ export const getData = async (params: TParams) => {
             banner: {
               ...aiContent.banner,
               businessName: aiContent["businessName"],
-              button: [
-                {
-                  label: "Explore More",
-                  type: "External",
-                  value: "#",
-                },
-              ],
+              button: {
+                show: appState.aiContent.hero.button.show,
+                list: [
+                  {
+                    label: "Explore More",
+                    type: "External",
+                    value: "#",
+                  },
+                ],
+              },
             },
             colors: aiContent["colors"],
             hero: {
-              button: [
-                {
-                  label: "Explore More",
-                  type: "External",
-                  value: "#",
-                },
-              ],
+              button: {
+                show: appState.aiContent.hero.button.show,
+                list: [
+                  {
+                    label: "Explore More",
+                    type: "External",
+                    value: "#",
+                  },
+                ],
+              },
+              image: {
+                heroImagePrompt: aiContent["heroImagePrompt"],
+                imageId: aiContent["hero"]["imageId"],
+                imageUrl: aiContent["hero"]["imageUrl"],
+                alt: appState.aiContent.hero.image.alt,
+              },
               heading: aiContent["hero"]["heading"],
-              heroImagePrompt: aiContent["heroImagePrompt"],
-              imageId: aiContent["hero"]["imageId"],
-              imageUrl: aiContent["hero"]["imageUrl"],
+
               subheading: aiContent["hero"]["subheading"],
             },
             services: aiContent["services"],
@@ -426,15 +447,17 @@ export const handleChangeAppState = (
         }),
       );
       break;
-    // case "colors":
-    //   dispatch(updateAppState({
-    //     ...appState,
-    //     aiContent:{
-    //       ...appState.aiContent,
-    //       colors :value
-    //     },
-    //   }));
-    //   break;
+    case "colors":
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            colors: value,
+          },
+        }),
+      );
+      break;
     case "title":
       dispatch(
         updateAppState({
