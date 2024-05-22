@@ -21,11 +21,11 @@ export default async function SiteHomePage(props: TProps) {
 
   let posts = JSON.parse(data.posts || "[]");
   let aiResult = JSON.parse(data.aiResult || "{}");
-
+  console.log("data", data);
   return (
     <div>
       <BasicTemplate
-        logo={{ link: data.logo ?? "", alt: "" } ?? undefined}
+        logo={{ link: data.logo ?? "", alt: "" }}
         businessName={aiResult["businessName"]}
         hero={{
           heading: aiResult["hero"]["heading"],
