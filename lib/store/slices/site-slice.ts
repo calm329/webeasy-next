@@ -15,6 +15,7 @@ type TInitialState = {
 const initialState: TInitialState = {
   sites: {
     domain: {
+      subdomain: "",
       status: "Loading Instagram",
       iPosts: [],
       aiContent: {
@@ -158,6 +159,9 @@ const siteSlice = createSlice({
         title: action.payload?.title ?? "",
         description: action.payload?.description ?? "",
       };
+      if (action.payload){
+        state.sites.domain.subdomain = action.payload.subdomain;
+      }
       (state.sites.domain.status = "Done"),
         (state.sites.domain.iPosts = JSON.parse(action.payload?.posts ?? "")),
         (state.sites.domain.aiContent = {
@@ -168,9 +172,13 @@ const siteSlice = createSlice({
               ...state.sites.domain.aiContent.banner.button,
               list: [
                 {
-                  label: JSON.parse(action.payload?.aiResult ?? "")["hero"]["cta"],
+                  label: JSON.parse(action.payload?.aiResult ?? "")["hero"][
+                    "cta"
+                  ],
                   type: "External",
-                  value: JSON.parse(action.payload?.aiResult ?? "")["hero"]["ctaLink"],
+                  value: JSON.parse(action.payload?.aiResult ?? "")["hero"][
+                    "ctaLink"
+                  ],
                 },
               ],
             },
@@ -186,18 +194,22 @@ const siteSlice = createSlice({
               ...state.sites.domain.aiContent.hero.button,
               list: [
                 {
-                  label: JSON.parse(action.payload?.aiResult ?? "")["hero"]["cta"],
+                  label: JSON.parse(action.payload?.aiResult ?? "")["hero"][
+                    "cta"
+                  ],
                   type: "External",
-                  value: JSON.parse(action.payload?.aiResult ?? "")["hero"]["ctaLink"],
+                  value: JSON.parse(action.payload?.aiResult ?? "")["hero"][
+                    "ctaLink"
+                  ],
                 },
               ],
             },
             heading: JSON.parse(action.payload?.aiResult ?? "")["hero"][
               "heading"
             ],
-            image:{
+            image: {
               show: state.sites.domain.aiContent.hero.image.show,
-              alt:state.sites.domain.aiContent.hero.image.alt,
+              alt: state.sites.domain.aiContent.hero.image.alt,
               heroImagePrompt: JSON.parse(action.payload?.aiResult ?? "")[
                 "heroImagePrompt"
               ],
