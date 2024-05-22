@@ -53,47 +53,51 @@ const EditableHero = (props: TProps) => {
           >
             {hero.subheading}
           </p>
-          <div className="-m-2 flex flex-wrap">
-            <div
-              className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-              onClick={() => {
-                if (editable && setIsOpen && setSection && setFocusedField) {
-                  setSection("Hero");
-                  setIsOpen(true);
-                  setFocusedField("cta");
-                }
-              }}
-            >
-              {hero.button.map((data, i) => (
-                <div key={i}>
-                  <CTA
-                    text={data.label}
-                    bgColor={colors.secondary}
-                    link={editable ? "#" : data.value}
-                    external={data.type === "External"}
-                  />
-                </div>
-              ))}
+          {hero.button.show && (
+            <div className="-m-2 flex flex-wrap">
+              <div
+                className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                onClick={() => {
+                  if (editable && setIsOpen && setSection && setFocusedField) {
+                    setSection("Hero");
+                    setIsOpen(true);
+                    setFocusedField("cta");
+                  }
+                }}
+              >
+                {hero.button.list.map((data, i) => (
+                  <div key={i}>
+                    <CTA
+                      text={data.label}
+                      bgColor={colors.secondary}
+                      link={editable ? "#" : data.value}
+                      external={data.type === "External"}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
-      <div className={`w-full p-8 md:w-1/2  `}>
-        <Image
-          src={hero.imageUrl}
-          width={256}
-          height={256}
-          alt="Hero Image"
-          className={`mx-auto rounded-3xl object-contain md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-          onClick={() => {
-            if (editable && setIsOpen && setSection && setFocusedField) {
-              setSection("Hero");
-              setIsOpen(true);
-              setFocusedField("imageUrl");
-            }
-          }}
-        />
-      </div>
+      {hero.image.show && (
+        <div className={`w-full p-8 md:w-1/2  `}>
+          <Image
+            src={hero.image.imageUrl}
+            width={256}
+            height={256}
+            alt="Hero Image"
+            className={`mx-auto rounded-3xl object-contain md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+            onClick={() => {
+              if (editable && setIsOpen && setSection && setFocusedField) {
+                setSection("Hero");
+                setIsOpen(true);
+                setFocusedField("imageUrl");
+              }
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

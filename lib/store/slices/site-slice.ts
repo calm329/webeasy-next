@@ -20,18 +20,24 @@ const initialState: TInitialState = {
       aiContent: {
         banner: {
           businessName: "",
-          button: [],
+          button: { show: true, list: [] },
           logo: {
             link: "",
             alt: "",
+            show: true,
           },
         },
         hero: {
-          heroImagePrompt: "",
-          button: [],
+          image: {
+            heroImagePrompt: "",
+            imageId: "",
+            imageUrl: "",
+            alt: "",
+            show: true,
+          },
+          button: { show: true, list: [] },
           heading: "",
-          imageId: "",
-          imageUrl: "",
+
           subheading: "",
         },
         colors: {
@@ -158,39 +164,50 @@ const siteSlice = createSlice({
           banner: {
             businessName: JSON.parse(action.payload?.aiResult ?? "")
               .businessName,
-            button: [
-              {
-                label: "Explore More",
-                type: "External",
-                value: "#",
-              },
-            ],
+            button: {
+              ...state.sites.domain.aiContent.banner.button,
+              list: [
+                {
+                  label: "Explore More",
+                  type: "External",
+                  value: "#",
+                },
+              ],
+            },
             logo: {
+              ...state.sites.domain.aiContent.banner.logo,
               link: action.payload?.logo ?? action.payload?.logo ?? "",
               alt: action.payload?.logo ?? "",
             },
           },
           colors: JSON.parse(action.payload?.aiResult ?? "")["colors"],
           hero: {
-            button: [
-              {
-                label: "Explore More",
-                type: "External",
-                value: "#",
-              },
-            ],
+            button: {
+              ...state.sites.domain.aiContent.hero.button,
+              list: [
+                {
+                  label: "Explore More",
+                  type: "External",
+                  value: "#",
+                },
+              ],
+            },
             heading: JSON.parse(action.payload?.aiResult ?? "")["hero"][
               "heading"
             ],
-            heroImagePrompt: JSON.parse(action.payload?.aiResult ?? "")[
-              "heroImagePrompt"
-            ],
-            imageId: JSON.parse(action.payload?.aiResult ?? "")["hero"][
-              "imageId"
-            ],
-            imageUrl: JSON.parse(action.payload?.aiResult ?? "")["hero"][
-              "imageUrl"
-            ],
+            image:{
+              show: state.sites.domain.aiContent.hero.image.show,
+              alt:state.sites.domain.aiContent.hero.image.alt,
+              heroImagePrompt: JSON.parse(action.payload?.aiResult ?? "")[
+                "heroImagePrompt"
+              ],
+              imageId: JSON.parse(action.payload?.aiResult ?? "")["hero"][
+                "imageId"
+              ],
+              imageUrl: JSON.parse(action.payload?.aiResult ?? "")["hero"][
+                "imageUrl"
+              ],
+            },
             subheading: JSON.parse(action.payload?.aiResult ?? "")["hero"][
               "subheading"
             ],
@@ -219,7 +236,7 @@ const siteSlice = createSlice({
       state.sites.user?.forEach((site, index) => {
         if (site.id === action?.payload?.id) {
           if (state.sites.user) {
-            state.sites.user[index] = {...action.payload};
+            state.sites.user[index] = { ...action.payload };
           }
         }
       });
