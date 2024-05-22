@@ -159,9 +159,8 @@ const siteSlice = createSlice({
         title: action.payload?.title ?? "",
         description: action.payload?.description ?? "",
       };
-      if (action.payload){
-        state.sites.domain.subdomain = action.payload.subdomain;
-      }
+      state.sites.domain.subdomain = action.payload?.subdomain ?? "";
+
       (state.sites.domain.status = "Done"),
         (state.sites.domain.iPosts = JSON.parse(action.payload?.posts ?? "")),
         (state.sites.domain.aiContent = {

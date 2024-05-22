@@ -282,6 +282,7 @@ export const getData = async (params: TParams) => {
     dispatch(
       updateAppState({
         ...appState,
+
         subdomain:siteAvailable,
         status: "Done",
       }),
@@ -295,7 +296,11 @@ export const getData = async (params: TParams) => {
       aiContent: Object.keys(aiContent).length
         ? {
             banner: {
-              ...aiContent.banner,
+              logo:{
+                link: appState.aiContent.banner.logo.link??"",
+                alt: appState.aiContent.banner.logo.alt??"",
+                show: appState.aiContent.hero.button.show,
+              },
               businessName: aiContent["businessName"],
               button: {
                 show: appState.aiContent.hero.button.show,
@@ -325,6 +330,7 @@ export const getData = async (params: TParams) => {
                 imageId: aiContent["hero"]["imageId"],
                 imageUrl: aiContent["hero"]["imageUrl"],
                 alt: appState.aiContent.hero.image.alt,
+                show: appState.aiContent.hero.image.show,
               },
               heading: aiContent["hero"]["heading"],
 
