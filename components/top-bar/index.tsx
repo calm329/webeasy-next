@@ -102,7 +102,7 @@ export default function TopBar(props: TopBarProps) {
                           text={data.label}
                           bgColor={colors.secondary}
                           link={editable ? "#" : data.value}
-                          external={data.type === "External"}
+                          external={editable?false:data.type === "External"}
                         />
                       </div>
                     ))}
