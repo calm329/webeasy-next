@@ -12,7 +12,7 @@ export function Hero(props: TProps) {
   return (
     <Container className="flex gap-5 pb-16 pt-20 text-center max-lg:flex-col lg:pt-32">
       <Image
-        src={hero.imageUrl}
+        src={hero.image.imageUrl}
         alt=""
         height={400}
         width={300}
@@ -29,7 +29,7 @@ export function Hero(props: TProps) {
           {hero.subheading}
         </p>
         <div className="mx-auto ml-0 mt-10 flex justify-center gap-x-6">
-          {hero.button.map((data, i) => (
+          {hero.button.list.map((data, i) => (
             <div key={i}>
               <Button
                 href={data.value}

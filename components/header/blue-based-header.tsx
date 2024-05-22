@@ -26,7 +26,7 @@ export function Header(props: TProps) {
           {banner.businessName}
         </div>
         <div className="hidden sm:mt-10 sm:flex lg:mt-0 lg:grow lg:basis-0 lg:justify-end">
-          {banner.button.map((data, i) => (
+          {banner.button.list.map((data, i) => (
             <div key={i}>
               <Button
                 href={data.value}
