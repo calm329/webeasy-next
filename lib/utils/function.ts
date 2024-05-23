@@ -4,7 +4,10 @@ import { Dispatch, SetStateAction } from "react";
 import { checkSiteAvailability, createNewSite, updateSite } from "../actions";
 import { getSiteData } from "../fetchers";
 import { fetchData } from "../utils";
-import { updateAppState } from "../store/slices/site-slice";
+import {
+  updateAppState,
+  updateSite as updateStateSite,
+} from "../store/slices/site-slice";
 
 type TParams = {
   flag: "init" | "regenerate" | "refresh";
@@ -132,74 +135,29 @@ export const getData = async (params: TParams) => {
     const aiContent = JSON.parse(siteData.aiResult);
 
     console.log("aiContent", aiContent);
-    const updatedData = {
-      banner: {
-        businessName: aiContent["businessName"],
-        button: {
-          show: true,
-          list: [
-            {
-              name: "button1",
-              label: aiContent["hero"]["cta"],
-              type: "External",
-              value: aiContent["hero"]["ctaLink"],
-            },
-          ],
-        },
-        logo: {
-          link: siteData.logo ?? appState.aiContent.banner.logo.link ?? "",
-          alt: appState.aiContent.banner.logo.alt ?? "",
-          show: true,
-        },
-      },
-      colors: aiContent["colors"],
-      hero: {
-        button: {
-          show: true,
-          list: [
-            {
-              name: "button1",
-              label: aiContent["hero"]["cta"],
-              type: "External",
-              value: aiContent["hero"]["ctaLink"],
-            },
-          ],
-        },
-        image: {
-          heroImagePrompt: aiContent["heroImagePrompt"],
-          imageId: aiContent["hero"]["imageId"],
-          imageUrl: aiContent["hero"]["imageUrl"],
-          alt: "",
-          show: true,
-        },
-        heading: aiContent["hero"]["heading"],
-        subheading: aiContent["hero"]["subheading"],
-      },
-      services: aiContent["services"],
-    };
+
     dispatch(
       updateAppState({
         ...appState,
         subdomain: siteAvailable,
         status: "Done",
-        aiContent: updatedData,
+        aiContent: aiContent,
         iPosts: JSON.parse(siteData.posts),
         meta: { title: siteData.title, description: siteData.description },
       }),
     );
-    const heroButtonList = updatedData.hero.button.list;
-    const bannerButtonList = updatedData.banner.button.list;
-
+    const heroButtonList = aiContent.hero.button.list;
+    const bannerButtonList = aiContent.banner.button.list;
     // update default values
 
     updateDefaultValues(
       {
         logo: siteData.logo || undefined,
-        businessName: aiContent?.businessName,
+        businessName: aiContent.banner?.businessName,
         ctaLink: aiContent?.hero?.ctaLink,
         heading: aiContent?.hero?.heading,
         subheading: aiContent?.hero?.subheading,
-        imageUrl: aiContent?.hero?.imageUrl,
+        imageUrl: aiContent?.hero.image?.imageUrl,
         cta: aiContent?.hero?.cta,
       },
       setBrandCustomizeFields,
@@ -268,7 +226,7 @@ export const getData = async (params: TParams) => {
 
     if (content) {
       aiContent = JSON.parse(content);
-      aiContent["hero"]["imageUrl"] = imageIds[aiContent["hero"]["imageId"]];
+      aiContent["hero"]["image"]["imageUrl"] = imageIds[aiContent["hero"]["image"]["imageId"]];
     } // else return;
 
     dispatch(
@@ -284,7 +242,7 @@ export const getData = async (params: TParams) => {
   if (flag !== "refresh") {
     const { colors } = await fetchData("/api/color", {
       method: "POST",
-      body: JSON.stringify({ imageUrl: aiContent["hero"]["imageUrl"] }),
+      body: JSON.stringify({ imageUrl: aiContent["hero"]["image"]["imageUrl"] }),
     });
 
     if (colors) {
@@ -307,52 +265,7 @@ export const getData = async (params: TParams) => {
       ...appState,
       subdomain: siteAvailable,
       aiContent: Object.keys(aiContent).length
-        ? {
-            banner: {
-              logo: {
-                link: appState.aiContent.banner.logo.link ?? "",
-                alt: appState.aiContent.banner.logo.alt ?? "",
-                show: appState.aiContent.hero.button.show,
-              },
-              businessName: aiContent["businessName"],
-              button: {
-                show: appState.aiContent.hero.button.show,
-                list: [
-                  {
-                    name: "button1",
-                    label: aiContent["hero"]["cta"],
-                    type: "External",
-                    value: aiContent["hero"]["ctaLink"],
-                  },
-                ],
-              },
-            },
-            colors: aiContent["colors"],
-            hero: {
-              button: {
-                show: appState.aiContent.hero.button.show,
-                list: [
-                  {
-                    name: "button1",
-                    label: aiContent["hero"]["cta"],
-                    type: "External",
-                    value: aiContent["hero"]["ctaLink"],
-                  },
-                ],
-              },
-              image: {
-                heroImagePrompt: aiContent["heroImagePrompt"],
-                imageId: aiContent["hero"]["imageId"],
-                imageUrl: aiContent["hero"]["imageUrl"],
-                alt: appState.aiContent.hero.image.alt,
-                show: appState.aiContent.hero.image.show,
-              },
-              heading: aiContent["hero"]["heading"],
-
-              subheading: aiContent["hero"]["subheading"],
-            },
-            services: aiContent["services"],
-          }
+        ? aiContent
         : appState.aiContent,
       iPosts: iPosts,
     }),
@@ -661,4 +574,19 @@ export function generateUniqueId() {
   const uniqueId = randomPart + timestampPart;
 
   return uniqueId;
+}
+
+export async function saveState(appState: AppState, dispatch: any) {
+  try {
+    // const data = {
+    //   subdomain: appState.subdomain,
+    //   title: appState.meta.title,
+    //   description: appState.meta.description,
+    //   logo: appState.aiContent.banner.logo.link,
+    //   posts: appState.iPosts,
+    //   aiResult: appState.aiContent,
+    // };
+
+    // dispatch(updateStateSite());
+  } catch (error) {}
 }
