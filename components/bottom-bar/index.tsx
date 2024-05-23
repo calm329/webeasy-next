@@ -13,8 +13,12 @@ import { WidgetDrawer } from "../ui/drawer/widget-drawer";
 import { FaUndoAlt, FaRedoAlt } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
-import { appState as AS } from '../../lib/store/slices/site-slice';
+import {
+  appState as AS,
+  loading as LD,
+} from "../../lib/store/slices/site-slice";
 import { saveState } from "@/lib/utils/function";
+import Loader from "../ui/loader";
 
 type TProps = {
   showNavigation: boolean;
@@ -39,9 +43,9 @@ const BottomToolBar = (props: TProps) => {
   const matches = useMediaQuery("(max-width: 500px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const isBottomBar = useMediaQuery("(max-width: 900px)");
-  const appState = useAppSelector(AS)
+  const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
-  
+  const loading = useAppSelector(LD);
   return (
     <div className="fixed bottom-0 z-10   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
       {isBottomBar ? (
@@ -83,24 +87,30 @@ const BottomToolBar = (props: TProps) => {
           <PublishMenu />
         </>
       ) : (
-        <div className="flex justify-around w-full">
-          <button className="flex flex-col items-center">
-            <FaUndoAlt />
-            Undo
-          </button>
-          <button className="flex flex-col items-center">
-            <FaRedoAlt />
-            Redo
-          </button>
-          <button className="flex flex-col items-center">
-            <ImCancelCircle  size={18}/>
-            Cancel
-          </button>
-          <button className="flex flex-col items-center">
-            <MdOutlineDownloadDone size={20} onClick={()=>saveState(appState,dispatch)}/>
-            Done
-          </button>
-        </div>
+        <>
+          {loading && <Loader text="Saving Data" />}
+          <div className="flex w-full justify-around">
+            <button className="flex flex-col items-center">
+              <FaUndoAlt />
+              Undo
+            </button>
+            <button className="flex flex-col items-center">
+              <FaRedoAlt />
+              Redo
+            </button>
+            <button className="flex flex-col items-center">
+              <ImCancelCircle size={18} />
+              Cancel
+            </button>
+            <button className="flex flex-col items-center">
+              <MdOutlineDownloadDone
+                size={20}
+                onClick={() => saveState(appState, dispatch)}
+              />
+              Done
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

@@ -77,7 +77,7 @@
 
 .backdrop-blur {
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(20px) !important;
 }
 
 
