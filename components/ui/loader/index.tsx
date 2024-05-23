@@ -1,28 +1,28 @@
+"use client";
 import Image from "next/image";
+import { useEffect } from "react";
 import { ImSpinner2 } from "react-icons/im";
 
 export default function Loader({ text }: { text: string }) {
-  // Prevent scrolling when loader is active
-  if (typeof window !== "undefined") {
-    if (text) {
-      document.body.style.overflow = "hidden";
-    } else {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
       document.body.style.overflow = "";
-    }
-  }
+    };
+  }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-30">
+    <div className="fixed left-0 top-0 z-30 flex h-full w-full items-center justify-center">
       {/* Translucent Background */}
-      <div className="fixed inset-0 bg-black opacity-30 backdrop-filter backdrop-blur-lg z-10"></div>
-   
+      <div className="fixed inset-0 z-10 bg-black opacity-30 backdrop-blur-lg backdrop-filter"></div>
+
       {/* Loader Container */}
-      <div className="relative flex flex-col items-center z-20">
+      <div className="relative z-20 flex flex-col items-center">
         {/* Spinning Border */}
-        <div className="rounded-full border-4 border-white bg-white animate-spin-slow w-32 h-32 p-2 flex justify-center items-center relative">
+        <div className="animate-spin-slow relative flex h-32 w-32 items-center justify-center rounded-full border-4 border-white bg-white p-2">
           {/* Logo */}
-          <div className="animate-spin text-lg text-white absolute h-40 w-40 border-2 border-l-0 rounded-full"  />
-          <div className="  w-16 h-16 overflow-hidden flex justify-center items-center mr-2">
+          <div className="absolute h-40 w-40 animate-spin rounded-full border-2 border-l-0 text-lg text-white" />
+          <div className="  mr-2 flex h-16 w-16 items-center justify-center overflow-hidden">
             <Image
               src={"/logo.png"}
               alt="Logo"
@@ -34,8 +34,8 @@ export default function Loader({ text }: { text: string }) {
         </div>
 
         {/* Text */}
-       
-        <div className="mt-4 text-white  text-xl">{text}</div>
+
+        <div className="mt-4 text-xl  text-white">{text}</div>
       </div>
     </div>
   );
