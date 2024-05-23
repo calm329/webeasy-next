@@ -163,7 +163,7 @@ export default function SiteHeader(props: TProps) {
             {/* Redo */}
           </button>
           <button className="flex flex-col items-center">
-            <ImCancelCircle size={18} />
+            <ImCancelCircle size={18} onClick={()=>getData && getData()}/>
             {/* Cancel */}
           </button>
           <button className="flex flex-col items-center">
