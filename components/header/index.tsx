@@ -39,7 +39,7 @@ import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { IoMdAdd, IoMdArrowRoundBack } from "react-icons/io";
 import { saveState } from "@/lib/utils/function";
-import { appState as AS, loading as LD } from '@/lib/store/slices/site-slice';
+import { appState as AS, futureAppState as FAS, loading as LD, pastAppState as PAS, redo, undo } from '@/lib/store/slices/site-slice';
 import Loader from "../ui/loader";
 
 const navigation = [
@@ -87,7 +87,9 @@ export default function SiteHeader(props: TProps) {
   const [showWidgetModal, setWidgetModal] = useState(false);
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS)
-  const saveLoading = useAppSelector(LD)
+  const pastAppState = useAppSelector(PAS)
+  const futureAppState = useAppSelector(FAS)
+
   const fetchData = async () => {
     try {
       const response = await getAllTemplates();
@@ -150,15 +152,15 @@ export default function SiteHeader(props: TProps) {
             <IoMdArrowRoundBack size={20} />
             {/* Undo */}
           </Link>
-          <button className="flex flex-col items-center">
+          <button className="flex flex-col items-center" >
             <IoMdAdd size={20} />
             {/* Undo */}
           </button>
-          <button className="flex flex-col items-center">
+          <button className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`} onClick={()=>dispatch(undo())} disabled={pastAppState.length === 0}>
             <FaUndoAlt />
             {/* Undo */}
           </button>
-          <button className="flex flex-col items-center">
+          <button className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`} onClick={()=>dispatch(redo())} disabled={futureAppState.length === 0}>
             <FaRedoAlt />
             {/* Redo */}
           </button>

@@ -4,60 +4,66 @@ import { RootState } from "..";
 import SiteApi from "@/lib/api/site-api";
 import { AppState, TSite } from "@/types";
 import { generateUniqueId } from "@/lib/utils/function";
-
+const MAX_HISTORY_LENGTH = 10;
 type TInitialState = {
   sites: {
-    domain: AppState;
+    domain: { past: AppState[]; present: AppState; future: AppState[] };
     user: Array<TSite> | null;
   };
   loading: boolean;
 };
 
+const initialSite = {
+  subdomain: "",
+  status: "Loading Instagram",
+  iPosts: [],
+  aiContent: {
+    banner: {
+      businessName: "",
+      button: { show: true, list: [] },
+      logo: {
+        link: "",
+        alt: "",
+        show: true,
+      },
+    },
+    hero: {
+      image: {
+        heroImagePrompt: "",
+        imageId: "",
+        imageUrl: "",
+        alt: "",
+        show: true,
+      },
+      button: { show: true, list: [] },
+      heading: "",
+
+      subheading: "",
+    },
+    colors: {
+      primary: "",
+      secondary: "",
+    },
+    services: {
+      description: "",
+      list: [],
+      title: "",
+    },
+  },
+
+  editable: true,
+  meta: {
+    title: "",
+    description: "",
+  },
+};
+
 const initialState: TInitialState = {
   sites: {
     domain: {
-      subdomain: "",
-      status: "Loading Instagram",
-      iPosts: [],
-      aiContent: {
-        banner: {
-          businessName: "",
-          button: { show: true, list: [] },
-          logo: {
-            link: "",
-            alt: "",
-            show: true,
-          },
-        },
-        hero: {
-          image: {
-            heroImagePrompt: "",
-            imageId: "",
-            imageUrl: "",
-            alt: "",
-            show: true,
-          },
-          button: { show: true, list: [] },
-          heading: "",
-
-          subheading: "",
-        },
-        colors: {
-          primary: "",
-          secondary: "",
-        },
-        services: {
-          description: "",
-          list: [],
-          title: "",
-        },
-      },
-
-      editable: true,
-      meta: {
-        title: "",
-        description: "",
-      },
+      past: [],
+      present: { ...initialSite },
+      future: [],
     },
     user: null,
   },
@@ -147,7 +153,29 @@ const siteSlice = createSlice({
   initialState,
   reducers: {
     updateAppState(state, action) {
-      state.sites.domain = action.payload;
+      const { present, past } = state.sites.domain;
+      if(present.status === "Done"){
+        past.push(present);
+      }
+      if (past.length > MAX_HISTORY_LENGTH) {
+        past.shift();
+      }
+      state.sites.domain.present = action.payload;
+    },
+    undo(state) {
+      const { present, past, future } = state.sites.domain;
+      if (past.length > 0) {
+        future.push(present);
+        state.sites.domain.present = past.pop()!;
+      }
+    },
+    redo(state) {
+      const { present, past, future } = state.sites.domain;
+      console.log("future",future)
+      if (future.length > 0) {
+        past.push(present);
+        state.sites.domain.present = future.shift()!;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -156,23 +184,25 @@ const siteSlice = createSlice({
     });
     builder.addCase(fetchSitesByDomain.fulfilled, (state, action) => {
       state.loading = false;
-      state.sites.domain.meta = {
+      state.sites.domain.present.meta = {
         title: action.payload?.title ?? "",
         description: action.payload?.description ?? "",
       };
-      state.sites.domain.subdomain = action.payload?.subdomain ?? "";
+      state.sites.domain.present.subdomain = action.payload?.subdomain ?? "";
 
-      (state.sites.domain.status = "Done"),
-        (state.sites.domain.iPosts = JSON.parse(action.payload?.posts ?? "")),
-        (state.sites.domain.aiContent = {
+      (state.sites.domain.present.status = "Done"),
+        (state.sites.domain.present.iPosts = JSON.parse(
+          action.payload?.posts ?? "",
+        )),
+        (state.sites.domain.present.aiContent = {
           banner: {
             businessName: JSON.parse(action.payload?.aiResult ?? "")
               .businessName,
             button: {
-              ...state.sites.domain.aiContent.banner.button,
+              ...state.sites.domain.present.aiContent.banner.button,
               list: [
                 {
-                  name:generateUniqueId(),
+                  name: generateUniqueId(),
                   label: JSON.parse(action.payload?.aiResult ?? "")["hero"][
                     "cta"
                   ],
@@ -184,7 +214,7 @@ const siteSlice = createSlice({
               ],
             },
             logo: {
-              ...state.sites.domain.aiContent.banner.logo,
+              ...state.sites.domain.present.aiContent.banner.logo,
               link: action.payload?.logo ?? action.payload?.logo ?? "",
               alt: action.payload?.logo ?? "",
             },
@@ -192,10 +222,10 @@ const siteSlice = createSlice({
           colors: JSON.parse(action.payload?.aiResult ?? "")["colors"],
           hero: {
             button: {
-              ...state.sites.domain.aiContent.hero.button,
+              ...state.sites.domain.present.aiContent.hero.button,
               list: [
                 {
-                  name:generateUniqueId(),
+                  name: generateUniqueId(),
                   label: JSON.parse(action.payload?.aiResult ?? "")["hero"][
                     "cta"
                   ],
@@ -210,8 +240,8 @@ const siteSlice = createSlice({
               "heading"
             ],
             image: {
-              show: state.sites.domain.aiContent.hero.image.show,
-              alt: state.sites.domain.aiContent.hero.image.alt,
+              show: state.sites.domain.present.aiContent.hero.image.show,
+              alt: state.sites.domain.present.aiContent.hero.image.alt,
               heroImagePrompt: JSON.parse(action.payload?.aiResult ?? "")[
                 "heroImagePrompt"
               ],
@@ -263,8 +293,10 @@ const siteSlice = createSlice({
 
 //export async thunks
 export { fetchSitesByDomain, createSite, updateSite, fetchSitesByUser };
-export const { updateAppState } = siteSlice.actions;
-export const appState = (state: RootState) => state.siteSlice.sites.domain;
+export const { updateAppState,undo,redo } = siteSlice.actions;
+export const appState = (state: RootState) => state.siteSlice.sites.domain.present;
+export const pastAppState = (state: RootState) => state.siteSlice.sites.domain.past;
+export const futureAppState = (state: RootState) => state.siteSlice.sites.domain.future;
 export const sitesData = (state: RootState) => state.siteSlice.sites.user;
 export const loading = (state: RootState) => state.siteSlice.loading;
 export default siteSlice.reducer;
