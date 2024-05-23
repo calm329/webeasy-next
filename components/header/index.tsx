@@ -14,7 +14,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { TMeta, TTemplateName, AppState, TUser } from "@/types";
 import { getAllTemplates, getUserById } from "@/lib/fetchers";
 import { usePathname, useRouter } from "next/navigation";
-import { useAppDispatch } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchTemplates } from "@/lib/store/slices/template-slice";
 import { Fragment } from "react";
 import {
@@ -38,6 +38,8 @@ import { isBot } from "next/dist/server/web/spec-extension/user-agent";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { IoMdAdd, IoMdArrowRoundBack } from "react-icons/io";
+import { saveState } from "@/lib/utils/function";
+import { appState as AS } from "@/lib/store/slices/site-slice";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -52,7 +54,6 @@ type TProps = {
   showNavigation: boolean;
   isAuth?: boolean;
   getData?: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
-  appState?: AppState;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   setSelectedTemplate?: Dispatch<SetStateAction<TTemplateName>>;
 };
@@ -63,13 +64,13 @@ export type TTemplate = {
   createdAt: Date;
   updatedAt: Date;
 }[];
+
 export default function SiteHeader(props: TProps) {
   const pathname = usePathname();
   const {
     showNavigation,
     isAuth,
     getData,
-    appState,
     handleChange,
     setSelectedTemplate,
   } = props;
@@ -84,7 +85,7 @@ export default function SiteHeader(props: TProps) {
   const [hideNavigation, setHideNavigation] = useState(false);
   const [showWidgetModal, setWidgetModal] = useState(false);
   const dispatch = useAppDispatch();
-
+  const appState = useAppSelector(AS)
   const fetchData = async () => {
     try {
       const response = await getAllTemplates();
@@ -131,7 +132,7 @@ export default function SiteHeader(props: TProps) {
       {pathname.startsWith("/auth") && (
         <BottomToolBar
           showNavigation={showNavigation}
-          appState={appState}
+          // appState={appState}
           getData={getData}
           handleChange={handleChange}
           isAuth={isAuth}
@@ -163,7 +164,7 @@ export default function SiteHeader(props: TProps) {
             {/* Cancel */}
           </button>
           <button className="flex flex-col items-center">
-            <MdOutlineDownloadDone size={20} />
+            <MdOutlineDownloadDone size={20} onClick={()=>saveState(appState,dispatch)}/>
             {/* Done */}
           </button>
         </div>

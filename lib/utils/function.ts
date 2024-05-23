@@ -8,6 +8,7 @@ import {
   updateAppState,
   updateSite as updateStateSite,
 } from "../store/slices/site-slice";
+import { toast } from "sonner";
 
 type TParams = {
   flag: "init" | "regenerate" | "refresh";
@@ -226,7 +227,8 @@ export const getData = async (params: TParams) => {
 
     if (content) {
       aiContent = JSON.parse(content);
-      aiContent["hero"]["image"]["imageUrl"] = imageIds[aiContent["hero"]["image"]["imageId"]];
+      aiContent["hero"]["image"]["imageUrl"] =
+        imageIds[aiContent["hero"]["image"]["imageId"]];
     } // else return;
 
     dispatch(
@@ -242,7 +244,9 @@ export const getData = async (params: TParams) => {
   if (flag !== "refresh") {
     const { colors } = await fetchData("/api/color", {
       method: "POST",
-      body: JSON.stringify({ imageUrl: aiContent["hero"]["image"]["imageUrl"] }),
+      body: JSON.stringify({
+        imageUrl: aiContent["hero"]["image"]["imageUrl"],
+      }),
     });
 
     if (colors) {
@@ -264,9 +268,7 @@ export const getData = async (params: TParams) => {
     updateAppState({
       ...appState,
       subdomain: siteAvailable,
-      aiContent: Object.keys(aiContent).length
-        ? aiContent
-        : appState.aiContent,
+      aiContent: Object.keys(aiContent).length ? aiContent : appState.aiContent,
       iPosts: iPosts,
     }),
   );
@@ -578,15 +580,16 @@ export function generateUniqueId() {
 
 export async function saveState(appState: AppState, dispatch: any) {
   try {
-    // const data = {
-    //   subdomain: appState.subdomain,
-    //   title: appState.meta.title,
-    //   description: appState.meta.description,
-    //   logo: appState.aiContent.banner.logo.link,
-    //   posts: appState.iPosts,
-    //   aiResult: appState.aiContent,
-    // };
-
-    // dispatch(updateStateSite());
-  } catch (error) {}
+    const data = { aiResult: appState.aiContent };
+    await dispatch(
+      updateStateSite({
+        subdomain: appState.subdomain,
+        data,
+        keys: ["aiResult"],
+      }),
+    ).unwrap();
+    toast.success("Data saved successfully")
+  } catch (error) {
+    console.log("errorhaiji",error);
+  }
 }

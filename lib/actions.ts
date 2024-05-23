@@ -164,15 +164,6 @@ export async function updateSite(
         case "posts":
           newData["posts"] = data[key];
           break;
-        case "ctaLink":
-          newData["aiResult"]["hero"]["ctaLink"] = data[key];
-          break;
-        case "cta":
-          newData["aiResult"]["hero"]["cta"] = data[key];
-          break;
-        case "businessName":
-          newData["aiResult"]["businessName"] = data[key];
-          break;
         case "primary":
           newData["aiResult"]["colors"]["primary"] = data[key];
           break;
