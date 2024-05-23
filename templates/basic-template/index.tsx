@@ -3,6 +3,7 @@ import PostCard from "@/components/ui/card/post-card";
 import ServiceCard from "@/components/ui/card/service-card";
 import CTA from "@/components/cta";
 import TopBar from "@/components/top-bar";
+import { generateUniqueId } from "@/lib/utils/function";
 
 type BasicTemplateProps = {
   logo: {
@@ -46,6 +47,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 show: true,
                 list: [
                   {
+                    name:generateUniqueId(),
                     label: cta.text,
                     type: "External",
                     value: cta.link,

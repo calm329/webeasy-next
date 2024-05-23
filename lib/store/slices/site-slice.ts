@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "..";
 import SiteApi from "@/lib/api/site-api";
 import { AppState, TSite } from "@/types";
+import { generateUniqueId } from "@/lib/utils/function";
 
 type TInitialState = {
   sites: {
@@ -171,6 +172,7 @@ const siteSlice = createSlice({
               ...state.sites.domain.aiContent.banner.button,
               list: [
                 {
+                  name:generateUniqueId(),
                   label: JSON.parse(action.payload?.aiResult ?? "")["hero"][
                     "cta"
                   ],
@@ -193,6 +195,7 @@ const siteSlice = createSlice({
               ...state.sites.domain.aiContent.hero.button,
               list: [
                 {
+                  name:generateUniqueId(),
                   label: JSON.parse(action.payload?.aiResult ?? "")["hero"][
                     "cta"
                   ],
