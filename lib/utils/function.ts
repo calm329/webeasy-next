@@ -19,20 +19,20 @@ const updateDefaultValues = (
   data: TData,
   setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
   setHeroCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
-  heroButtonList:Array<{
+  heroButtonList: Array<{
     type: any;
     value: string;
     label: string;
-    name:string,
+    name: string;
   }>,
-  bannerButtonList:Array<{
+  bannerButtonList: Array<{
     type: any;
     value: string;
     label: any;
-    name:string,
-  }>
+    name: string;
+  }>,
 ) => {
-  console.log("default values",heroButtonList,bannerButtonList)
+  console.log("default values", heroButtonList, bannerButtonList);
   setBrandCustomizeFields((prevFields) =>
     prevFields.map((field) => {
       if (field.type === "button") {
@@ -45,7 +45,7 @@ const updateDefaultValues = (
             defaultValue: item.value,
             label: item.label,
             validation: { required: true, link: true },
-            link: item.value??"#",
+            link: item.value ?? "#",
             placeholder: "Enter",
           })),
         };
@@ -72,7 +72,7 @@ const updateDefaultValues = (
             defaultValue: item.value,
             label: item.label,
             validation: { required: true, link: true },
-            link: item.value??"#",
+            link: item.value ?? "#",
             placeholder: "Enter",
           })),
         };
@@ -139,7 +139,7 @@ export const getData = async (params: TParams) => {
           show: true,
           list: [
             {
-              name:"button1",
+              name: "button1",
               label: aiContent["hero"]["cta"],
               type: "External",
               value: aiContent["hero"]["ctaLink"],
@@ -158,7 +158,7 @@ export const getData = async (params: TParams) => {
           show: true,
           list: [
             {
-              name:"button1",
+              name: "button1",
               label: aiContent["hero"]["cta"],
               type: "External",
               value: aiContent["hero"]["ctaLink"],
@@ -176,39 +176,37 @@ export const getData = async (params: TParams) => {
         subheading: aiContent["hero"]["subheading"],
       },
       services: aiContent["services"],
-    }
+    };
     dispatch(
       updateAppState({
         ...appState,
         subdomain: siteAvailable,
         status: "Done",
-        aiContent:updatedData,
+        aiContent: updatedData,
         iPosts: JSON.parse(siteData.posts),
         meta: { title: siteData.title, description: siteData.description },
       }),
     );
-    const heroButtonList = updatedData.hero.button.list
-    const bannerButtonList = updatedData.banner.button.list
+    const heroButtonList = updatedData.hero.button.list;
+    const bannerButtonList = updatedData.banner.button.list;
 
     // update default values
-   
-      updateDefaultValues(
-        {
-          logo: siteData.logo || undefined,
-          businessName: aiContent?.businessName,
-          ctaLink: aiContent?.hero?.ctaLink,
-          heading: aiContent?.hero?.heading,
-          subheading: aiContent?.hero?.subheading,
-          imageUrl: aiContent?.hero?.imageUrl,
-          cta: aiContent?.hero?.cta,
-        },
-        setBrandCustomizeFields,
-        setHeroCustomizeFields,
-        heroButtonList,
-        bannerButtonList
-      );
 
-
+    updateDefaultValues(
+      {
+        logo: siteData.logo || undefined,
+        businessName: aiContent?.businessName,
+        ctaLink: aiContent?.hero?.ctaLink,
+        heading: aiContent?.hero?.heading,
+        subheading: aiContent?.hero?.subheading,
+        imageUrl: aiContent?.hero?.imageUrl,
+        cta: aiContent?.hero?.cta,
+      },
+      setBrandCustomizeFields,
+      setHeroCustomizeFields,
+      heroButtonList,
+      bannerButtonList,
+    );
 
     return;
   }
@@ -321,7 +319,7 @@ export const getData = async (params: TParams) => {
                 show: appState.aiContent.hero.button.show,
                 list: [
                   {
-                    name:"button1",
+                    name: "button1",
                     label: aiContent["hero"]["cta"],
                     type: "External",
                     value: aiContent["hero"]["ctaLink"],
@@ -335,7 +333,7 @@ export const getData = async (params: TParams) => {
                 show: appState.aiContent.hero.button.show,
                 list: [
                   {
-                    name:"button1",
+                    name: "button1",
                     label: aiContent["hero"]["cta"],
                     type: "External",
                     value: aiContent["hero"]["ctaLink"],
@@ -379,8 +377,8 @@ export const getData = async (params: TParams) => {
   }
   console.log("updated", aiContent);
   // update default values
-  const heroButtonList =  appState.aiContent.hero.button.list
-  const bannerButtonList =  appState.aiContent.banner.button.list
+  const heroButtonList = appState.aiContent.hero.button.list;
+  const bannerButtonList = appState.aiContent.banner.button.list;
 
   updateDefaultValues(
     {
@@ -394,7 +392,6 @@ export const getData = async (params: TParams) => {
     setHeroCustomizeFields,
     heroButtonList,
     bannerButtonList,
-
   );
 };
 
@@ -405,44 +402,80 @@ export const handleChangeAppState = (
   value: string,
 ) => {
   console.log("name", name, value);
-  if((value as any)["fieldType"] === "button"){
-    dispatch(
-      updateAppState({
-        ...appState,
-        aiContent:{
-          ...appState.aiContent,
-          hero:{
-           ...appState.aiContent.hero,
-            button:{
-             ...appState.aiContent.hero.button,
-              list:
-               appState.aiContent.hero.button.list.map(data=>{
-                console.log("data hai",data,data.name === name)
-                if(data.name === name){
-                  console.log("aaya",{
-                    name:name,
-                    label:(value as any)["label"],
-                    type:(value as any)["type"],
-                    link:(value as any)["link"]
-                  })
-                  return {
-                    name:name,
-                    label:(value as any)["label"],
-                    type:(value as any)["type"],
-                    link:(value as any)["link"]
-                  }
-                }else{
-                  return data
-                }
-               })
-                
-              
-            }
-          }
-        }
-      }),
-    );
-  }else{
+  if ((value as any)["fieldType"] === "button") {
+    switch ((value as any)["section"]) {
+      case "Banner":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              banner: {
+                ...appState.aiContent.banner,
+                button: {
+                  ...appState.aiContent.banner.button,
+                  list: appState.aiContent.banner.button.list.map((data) => {
+                    console.log("data hai", data, data.name === name);
+                    if (data.name === name) {
+                      console.log("aaya", {
+                        name: name,
+                        label: (value as any)["label"],
+                        type: (value as any)["type"],
+                        link: (value as any)["link"],
+                      });
+                      return {
+                        name: name,
+                        label: (value as any)["label"],
+                        type: (value as any)["type"],
+                        link: (value as any)["link"],
+                      };
+                    } else {
+                      return data;
+                    }
+                  }),
+                },
+              },
+            },
+          }),
+        );
+        break;
+      case "Hero":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              hero: {
+                ...appState.aiContent.hero,
+                button: {
+                  ...appState.aiContent.hero.button,
+                  list: appState.aiContent.hero.button.list.map((data) => {
+                    console.log("data hai", data, data.name === name);
+                    if (data.name === name) {
+                      console.log("aaya", {
+                        name: name,
+                        label: (value as any)["label"],
+                        type: (value as any)["type"],
+                        link: (value as any)["link"],
+                      });
+                      return {
+                        name: name,
+                        label: (value as any)["label"],
+                        type: (value as any)["type"],
+                        link: (value as any)["link"],
+                      };
+                    } else {
+                      return data;
+                    }
+                  }),
+                },
+              },
+            },
+          }),
+        );
+        break;
+    }
+  } else {
     switch (name) {
       case "alt":
         dispatch(
@@ -615,14 +648,12 @@ export const handleChangeAppState = (
         break;
     }
   }
-
 };
-
 
 export function generateUniqueId() {
   // Generate a random number and convert it to base 36
   const randomPart = Math.random().toString(36).substr(2, 9);
-  
+
   // Get the current timestamp
   const timestampPart = new Date().getTime().toString(36);
 

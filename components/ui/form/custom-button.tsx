@@ -59,108 +59,221 @@ const CustomButton = (props: TProps) => {
   useEffect(() => {
     console.log("showButtonForm", showButtonForm);
     if (showButtonForm.edit) {
-      heroCustomizeFields.forEach((field) => {
-        field.children?.forEach((child) => {
-          console.log("field", child);
-          if (child.name === showButtonForm.edit) {
-            setData(child);
-          }
-        });
-      });
+      switch (section) {
+        case "Banner":
+          brandCustomizeFields.forEach((field) => {
+            field.children?.forEach((child) => {
+              console.log("field", child);
+              if (child.name === showButtonForm.edit) {
+                setData(child);
+              }
+            });
+          });
+          break;
+        case "Hero":
+          heroCustomizeFields.forEach((field) => {
+            field.children?.forEach((child) => {
+              console.log("field", child);
+              if (child.name === showButtonForm.edit) {
+                setData(child);
+              }
+            });
+          });
+          break;
+      }
     }
   }, [showButtonForm]);
 
   function handleButtonSubmit(name: string) {
     if (showButtonForm.edit) {
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            hero: {
-              ...appState.aiContent.hero,
-              button: {
-                ...appState.aiContent.hero.button,
-                list: appState.aiContent.hero.button.list.map((item) => {
-                  console.log("button", {
-                    name: name,
-                    label: data.label,
-                    type: data.type,
-                    link: data.link,
-                  });
-                  if (item.name === name) {
-                    return {
-                      name: name,
-                      label: data.label,
-                      type: data.type,
-                      link: data.link,
-                    };
-                  } else {
-                    return item;
-                  }
-                }),
+      switch (section) {
+        case "Banner":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                banner: {
+                  ...appState.aiContent.banner,
+                  button: {
+                    ...appState.aiContent.banner.button,
+                    list: appState.aiContent.banner.button.list.map((item) => {
+                      console.log("button", {
+                        name: name,
+                        label: data.label,
+                        type: data.type,
+                        link: data.link,
+                      });
+                      if (item.name === name) {
+                        return {
+                          name: name,
+                          label: data.label,
+                          type: data.type,
+                          link: data.link,
+                        };
+                      } else {
+                        return item;
+                      }
+                    }),
+                  },
+                },
               },
-            },
-          },
-        }),
-      );
+            }),
+          );
 
-      const tempData = heroCustomizeFields;
-      tempData.forEach((field) => {
-        if (field.type === "button") {
-          field.children?.forEach((child) => {
-            if (child.name === name) {
-              child.label = data.label;
-              child.type = data.type;
-              child.link = data.link;
+          const tempBrand = brandCustomizeFields;
+          tempBrand.forEach((field) => {
+            if (field.type === "button") {
+              field.children?.forEach((child) => {
+                if (child.name === name) {
+                  child.label = data.label;
+                  child.type = data.type;
+                  child.link = data.link;
+                }
+              });
             }
           });
-        }
-      });
-      setHeroCustomizeFields(tempData);
+          setBrandCustomizeFields(tempBrand);
+          break;
+        case "Hero":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                hero: {
+                  ...appState.aiContent.hero,
+                  button: {
+                    ...appState.aiContent.hero.button,
+                    list: appState.aiContent.hero.button.list.map((item) => {
+                      console.log("button", {
+                        name: name,
+                        label: data.label,
+                        type: data.type,
+                        link: data.link,
+                      });
+                      if (item.name === name) {
+                        return {
+                          name: name,
+                          label: data.label,
+                          type: data.type,
+                          link: data.link,
+                        };
+                      } else {
+                        return item;
+                      }
+                    }),
+                  },
+                },
+              },
+            }),
+          );
+
+          const tempHero = heroCustomizeFields;
+          tempHero.forEach((field) => {
+            if (field.type === "button") {
+              field.children?.forEach((child) => {
+                if (child.name === name) {
+                  child.label = data.label;
+                  child.type = data.type;
+                  child.link = data.link;
+                }
+              });
+            }
+          });
+          setHeroCustomizeFields(tempHero);
+          break;
+      }
     } else {
       const id = generateUniqueId();
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            hero: {
-              ...appState.aiContent.hero,
-              button: {
-                ...appState.aiContent.hero.button,
-                list: [
-                  ...appState.aiContent.hero.button.list,
-                  {
-                    name: id,
-                    label: data.label,
-                    type: "External",
-                    link: data.link,
+      switch (section) {
+        case "Banner":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                banner: {
+                  ...appState.aiContent.banner,
+                  button: {
+                    ...appState.aiContent.banner.button,
+                    list: [
+                      ...appState.aiContent.banner.button.list,
+                      {
+                        name: id,
+                        label: data.label,
+                        type: "External",
+                        link: data.link,
+                      },
+                    ],
                   },
-                ],
+                },
               },
-            },
-          },
-        }),
-      );
+            }),
+          );
 
-      const tempData = heroCustomizeFields;
-      tempData.forEach((field) => {
-        if (field.type === "button") {
-          field.children?.push({
-            name: id,
-            type: "External",
-            label: data.label,
-            defaultValue: "",
-            placeholder: "Enter",
-            link: data.link,
-            validation: {
-              required: true,
-            },
+          const tempBrand = brandCustomizeFields;
+          tempBrand.forEach((field) => {
+            if (field.type === "button") {
+              field.children?.push({
+                name: id,
+                type: "External",
+                label: data.label,
+                defaultValue: "",
+                placeholder: "Enter",
+                link: data.link,
+                validation: {
+                  required: true,
+                },
+              });
+            }
           });
-        }
-      });
-      setHeroCustomizeFields(tempData);
+          setHeroCustomizeFields(tempBrand);
+          break;
+        case "Hero":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                hero: {
+                  ...appState.aiContent.hero,
+                  button: {
+                    ...appState.aiContent.hero.button,
+                    list: [
+                      ...appState.aiContent.hero.button.list,
+                      {
+                        name: id,
+                        label: data.label,
+                        type: "External",
+                        link: data.link,
+                      },
+                    ],
+                  },
+                },
+              },
+            }),
+          );
+
+          const tempData = heroCustomizeFields;
+          tempData.forEach((field) => {
+            if (field.type === "button") {
+              field.children?.push({
+                name: id,
+                type: "External",
+                label: data.label,
+                defaultValue: "",
+                placeholder: "Enter",
+                link: data.link,
+                validation: {
+                  required: true,
+                },
+              });
+            }
+          });
+          setHeroCustomizeFields(tempData);
+          break;
+      }
     }
 
     setShowButtonForm({
@@ -168,6 +281,7 @@ const CustomButton = (props: TProps) => {
       show: false,
     });
   }
+
   return (
     <div className="">
       <div className=" border-b px-4 py-6 sm:px-6">
@@ -230,6 +344,7 @@ const CustomButton = (props: TProps) => {
                 handleChange(data?.name, {
                   ...{ ...data, type: value },
                   fieldType: "button",
+                  section,
                 });
               }
             }}
@@ -266,6 +381,7 @@ const CustomButton = (props: TProps) => {
                 handleChange(data.name, {
                   ...{ ...data, label: e.target.value },
                   fieldType: "button",
+                  section,
                 });
               }
             }}
@@ -289,6 +405,7 @@ const CustomButton = (props: TProps) => {
                 handleChange(data.name, {
                   ...{ ...data, link: e.target.value },
                   fieldType: "button",
+                  section,
                 });
               }
             }}
