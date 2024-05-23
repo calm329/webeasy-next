@@ -7,18 +7,19 @@ import ViewMenu from "../menu/view-menu";
 import PublishMenu from "../menu/publish-menu";
 import { DebouncedState, useMediaQuery } from "usehooks-ts";
 import { AppState, TTemplateName } from "@/types";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { TemplatesData as TD } from "@/lib/store/slices/template-slice";
 import { WidgetDrawer } from "../ui/drawer/widget-drawer";
 import { FaUndoAlt, FaRedoAlt } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
+import { appState as AS } from '../../lib/store/slices/site-slice';
+import { saveState } from "@/lib/utils/function";
 
 type TProps = {
   showNavigation: boolean;
   isAuth?: boolean;
   getData?: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
-  appState?: AppState;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   setSelectedTemplate?: Dispatch<SetStateAction<TTemplateName>>;
   setShowAuthModal: Dispatch<SetStateAction<boolean>>;
@@ -32,13 +33,15 @@ const BottomToolBar = (props: TProps) => {
     isAuth,
     setShowAuthModal,
     getData,
-    appState,
     handleChange,
     setSelectedTemplate,
   } = props;
   const matches = useMediaQuery("(max-width: 500px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const isBottomBar = useMediaQuery("(max-width: 900px)");
+  const appState = useAppSelector(AS)
+  const dispatch = useAppDispatch();
+  
   return (
     <div className="fixed bottom-0 z-10   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
       {isBottomBar ? (
@@ -94,7 +97,7 @@ const BottomToolBar = (props: TProps) => {
             Cancel
           </button>
           <button className="flex flex-col items-center">
-            <MdOutlineDownloadDone size={20}/>
+            <MdOutlineDownloadDone size={20} onClick={()=>saveState(appState,dispatch)}/>
             Done
           </button>
         </div>
