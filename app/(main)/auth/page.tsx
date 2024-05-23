@@ -15,7 +15,7 @@ import SelectedTemplate from "@/components/selected-template";
 import { getData, handleChangeAppState } from "@/lib/utils/function";
 import EditWebsiteHeader from "@/components/header/edit-website-header";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
+import { appState as AS, updateAppState, loading as LD } from '@/lib/store/slices/site-slice';
 import BottomToolBar from "@/components/bottom-bar";
 
 export default function Page() {
@@ -30,6 +30,7 @@ export default function Page() {
   const [selectedTemplate, setSelectedTemplate] =
     useState<TTemplateName>("Basic template");
   const dispatch = useAppDispatch();
+  const saveLoading = useAppSelector(LD)
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
       {
@@ -169,7 +170,7 @@ export default function Page() {
   }, [session]);
 
   const matches = useMediaQuery("(min-width: 768px)");
-
+  
   return (
     <>
       {appState.status === "Done" ? (
@@ -239,6 +240,7 @@ export default function Page() {
               </>
             )}
           </div>
+          {saveLoading && <Loader text="Saving Data"/>}
         </>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">

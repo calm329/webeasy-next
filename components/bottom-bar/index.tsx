@@ -88,7 +88,7 @@ const BottomToolBar = (props: TProps) => {
         </>
       ) : (
         <>
-          {loading && <Loader text="Saving Data" />}
+     
           <div className="flex w-full justify-around">
             <button className="flex flex-col items-center">
               <FaUndoAlt />

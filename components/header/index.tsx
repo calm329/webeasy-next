@@ -39,7 +39,8 @@ import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { IoMdAdd, IoMdArrowRoundBack } from "react-icons/io";
 import { saveState } from "@/lib/utils/function";
-import { appState as AS } from "@/lib/store/slices/site-slice";
+import { appState as AS, loading as LD } from '@/lib/store/slices/site-slice';
+import Loader from "../ui/loader";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -86,6 +87,7 @@ export default function SiteHeader(props: TProps) {
   const [showWidgetModal, setWidgetModal] = useState(false);
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS)
+  const saveLoading = useAppSelector(LD)
   const fetchData = async () => {
     try {
       const response = await getAllTemplates();
@@ -143,6 +145,7 @@ export default function SiteHeader(props: TProps) {
       <nav>
       {!isBottomBar && pathname.startsWith("/auth") && (
         <div className="mt-5 flex w-full justify-around border-b pb-5">
+         
           <Link href={"/settings/websites"} className="flex flex-col items-center" >
             <IoMdArrowRoundBack size={20} />
             {/* Undo */}
