@@ -17,6 +17,12 @@ import { toast } from "sonner";
 import { DebouncedState } from "usehooks-ts";
 import { appState } from "../../../../lib/store/slices/site-slice";
 import { useSelector } from "react-redux";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "react-beautiful-dnd";
 type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
@@ -31,6 +37,20 @@ type TProps = {
     }>
   >;
 };
+
+const grid = 2;
+
+const getItemStyle = (
+  isDragging: boolean,
+  draggableStyle: any,
+): React.CSSProperties => ({
+  userSelect: "none",
+  padding: grid * 2,
+  margin: `0 0 ${grid}px 0`,
+  ...draggableStyle,
+});
+
+const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
 
 const BannerContent = (props: TProps) => {
   const appState = useAppSelector(AS);
@@ -111,9 +131,32 @@ const BannerContent = (props: TProps) => {
     }
   }, [brandCustomizeFields]);
 
+  const reorder = (list: any, startIndex: number, endIndex: number): any => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
+
+  const onDragEnd = (result: DropResult): void => {
+    if (!result.destination) {
+      return;
+    }
+
+    const updatedItems = reorder(
+      brandCustomizeFields[2]?.children,
+      result.source.index,
+      result.destination.index,
+    );
+
+    const tempFields = brandCustomizeFields;
+    tempFields[2].children = updatedItems;
+    setBrandCustomizeFields(tempFields);
+  };
+
   const handleDeleteButton = (name: string) => {
     const updatedBrandCustomizeFields = brandCustomizeFields.map((field) => {
-      if (field.name === "cta" && Array.isArray(field.children)) {
+      if (field.type === "button" && Array.isArray(field.children)) {
         // Filter out the child with the provided name
         field.children = field.children.filter((child) => child.name !== name);
       }
@@ -121,6 +164,25 @@ const BannerContent = (props: TProps) => {
     });
     console.log(updatedBrandCustomizeFields);
     setBrandCustomizeFields(updatedBrandCustomizeFields);
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          banner: {
+            ...appState.aiContent.banner,
+            button: {
+              ...appState.aiContent.banner.button,
+              list: appState.aiContent.banner.button.list.filter((button) => {
+                if (button.name !== name) {
+                  return button;
+                }
+              }),
+            },
+          },
+        },
+      }),
+    );
   };
   return (
     <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
@@ -177,7 +239,6 @@ const BannerContent = (props: TProps) => {
                                   field.onChange(value);
                                 }}
                               />
-                          
                             </div>
                           )}
                         </div>
@@ -243,50 +304,90 @@ const BannerContent = (props: TProps) => {
                           </div>
                           {appState.aiContent.banner.button.show && (
                             <>
-                              {data.children?.map((child) => (
-                                <div
-                                  className="flex items-center justify-between "
-                                  key={child.name}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <RxDragHandleDots2 />
-                                    <FiLink />
-                                    <h4>{child.label}</h4>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <MdModeEditOutline
-                                      color="blue"
-                                      size={20}
-                                      onClick={() =>
-                                        setShowButtonForm({
-                                          edit: child.name,
-                                          show: true,
-                                        })
-                                      }
-                                    />
-                                    <MdDeleteForever
-                                      color="red"
-                                      size={20}
-                                      onClick={() =>
-                                        handleDeleteButton(child.name)
-                                      }
-                                    />
-                                  </div>
-                                </div>
-                              ))}
-
-                              <button
-                                className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-                                onClick={() =>
-                                  setShowButtonForm({
-                                    edit: "",
-                                    show: true,
-                                  })
-                                }
+                              <DragDropContext
+                                onDragEnd={onDragEnd}
+                                onDragStart={() => console.log("it's started")}
                               >
-                                Add Button
-                                <IoMdAdd size={20} />
-                              </button>
+                                <Droppable droppableId="droppable">
+                                  {(provided, snapshot) => (
+                                    <div
+                                      {...provided.droppableProps}
+                                      ref={provided.innerRef}
+                                      style={getListStyle(
+                                        snapshot.isDraggingOver,
+                                      )}
+                                    >
+                                      {brandCustomizeFields[2].children?.map(
+                                        (item, index) => (
+                                          <Draggable
+                                            key={item.name}
+                                            draggableId={item.name}
+                                            index={index}
+                                          >
+                                            {(provided, snapshot) => (
+                                              <div
+                                                className=" flex items-center justify-between"
+                                                key={item.name}
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                style={getItemStyle(
+                                                  snapshot.isDragging,
+                                                  provided.draggableProps.style,
+                                                )}
+                                              >
+                                                <div className="flex items-center gap-2">
+                                                  <RxDragHandleDots2 />
+                                                  <FiLink />
+                                                  <h4>{item.label}</h4>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                  <MdModeEditOutline
+                                                    color="blue"
+                                                    size={20}
+                                                    onClick={() =>
+                                                      setShowButtonForm({
+                                                        show: true,
+                                                        edit: item.name,
+                                                      })
+                                                    }
+                                                  />
+                                                  <MdDeleteForever
+                                                    color="red"
+                                                    size={20}
+                                                    onClick={() =>
+                                                      handleDeleteButton(
+                                                        item.name,
+                                                      )
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                            )}
+                                          </Draggable>
+                                        ),
+                                      )}
+                                      {provided.placeholder}
+                                    </div>
+                                  )}
+                                </Droppable>
+                              </DragDropContext>
+                              {brandCustomizeFields[2].children &&
+                                brandCustomizeFields[2].children.length !==
+                                  2 && (
+                                  <button
+                                    className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                                    onClick={() =>
+                                      setShowButtonForm({
+                                        edit: "",
+                                        show: true,
+                                      })
+                                    }
+                                  >
+                                    Add Button
+                                    <IoMdAdd size={20} />
+                                  </button>
+                                )}
                             </>
                           )}
                         </div>

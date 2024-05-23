@@ -87,7 +87,7 @@ export default function TopBar(props: TopBarProps) {
               {editable ? (
                 banner.button.show && (
                   <div
-                    className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500 flex gap-5"}`}
                     onClick={() => {
                       if (setIsOpen && setSection && setFocusedField) {
                         setSection("Banner");
@@ -109,7 +109,7 @@ export default function TopBar(props: TopBarProps) {
                   </div>
                 )
               ) : (
-                <div className={`w-full p-2 md:w-auto`}>
+                <div className={`w-full p-2 md:w-auto flex gap-5`}>
                   {banner.button.list.map((data, i) => (
                     <div key={i}>
                       <CTA
