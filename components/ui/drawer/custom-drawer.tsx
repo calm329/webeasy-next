@@ -16,6 +16,14 @@ type TProps = {
   focusedField: TFields;
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
+  showButtonForm:{
+    edit:string,
+    show: boolean,
+  }
+  setShowButtonForm:React.Dispatch<React.SetStateAction<{
+    edit:string,
+    show: boolean,
+  }>>;
 };
 export function CustomDrawer(props: TProps) {
   const {
@@ -29,11 +37,10 @@ export function CustomDrawer(props: TProps) {
     focusedField,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
+    showButtonForm,
+    setShowButtonForm
   } = props;
-  const [showButtonForm, setShowButtonForm] = React.useState({
-    show: false,
-    edit: "",
-  });
+
   return (
     <Drawer open={open} onOpenChange={setIsOpen}>
       <DrawerContent className="border border-white">

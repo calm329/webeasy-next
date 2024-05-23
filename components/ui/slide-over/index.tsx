@@ -16,6 +16,14 @@ type TProps = {
   focusedField: TFields;
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
+  setShowButtonForm:React.Dispatch<React.SetStateAction<{
+    edit:string,
+    show: boolean,
+  }>>;
+  showButtonForm:{
+    edit:string,
+    show: boolean,
+  }
 };
 
 function SlideOver(props: TProps) {
@@ -30,11 +38,10 @@ function SlideOver(props: TProps) {
     focusedField,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
+    showButtonForm,
+    setShowButtonForm
   } = props;
-  const [showButtonForm, setShowButtonForm] = useState({
-    edit: "",
-    show: false,
-  });
+
   return (
     <div className="pointer-events-none fixed right-0  z-10 flex max-w-full  pl-10  sm:pl-16">
       <div

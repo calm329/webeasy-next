@@ -18,6 +18,14 @@ type BasicTemplateProps = {
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
+  showButtonForm:{
+    edit:string,
+    show: boolean,
+  };
+  setShowButtonForm:React.Dispatch<React.SetStateAction<{
+    edit:string,
+    show: boolean,
+  }>>;
 };
 
 export default function BasicTemplate(props: BasicTemplateProps) {
@@ -31,6 +39,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
     setSection,
     editable,
     setFocusedField,
+    showButtonForm,
+    setShowButtonForm,
   } = props;
   // console.log("onshow",open)
   return (
@@ -43,6 +53,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           setFocusedField={setFocusedField}
           setIsOpen={setIsOpen}
           setSection={setSection}
+          showButtonForm={showButtonForm}
+          setShowButtonForm={setShowButtonForm}
         />
       </section>
       <section className="overflow-hidden bg-gray-50 py-10">
@@ -56,6 +68,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 setFocusedField={setFocusedField}
                 setIsOpen={setIsOpen}
                 setSection={setSection}
+                showButtonForm={showButtonForm}
+                setShowButtonForm={setShowButtonForm}
               />
               <div className="rounded-3xl bg-gray-100 p-8 md:p-12">
                 <div className="-m-8 flex flex-wrap">
