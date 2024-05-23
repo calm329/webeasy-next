@@ -149,6 +149,26 @@ const BannerContent = (props: TProps) => {
       result.destination.index,
     );
 
+    const updatedItemsForRedux = reorder(
+      appState.aiContent.banner.button.list,
+      result.source.index,
+      result.destination.index,
+    );
+
+    dispatch(updateAppState({
+      ...appState,
+      aiContent: {
+       ...appState.aiContent,
+        banner: {
+         ...appState.aiContent.banner,
+          button: {
+           ...appState.aiContent.banner.button,
+            list: updatedItemsForRedux,
+          },
+        },
+      },
+    }))
+
     const tempFields = brandCustomizeFields;
     tempFields[2].children = updatedItems;
     setBrandCustomizeFields(tempFields);

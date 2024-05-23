@@ -134,6 +134,25 @@ const HeroContent = (props: TProps) => {
       result.source.index,
       result.destination.index,
     );
+    const updatedItemsForRedux = reorder(
+      appState.aiContent.hero.button.list,
+      result.source.index,
+      result.destination.index,
+    );
+
+    dispatch(updateAppState({
+      ...appState,
+      aiContent: {
+       ...appState.aiContent,
+        hero: {
+         ...appState.aiContent.hero,
+          button: {
+           ...appState.aiContent.hero.button,
+            list: updatedItemsForRedux,
+          },
+        },
+      },
+    }))
 
     const tempFields = heroCustomizeFields;
     tempFields[3].children = updatedItems;
@@ -335,7 +354,7 @@ const HeroContent = (props: TProps) => {
                                         snapshot.isDraggingOver,
                                       )}
                                     >
-                                      {heroCustomizeFields[3].children?.map(
+                                      {heroCustomizeFields[3]?.children?.map(
                                         (item, index) => (
                                           <Draggable
                                             key={item.name}
@@ -390,8 +409,8 @@ const HeroContent = (props: TProps) => {
                                   )}
                                 </Droppable>
                               </DragDropContext>
-                              {heroCustomizeFields[3].children &&
-                                heroCustomizeFields[3].children.length !==
+                              {heroCustomizeFields[3]?.children &&
+                                heroCustomizeFields[3]?.children.length !==
                                   2 && (
                                   <button
                                     className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
