@@ -1,6 +1,7 @@
 import { FormField, TFields, TSection } from "@/types";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import CustomButton from "@/components/ui/form/custom-button";
+import { DebouncedState } from "use-debounce";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -23,6 +24,7 @@ type TProps = {
   >;
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
+  handleChange:DebouncedState<(name: string, value: string) => void>
 };
 
 const CustomizePanel = (props: TProps) => {
@@ -39,6 +41,7 @@ const CustomizePanel = (props: TProps) => {
     setShowButtonForm,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
+    handleChange
   } = props;
   const [isContent, setIsContent] = useState(true);
 
@@ -52,6 +55,7 @@ const CustomizePanel = (props: TProps) => {
       setBrandCustomizeFields={setBrandCustomizeFields}
       setHeroCustomizeFields={setHeroCustomizeFields}
       showButtonForm={showButtonForm}
+      handleChange={handleChange}
     />
   ) : (
     <div className=" ">
