@@ -56,7 +56,7 @@ const EditableHero = (props: TProps) => {
           {hero.button.show && (
             <div className="-m-2 flex flex-wrap">
               <div
-                className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent flex gap-5 hover:border-indigo-500"}`}
+                className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent flex gap-5  max-sm:flex-col hover:border-indigo-500"}`}
                 onClick={() => {
                   if (editable && setIsOpen && setSection && setFocusedField) {
                     setSection("Hero");
