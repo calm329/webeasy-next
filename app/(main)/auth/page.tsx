@@ -188,7 +188,6 @@ export default function Page() {
                 setHeroCustomizeFields,
               })
             }
-            appState={appState}
             handleChange={handleChange}
             setSelectedTemplate={setSelectedTemplate}
           />

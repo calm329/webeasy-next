@@ -126,7 +126,7 @@ const updateSite = createAsyncThunk(
     }: {
       subdomain: string;
       data: {
-        [key: string]: string;
+        [key: string]: any;
       };
       keys: string[];
     },
