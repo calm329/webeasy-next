@@ -87,7 +87,6 @@ const BottomToolBar = (props: TProps) => {
           <PublishMenu />
         </>
       ) : (
-        <>
      
           <div className="flex w-full justify-around">
             <button className="flex flex-col items-center">
@@ -99,7 +98,7 @@ const BottomToolBar = (props: TProps) => {
               Redo
             </button>
             <button className="flex flex-col items-center">
-              <ImCancelCircle size={18} />
+              <ImCancelCircle size={18} onClick={()=>getData && getData()}/>
               Cancel
             </button>
             <button className="flex flex-col items-center">
@@ -110,7 +109,7 @@ const BottomToolBar = (props: TProps) => {
               Done
             </button>
           </div>
-        </>
+     
       )}
     </div>
   );
