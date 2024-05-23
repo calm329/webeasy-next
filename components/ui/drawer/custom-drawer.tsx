@@ -49,6 +49,7 @@ export function CustomDrawer(props: TProps) {
             setShowButtonForm={setShowButtonForm}
             setHeroCustomizeFields={setHeroCustomizeFields}
             setBrandCustomizeFields={setBrandCustomizeFields}
+            handleChange={handleChange}
           >
             {section === "Hero" && (
               <HeroContent

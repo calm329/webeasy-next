@@ -18,6 +18,7 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  handleChange: DebouncedState<(name: string, value: string) => void>;
 };
 import { IoMdArrowBack } from "react-icons/io";
 import {
@@ -30,6 +31,11 @@ import {
   SelectValue,
 } from "../select";
 import { FormField, TSection } from "@/types";
+import { DebouncedState } from "use-debounce";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
+import { randomUUID } from "crypto";
+import { generateUniqueId } from "@/lib/utils/function";
 
 const linkTypes = ["External", "Section"];
 
@@ -43,23 +49,125 @@ const CustomButton = (props: TProps) => {
     heroCustomizeFields,
     section,
     showButtonForm,
+    handleChange,
   } = props;
   const [loading, setLoading] = useState(false);
+  const appState = useAppSelector(AS);
   console.log("Custom", showButtonForm);
   const [data, setData] = useState<any>();
-
+  const dispatch = useAppDispatch();
   useEffect(() => {
+    console.log("showButtonForm", showButtonForm);
     if (showButtonForm.edit) {
       heroCustomizeFields.forEach((field) => {
         field.children?.forEach((child) => {
+          console.log("field", child);
           if (child.name === showButtonForm.edit) {
             setData(child);
           }
         });
       });
     }
-  }, []);
+  }, [showButtonForm]);
 
+  function handleButtonSubmit(name: string) {
+    if (showButtonForm.edit) {
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            hero: {
+              ...appState.aiContent.hero,
+              button: {
+                ...appState.aiContent.hero.button,
+                list: appState.aiContent.hero.button.list.map((item) => {
+                  console.log("button", {
+                    name: name,
+                    label: data.label,
+                    type: data.type,
+                    link: data.link,
+                  });
+                  if (item.name === name) {
+                    return {
+                      name: name,
+                      label: data.label,
+                      type: data.type,
+                      link: data.link,
+                    };
+                  } else {
+                    return item;
+                  }
+                }),
+              },
+            },
+          },
+        }),
+      );
+
+      const tempData = heroCustomizeFields;
+      tempData.forEach((field) => {
+        if (field.type === "button") {
+          field.children?.forEach((child) => {
+            if (child.name === name) {
+              child.label = data.label;
+              child.type = data.type;
+              child.link = data.link;
+            }
+          });
+        }
+      });
+      setHeroCustomizeFields(tempData);
+    } else {
+      const id = generateUniqueId();
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            hero: {
+              ...appState.aiContent.hero,
+              button: {
+                ...appState.aiContent.hero.button,
+                list: [
+                  ...appState.aiContent.hero.button.list,
+                  {
+                    name: id,
+                    label: data.label,
+                    type: "External",
+                    link: data.link,
+                  },
+                ],
+              },
+            },
+          },
+        }),
+      );
+
+      const tempData = heroCustomizeFields;
+      tempData.forEach((field) => {
+        if (field.type === "button") {
+          field.children?.push({
+            name: id,
+            type: "External",
+            label: data.label,
+            defaultValue: "",
+            placeholder: "Enter",
+            link: data.link,
+            validation: {
+              required: true,
+            },
+          });
+        }
+      });
+      setHeroCustomizeFields(tempData);
+    }
+
+    setShowButtonForm({
+      edit: "",
+      show: false,
+    });
+  }
   return (
     <div className="">
       <div className=" border-b px-4 py-6 sm:px-6">
@@ -105,7 +213,7 @@ const CustomButton = (props: TProps) => {
           </div>
         </div>
       </div>
-      <form action="" className="flex flex-col gap-5 p-5">
+      <form className="flex flex-col gap-5 p-5">
         <div className="flex flex-col ">
           <label
             htmlFor="linktype"
@@ -113,7 +221,19 @@ const CustomButton = (props: TProps) => {
           >
             Link type
           </label>
-          <Select value={data?.type ?? ""}>
+          <Select
+            // defaultValue={data?.type ?? ""}
+            defaultValue={data?.type ?? "External"}
+            onValueChange={(value) => {
+              setData({ ...data, type: value });
+              if (showButtonForm.edit) {
+                handleChange(data?.name, {
+                  ...{ ...data, type: value },
+                  fieldType: "button",
+                });
+              }
+            }}
+          >
             <SelectTrigger className="">
               <SelectValue placeholder="Select a Link Type" />
             </SelectTrigger>
@@ -140,7 +260,15 @@ const CustomButton = (props: TProps) => {
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             id={"label"}
             defaultValue={data?.label ?? ""}
-            // onChange={(e) => handleChange(data.name, e.target.value)}
+            onChange={(e) => {
+              setData({ ...data, label: e.target.value });
+              if (showButtonForm.edit) {
+                handleChange(data.name, {
+                  ...{ ...data, label: e.target.value },
+                  fieldType: "button",
+                });
+              }
+            }}
           />
         </div>
         <div className="flex flex-col ">
@@ -155,11 +283,20 @@ const CustomButton = (props: TProps) => {
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             id={"website"}
             defaultValue={data?.link ?? ""}
-            // onChange={(e) => handleChange(data.name, e.target.value)}
+            onChange={(e) => {
+              setData({ ...data, link: e.target.value });
+              if (showButtonForm.edit) {
+                handleChange(data.name, {
+                  ...{ ...data, link: e.target.value },
+                  fieldType: "button",
+                });
+              }
+            }}
           />
         </div>
         <button
-          type="submit"
+          onClick={() => handleButtonSubmit(data.name)}
+          type="button"
           className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
           disabled={loading}
         >

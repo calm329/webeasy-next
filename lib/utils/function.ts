@@ -19,63 +19,69 @@ const updateDefaultValues = (
   data: TData,
   setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
   setHeroCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
-  appState: AppState,
+  heroButtonList:Array<{
+    type: any;
+    value: string;
+    label: string;
+    name:string,
+  }>,
+  bannerButtonList:Array<{
+    type: any;
+    value: string;
+    label: any;
+    name:string,
+  }>
 ) => {
-  setBrandCustomizeFields((currentFields) =>
-    currentFields.map((field) => ({
-      ...field,
-      defaultValue: data[field.name as keyof typeof data] ?? field.defaultValue,
-    })),
-  );
-  setHeroCustomizeFields((currentFields) =>
-    currentFields.map((field) => ({
-      ...field,
-      defaultValue: data[field.name as keyof typeof data] ?? field.defaultValue,
-    })),
-  );
-
+  console.log("default values",heroButtonList,bannerButtonList)
   setBrandCustomizeFields((prevFields) =>
     prevFields.map((field) => {
-      if (field.name === "cta") {
+      if (field.type === "button") {
         // If the field is cta, update its children
         return {
           ...field,
-          children: appState.aiContent.banner.button.list.map((item) => ({
-            name: item.label,
+          children: bannerButtonList.map((item) => ({
+            name: item.name,
             type: item.type,
             defaultValue: item.value,
             label: item.label,
             validation: { required: true, link: true },
-            link: item.value,
+            link: item.value??"#",
             placeholder: "Enter",
           })),
         };
       } else {
         // If it's not cta, just return the field as it is
-        return field;
+        return {
+          ...field,
+          defaultValue:
+            data[field.name as keyof typeof data] ?? field.defaultValue,
+        };
       }
     }),
   );
 
   setHeroCustomizeFields((prevFields) =>
     prevFields.map((field) => {
-      if (field.name === "cta") {
+      if (field.type === "button") {
         // If the field is cta, update its children
         return {
           ...field,
-          children: appState.aiContent.hero.button.list.map((item) => ({
-            name: item.label,
+          children: heroButtonList.map((item) => ({
+            name: item.name,
             type: item.type,
             defaultValue: item.value,
             label: item.label,
             validation: { required: true, link: true },
-            link: item.value,
+            link: item.value??"#",
             placeholder: "Enter",
           })),
         };
       } else {
-        // If it's not cta, just return the field as it is
-        return field;
+        return {
+          ...field,
+          defaultValue:
+            data[field.name as keyof typeof data] ?? field.defaultValue,
+        };
       }
     }),
   );
@@ -89,7 +95,7 @@ export const getData = async (params: TParams) => {
     appState,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
-  } = params
+  } = params;
   dispatch(
     updateAppState({
       ...appState,
@@ -104,7 +110,7 @@ export const getData = async (params: TParams) => {
   dispatch(
     updateAppState({
       ...appState,
-      subdomain:siteAvailable,
+      subdomain: siteAvailable,
       status: "Loading Instagram",
       editable,
     }),
@@ -126,74 +132,83 @@ export const getData = async (params: TParams) => {
     const aiContent = JSON.parse(siteData.aiResult);
 
     console.log("aiContent", aiContent);
+    const updatedData = {
+      banner: {
+        businessName: aiContent["businessName"],
+        button: {
+          show: true,
+          list: [
+            {
+              name:"button1",
+              label: aiContent["hero"]["cta"],
+              type: "External",
+              value: aiContent["hero"]["ctaLink"],
+            },
+          ],
+        },
+        logo: {
+          link: siteData.logo ?? appState.aiContent.banner.logo.link ?? "",
+          alt: appState.aiContent.banner.logo.alt ?? "",
+          show: true,
+        },
+      },
+      colors: aiContent["colors"],
+      hero: {
+        button: {
+          show: true,
+          list: [
+            {
+              name:"button1",
+              label: aiContent["hero"]["cta"],
+              type: "External",
+              value: aiContent["hero"]["ctaLink"],
+            },
+          ],
+        },
+        image: {
+          heroImagePrompt: aiContent["heroImagePrompt"],
+          imageId: aiContent["hero"]["imageId"],
+          imageUrl: aiContent["hero"]["imageUrl"],
+          alt: "",
+          show: true,
+        },
+        heading: aiContent["hero"]["heading"],
+        subheading: aiContent["hero"]["subheading"],
+      },
+      services: aiContent["services"],
+    }
     dispatch(
       updateAppState({
         ...appState,
-        subdomain:siteAvailable,
+        subdomain: siteAvailable,
         status: "Done",
-        aiContent: {
-          banner: {
-            businessName: aiContent["businessName"],
-            button: {
-              show: true,
-              list: [
-                {
-                  label: aiContent["hero"]["cta"],
-                  type: "External",
-                  value: aiContent["hero"]["ctaLink"],
-                },
-              ],
-            },
-            logo: {
-              link: siteData.logo ?? appState.aiContent.banner.logo.link ?? "",
-              alt: appState.aiContent.banner.logo.alt ?? "",
-              show: true,
-            },
-          },
-          colors: aiContent["colors"],
-          hero: {
-            button: {
-              show: true,
-              list: [
-                {
-                  label: aiContent["hero"]["cta"],
-                  type: "External",
-                  value: aiContent["hero"]["ctaLink"],
-                },
-              ],
-            },
-            image: {
-              heroImagePrompt: aiContent["heroImagePrompt"],
-              imageId: aiContent["hero"]["imageId"],
-              imageUrl: aiContent["hero"]["imageUrl"],
-              alt: "",
-              show: true,
-            },
-            heading: aiContent["hero"]["heading"],
-            subheading: aiContent["hero"]["subheading"],
-          },
-          services: aiContent["services"],
-        },
+        aiContent:updatedData,
         iPosts: JSON.parse(siteData.posts),
         meta: { title: siteData.title, description: siteData.description },
       }),
     );
+    const heroButtonList = updatedData.hero.button.list
+    const bannerButtonList = updatedData.banner.button.list
 
     // update default values
-    updateDefaultValues(
-      {
-        logo: siteData.logo || undefined,
-        businessName: aiContent?.businessName,
-        ctaLink: aiContent?.hero?.ctaLink,
-        heading: aiContent?.hero?.heading,
-        subheading: aiContent?.hero?.subheading,
-        imageUrl: aiContent?.hero?.imageUrl,
-        cta: aiContent?.hero?.cta,
-      },
-      setBrandCustomizeFields,
-      setHeroCustomizeFields,
-      appState,
-    );
+   
+      updateDefaultValues(
+        {
+          logo: siteData.logo || undefined,
+          businessName: aiContent?.businessName,
+          ctaLink: aiContent?.hero?.ctaLink,
+          heading: aiContent?.hero?.heading,
+          subheading: aiContent?.hero?.subheading,
+          imageUrl: aiContent?.hero?.imageUrl,
+          cta: aiContent?.hero?.cta,
+        },
+        setBrandCustomizeFields,
+        setHeroCustomizeFields,
+        heroButtonList,
+        bannerButtonList
+      );
+
+
 
     return;
   }
@@ -225,7 +240,7 @@ export const getData = async (params: TParams) => {
     dispatch(
       updateAppState({
         ...appState,
-        subdomain:siteAvailable,
+        subdomain: siteAvailable,
         status: flag === "refresh" ? "Done" : "Generating Content",
       }),
     );
@@ -261,7 +276,7 @@ export const getData = async (params: TParams) => {
     dispatch(
       updateAppState({
         ...appState,
-        subdomain:siteAvailable,
+        subdomain: siteAvailable,
         status: "Choosing Colors",
       }),
     );
@@ -283,7 +298,7 @@ export const getData = async (params: TParams) => {
       updateAppState({
         ...appState,
 
-        subdomain:siteAvailable,
+        subdomain: siteAvailable,
         status: "Done",
       }),
     );
@@ -292,13 +307,13 @@ export const getData = async (params: TParams) => {
   dispatch(
     updateAppState({
       ...appState,
-      subdomain:siteAvailable,
+      subdomain: siteAvailable,
       aiContent: Object.keys(aiContent).length
         ? {
             banner: {
-              logo:{
-                link: appState.aiContent.banner.logo.link??"",
-                alt: appState.aiContent.banner.logo.alt??"",
+              logo: {
+                link: appState.aiContent.banner.logo.link ?? "",
+                alt: appState.aiContent.banner.logo.alt ?? "",
                 show: appState.aiContent.hero.button.show,
               },
               businessName: aiContent["businessName"],
@@ -306,6 +321,7 @@ export const getData = async (params: TParams) => {
                 show: appState.aiContent.hero.button.show,
                 list: [
                   {
+                    name:"button1",
                     label: aiContent["hero"]["cta"],
                     type: "External",
                     value: aiContent["hero"]["ctaLink"],
@@ -319,6 +335,7 @@ export const getData = async (params: TParams) => {
                 show: appState.aiContent.hero.button.show,
                 list: [
                   {
+                    name:"button1",
                     label: aiContent["hero"]["cta"],
                     type: "External",
                     value: aiContent["hero"]["ctaLink"],
@@ -362,6 +379,9 @@ export const getData = async (params: TParams) => {
   }
   console.log("updated", aiContent);
   // update default values
+  const heroButtonList =  appState.aiContent.hero.button.list
+  const bannerButtonList =  appState.aiContent.banner.button.list
+
   updateDefaultValues(
     {
       businessName: aiContent?.businessName,
@@ -372,7 +392,9 @@ export const getData = async (params: TParams) => {
     },
     setBrandCustomizeFields,
     setHeroCustomizeFields,
-    appState,
+    heroButtonList,
+    bannerButtonList,
+
   );
 };
 
@@ -383,175 +405,229 @@ export const handleChangeAppState = (
   value: string,
 ) => {
   console.log("name", name, value);
-  switch (name) {
-    case "alt":
-      dispatch(
-        updateAppState({
-          ...appState,
-          logo: {
-            ...appState.aiContent.banner.logo,
-            alt: value,
-          },
-        }),
-      );
-      break;
-    case "logo":
-      dispatch(
-        updateAppState({
-          ...appState,
-          logo: {
-            ...appState.aiContent.banner.logo,
-            link: value,
-          },
-        }),
-      );
-      break;
-    case "businessName":
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            banner: {
-              ...appState.aiContent.banner,
-              businessName: value,
+  if((value as any)["fieldType"] === "button"){
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent:{
+          ...appState.aiContent,
+          hero:{
+           ...appState.aiContent.hero,
+            button:{
+             ...appState.aiContent.hero.button,
+              list:
+               appState.aiContent.hero.button.list.map(data=>{
+                console.log("data hai",data,data.name === name)
+                if(data.name === name){
+                  console.log("aaya",{
+                    name:name,
+                    label:(value as any)["label"],
+                    type:(value as any)["type"],
+                    link:(value as any)["link"]
+                  })
+                  return {
+                    name:name,
+                    label:(value as any)["label"],
+                    type:(value as any)["type"],
+                    link:(value as any)["link"]
+                  }
+                }else{
+                  return data
+                }
+               })
+                
+              
+            }
+          }
+        }
+      }),
+    );
+  }else{
+    switch (name) {
+      case "alt":
+        dispatch(
+          updateAppState({
+            ...appState,
+            logo: {
+              ...appState.aiContent.banner.logo,
+              alt: value,
             },
-          },
-        }),
-      );
-      break;
-    case "ctaLink":
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            ["hero"]: {
-              ...appState.aiContent["hero"],
-              ["ctaLink"]: value,
+          }),
+        );
+        break;
+      case "logo":
+        dispatch(
+          updateAppState({
+            ...appState,
+            logo: {
+              ...appState.aiContent.banner.logo,
+              link: value,
             },
-          },
-        }),
-      );
-      break;
-    case "heading":
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            ["hero"]: {
-              ...appState.aiContent["hero"],
-              ["heading"]: value,
+          }),
+        );
+        break;
+      case "businessName":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              banner: {
+                ...appState.aiContent.banner,
+                businessName: value,
+              },
             },
-          },
-        }),
-      );
-      break;
-    case "subheading":
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            ["hero"]: {
-              ...appState.aiContent["hero"],
-              ["subheading"]: value,
+          }),
+        );
+        break;
+      case "ctaLink":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              ["hero"]: {
+                ...appState.aiContent["hero"],
+                ["ctaLink"]: value,
+              },
             },
-          },
-        }),
-      );
-      break;
-    case "imageUrl":
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            ["hero"]: {
-              ...appState.aiContent["hero"],
-              ["imageUrl"]: value,
+          }),
+        );
+        break;
+      case "heading":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              ["hero"]: {
+                ...appState.aiContent["hero"],
+                ["heading"]: value,
+              },
             },
-          },
-        }),
-      );
-      break;
-    case "cta":
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            ["hero"]: {
-              ...appState.aiContent["hero"],
-              ["cta"]: value,
+          }),
+        );
+        break;
+      case "subheading":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              ["hero"]: {
+                ...appState.aiContent["hero"],
+                ["subheading"]: value,
+              },
             },
-          },
-        }),
-      );
-      break;
-    case "primary":
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            ["colors"]: {
-              ...appState.aiContent["colors"],
-              ["primary"]: value,
+          }),
+        );
+        break;
+      case "imageUrl":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              ["hero"]: {
+                ...appState.aiContent["hero"],
+                ["imageUrl"]: value,
+              },
             },
-          },
-        }),
-      );
-      break;
-    case "colors":
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            colors: value,
-          },
-        }),
-      );
-      break;
-    case "title":
-      dispatch(
-        updateAppState({
-          ...appState,
-          meta: {
-            ...appState.meta,
-            title: value,
-          },
-        }),
-      );
-      break;
-    case "description":
-      dispatch(
-        updateAppState({
-          ...appState,
-          meta: {
-            ...appState.meta,
-            description: value,
-          },
-        }),
-      );
-      break;
-    case "secondary":
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {
-            ...appState.aiContent,
-            ["colors"]: {
-              ...appState.aiContent["colors"],
-              ["secondary"]: value,
+          }),
+        );
+        break;
+      case "cta":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              ["hero"]: {
+                ...appState.aiContent["hero"],
+                ["cta"]: value,
+              },
             },
-          },
-        }),
-      );
-      break;
-    default:
-      break;
+          }),
+        );
+        break;
+      case "primary":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              ["colors"]: {
+                ...appState.aiContent["colors"],
+                ["primary"]: value,
+              },
+            },
+          }),
+        );
+        break;
+      case "colors":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              colors: value,
+            },
+          }),
+        );
+        break;
+      case "title":
+        dispatch(
+          updateAppState({
+            ...appState,
+            meta: {
+              ...appState.meta,
+              title: value,
+            },
+          }),
+        );
+        break;
+      case "description":
+        dispatch(
+          updateAppState({
+            ...appState,
+            meta: {
+              ...appState.meta,
+              description: value,
+            },
+          }),
+        );
+        break;
+      case "secondary":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              ["colors"]: {
+                ...appState.aiContent["colors"],
+                ["secondary"]: value,
+              },
+            },
+          }),
+        );
+        break;
+      default:
+        break;
+    }
   }
+
 };
+
+
+export function generateUniqueId() {
+  // Generate a random number and convert it to base 36
+  const randomPart = Math.random().toString(36).substr(2, 9);
+  
+  // Get the current timestamp
+  const timestampPart = new Date().getTime().toString(36);
+
+  // Concatenate the random part and timestamp part
+  const uniqueId = randomPart + timestampPart;
+
+  return uniqueId;
+}

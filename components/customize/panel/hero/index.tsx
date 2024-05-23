@@ -142,7 +142,7 @@ const HeroContent = (props: TProps) => {
 
   const handleDeleteButton = (name: string) => {
     const updatedHeroCustomizeFields = heroCustomizeFields.map((field) => {
-      if (field.name === "cta" && Array.isArray(field.children)) {
+      if (field.type === "button" && Array.isArray(field.children)) {
         // Filter out the child with the provided name
         field.children = field.children.filter((child) => child.name !== name);
       }
@@ -150,17 +150,30 @@ const HeroContent = (props: TProps) => {
     });
     console.log(updatedHeroCustomizeFields);
     setHeroCustomizeFields(updatedHeroCustomizeFields);
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          hero: {
+            ...appState.aiContent.hero,
+            button: {
+              ...appState.aiContent.hero.button,
+              list: appState.aiContent.hero.button.list.filter((button) => {
+                if (button.name !== name) {
+                  return button;
+                }
+              }),
+            },
+          },
+        },
+      }),
+    );
   };
 
   useEffect(() => {
     for (const f of heroCustomizeFields) {
-      // if (f.type === "button") {
-      //   f.children?.forEach((child) =>
-      //     setValue(child.name, child.defaultValue),
-      //   );
-      // } else {
       setValue(f.name, f.defaultValue);
-      // }
     }
   }, [heroCustomizeFields]);
 
@@ -353,7 +366,7 @@ const HeroContent = (props: TProps) => {
                                                     onClick={() =>
                                                       setShowButtonForm({
                                                         show: true,
-                                                        edit: data.name,
+                                                        edit: item.name,
                                                       })
                                                     }
                                                   />
