@@ -118,7 +118,7 @@ export default function WebsitesForm() {
                   className=" flex  max-w-80 flex-col items-center justify-center rounded-lg border   shadow"
                 >
                   <Image
-                    src={JSON.parse(site?.aiResult)?.hero?.imageUrl}
+                    src={JSON.parse(site?.aiResult)?.hero?.image.imageUrl}
                     height={200}
                     width={500}
                     className="cover rounded-t-lg"
