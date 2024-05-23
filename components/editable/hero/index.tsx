@@ -11,10 +11,18 @@ type TProps = {
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
+  showButtonForm:{
+    edit:string,
+    show: boolean,
+  };
+  setShowButtonForm:React.Dispatch<React.SetStateAction<{
+    edit:string,
+    show: boolean,
+  }>>;
 };
 
 const EditableHero = (props: TProps) => {
-  const { hero, colors, setIsOpen, setSection, editable, setFocusedField } =
+  const { hero, colors, setIsOpen, setSection, editable, setFocusedField,showButtonForm,setShowButtonForm } =
     props;
   return (
     <div
@@ -66,7 +74,10 @@ const EditableHero = (props: TProps) => {
                 }}
               >
                 {hero.button.list.map((data, i) => (
-                  <div key={i} >
+                  <div key={i} onClick={()=>setShowButtonForm({
+                    edit:data.name,
+                    show:true,
+                  })}>
                     <CTA
                       text={data.label}
                       bgColor={colors.secondary}

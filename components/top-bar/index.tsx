@@ -12,6 +12,10 @@ type TopBarProps = {
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setShowButtonForm?:React.Dispatch<React.SetStateAction<{
+    edit:string,
+    show: boolean,
+  }>>;
 };
 
 export default function TopBar(props: TopBarProps) {
@@ -19,7 +23,7 @@ export default function TopBar(props: TopBarProps) {
     banner,
 
     colors,
-
+    setShowButtonForm,
     editable,
     setFocusedField,
     setIsOpen,
@@ -97,7 +101,10 @@ export default function TopBar(props: TopBarProps) {
                     }}
                   >
                     {banner.button.list.map((data, i) => (
-                      <div key={i}>
+                      <div key={i} onClick={()=>setShowButtonForm && setShowButtonForm({
+                        edit:data.name,
+                        show:true,
+                      })}>
                         <CTA
                           text={data.label}
                           bgColor={colors.secondary}

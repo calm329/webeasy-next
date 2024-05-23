@@ -31,6 +31,10 @@ export default function Page() {
     useState<TTemplateName>("Basic template");
   const dispatch = useAppDispatch();
   const saveLoading = useAppSelector(LD)
+  const [showButtonForm, setShowButtonForm] = useState({
+    edit: "",
+    show: false,
+  });
   const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
     [
       {
@@ -201,6 +205,8 @@ export default function Page() {
               setFocusedField={setFocusedField}
               setIsSideBarOpen={setIsSideBarOpen}
               setSection={setSection}
+              showButtonForm={showButtonForm}
+              setShowButtonForm={setShowButtonForm}
             />
             {appState.editable && (
               <>
@@ -219,6 +225,8 @@ export default function Page() {
                     focusedField={focusedField}
                     setBrandCustomizeFields={setBrandCustomizeFields}
                     setHeroCustomizeFields={setHeroCustomizeFields}
+                    showButtonForm={showButtonForm}
+                    setShowButtonForm={setShowButtonForm}
                   />
                 ) : (
                   <CustomDrawer
@@ -235,6 +243,8 @@ export default function Page() {
                     setBrandCustomizeFields={setBrandCustomizeFields}
                     setHeroCustomizeFields={setHeroCustomizeFields}
                     focusedField={focusedField}
+                    showButtonForm={showButtonForm}
+                    setShowButtonForm={setShowButtonForm}
                   />
                 )}
               </>
