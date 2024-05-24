@@ -264,6 +264,7 @@ export const getData = async (params: TParams) => {
     );
   }
 
+
   dispatch(
     updateAppState({
       ...appState,
