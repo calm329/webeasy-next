@@ -264,7 +264,6 @@ export const getData = async (params: TParams) => {
     );
   }
 
-
   dispatch(
     updateAppState({
       ...appState,
@@ -281,15 +280,6 @@ export const getData = async (params: TParams) => {
       accessToken: searchParams.get("access_token") || "",
       userId: searchParams.get("user_id") || "",
     });
-  } else if (siteAvailable) {
-    await updateSite(
-      siteAvailable,
-      {
-        aiResult: JSON.stringify(aiContent),
-        posts: JSON.stringify(iPosts),
-      },
-      ["aiResult", "posts"],
-    );
   }
   console.log("updated", aiContent);
   // update default values
@@ -589,8 +579,8 @@ export async function saveState(appState: AppState, dispatch: any) {
         keys: ["aiResult"],
       }),
     ).unwrap();
-    toast.success("Data saved successfully")
+    toast.success("Data saved successfully");
   } catch (error) {
-    console.log("errorhaiji",error);
+    console.log("errorhaiji", error);
   }
 }
