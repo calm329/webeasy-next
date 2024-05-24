@@ -46,7 +46,7 @@ const BackContent = (props: TProps) => {
             dispatch(
               updateAppState({
                 ...appState,
-                status: "Not saved",
+                status: "Loading Instagram ....",
               }),
             );
             router.push("/settings/websites");
