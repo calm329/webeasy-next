@@ -177,6 +177,10 @@ const siteSlice = createSlice({
         state.sites.domain.present = future.shift()!;
       }
     },
+    clearPastAndFuture(state) {
+      state.sites.domain.past = [];
+      state.sites.domain.future = [];
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSitesByDomain.pending, (state) => {
@@ -293,7 +297,7 @@ const siteSlice = createSlice({
 
 //export async thunks
 export { fetchSitesByDomain, createSite, updateSite, fetchSitesByUser };
-export const { updateAppState,undo,redo } = siteSlice.actions;
+export const { updateAppState,undo,redo,clearPastAndFuture } = siteSlice.actions;
 export const appState = (state: RootState) => state.siteSlice.sites.domain.present;
 export const pastAppState = (state: RootState) => state.siteSlice.sites.domain.past;
 export const futureAppState = (state: RootState) => state.siteSlice.sites.domain.future;
