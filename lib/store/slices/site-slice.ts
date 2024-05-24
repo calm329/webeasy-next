@@ -4,7 +4,7 @@ import { RootState } from "..";
 import SiteApi from "@/lib/api/site-api";
 import { AppState, TSite } from "@/types";
 import { generateUniqueId } from "@/lib/utils/function";
-const MAX_HISTORY_LENGTH = 10;
+const MAX_HISTORY_LENGTH = 100;
 type TInitialState = {
   sites: {
     domain: { past: AppState[]; present: AppState; future: AppState[] };
