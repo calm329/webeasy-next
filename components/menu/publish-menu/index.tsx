@@ -68,7 +68,7 @@ export default function PublishMenu() {
           <Menu.Item>
             {({ active }) => (
               <Link
-                href={"https://" + appState.subdomain + ".webeasy.ai"}
+                href={"/"+appState.subdomain}
                 target="_blank"
                 className={classNames(
                   active ? "bg-gray-100" : "",
@@ -82,7 +82,8 @@ export default function PublishMenu() {
           <Menu.Item>
             {({ active }) => (
               <Link
-                href="#"
+                href={"https://" + appState.subdomain + ".webeasy.ai"}
+                target="_blank"
                 className={classNames(
                   active ? "bg-gray-100" : "",
                   "block px-4 py-2 text-sm text-gray-700",

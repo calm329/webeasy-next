@@ -1,5 +1,6 @@
 import BasicTemplate from "@/templates/basic-template";
 import { getSiteData } from "@/lib/fetchers";
+import { makeStore } from "@/lib/store";
 
 type TProps = {
   params: { domain: string };
@@ -22,21 +23,14 @@ export default async function SiteHomePage(props: TProps) {
   let posts = JSON.parse(data.posts || "[]");
   let aiResult = JSON.parse(data.aiResult || "{}");
   console.log("data", data);
+  // const appState = makeStore().getState().siteSlice.sites.domain.present;
+  // console.log("appState", appState);
   return (
     <div>
       <BasicTemplate
-        logo={{ link: data.logo ?? "", alt: "" }}
-        businessName={aiResult["businessName"]}
-        hero={{
-          heading: aiResult["hero"]["heading"],
-          subheading: aiResult["hero"]["subheading"],
-          imageUrl: aiResult["hero"]["imageUrl"],
-        }}
+        banner={aiResult["banner"]}
+        hero={aiResult["hero"]}
         colors={aiResult["colors"]}
-        cta={{
-          text: aiResult["hero"]["cta"],
-          link: aiResult["hero"]["ctaLink"] || "#",
-        }}
         services={aiResult["services"]["list"]}
         posts={posts}
       />
