@@ -28,10 +28,10 @@ const BackContent = (props: TProps) => {
           className="mr-2 rounded bg-indigo-600 px-4 py-2 text-white"
           onClick={() => {
             setOpen(false);
-              saveState(appState, dispatch).then(() => {
-                dispatch(clearPastAndFuture());
-                router.push("/settings/websites");
-              });
+            saveState(appState, dispatch).then(() => {
+              dispatch(clearPastAndFuture());
+              router.push("/settings/websites");
+            });
           }}
         >
           Save
