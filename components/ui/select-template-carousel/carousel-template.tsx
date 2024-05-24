@@ -33,6 +33,7 @@ const SelectTemplateCarousel = (props: TProps) => {
       getData("regenerate");
     }
   }
+  const sortedTemplates = templates ? [...templates].sort((a, b) => a.name.localeCompare(b.name)) : null;
   return (
     <div className="mt-5 flex flex-col gap-5 text-center">
       {!isMobile && (
@@ -47,7 +48,7 @@ const SelectTemplateCarousel = (props: TProps) => {
         setActiveIndex={setActiveIndex}
       >
         <CarouselContent>
-          {templates
+          {sortedTemplates
             ?.map((data, i) => (
               <CarouselItem key={data.id}>
                 <div className=" p-1">
