@@ -39,7 +39,7 @@ import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { IoMdAdd, IoMdArrowRoundBack } from "react-icons/io";
 import { saveState } from "@/lib/utils/function";
-import { appState as AS, futureAppState as FAS, loading as LD, pastAppState as PAS, redo, undo } from '@/lib/store/slices/site-slice';
+import { appState as AS, clearPastAndFuture, futureAppState as FAS, loading as LD, pastAppState as PAS, redo, undo } from '@/lib/store/slices/site-slice';
 import Loader from "../ui/loader";
 
 const navigation = [
@@ -149,7 +149,7 @@ export default function SiteHeader(props: TProps) {
         <div className="mt-5 flex w-full justify-around border-b pb-5">
          
           <Link href={"/settings/websites"} className="flex flex-col items-center" >
-            <IoMdArrowRoundBack size={20} />
+            <IoMdArrowRoundBack size={20} onClick={()=>dispatch(clearPastAndFuture())}/>
             {/* Undo */}
           </Link>
           <button className="flex flex-col items-center" >
@@ -181,7 +181,7 @@ export default function SiteHeader(props: TProps) {
         <div className="flex items-center gap-x-12 ">
           {isAuth && isBottomBar && (
             <button
-              onClick={() => router.push("/settings/websites")}
+              onClick={() => {dispatch(clearPastAndFuture());router.push("/settings/websites")}}
               className="relative  flex  items-center  rounded-md border border-gray-300 bg-white px-2 py-2 text-sm  font-medium  text-gray-700 hover:bg-gray-50"
             >
               <span className="sr-only"> Previous</span>
