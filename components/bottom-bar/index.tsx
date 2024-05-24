@@ -13,7 +13,15 @@ import { WidgetDrawer } from "../ui/drawer/widget-drawer";
 import { FaUndoAlt, FaRedoAlt } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
-import { appState as AS, futureAppState as FAS, loading as LD, pastAppState as PAS, redo, undo } from '@/lib/store/slices/site-slice';
+import {
+  appState as AS,
+  clearPastAndFuture,
+  futureAppState as FAS,
+  loading as LD,
+  pastAppState as PAS,
+  redo,
+  undo,
+} from "@/lib/store/slices/site-slice";
 import { saveState } from "@/lib/utils/function";
 import Loader from "../ui/loader";
 
@@ -43,9 +51,9 @@ const BottomToolBar = (props: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
   const loading = useAppSelector(LD);
-  const pastAppState = useAppSelector(PAS)
-  const futureAppState = useAppSelector(FAS)
-  console.log("jamn",pastAppState,futureAppState);
+  const pastAppState = useAppSelector(PAS);
+  const futureAppState = useAppSelector(FAS);
+  console.log("jamn", pastAppState, futureAppState);
   return (
     <div className="fixed bottom-0 z-10   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
       {isBottomBar ? (
@@ -66,7 +74,7 @@ const BottomToolBar = (props: TProps) => {
           <span className="ml-3">
             <button
               type="button"
-              className="inline-flex rounded-m px-3 py-2  text-sm font-semibold  gap-2 max-sm:text-xs text-black flex-col justify-center items-center"
+              className="rounded-m inline-flex flex-col items-center  justify-center gap-2  px-3 py-2 text-sm font-semibold text-black max-sm:text-xs"
               onClick={() => setWidgetModal(true)}
             >
               <ChatBubbleLeftIcon
@@ -87,29 +95,39 @@ const BottomToolBar = (props: TProps) => {
           <PublishMenu />
         </>
       ) : (
-     
-          <div className="flex w-full justify-around">
-            <button className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`} onClick={()=>dispatch(undo())} disabled={pastAppState.length === 0}>
-              <FaUndoAlt  />
-              Undo
-            </button>
-            <button className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`} onClick={()=>dispatch(redo())} disabled={futureAppState.length === 0}>
-              <FaRedoAlt  />
-              Redo
-            </button>
-            <button className="flex flex-col items-center"  >
-              <ImCancelCircle size={18} onClick={()=>getData && getData()}/>
-              Cancel
-            </button>
-            <button className="flex flex-col items-center">
-              <MdOutlineDownloadDone
-                size={20}
-                onClick={() => saveState(appState, dispatch)}
-              />
-              Done
-            </button>
-          </div>
-     
+        <div className="flex w-full justify-around">
+          <button
+            className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`}
+            onClick={() => dispatch(undo())}
+            disabled={pastAppState.length === 0}
+          >
+            <FaUndoAlt />
+            Undo
+          </button>
+          <button
+            className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`}
+            onClick={() => dispatch(redo())}
+            disabled={futureAppState.length === 0}
+          >
+            <FaRedoAlt />
+            Redo
+          </button>
+          <button className="flex flex-col items-center">
+            <ImCancelCircle size={18} onClick={() => getData && getData()} />
+            Cancel
+          </button>
+          <button className="flex flex-col items-center">
+            <MdOutlineDownloadDone
+              size={20}
+              onClick={() =>
+                saveState(appState, dispatch).then(() =>
+                  dispatch(clearPastAndFuture()),
+                )
+              }
+            />
+            Done
+          </button>
+        </div>
       )}
     </div>
   );
