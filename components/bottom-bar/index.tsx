@@ -1,14 +1,14 @@
 "use client";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import SettingMenu from "../header/settings-menu";
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 import WidgetModal from "../ui/modal/widget-modal";
 import ViewMenu from "../menu/view-menu";
 import PublishMenu from "../menu/publish-menu";
 import { DebouncedState, useMediaQuery } from "usehooks-ts";
-import { AppState, TTemplateName } from "@/types";
+import { AppState, TTemplate, TTemplateName } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { TemplatesData as TD } from "@/lib/store/slices/template-slice";
+import { fetchTemplates,TemplatesData as TD } from "@/lib/store/slices/template-slice";
 import { WidgetDrawer } from "../ui/drawer/widget-drawer";
 import { FaUndoAlt, FaRedoAlt } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
@@ -24,6 +24,7 @@ import {
 } from "@/lib/store/slices/site-slice";
 import { saveState } from "@/lib/utils/function";
 import Loader from "../ui/loader";
+import { getAllTemplates } from "@/lib/fetchers";
 
 type TProps = {
   showNavigation: boolean;
@@ -36,7 +37,8 @@ type TProps = {
 
 const BottomToolBar = (props: TProps) => {
   const [showWidgetModal, setWidgetModal] = useState(false);
-  const templates = useAppSelector(TD);
+
+
   const {
     showNavigation,
     isAuth,
@@ -53,7 +55,8 @@ const BottomToolBar = (props: TProps) => {
   const loading = useAppSelector(LD);
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
-  console.log("jamn", pastAppState, futureAppState);
+  const templates= useAppSelector(TD)
+
   return (
     <div className="fixed bottom-0 z-10   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
       {isBottomBar ? (
