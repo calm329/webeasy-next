@@ -95,15 +95,16 @@ export default function SettingMenu(props: TProps) {
         ))}
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className={`inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 max-sm:border-none max-sm:bg-transparent max-sm:text-xs max-sm:text-black max-sm:hover:bg-transparent`}>
-            <div className="flex items-center justify-center gap-2 max-sm:flex-col sm:hidden">
+          <Menu.Button className={`inline-flex w-full items-center justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold max-sm:text-xs text-black `}>
+            <div className="flex items-center justify-center gap-2 flex-col sm:hidden">
               <div className="flex">
                 <IoMdSettings size={18} />
               </div>
               Settings
             </div>
-            <div className="flex gap-2 max-sm:hidden">
+            <div className="flex gap-2 max-sm:hidden flex-col justify-center items-center">
               <IoMdSettings size={18} />
+              <div className="flex ">
               Settings
               {matches ? (
                 <ChevronUpIcon
@@ -116,6 +117,8 @@ export default function SettingMenu(props: TProps) {
                   aria-hidden="true"
                 />
               )}
+              </div>
+             
             </div>
           </Menu.Button>
         </div>
