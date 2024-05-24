@@ -2,6 +2,8 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
   appState as AS,
   clearPastAndFuture,
+  fetchSitesByDomain,
+  updateAppState,
 } from "@/lib/store/slices/site-slice";
 import { saveState } from "@/lib/utils/function";
 import { useRouter } from "next/navigation";
@@ -40,6 +42,13 @@ const BackContent = (props: TProps) => {
           className="rounded bg-gray-500 px-4 py-2 text-white"
           onClick={() => {
             setOpen(false);
+            dispatch(clearPastAndFuture());
+            dispatch(
+              updateAppState({
+                ...appState,
+                status: "Not saved",
+              }),
+            );
             router.push("/settings/websites");
           }}
         >
