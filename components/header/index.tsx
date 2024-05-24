@@ -39,8 +39,18 @@ import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { IoMdAdd, IoMdArrowRoundBack } from "react-icons/io";
 import { saveState } from "@/lib/utils/function";
-import { appState as AS, clearPastAndFuture, futureAppState as FAS, loading as LD, pastAppState as PAS, redo, undo } from '@/lib/store/slices/site-slice';
+import {
+  appState as AS,
+  clearPastAndFuture,
+  futureAppState as FAS,
+  loading as LD,
+  pastAppState as PAS,
+  redo,
+  undo,
+} from "@/lib/store/slices/site-slice";
 import Loader from "../ui/loader";
+import BackModal from "../ui/modal/back-modal";
+import { BackDrawer } from "../ui/drawer/back-drawer";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -68,13 +78,8 @@ export type TTemplate = {
 
 export default function SiteHeader(props: TProps) {
   const pathname = usePathname();
-  const {
-    showNavigation,
-    isAuth,
-    getData,
-    handleChange,
-    setSelectedTemplate,
-  } = props;
+  const { showNavigation, isAuth, getData, handleChange, setSelectedTemplate } =
+    props;
   const router = useRouter();
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -86,9 +91,10 @@ export default function SiteHeader(props: TProps) {
   const [hideNavigation, setHideNavigation] = useState(false);
   const [showWidgetModal, setWidgetModal] = useState(false);
   const dispatch = useAppDispatch();
-  const appState = useAppSelector(AS)
-  const pastAppState = useAppSelector(PAS)
-  const futureAppState = useAppSelector(FAS)
+  const appState = useAppSelector(AS);
+  const pastAppState = useAppSelector(PAS);
+  const futureAppState = useAppSelector(FAS);
+  const [showBackModal, setShowBackModal] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -144,122 +150,184 @@ export default function SiteHeader(props: TProps) {
           setSelectedTemplate={setSelectedTemplate}
         />
       )}
-      <nav>
-      {!isBottomBar && pathname.startsWith("/auth") && (
-        <div className="mt-5 flex w-full justify-around border-b pb-5">
-         
-          <Link href={"/settings/websites"} className="flex flex-col items-center" >
-            <IoMdArrowRoundBack size={20} onClick={()=>dispatch(clearPastAndFuture())}/>
-            {/* Undo */}
-          </Link>
-          <button className="flex flex-col items-center" >
-            <IoMdAdd size={20} />
-            {/* Undo */}
-          </button>
-          <button className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`} onClick={()=>dispatch(undo())} disabled={pastAppState.length === 0}>
-            <FaUndoAlt />
-            {/* Undo */}
-          </button>
-          <button className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`} onClick={()=>dispatch(redo())} disabled={futureAppState.length === 0}>
-            <FaRedoAlt />
-            {/* Redo */}
-          </button>
-          <button className="flex flex-col items-center">
-            <ImCancelCircle size={18} onClick={()=>getData && getData()}/>
-            {/* Cancel */}
-          </button>
-          <button className="flex flex-col items-center">
-            <MdOutlineDownloadDone size={20} onClick={()=>saveState(appState,dispatch)}/>
-            {/* Done */}
-          </button>
-        </div>
-      )}
-      <div
-        className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "w-full max-w-full justify-between"}`}
-        aria-label="Global"
-      >
-        <div className="flex items-center gap-x-12 ">
-          {isAuth && isBottomBar && (
-            <button
-              onClick={() => {dispatch(clearPastAndFuture());router.push("/settings/websites")}}
-              className="relative  flex  items-center  rounded-md border border-gray-300 bg-white px-2 py-2 text-sm  font-medium  text-gray-700 hover:bg-gray-50"
-            >
-              <span className="sr-only"> Previous</span>
-              <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-              Back
-            </button>
-          )}
-          <Link href="/" className="-m-1.5 p-1.5">
-            <Image
-              src={"/WebEasy-logo-dark.svg"}
-              alt={"Logo"}
-              className={`${!isAuth && "h-10  max-sm:w-full"}`}
-              width={200}
-              height={100}
-            />
-          </Link>
-          <div
-            className={`flex lg:gap-x-12 ${hideNavigation && "hidden"} max-lg:hidden`}
-          >
-            {user &&
-              showNavigation &&
-              navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className=" mt-2 font-semibold  leading-6 text-gray-900"
-                >
-                  {item.name}
-                </a>
-              ))}
-          </div>
-        </div>
-        {isAuth && (
-          <>
-            <div
-              className={`ml-auto ${!isBottomBar && "hidden"}  flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2`}
-            >
-              {getData && setSelectedTemplate && appState && (
-                <SettingMenu
-                  getData={getData}
-                  handleChange={handleChange ?? undefined}
-                  appState={appState}
-                  templates={templates}
-                  setSelectedTemplate={setSelectedTemplate}
-                  setShowAuthModal={setShowAuthModal}
-                />
-              )}
-            </div>
-            <div className={` ml-3 flex ${!isBottomBar && "hidden"}`}>
-              <span className="hidden sm:block">
-                <button
-                  type="button"
-                  className="inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-black flex-col justify-center gap-2"
-                  onClick={() => setWidgetModal(true)}
-                >
-                  <ChatBubbleLeftIcon
-                    className="-ml-0.5 mr-1.5 h-5 w-5 "
-                    aria-hidden="true"
-                  />
-                  Widget
-                </button>
-              </span>
-              {isMobile ? (
-                <WidgetDrawer open={showWidgetModal} setOpen={setWidgetModal} />
-              ) : (
-                <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
-              )}
-              <ViewMenu />
 
-              <PublishMenu />
+      {isMobile ? (
+        <BackDrawer setOpen={setShowBackModal} open={showBackModal} />
+      ) : (
+        <BackModal setOpen={setShowBackModal} open={showBackModal} />
+      )}
+
+      <nav>
+        {!isBottomBar && pathname.startsWith("/auth") && (
+          <div className="mt-5 flex w-full justify-around border-b pb-5">
+            <button
+              className="flex flex-col items-center"
+              onClick={() => {
+                if (pastAppState.length > 0 || futureAppState.length > 0) {
+                  setShowBackModal(true);
+                } else {
+                  dispatch(clearPastAndFuture());
+                  router.push("/settings/websites");
+                }
+              }}
+            >
+              <IoMdArrowRoundBack size={20} />
+              {/* Undo */}
+            </button>
+            <button className="flex flex-col items-center">
+              <IoMdAdd size={20} />
+              {/* Undo */}
+            </button>
+            <button
+              className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`}
+              onClick={() => dispatch(undo())}
+              disabled={pastAppState.length === 0}
+            >
+              <FaUndoAlt />
+              {/* Undo */}
+            </button>
+            <button
+              className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`}
+              onClick={() => dispatch(redo())}
+              disabled={futureAppState.length === 0}
+            >
+              <FaRedoAlt />
+              {/* Redo */}
+            </button>
+            <button className="flex flex-col items-center">
+              <ImCancelCircle size={18} onClick={() => getData && getData()} />
+              {/* Cancel */}
+            </button>
+            <button className="flex flex-col items-center">
+              <MdOutlineDownloadDone
+                size={20}
+                onClick={() =>
+                  saveState(appState, dispatch).then(() =>
+                    dispatch(clearPastAndFuture()),
+                  )
+                }
+              />
+              {/* Done */}
+            </button>
+          </div>
+        )}
+        <div
+          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "w-full max-w-full justify-between"}`}
+          aria-label="Global"
+        >
+          <div className="flex items-center gap-x-12 ">
+            {isAuth && isBottomBar && (
+              <button
+                onClick={() => {
+                  if (pastAppState.length > 0 || futureAppState.length > 0) {
+                    setShowBackModal(true);
+                  } else {
+                    dispatch(clearPastAndFuture());
+                    router.push("/settings/websites");
+                  }
+                }}
+                className="relative  flex  items-center  px-2 py-2 text-base font-medium  text-black  "
+              >
+                <span className="sr-only"> Previous</span>
+                <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                Back
+              </button>
+            )}
+            <Link href="/" className="-m-1.5 p-1.5">
+              <Image
+                src={"/WebEasy-logo-dark.svg"}
+                alt={"Logo"}
+                className={`${!isAuth && "h-10  max-sm:w-full"}`}
+                width={200}
+                height={100}
+              />
+            </Link>
+            <div
+              className={`flex lg:gap-x-12 ${hideNavigation && "hidden"} max-lg:hidden`}
+            >
+              {user &&
+                showNavigation &&
+                navigation.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className=" mt-2 font-semibold  leading-6 text-gray-900"
+                  >
+                    {item.name}
+                  </a>
+                ))}
             </div>
-            {status === "authenticated" ? (
-              <div className="max-lg:hidden">
-                <AccountMenu user={user} />
+          </div>
+          {isAuth && (
+            <>
+              <div
+                className={`ml-auto ${!isBottomBar && "hidden"}  flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2`}
+              >
+                {getData && setSelectedTemplate && appState && (
+                  <SettingMenu
+                    getData={getData}
+                    handleChange={handleChange ?? undefined}
+                    appState={appState}
+                    templates={templates}
+                    setSelectedTemplate={setSelectedTemplate}
+                    setShowAuthModal={setShowAuthModal}
+                  />
+                )}
               </div>
+              <div className={` ml-3 flex ${!isBottomBar && "hidden"}`}>
+                <span className="hidden sm:block">
+                  <button
+                    type="button"
+                    className="inline-flex flex-col items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-black"
+                    onClick={() => setWidgetModal(true)}
+                  >
+                    <ChatBubbleLeftIcon
+                      className="-ml-0.5 mr-1.5 h-5 w-5 "
+                      aria-hidden="true"
+                    />
+                    Widget
+                  </button>
+                </span>
+                {isMobile ? (
+                  <WidgetDrawer
+                    open={showWidgetModal}
+                    setOpen={setWidgetModal}
+                  />
+                ) : (
+                  <WidgetModal
+                    open={showWidgetModal}
+                    setOpen={setWidgetModal}
+                  />
+                )}
+                <ViewMenu />
+
+                <PublishMenu />
+              </div>
+              {status === "authenticated" ? (
+                <div className="max-lg:hidden">
+                  <AccountMenu user={user} />
+                </div>
+              ) : (
+                <button
+                  className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-lg:hidden"
+                  onClick={() => {
+                    setShowAuthModal(true);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  Sign in
+                </button>
+              )}
+            </>
+          )}
+          <div
+            className={`flex ${isAuth && "hidden"} justify-end gap-5  max-lg:hidden`}
+          >
+            {status === "authenticated" ? (
+              <AccountMenu user={user} />
             ) : (
               <button
-                className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-lg:hidden"
+                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={() => {
                   setShowAuthModal(true);
                   setMobileMenuOpen(false);
@@ -268,52 +336,34 @@ export default function SiteHeader(props: TProps) {
                 Sign in
               </button>
             )}
-          </>
-        )}
-        <div
-          className={`flex ${isAuth && "hidden"} justify-end gap-5  max-lg:hidden`}
-        >
-          {status === "authenticated" ? (
-            <AccountMenu user={user} />
-          ) : (
-            <button
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={() => {
-                setShowAuthModal(true);
-                setMobileMenuOpen(false);
-              }}
-            >
-              Sign in
-            </button>
-          )}
-        </div>
-        <div
-          className={`flex ${isAuth ? "ml-4 w-auto" : "w-full"} justify-end gap-5  lg:hidden`}
-        >
-          {status === "authenticated" ? (
-            <div className="flex">
+          </div>
+          <div
+            className={`flex ${isAuth ? "ml-4 w-auto" : "w-full"} justify-end gap-5  lg:hidden`}
+          >
+            {status === "authenticated" ? (
+              <div className="flex">
+                <button
+                  type="button"
+                  className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                  onClick={() => setMobileMenuOpen(true)}
+                >
+                  <span className="sr-only">Open main menu</span>
+                  <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
+            ) : (
               <button
-                type="button"
-                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                onClick={() => setMobileMenuOpen(true)}
+                className="flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={() => {
+                  setShowAuthModal(true);
+                  setMobileMenuOpen(false);
+                }}
               >
-                <span className="sr-only">Open main menu</span>
-                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                Sign in
               </button>
-            </div>
-          ) : (
-            <button
-              className="flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              onClick={() => {
-                setShowAuthModal(true);
-                setMobileMenuOpen(false);
-              }}
-            >
-              Sign in
-            </button>
-          )}
+            )}
+          </div>
         </div>
-      </div>
       </nav>
       <AuthModal open={showAuthModal} setOpen={setShowAuthModal} />
       <Dialog

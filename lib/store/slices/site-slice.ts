@@ -154,13 +154,21 @@ const siteSlice = createSlice({
   reducers: {
     updateAppState(state, action) {
       const { present, past } = state.sites.domain;
-      if(present.status === "Done"){
+      const newState = action.payload;
+      // Check if the new state is different from the current present state
+      const isStateDifferent =
+        JSON.stringify(newState.aiContent) !== JSON.stringify(present.aiContent);
+
+      if (isStateDifferent && present.status === "Done") {
         past.push(present);
+
+        // Ensure not to exceed the maximum history length
+        if (past.length > MAX_HISTORY_LENGTH) {
+          past.shift();
+        }
       }
-      if (past.length > MAX_HISTORY_LENGTH) {
-        past.shift();
-      }
-      state.sites.domain.present = action.payload;
+
+      state.sites.domain.present = newState;
     },
     undo(state) {
       const { present, past, future } = state.sites.domain;
@@ -171,7 +179,7 @@ const siteSlice = createSlice({
     },
     redo(state) {
       const { present, past, future } = state.sites.domain;
-      console.log("future",future)
+      console.log("future", future);
       if (future.length > 0) {
         past.push(present);
         state.sites.domain.present = future.shift()!;
@@ -180,7 +188,7 @@ const siteSlice = createSlice({
     clearPastAndFuture(state) {
       state.sites.domain.past = [];
       state.sites.domain.future = [];
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSitesByDomain.pending, (state) => {
@@ -297,10 +305,14 @@ const siteSlice = createSlice({
 
 //export async thunks
 export { fetchSitesByDomain, createSite, updateSite, fetchSitesByUser };
-export const { updateAppState,undo,redo,clearPastAndFuture } = siteSlice.actions;
-export const appState = (state: RootState) => state.siteSlice.sites.domain.present;
-export const pastAppState = (state: RootState) => state.siteSlice.sites.domain.past;
-export const futureAppState = (state: RootState) => state.siteSlice.sites.domain.future;
+export const { updateAppState, undo, redo, clearPastAndFuture } =
+  siteSlice.actions;
+export const appState = (state: RootState) =>
+  state.siteSlice.sites.domain.present;
+export const pastAppState = (state: RootState) =>
+  state.siteSlice.sites.domain.past;
+export const futureAppState = (state: RootState) =>
+  state.siteSlice.sites.domain.future;
 export const sitesData = (state: RootState) => state.siteSlice.sites.user;
 export const loading = (state: RootState) => state.siteSlice.loading;
 export default siteSlice.reducer;
