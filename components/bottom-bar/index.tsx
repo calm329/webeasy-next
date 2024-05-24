@@ -58,7 +58,7 @@ const BottomToolBar = (props: TProps) => {
   const templates= useAppSelector(TD)
 
   return (
-    <div className="fixed bottom-0 z-10   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
+    <div className="fixed bottom-0 z-1   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
       {isBottomBar ? (
         <>
           <div className=" flex justify-end gap-5  max-sm:gap-2">

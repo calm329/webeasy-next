@@ -38,7 +38,10 @@ const BackContent = (props: TProps) => {
         </button>
         <button
           className="rounded bg-gray-500 px-4 py-2 text-white"
-          onClick={() => setOpen(false)}
+          onClick={() => {
+            setOpen(false);
+            router.push("/settings/websites");
+          }}
         >
           Cancel
         </button>
