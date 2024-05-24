@@ -3,6 +3,8 @@ import CTA from "../cta";
 import { Dispatch, SetStateAction } from "react";
 import { TBanner, TColors, TFields, TSection } from "@/types";
 import Image from "next/image";
+import { updateAppState, appState as AS } from '@/lib/store/slices/site-slice';
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 
 type TopBarProps = {
   banner: TBanner;
@@ -29,6 +31,8 @@ export default function TopBar(props: TopBarProps) {
     setIsOpen,
     setSection,
   } = props;
+  const dispatch =useAppDispatch()
+  const appState  = useAppSelector(AS)
   return (
     <div className="flex items-center justify-between rounded-full border border-gray-100 bg-gray-100 px-6 py-3.5 max-sm:flex-col max-sm:gap-5">
       <div className="w-auto">
@@ -45,10 +49,14 @@ export default function TopBar(props: TopBarProps) {
                     alt={banner.logo.alt}
                     className={`h-8 w-auto ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
                     onClick={() => {
-                      if (setIsOpen && setSection && setFocusedField) {
+                      if (setIsOpen && setSection && setFocusedField && setShowButtonForm) {
                         setSection("Banner");
                         setIsOpen(true);
                         setFocusedField("logo");
+                        setShowButtonForm({
+                          edit:"",
+                          show:false,
+                        })
                       }
                     }}
                     height={32}
@@ -69,10 +77,17 @@ export default function TopBar(props: TopBarProps) {
                 href="#"
                 className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                 onClick={() => {
-                  if (setIsOpen && setSection && setFocusedField) {
+                  if (setIsOpen && setSection && setFocusedField && setShowButtonForm) {
                     setSection("Banner");
                     setIsOpen(true);
-                    setFocusedField("businessName");
+                    setShowButtonForm({
+                      edit:"",
+                      show:false,
+                    })
+                    dispatch(updateAppState({
+                      ...appState,
+                      focusedField:"businessName"
+                    }))
                   }
                 }}
               >

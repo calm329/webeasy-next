@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RxDragHandleDots2 } from "react-icons/rx";
 import { FiLink } from "react-icons/fi";
 import { MdModeEditOutline, MdDeleteForever } from "react-icons/md";
@@ -196,6 +196,19 @@ const HeroContent = (props: TProps) => {
     }
   }, [heroCustomizeFields]);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(()=>{
+    if(appState.focusedField === "heading"){
+      inputRef.current?.focus();
+    }
+
+    if(appState.focusedField === "subheading"){
+      textareaRef.current?.focus();
+    }
+  },[appState])
+
   return (
     <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
       <form
@@ -276,6 +289,7 @@ const HeroContent = (props: TProps) => {
                               handleChange(data.name, e.target.value);
                               field.onChange(e.target.value);
                             }}
+                            ref={inputRef}
                             defaultValue={data.defaultValue}
                           />
                         </div>
@@ -300,6 +314,7 @@ const HeroContent = (props: TProps) => {
                               handleChange(data.name, e.target.value);
                               field.onChange(e.target.value);
                             }}
+                            ref={textareaRef}
                             defaultValue={data.defaultValue}
                           />
                         </div>
