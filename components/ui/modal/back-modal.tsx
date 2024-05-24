@@ -2,6 +2,7 @@
 import BackContent from "@/components/back-content";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Dispatch, Fragment, SetStateAction } from "react";
+import { IoClose } from "react-icons/io5";
 
 type TProps = {
   open: boolean;
@@ -36,6 +37,11 @@ export default function BackModal(props: TProps) {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform  rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
+                <div className="flex w-full ">
+                  <button onClick={() => setOpen(false)} className="ml-auto ">
+                    <IoClose size={20}/>
+                  </button>
+                </div>
                 <BackContent setOpen={setOpen} />
               </Dialog.Panel>
             </Transition.Child>
