@@ -12,6 +12,7 @@ type TProps = {
 };
 export default function SelectTemplateDrawer(props: TProps) {
   const { open, setOpen, templates, setSelectedTemplate, getData } = props;
+  console.log(`SelectTemplateDrawer`,templates)
   return (
     <Drawer open={!!open} onOpenChange={setOpen}>
       <DrawerContent>

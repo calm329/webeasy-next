@@ -48,7 +48,6 @@ const SelectTemplateCarousel = (props: TProps) => {
       >
         <CarouselContent>
           {templates
-            ?.sort((a, b) => a.name.localeCompare(b.name))
             ?.map((data, i) => (
               <CarouselItem key={data.id}>
                 <div className=" p-1">

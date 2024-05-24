@@ -87,7 +87,6 @@ export default function SiteHeader(props: TProps) {
   const matches = useMediaQuery("(max-width: 500px)");
   const [user, setUser] = useState<TUser>(null);
   const [loading, setLoading] = useState(false);
-  const [templates, setTemplates] = useState<TTemplate | null>(null);
   const [hideNavigation, setHideNavigation] = useState(false);
   const [showWidgetModal, setWidgetModal] = useState(false);
   const dispatch = useAppDispatch();
@@ -95,13 +94,13 @@ export default function SiteHeader(props: TProps) {
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
   const [showBackModal, setShowBackModal] = useState(false);
-
+  
+  const [templates, setTemplates] = useState<TTemplate | null>(null);
   const fetchData = async () => {
     try {
-      const response = await getAllTemplates();
-      const templates = await dispatch(fetchTemplates()).unwrap();
-      console.log("templates", templates);
-      setTemplates(response);
+      const temp = await dispatch(fetchTemplates()).unwrap();
+      console.log("templates", temp);
+      setTemplates(temp);
     } catch (error) {}
   };
 
