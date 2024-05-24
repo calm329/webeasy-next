@@ -18,7 +18,7 @@ export default function ViewMenu() {
 
   return (
     <Menu as="div" className={`relative ml-3 `}>
-      <Menu.Button className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 max-sm:text-xs max-sm:text-black max-sm:shadow-none max-sm:ring-0">
+      <Menu.Button className="inline-flex items-center rounded-md  px-3 py-2 text-sm font-semibold  max-sm:text-xs text-black ">
         <div className="flex items-center justify-center gap-1 max-sm:flex-col max-sm:gap-2 sm:hidden">
           <div className="flex">
             <LinkIcon
@@ -28,23 +28,26 @@ export default function ViewMenu() {
           </div>
           View
         </div>
-        <div className={`flex  max-sm:hidden`}>
+        <div className={`flex  max-sm:hidden flex-col justify-center items-center gap-2`}>
           <LinkIcon
-            className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400"
+            className="-ml-0.5 mr-1.5 h-5 w-5 "
             aria-hidden="true"
           />
+          <div className="flex">
           View
           {isMobile ? (
             <ChevronUpIcon
-              className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
+              className="-mr-1 ml-1.5 h-5 w-5 "
               aria-hidden="true"
             />
           ) : (
             <ChevronDownIcon
-              className="-mr-1 ml-1.5 h-5 w-5 text-gray-400"
+              className="-mr-1 ml-1.5 h-5 w-5 "
               aria-hidden="true"
             />
           )}
+          </div>
+          
         </div>
       </Menu.Button>
 

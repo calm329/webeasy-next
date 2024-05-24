@@ -66,11 +66,11 @@ const BottomToolBar = (props: TProps) => {
           <span className="ml-3">
             <button
               type="button"
-              className="inline-flex items-center rounded-md bg-white px-3 py-2  text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 max-sm:flex-col max-sm:gap-2 max-sm:border-0 max-sm:bg-transparent max-sm:text-xs max-sm:text-black max-sm:shadow-none max-sm:ring-0"
+              className="inline-flex rounded-m px-3 py-2  text-sm font-semibold  gap-2 max-sm:text-xs text-black flex-col justify-center items-center"
               onClick={() => setWidgetModal(true)}
             >
               <ChatBubbleLeftIcon
-                className="-ml-0.5 mr-1.5 h-5 w-5 max-sm:m-0"
+                className="ml-0.5 mr-1.5 h-5 w-5 max-sm:m-0"
                 aria-hidden="true"
               />
               Widget

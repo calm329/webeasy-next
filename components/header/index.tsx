@@ -234,11 +234,11 @@ export default function SiteHeader(props: TProps) {
               <span className="hidden sm:block">
                 <button
                   type="button"
-                  className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  className="inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-black flex-col justify-center gap-2"
                   onClick={() => setWidgetModal(true)}
                 >
                   <ChatBubbleLeftIcon
-                    className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400"
+                    className="-ml-0.5 mr-1.5 h-5 w-5 "
                     aria-hidden="true"
                   />
                   Widget
