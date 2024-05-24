@@ -6,7 +6,7 @@ import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { generateZodSchema } from "@/lib/utils";
 import { FormField, TFields, TSection } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { FiLink } from "react-icons/fi";
 import { ImSpinner2 } from "react-icons/im";
@@ -204,6 +204,14 @@ const BannerContent = (props: TProps) => {
       }),
     );
   };
+
+
+  const inputRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if(appState.focusedField === "businessName"){
+      inputRef.current?.focus()
+    }
+  },[appState])
   return (
     <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
       <form
@@ -283,6 +291,7 @@ const BannerContent = (props: TProps) => {
                               handleChange(data.name, e.target.value);
                               field.onChange(e.target.value);
                             }}
+                            ref={inputRef}
                             defaultValue={data.defaultValue}
                           />
                         </div>

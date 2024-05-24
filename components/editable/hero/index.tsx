@@ -3,6 +3,8 @@ import TopBar from "@/components/top-bar";
 import { TColors, TFields, THero, TSection } from "@/types";
 import React, { Dispatch, SetStateAction } from "react";
 import CTA from "@/components/cta";
+import { updateAppState, appState as AS } from '@/lib/store/slices/site-slice';
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 
 type TProps = {
   hero: THero;
@@ -24,6 +26,9 @@ type TProps = {
 const EditableHero = (props: TProps) => {
   const { hero, colors, setIsOpen, setSection, editable, setFocusedField,showButtonForm,setShowButtonForm } =
     props;
+
+    const dispatch = useAppDispatch();
+    const appState = useAppSelector(AS);
   return (
     <div
       className={`-m-8 mb-10 flex flex-wrap ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -40,10 +45,17 @@ const EditableHero = (props: TProps) => {
             className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             style={{ color: colors.primary }}
             onClick={() => {
-              if (editable && setIsOpen && setSection && setFocusedField) {
+              if (editable && setIsOpen && setSection && setFocusedField && setShowButtonForm) {
                 setSection("Hero");
                 setIsOpen(true);
-                setFocusedField("heading");
+                setShowButtonForm({
+                  edit:"",
+                  show:false
+                })
+                dispatch(updateAppState({
+                  ...appState,
+                  focusedField:"heading"
+                }))
               }
             }}
           >
@@ -52,10 +64,17 @@ const EditableHero = (props: TProps) => {
           <p
             className={`mb-8 text-xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             onClick={() => {
-              if (editable && setIsOpen && setSection && setFocusedField) {
+              if (editable && setIsOpen && setSection && setFocusedField && setShowButtonForm) {
                 setSection("Hero");
                 setIsOpen(true);
-                setFocusedField("subheading");
+                setShowButtonForm({
+                  edit:"",
+                  show:false
+                })
+                dispatch(updateAppState({
+                  ...appState,
+                  focusedField:"subheading"
+                }))
               }
             }}
           >
@@ -100,10 +119,14 @@ const EditableHero = (props: TProps) => {
             alt="Hero Image"
             className={`mx-auto rounded-3xl object-contain md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             onClick={() => {
-              if (editable && setIsOpen && setSection && setFocusedField) {
+              if (editable && setIsOpen && setSection && setFocusedField && setShowButtonForm) {
                 setSection("Hero");
                 setIsOpen(true);
                 setFocusedField("imageUrl");
+                setShowButtonForm({
+                  edit:"",
+                  show:false
+                })
               }
             }}
           />
