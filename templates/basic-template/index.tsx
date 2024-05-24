@@ -4,59 +4,24 @@ import ServiceCard from "@/components/ui/card/service-card";
 import CTA from "@/components/cta";
 import TopBar from "@/components/top-bar";
 import { generateUniqueId } from "@/lib/utils/function";
+import { TBanner, TColors, THero } from "@/types";
 
 type BasicTemplateProps = {
-  logo: {
-    link: string;
-    alt: string;
-  };
-  businessName: string;
-  hero: {
-    heading: string;
-    subheading: string;
-    imageUrl: string;
-  };
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  cta: {
-    text: string;
-    link: string;
-  };
+  banner: TBanner;
+  hero: THero;
+  colors: TColors;
   services: any[];
   posts: any[];
 };
 
 export default function BasicTemplate(props: BasicTemplateProps) {
-  const { logo, businessName, hero, colors, cta, services, posts } = props;
+  const { banner, hero, colors, services, posts } = props;
   // console.log("onshow",open)
   return (
     <>
       <section className="bg-white py-6">
         <div className={`container mx-auto px-4`}>
-          <TopBar
-            banner={{
-              businessName: businessName,
-              logo: {
-                alt: logo?.alt,
-                link: logo?.link,
-                show: true,
-              },
-              button: {
-                show: true,
-                list: [
-                  {
-                    name:generateUniqueId(),
-                    label: cta.text,
-                    type: "External",
-                    value: cta.link,
-                  },
-                ],
-              },
-            }}
-            colors={colors}
-          />
+          <TopBar banner={banner} colors={colors} />
         </div>
       </section>
       <section className="overflow-hidden bg-gray-50 py-10">
@@ -77,18 +42,23 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     </p>
                     <div className="-m-2 flex flex-wrap">
                       <div className={`w-full p-2 md:w-auto `}>
-                        <CTA
-                          text={cta.text}
-                          bgColor={colors.secondary}
-                          link={cta.link}
-                        />
+                        {hero.button.list.map((button) => (
+                          <div key={button.name}>
+                            <CTA
+                              text={button.label}
+                              bgColor={colors.secondary}
+                              link={button.value ??""}
+                              external={button.type ==="External"}
+                            />
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className={`w-full p-8 md:w-1/2  `}>
                   <Image
-                    src={hero.imageUrl}
+                    src={hero.image.imageUrl}
                     width={256}
                     height={256}
                     alt="Hero Image"

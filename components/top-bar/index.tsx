@@ -122,7 +122,7 @@ export default function TopBar(props: TopBarProps) {
                       <CTA
                         text={data.label}
                         bgColor={colors.secondary}
-                        link={editable ? "#" : data.value}
+                        link={editable ? "#" : data.value ??""}
                         external={data.type === "External"}
                       />
                     </div>
