@@ -13,7 +13,7 @@ export function Header(props: TProps) {
   return (
     <header className={`relative z-1 flex-none lg:pt-20 `}>
       <Container
-        className="flex flex-wrap items-center justify-center sm:justify-between lg:flex-nowrap"
+        className="flex flex-wrap items-center justify-center sm:justify-between lg:flex-nowrap max-sm:flex-col gap-10"
         style={{ color: colors.primary }}
       >
         <div className="mt-10 flex items-center  gap-2 text-xl lg:mt-0 lg:grow lg:basis-0">
@@ -25,7 +25,7 @@ export function Header(props: TProps) {
           />
           {banner.businessName}
         </div>
-        <div className="hidden sm:mt-10 sm:flex lg:mt-0 lg:grow lg:basis-0 lg:justify-end">
+        <div className="sm:mt-10 sm:flex lg:mt-0 lg:grow lg:basis-0 lg:justify-end">
           {banner.button.list.map((data, i) => (
             <div key={i}>
               <Button

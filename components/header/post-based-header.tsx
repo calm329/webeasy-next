@@ -17,7 +17,7 @@ export function Header(props: TProps) {
   return (
     <header className="py-10">
       <Container>
-        <nav className="relative z-1 flex justify-between">
+        <nav className="relative z-1 flex justify-between max-sm:flex-col items-center gap-10">
           <div
             className="flex items-center md:gap-x-12 "
             style={{ color: colors.primary }}
