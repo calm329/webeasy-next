@@ -17,7 +17,7 @@ type BasicTemplateProps = {
 
 export default function BasicTemplate(props: BasicTemplateProps) {
   const { banner, hero, colors, services, posts } = props;
-  // console.log("onshow",open)
+
   return (
     <>
       <section className="bg-white py-6">

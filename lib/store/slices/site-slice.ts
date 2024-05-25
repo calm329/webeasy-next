@@ -180,7 +180,7 @@ const siteSlice = createSlice({
     },
     redo(state) {
       const { present, past, future } = state.sites.domain;
-      console.log("future", future);
+   
       if (future.length > 0) {
         past.push(present);
         state.sites.domain.present = future.shift()!;

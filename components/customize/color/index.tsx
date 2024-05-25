@@ -55,7 +55,6 @@ const CustomizeColor = (props: TProps) => {
     }
   }, []);
 
-  console.log("Original", originalColor, appState);
   const isMobile = useMediaQuery("(max-width: 1024px)");
   return (
     <div>
@@ -73,7 +72,7 @@ const CustomizeColor = (props: TProps) => {
             fields={colorFields}
             handler={async (data: any, keys: string[]) => {
               try {
-                console.log(data);
+        
                 handleChange("colors", data);
                 await updateSite(
                   getUsernameFromPosts(JSON.stringify(appState.iPosts)) || "",

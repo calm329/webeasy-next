@@ -82,7 +82,7 @@ const BannerContent = (props: TProps) => {
   const onLinkInvalid = () => {
     setIsLinkInValid(true);
   };
-  console.log("error", errors);
+
   const onSubmit: SubmitHandler<any> = async (data) => {
     setLoading(true);
 
@@ -117,7 +117,6 @@ const BannerContent = (props: TProps) => {
     });
   }, []);
 
-  console.log("values", getValues());
 
   useEffect(() => {
     for (const f of brandCustomizeFields) {
@@ -182,7 +181,7 @@ const BannerContent = (props: TProps) => {
       }
       return field;
     });
-    console.log(updatedBrandCustomizeFields);
+
     setBrandCustomizeFields(updatedBrandCustomizeFields);
     dispatch(
       updateAppState({
@@ -335,7 +334,7 @@ const BannerContent = (props: TProps) => {
                             <>
                               <DragDropContext
                                 onDragEnd={onDragEnd}
-                                onDragStart={() => console.log("it's started")}
+                             
                               >
                                 <Droppable droppableId="droppable">
                                   {(provided, snapshot) => (

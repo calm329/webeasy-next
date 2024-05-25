@@ -53,17 +53,17 @@ const CustomButton = (props: TProps) => {
   } = props;
   const [loading, setLoading] = useState(false);
   const appState = useAppSelector(AS);
-  console.log("Custom", showButtonForm);
+
   const [data, setData] = useState<any>();
   const dispatch = useAppDispatch();
   useEffect(() => {
-    console.log("showButtonForm", showButtonForm);
+  
     if (showButtonForm.edit) {
       switch (section) {
         case "Banner":
           brandCustomizeFields.forEach((field) => {
             field.children?.forEach((child) => {
-              console.log("field", child);
+      
               if (child.name === showButtonForm.edit) {
                 setData(child);
               }
@@ -73,7 +73,7 @@ const CustomButton = (props: TProps) => {
         case "Hero":
           heroCustomizeFields.forEach((field) => {
             field.children?.forEach((child) => {
-              console.log("field", child);
+              
               if (child.name === showButtonForm.edit) {
                 setData(child);
               }
@@ -98,12 +98,7 @@ const CustomButton = (props: TProps) => {
                   button: {
                     ...appState.aiContent.banner.button,
                     list: appState.aiContent.banner.button.list.map((item) => {
-                      console.log("button", {
-                        name: name,
-                        label: data.label,
-                        type: data.type,
-                        link: data.link,
-                      });
+                 
                       if (item.name === name) {
                         return {
                           name: name,
@@ -146,12 +141,7 @@ const CustomButton = (props: TProps) => {
                   button: {
                     ...appState.aiContent.hero.button,
                     list: appState.aiContent.hero.button.list.map((item) => {
-                      console.log("button", {
-                        name: name,
-                        label: data.label,
-                        type: data.type,
-                        link: data.link,
-                      });
+             
                       if (item.name === name) {
                         return {
                           name: name,

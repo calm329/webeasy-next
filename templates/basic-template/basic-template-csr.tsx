@@ -42,7 +42,6 @@ export default function BasicTemplate(props: BasicTemplateProps) {
     showButtonForm,
     setShowButtonForm,
   } = props;
-  // console.log("onshow",open)
   return (
     <>
       <section className="bg-white py-6">

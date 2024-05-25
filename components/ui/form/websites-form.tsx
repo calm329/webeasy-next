@@ -70,7 +70,7 @@ export default function WebsitesForm() {
       const accessToken = await getAccessTokenBySiteId(siteId);
       const res = await dispatch(fetchAccessToken({ siteId })).unwrap();
 
-      console.log("accessToken", res);
+     
       if (accessToken) {
         const newURLSearchParams = new URLSearchParams(searchParams);
         newURLSearchParams.set("access_token", accessToken.token);
@@ -79,13 +79,10 @@ export default function WebsitesForm() {
         router.replace(`/auth?${newURLSearchParams.toString()}`);
       }
     } catch (error) {
-      console.log("error", error);
+    
     }
   };
-  if (sites) {
 
-    console.log("sites", sites[0]?.aiResult)
-  }
   return (
     <div className="">
       <div className="">

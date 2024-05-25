@@ -99,7 +99,7 @@ export default function SiteHeader(props: TProps) {
   const fetchData = async () => {
     try {
       const temp = await dispatch(fetchTemplates()).unwrap();
-      console.log("templates", temp);
+     
       setTemplates(temp);
     } catch (error) {}
   };
@@ -124,7 +124,7 @@ export default function SiteHeader(props: TProps) {
       const user = await getUserById();
       setUser({ ...user });
     } catch (error) {
-      console.log("error", error);
+     
     } finally {
       setLoading(false);
     }

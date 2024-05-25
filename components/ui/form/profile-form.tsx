@@ -23,11 +23,10 @@ export default function Profileform() {
     try {
       const user = await getUserById();
       const res = await dispatch(fetchUser()).unwrap();
-      console.log("user", res);
-      // console.log("user", user);
+
       setUser({ ...user });
     } catch (error) {
-      console.log("error", error);
+
     } finally {
       setLoading(false);
     }
