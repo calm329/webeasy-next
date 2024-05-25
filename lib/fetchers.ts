@@ -68,7 +68,7 @@ export async function getAccessTokenBySiteId(siteId: string) {
 
 export async function getUserById() {
   const session = await getServerSession(authOptions);
-  console.log("session: " + session?.user);
+
   let user: any;
 
   if (session) {
@@ -78,7 +78,7 @@ export async function getUserById() {
       },
     });
   }
-  console.log("email: " + user?.email);
+
   // return await unstable_cache(
   //   async () => {
   return user;
@@ -96,7 +96,7 @@ export async function getAllTemplates() {
     const templates = await prisma.template.findMany();
     return templates;
   } catch (error) {
-    console.log(error);
+    
 
     return [];
   }

@@ -69,7 +69,7 @@ const UpdateUser = (props: TProps) => {
           focusedField={open}
           fields={userFields}
           handler={async (data: any, keys: string[]) => {
-            console.log("data", data);
+  
             try {
               const response = await fetch("/api/auth/update-user", {
                 method: "PATCH",
@@ -95,7 +95,7 @@ const UpdateUser = (props: TProps) => {
             }
           }}
           handleChange={(name, value) => {
-            console.log("hi", name, value);
+         
           }}
         />
       </div>

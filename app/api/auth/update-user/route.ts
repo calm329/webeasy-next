@@ -5,7 +5,6 @@ import { authOptions } from "@/lib/auth";
 
 export async function PATCH(req: NextRequest) {
   const { avatar, name, email } = await req.json();
-  console.log(avatar, name, email);
   if (!avatar && !name && !email) {
     return NextResponse.json({ error: "Invalid parameters" }, { status: 400 });
   }

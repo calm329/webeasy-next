@@ -22,9 +22,6 @@ export default async function SiteHomePage(props: TProps) {
 
   let posts = JSON.parse(data.posts || "[]");
   let aiResult = JSON.parse(data.aiResult || "{}");
-  console.log("data", data);
-  // const appState = makeStore().getState().siteSlice.sites.domain.present;
-  // console.log("appState", appState);
   return (
     <div>
       <BasicTemplate

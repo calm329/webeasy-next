@@ -39,7 +39,7 @@ const accessTokenSlice = createSlice({
     });
     builder.addCase(fetchAccessToken.fulfilled, (state, action) => {
       state.loading = false;
-      console.log("action: " + action.payload);
+ 
       state.accessToken = action.payload;
     });
     builder.addCase(fetchAccessToken.rejected, (state) => {

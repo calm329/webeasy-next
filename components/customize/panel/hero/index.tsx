@@ -92,7 +92,7 @@ const HeroContent = (props: TProps) => {
   const onLinkInvalid = () => {
     setIsLinkInValid(true);
   };
-  console.log("error", errors);
+ 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setLoading(true);
 
@@ -167,7 +167,7 @@ const HeroContent = (props: TProps) => {
       }
       return field;
     });
-    console.log(updatedHeroCustomizeFields);
+
     setHeroCustomizeFields(updatedHeroCustomizeFields);
     dispatch(
       updateAppState({
@@ -358,7 +358,7 @@ const HeroContent = (props: TProps) => {
                             <>
                               <DragDropContext
                                 onDragEnd={onDragEnd}
-                                onDragStart={() => console.log("it's started")}
+                       
                               >
                                 <Droppable droppableId="droppable">
                                   {(provided, snapshot) => (

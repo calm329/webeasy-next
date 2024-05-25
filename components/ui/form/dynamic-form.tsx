@@ -55,7 +55,6 @@ export default function DynamicForm(props: TProps) {
   const onLinkInvalid = () => {
     setIsLinkInValid(true);
   };
-  console.log("isLinkInValid", isLinkInValid, errors);
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setLoading(true);

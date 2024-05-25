@@ -37,7 +37,7 @@ const templateSlice = createSlice({
     });
     builder.addCase(fetchTemplates.fulfilled, (state, action) => {
       state.loading = false;
-      console.log("action: " + action.payload);
+
       state.template = action.payload;
     });
     builder.addCase(fetchTemplates.rejected, (state) => {

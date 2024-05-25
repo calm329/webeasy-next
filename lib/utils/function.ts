@@ -36,7 +36,6 @@ const updateDefaultValues = (
     name: string;
   }>,
 ) => {
-  console.log("default values", heroButtonList, bannerButtonList);
   setBrandCustomizeFields((prevFields) =>
     prevFields.map((field) => {
       if (field.type === "button") {
@@ -110,7 +109,7 @@ export const getData = async (params: TParams) => {
     userId: searchParams.get("user_id") || "",
   });
 
-  console.log("editable", editable);
+
   dispatch(
     updateAppState({
       ...appState,
@@ -129,13 +128,8 @@ export const getData = async (params: TParams) => {
     if (!siteData) {
       return;
     }
-    console.log("updated meta", {
-      title: siteData.title,
-      description: siteData.description,
-    });
     const aiContent = JSON.parse(siteData.aiResult);
 
-    console.log("aiContent", aiContent);
 
     dispatch(
       updateAppState({
@@ -221,7 +215,7 @@ export const getData = async (params: TParams) => {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
       const chunkValue = decoder.decode(value);
-      console.log(chunkValue);
+    
       if (chunkValue && chunkValue !== "###") content += chunkValue;
     }
 
@@ -281,7 +275,7 @@ export const getData = async (params: TParams) => {
       userId: searchParams.get("user_id") || "",
     });
   }
-  console.log("updated", aiContent);
+
   // update default values
   const heroButtonList = appState.aiContent.hero.button.list;
   const bannerButtonList = appState.aiContent.banner.button.list;
@@ -307,7 +301,7 @@ export const handleChangeAppState = (
   name: string,
   value: string,
 ) => {
-  console.log("name", name, value);
+
   if ((value as any)["fieldType"] === "button") {
     switch ((value as any)["section"]) {
       case "Banner":
@@ -321,14 +315,9 @@ export const handleChangeAppState = (
                 button: {
                   ...appState.aiContent.banner.button,
                   list: appState.aiContent.banner.button.list.map((data) => {
-                    console.log("data hai", data, data.name === name);
+                  
                     if (data.name === name) {
-                      console.log("aaya", {
-                        name: name,
-                        label: (value as any)["label"],
-                        type: (value as any)["type"],
-                        link: (value as any)["link"],
-                      });
+                  
                       return {
                         name: name,
                         label: (value as any)["label"],
@@ -356,14 +345,9 @@ export const handleChangeAppState = (
                 button: {
                   ...appState.aiContent.hero.button,
                   list: appState.aiContent.hero.button.list.map((data) => {
-                    console.log("data hai", data, data.name === name);
+                
                     if (data.name === name) {
-                      console.log("aaya", {
-                        name: name,
-                        label: (value as any)["label"],
-                        type: (value as any)["type"],
-                        link: (value as any)["link"],
-                      });
+                
                       return {
                         name: name,
                         label: (value as any)["label"],
@@ -581,6 +565,6 @@ export async function saveState(appState: AppState, dispatch: any) {
     ).unwrap();
     toast.success("Data saved successfully");
   } catch (error) {
-    console.log("errorhaiji", error);
+  
   }
 }
