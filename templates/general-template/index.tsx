@@ -98,9 +98,9 @@ export default function General(props: TProps) {
       </div>
       <div className="relative flex w-full flex-col">
         <Header banner={banner} colors={colors} />
-        <main className="flex-auto max-sm:mt-20">
-          <Container className="mt-9 flex w-full">
-            <div className="flex gap-10 max-lg:flex-col">
+        <main className="flex-auto mt-24">
+          <Container className=" flex w-full">
+            <div className="flex gap-10  max-lg:flex-col">
               <div className="">
                 <h1
                   className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl"
