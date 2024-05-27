@@ -96,12 +96,12 @@ export default function SettingMenu(props: TProps) {
               <div className="flex">
                 <IoMdSettings size={18} />
               </div>
-              Settings
+              Customize
             </div>
             <div className="flex gap-2 max-sm:hidden flex-col justify-center items-center">
               <IoMdSettings size={18} />
               <div className="flex ">
-              Settings
+              Customize
               {matches ? (
                 <ChevronUpIcon
                   className="-mr-1 ml-1.5 h-5 w-5 "
@@ -136,7 +136,7 @@ export default function SettingMenu(props: TProps) {
             </p>
           </div> */}
             <div className="py-1">
-              <Menu.Item>
+              {/* <Menu.Item>
                 {({ active }) => (
                   <button
                     className={classNames(
@@ -152,25 +152,8 @@ export default function SettingMenu(props: TProps) {
                     SEO Configuration
                   </button>
                 )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
-                    )}
-                    onClick={() =>
-                      status === "unauthenticated"
-                        ? setShowAuthModal(true)
-                        : setIsColorOpen(true)
-                    }
-                  >
-                    Customize Colors
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
+              </Menu.Item> */}
+               <Menu.Item>
                 {({ active }) => (
                   <button
                     className={classNames(
@@ -190,6 +173,66 @@ export default function SettingMenu(props: TProps) {
               <Menu.Item>
                 {({ active }) => (
                   <button
+                    className={classNames(
+                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                    )}
+                    onClick={() =>
+                      status === "unauthenticated"
+                        ? setShowAuthModal(true)
+                        : setIsColorOpen(true)
+                    }
+                  >
+                    Change Colors
+                  </button>
+                )}
+              </Menu.Item>
+
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={classNames(
+                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                    )}
+                    // onClick={() =>
+                    //   status === "unauthenticated"
+                    //     ? setShowAuthModal(true)
+                    //     : setIsColorOpen(true)
+                    // }
+                  >
+                    Change Fonts
+                  </button>
+                )}
+              </Menu.Item>
+             
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={classNames(
+                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                    )}
+                  >
+                    Regenerate Text
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={classNames(
+                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                    )}
+                  >
+                    Regenerate Images
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
                     onClick={() =>
                       status === "unauthenticated"
                         ? setShowAuthModal(true)
@@ -200,24 +243,7 @@ export default function SettingMenu(props: TProps) {
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                     )}
                   >
-                    Regenerate the content
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={() =>
-                      status === "unauthenticated"
-                        ? setShowAuthModal(true)
-                        : getData("refresh")
-                    }
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
-                    )}
-                  >
-                    Refresh Instagram feed
+                    Regenerate All
                   </button>
                 )}
               </Menu.Item>
