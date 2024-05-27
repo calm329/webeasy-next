@@ -62,13 +62,12 @@ const BottomToolBar = (props: TProps) => {
       {isBottomBar ? (
         <>
           <div className=" flex justify-end gap-5  max-sm:gap-2">
-            {getData && setSelectedTemplate && appState && (
+            {getData && appState && (
               <SettingMenu
                 getData={getData}
                 handleChange={handleChange ?? undefined}
                 appState={appState}
                 templates={templates}
-                setSelectedTemplate={setSelectedTemplate}
                 setShowAuthModal={setShowAuthModal}
               />
             )}
@@ -116,7 +115,7 @@ const BottomToolBar = (props: TProps) => {
             Redo
           </button>
           <button className="flex flex-col items-center">
-            <ImCancelCircle size={18} onClick={() => getData && getData()} />
+            <ImCancelCircle size={18} onClick={() => {if(getData){ getData(); dispatch(clearPastAndFuture())}}} />
             Cancel
           </button>
           <button className="flex flex-col items-center">

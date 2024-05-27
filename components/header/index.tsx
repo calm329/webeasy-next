@@ -15,7 +15,7 @@ import { TMeta, TTemplateName, AppState, TUser } from "@/types";
 import { getAllTemplates, getUserById } from "@/lib/fetchers";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchTemplates } from "@/lib/store/slices/template-slice";
+import { fetchTemplates, setSelectedTemplate, selectedTemplate  as ST } from '@/lib/store/slices/template-slice';
 import { Fragment } from "react";
 import {
   CheckIcon,
@@ -66,7 +66,6 @@ type TProps = {
   isAuth?: boolean;
   getData?: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
-  setSelectedTemplate?: Dispatch<SetStateAction<TTemplateName>>;
 };
 export type TTemplate = {
   id: string;
@@ -78,7 +77,7 @@ export type TTemplate = {
 
 export default function SiteHeader(props: TProps) {
   const pathname = usePathname();
-  const { showNavigation, isAuth, getData, handleChange, setSelectedTemplate } =
+  const { showNavigation, isAuth, getData, handleChange } =
     props;
   const router = useRouter();
   const { status } = useSession();
@@ -94,18 +93,19 @@ export default function SiteHeader(props: TProps) {
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
   const [showBackModal, setShowBackModal] = useState(false);
-  
+  const selectedTemplate = useAppSelector(ST)
   const [templates, setTemplates] = useState<TTemplate | null>(null);
   const fetchData = async () => {
     try {
       const temp = await dispatch(fetchTemplates()).unwrap();
-     
+      !selectedTemplate && dispatch(setSelectedTemplate(temp[0]))
       setTemplates(temp);
     } catch (error) {}
   };
 
   useEffect(() => {
-    fetchData();
+     !templates && fetchData();
+ 
 
     switch (pathname) {
       case "/":
@@ -146,7 +146,6 @@ export default function SiteHeader(props: TProps) {
           handleChange={handleChange}
           isAuth={isAuth}
           setShowAuthModal={setShowAuthModal}
-          setSelectedTemplate={setSelectedTemplate}
         />
       )}
 
@@ -194,7 +193,7 @@ export default function SiteHeader(props: TProps) {
               {/* Redo */}
             </button>
             <button className="flex flex-col items-center">
-              <ImCancelCircle size={18} onClick={() => getData && getData()} />
+              <ImCancelCircle size={18} onClick={() => {if(getData){ getData(); dispatch(clearPastAndFuture())}}} />
               {/* Cancel */}
             </button>
             <button className="flex flex-col items-center">
@@ -262,13 +261,12 @@ export default function SiteHeader(props: TProps) {
               <div
                 className={`ml-auto ${!isBottomBar && "hidden"}  flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2`}
               >
-                {getData && setSelectedTemplate && appState && (
+                {getData && appState && (
                   <SettingMenu
                     getData={getData}
                     handleChange={handleChange ?? undefined}
                     appState={appState}
                     templates={templates}
-                    setSelectedTemplate={setSelectedTemplate}
                     setShowAuthModal={setShowAuthModal}
                   />
                 )}

@@ -15,7 +15,11 @@ import SelectedTemplate from "@/components/selected-template";
 import { getData, handleChangeAppState } from "@/lib/utils/function";
 import EditWebsiteHeader from "@/components/header/edit-website-header";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { appState as AS, updateAppState, loading as LD } from '@/lib/store/slices/site-slice';
+import {
+  appState as AS,
+  updateAppState,
+  loading as LD,
+} from "@/lib/store/slices/site-slice";
 import BottomToolBar from "@/components/bottom-bar";
 
 export default function Page() {
@@ -27,10 +31,8 @@ export default function Page() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<TFields>(null);
   const [section, setSection] = useState<TSection>("Banner");
-  const [selectedTemplate, setSelectedTemplate] =
-    useState<TTemplateName>("Basic template");
   const dispatch = useAppDispatch();
-  const saveLoading = useAppSelector(LD)
+  const saveLoading = useAppSelector(LD);
   const [showButtonForm, setShowButtonForm] = useState({
     edit: "",
     show: false,
@@ -174,7 +176,7 @@ export default function Page() {
   }, [session]);
 
   const matches = useMediaQuery("(min-width: 768px)");
-  
+
   return (
     <>
       {appState.status === "Done" ? (
@@ -193,15 +195,12 @@ export default function Page() {
                 setHeroCustomizeFields,
               })
             }
-
             handleChange={handleChange}
-            setSelectedTemplate={setSelectedTemplate}
           />
           <EditWebsiteHeader />
           <div className="relative flex size-full ">
             <SelectedTemplate
               appState={appState}
-              selectedTemplate={selectedTemplate}
               setFocusedField={setFocusedField}
               setIsSideBarOpen={setIsSideBarOpen}
               setSection={setSection}
@@ -250,7 +249,7 @@ export default function Page() {
               </>
             )}
           </div>
-          {saveLoading && <Loader text="Saving Data"/>}
+          {saveLoading && <Loader text="Saving Data" />}
         </>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">
