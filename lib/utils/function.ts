@@ -217,32 +217,37 @@ export const getData = async (params: TParams) => {
     }
     if (content) {
       aiContent = JSON.parse(content);
-      if (flag === "image" || flag === "regenerate") {
+
+      if (flag === "regenerate") {
+        aiContent["hero"]["image"]["imageUrl"] =
+          imageIds[aiContent["hero"]["image"]["imageId"]];
+      }
+      if (flag === "image") {
         // console.log("Hero", imageIds[aiContent["hero"]["image"]["imageId"]])
-        const updatedImage = imageIds[aiContent["hero"]["image"]["imageId"]]
-          aiContent = {
-            ...appState.aiContent,
-            hero: {
-             ...appState.aiContent.hero,
-              image: {
-               ...appState.aiContent.hero.image,
-                imageUrl: updatedImage,
-              },
+        const updatedImage = imageIds[aiContent["hero"]["image"]["imageId"]];
+        aiContent = {
+          ...appState.aiContent,
+          hero: {
+            ...appState.aiContent.hero,
+            image: {
+              ...appState.aiContent.hero.image,
+              imageUrl: updatedImage,
             },
-          }
+          },
+        };
       }
 
-      if (flag === "text" || flag === "regenerate") {
+      if (flag === "text") {
         aiContent = {
           ...aiContent,
           hero: {
-           ...aiContent.hero,
+            ...aiContent.hero,
             image: {
-             ...aiContent.hero.image,
+              ...aiContent.hero.image,
               imageUrl: appState.aiContent.hero.image.imageUrl,
             },
           },
-        }
+        };
       }
     }
 
