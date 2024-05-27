@@ -6,15 +6,22 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { useMediaQuery } from "usehooks-ts";
 import { useAppSelector } from "@/lib/store/hooks";
 import { appState as AS } from "@/lib/store/slices/site-slice";
+import { useSession } from "next-auth/react";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function PublishMenu() {
+type TProps = {
+  setShowAuthModal: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function PublishMenu(props: TProps) {
+  const { setShowAuthModal } = props;
   const matches = useMediaQuery("(max-width: 500px)");
   const isMobile = useMediaQuery("(max-width: 900px)");
   const appState = useAppSelector(AS);
+  const { status } = useSession();
   return (
     <Menu as="div" className={`relative ml-3`}>
       <Menu.Button
@@ -81,18 +88,30 @@ export default function PublishMenu() {
             )}
           </Menu.Item>
           <Menu.Item>
-            {({ active }) => (
-              <Link
-                href={"https://" + appState.subdomain + ".webeasy.ai"}
-                target="_blank"
-                className={classNames(
-                  active ? "bg-gray-100" : "",
-                  "block px-4 py-2 text-sm text-gray-700",
-                )}
-              >
-                Publish Product
-              </Link>
-            )}
+            {({ active }) =>
+              status === "authenticated" ? (
+                <Link
+                  href={"https://" + appState.subdomain + ".webeasy.ai"}
+                  target="_blank"
+                  className={classNames(
+                    active ? "bg-gray-100" : "",
+                    "block px-4 py-2 text-sm text-gray-700",
+                  )}
+                >
+                  Publish Product
+                </Link>
+              ) : (
+                <button
+                  onClick={() => setShowAuthModal(true)}
+                  className={classNames(
+                    active ? "bg-gray-100" : "",
+                    "block w-full px-4 py-2 text-left text-sm text-gray-700",
+                  )}
+                >
+                  Publish Product
+                </button>
+              )
+            }
           </Menu.Item>
         </Menu.Items>
       </Transition>

@@ -15,7 +15,11 @@ import { TMeta, TTemplateName, AppState, TUser } from "@/types";
 import { getAllTemplates, getUserById } from "@/lib/fetchers";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchTemplates, setSelectedTemplate, selectedTemplate  as ST } from '@/lib/store/slices/template-slice';
+import {
+  fetchTemplates,
+  setSelectedTemplate,
+  selectedTemplate as ST,
+} from "@/lib/store/slices/template-slice";
 import { Fragment } from "react";
 import {
   CheckIcon,
@@ -77,8 +81,7 @@ export type TTemplate = {
 
 export default function SiteHeader(props: TProps) {
   const pathname = usePathname();
-  const { showNavigation, isAuth, getData, handleChange } =
-    props;
+  const { showNavigation, isAuth, getData, handleChange } = props;
   const router = useRouter();
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -93,19 +96,18 @@ export default function SiteHeader(props: TProps) {
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
   const [showBackModal, setShowBackModal] = useState(false);
-  const selectedTemplate = useAppSelector(ST)
+  const selectedTemplate = useAppSelector(ST);
   const [templates, setTemplates] = useState<TTemplate | null>(null);
   const fetchData = async () => {
     try {
       const temp = await dispatch(fetchTemplates()).unwrap();
-      !selectedTemplate && dispatch(setSelectedTemplate(temp[0]))
+      !selectedTemplate && dispatch(setSelectedTemplate(temp[0]));
       setTemplates(temp);
     } catch (error) {}
   };
 
   useEffect(() => {
-     !templates && fetchData();
- 
+    !templates && fetchData();
 
     switch (pathname) {
       case "/":
@@ -124,7 +126,6 @@ export default function SiteHeader(props: TProps) {
       const user = await getUserById();
       setUser({ ...user });
     } catch (error) {
-     
     } finally {
       setLoading(false);
     }
@@ -193,17 +194,29 @@ export default function SiteHeader(props: TProps) {
               {/* Redo */}
             </button>
             <button className="flex flex-col items-center">
-              <ImCancelCircle size={18} onClick={() => {if(getData){ getData(); dispatch(clearPastAndFuture())}}} />
+              <ImCancelCircle
+                size={18}
+                onClick={() => {
+                  if (getData) {
+                    getData();
+                    dispatch(clearPastAndFuture());
+                  }
+                }}
+              />
               {/* Cancel */}
             </button>
             <button className="flex flex-col items-center">
               <MdOutlineDownloadDone
                 size={20}
-                onClick={() =>
-                  saveState(appState, dispatch).then(() =>
-                    dispatch(clearPastAndFuture()),
-                  )
-                }
+                onClick={() => {
+                  if (status === "authenticated") {
+                    saveState(appState, dispatch).then(() =>
+                      dispatch(clearPastAndFuture()),
+                    );
+                  } else {
+                    setShowAuthModal(true);
+                  }
+                }}
               />
               {/* Done */}
             </button>
@@ -298,7 +311,7 @@ export default function SiteHeader(props: TProps) {
                 )}
                 <ViewMenu />
 
-                <PublishMenu />
+                <PublishMenu setShowAuthModal={setShowAuthModal}/>
               </div>
               {status === "authenticated" ? (
                 <div className="max-lg:hidden">
