@@ -203,33 +203,47 @@ export const getData = async (params: TParams) => {
     });
 
     let content = "";
-    if (flag === "text" || flag === "regenerate") {
-      const reader = response.body?.getReader();
-      if (!reader) return;
+    const reader = response.body?.getReader();
+    if (!reader) return;
 
-      const decoder = new TextDecoder();
-      let done = false;
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
+    const decoder = new TextDecoder();
+    let done = false;
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
 
-        if (chunkValue && chunkValue !== "###") content += chunkValue;
-      }
+      if (chunkValue && chunkValue !== "###") content += chunkValue;
     }
-
     if (content) {
       aiContent = JSON.parse(content);
-    } else {
-      aiContent = appState.aiContent;
-    }
+      if (flag === "image" || flag === "regenerate") {
+        // console.log("Hero", imageIds[aiContent["hero"]["image"]["imageId"]])
+        const updatedImage = imageIds[aiContent["hero"]["image"]["imageId"]]
+          aiContent = {
+            ...appState.aiContent,
+            hero: {
+             ...appState.aiContent.hero,
+              image: {
+               ...appState.aiContent.hero.image,
+                imageUrl: updatedImage,
+              },
+            },
+          }
+      }
 
-    if ((flag === "image" || flag === "regenerate") && content) {
-      aiContent["hero"]["image"]["imageUrl"] =
-        imageIds[aiContent["hero"]["image"]["imageId"]];
-    } else {
-      aiContent["hero"]["image"]["imageUrl"] =
-        appState.aiContent.hero.image.imageUrl;
+      if (flag === "text" || flag === "regenerate") {
+        aiContent = {
+          ...aiContent,
+          hero: {
+           ...aiContent.hero,
+            image: {
+             ...aiContent.hero.image,
+              imageUrl: appState.aiContent.hero.image.imageUrl,
+            },
+          },
+        }
+      }
     }
 
     dispatch(
