@@ -7,7 +7,7 @@ type TProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   templates: TTemplate | null;
-  getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
+  getData: (flag?: "init" | "regenerate" | "text" | "image") => Promise<void>;
 };
 export default function SelectTemplateDrawer(props: TProps) {
   const { open, setOpen, templates, getData } = props;

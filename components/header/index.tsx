@@ -68,7 +68,7 @@ function classNames(...classes: any[]) {
 type TProps = {
   showNavigation: boolean;
   isAuth?: boolean;
-  getData?: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
+  getData?: (flag?: "init" | "regenerate" | "text" | "image") => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
 };
 export type TTemplate = {

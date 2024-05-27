@@ -11,7 +11,7 @@ import {
 import { toast } from "sonner";
 
 type TParams = {
-  flag: "init" | "regenerate" | "refresh";
+  flag: "init" | "regenerate" | "text" | "image";
   searchParams: ReadonlyURLSearchParams;
   dispatch: any;
   appState: AppState;
@@ -109,7 +109,6 @@ export const getData = async (params: TParams) => {
     userId: searchParams.get("user_id") || "",
   });
 
-
   dispatch(
     updateAppState({
       ...appState,
@@ -129,7 +128,6 @@ export const getData = async (params: TParams) => {
       return;
     }
     const aiContent = JSON.parse(siteData.aiResult);
-
 
     dispatch(
       updateAppState({
@@ -192,38 +190,47 @@ export const getData = async (params: TParams) => {
       updateAppState({
         ...appState,
         subdomain: siteAvailable,
-        status: flag === "refresh" ? "Done" : "Generating Content",
+        status: "Generating Content",
       }),
     );
   }
 
   // generate content from user media using openai
-  if (flag !== "refresh") {
+  if (flag === "regenerate" || flag === "text" || flag === "image") {
     const response = await fetch("/api/content", {
       method: "POST",
       body: JSON.stringify({ mediaCaption }),
     });
 
     let content = "";
+    if (flag === "text" || flag === "regenerate") {
+      const reader = response.body?.getReader();
+      if (!reader) return;
 
-    const reader = response.body?.getReader();
-    if (!reader) return;
+      const decoder = new TextDecoder();
+      let done = false;
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
 
-    const decoder = new TextDecoder();
-    let done = false;
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
-    
-      if (chunkValue && chunkValue !== "###") content += chunkValue;
+        if (chunkValue && chunkValue !== "###") content += chunkValue;
+      }
     }
 
     if (content) {
       aiContent = JSON.parse(content);
+    } else {
+      aiContent = appState.aiContent;
+    }
+
+    if ((flag === "image" || flag === "regenerate") && content) {
       aiContent["hero"]["image"]["imageUrl"] =
         imageIds[aiContent["hero"]["image"]["imageId"]];
-    } // else return;
+    } else {
+      aiContent["hero"]["image"]["imageUrl"] =
+        appState.aiContent.hero.image.imageUrl;
+    }
 
     dispatch(
       updateAppState({
@@ -235,7 +242,7 @@ export const getData = async (params: TParams) => {
   }
 
   // generate colors from content using openai
-  if (flag !== "refresh") {
+  if (flag === "regenerate") {
     const { colors } = await fetchData("/api/color", {
       method: "POST",
       body: JSON.stringify({
@@ -256,6 +263,8 @@ export const getData = async (params: TParams) => {
         status: "Done",
       }),
     );
+  } else {
+    aiContent["colors"] = appState.aiContent.colors;
   }
 
   dispatch(
@@ -301,7 +310,6 @@ export const handleChangeAppState = (
   name: string,
   value: string,
 ) => {
-
   if ((value as any)["fieldType"] === "button") {
     switch ((value as any)["section"]) {
       case "Banner":
@@ -315,9 +323,7 @@ export const handleChangeAppState = (
                 button: {
                   ...appState.aiContent.banner.button,
                   list: appState.aiContent.banner.button.list.map((data) => {
-                  
                     if (data.name === name) {
-                  
                       return {
                         name: name,
                         label: (value as any)["label"],
@@ -345,9 +351,7 @@ export const handleChangeAppState = (
                 button: {
                   ...appState.aiContent.hero.button,
                   list: appState.aiContent.hero.button.list.map((data) => {
-                
                     if (data.name === name) {
-                
                       return {
                         name: name,
                         label: (value as any)["label"],
@@ -564,7 +568,5 @@ export async function saveState(appState: AppState, dispatch: any) {
       }),
     ).unwrap();
     toast.success("Data saved successfully");
-  } catch (error) {
-  
-  }
+  } catch (error) {}
 }
