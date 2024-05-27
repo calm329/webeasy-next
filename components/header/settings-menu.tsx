@@ -23,7 +23,6 @@ type TProps = {
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
   templates: TTemplate | null;
-  setSelectedTemplate: Dispatch<SetStateAction<TTemplateName>>;
   setShowAuthModal: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -33,7 +32,6 @@ export default function SettingMenu(props: TProps) {
     handleChange,
     appState,
     templates,
-    setSelectedTemplate,
     setShowAuthModal,
   } = props;
   const { data: session, status } = useSession();
@@ -49,7 +47,6 @@ export default function SettingMenu(props: TProps) {
           open={isTemplateOpen}
           setOpen={setIsTemplateOpen}
           templates={templates}
-          setSelectedTemplate={setSelectedTemplate}
           getData={getData}
         />
       ) : (
@@ -57,7 +54,6 @@ export default function SettingMenu(props: TProps) {
           open={isTemplateOpen}
           setOpen={setIsTemplateOpen}
           templates={templates}
-          setSelectedTemplate={setSelectedTemplate}
           getData={getData}
         />
       )}

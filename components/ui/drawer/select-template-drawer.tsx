@@ -7,11 +7,10 @@ type TProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   templates: TTemplate | null;
-  setSelectedTemplate: React.Dispatch<React.SetStateAction<TTemplateName>>;
   getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 export default function SelectTemplateDrawer(props: TProps) {
-  const { open, setOpen, templates, setSelectedTemplate, getData } = props;
+  const { open, setOpen, templates, getData } = props;
 
   return (
     <Drawer open={!!open} onOpenChange={setOpen}>
@@ -19,7 +18,6 @@ export default function SelectTemplateDrawer(props: TProps) {
         <div className="mx-auto w-full max-w-sm pb-10">
           <SelectTemplateCarousel
             templates={templates}
-            setSelectedTemplate={setSelectedTemplate}
             setOpen={setOpen}
             getData={getData}
           />

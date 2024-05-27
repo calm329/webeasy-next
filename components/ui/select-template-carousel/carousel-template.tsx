@@ -13,22 +13,23 @@ import { getAllTemplates } from "@/lib/fetchers";
 import { TTemplate } from "../../header";
 import Image from "next/image";
 import { TTemplateName } from "@/types";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { setSelectedTemplate } from "@/lib/store/slices/template-slice";
 
 type TProps = {
   templates: TTemplate | null;
-  setSelectedTemplate: React.Dispatch<React.SetStateAction<TTemplateName>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   getData: (flag?: "init" | "regenerate" | "refresh") => Promise<void>;
 };
 const SelectTemplateCarousel = (props: TProps) => {
-  const { templates, setSelectedTemplate, setOpen, getData } = props;
+  const { templates, setOpen, getData } = props;
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const [activeIndex, setActiveIndex] = React.useState(0);
-
+  const dispatch = useAppDispatch()
   function handleSwitchTemplate() {
     if (templates) {
       const templateData = templates[activeIndex];
-      setSelectedTemplate(templateData.name);
+      dispatch(setSelectedTemplate(templateData))
       setOpen(false);
       getData("regenerate");
     }

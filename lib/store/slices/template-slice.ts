@@ -6,12 +6,14 @@ import { RootState } from "..";
 import { TTemplate } from "@/types";
 
 type TInitialState = {
-  template: Array<TTemplate> | null;
+  templates: Array<TTemplate> | null;
+  selectedTemplate: TTemplate | null;
   loading: boolean;
 };
 
 const initialState: TInitialState = {
-  template: null,
+  templates: null,
+  selectedTemplate: null,
   loading: false,
 };
 
@@ -30,7 +32,11 @@ const fetchTemplates = createAsyncThunk(
 const templateSlice = createSlice({
   name: "template",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedTemplate: (state, action) => {
+      state.selectedTemplate = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchTemplates.pending, (state) => {
       state.loading = true;
@@ -38,7 +44,8 @@ const templateSlice = createSlice({
     builder.addCase(fetchTemplates.fulfilled, (state, action) => {
       state.loading = false;
 
-      state.template = action.payload;
+      state.templates = action.payload;
+      // state.selectedTemplate = action.payload[0];
     });
     builder.addCase(fetchTemplates.rejected, (state) => {
       state.loading = false;
@@ -48,7 +55,12 @@ const templateSlice = createSlice({
 
 //export async thunks
 export { fetchTemplates };
-export const TemplatesData = (state: RootState) => state.templateSlice.template;
+export const { setSelectedTemplate} =
+  templateSlice.actions;
+export const TemplatesData = (state: RootState) =>
+  state.templateSlice.templates;
+export const selectedTemplate = (state: RootState) =>
+  state.templateSlice.selectedTemplate;
 export const loading = (state: RootState) => state.templateSlice.loading;
 //export default reducer
 export default templateSlice.reducer;
