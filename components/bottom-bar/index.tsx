@@ -25,6 +25,7 @@ import {
 import { saveState } from "@/lib/utils/function";
 import Loader from "../ui/loader";
 import { getAllTemplates } from "@/lib/fetchers";
+import { useSession } from "next-auth/react";
 
 type TProps = {
   showNavigation: boolean;
@@ -56,7 +57,7 @@ const BottomToolBar = (props: TProps) => {
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
   const templates= useAppSelector(TD)
-
+  const { status } = useSession();
   return (
     <div className="fixed bottom-0 z-1   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
       {isBottomBar ? (
@@ -94,7 +95,7 @@ const BottomToolBar = (props: TProps) => {
 
           <ViewMenu />
 
-          <PublishMenu />
+          <PublishMenu setShowAuthModal={setShowAuthModal}/>
         </>
       ) : (
         <div className="flex w-full justify-around">
@@ -122,9 +123,13 @@ const BottomToolBar = (props: TProps) => {
             <MdOutlineDownloadDone
               size={20}
               onClick={() =>
-                saveState(appState, dispatch).then(() =>
-                  dispatch(clearPastAndFuture()),
-                )
+                {if(status === "authenticated"){
+                  saveState(appState, dispatch).then(() =>
+                    dispatch(clearPastAndFuture()),
+                  )
+                }else{
+                  setShowAuthModal(true)
+                }}
               }
             />
             Done
