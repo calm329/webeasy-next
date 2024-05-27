@@ -20,7 +20,8 @@ import {
   updateAppState,
   loading as LD,
 } from "@/lib/store/slices/site-slice";
-import BottomToolBar from "@/components/bottom-bar";
+import FontSlideOver from "@/components/ui/slide-over/font-slide";
+import { FontsDrawer } from "@/components/ui/drawer/fonts-drawer";
 
 export default function Page() {
   const router = useRouter();
@@ -29,6 +30,7 @@ export default function Page() {
   // const [appState, setAppState] = useState<AppState>(initialState);
   const appState = useAppSelector(AS);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [isFontOpen, setIsFontOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<TFields>(null);
   const [section, setSection] = useState<TSection>("Banner");
   const dispatch = useAppDispatch();
@@ -116,7 +118,6 @@ export default function Page() {
       children: [],
     },
   ]);
-
   const handleChange = useDebouncedCallback((name: string, value: string) => {
     handleChangeAppState(dispatch, appState, name, value);
   }, 300);
@@ -177,6 +178,15 @@ export default function Page() {
 
   const matches = useMediaQuery("(min-width: 768px)");
 
+  useEffect(() => {
+    const WebFontLoader = require('webfontloader')
+    WebFontLoader.load({
+      google: {
+        families: [appState.selectedFont],
+      },
+    });
+  }, [appState.selectedFont]);
+
   return (
     <>
       {appState.status === "Done" ? (
@@ -196,55 +206,71 @@ export default function Page() {
               })
             }
             handleChange={handleChange}
+            setIsFontOpen={setIsFontOpen}
           />
           <EditWebsiteHeader />
+
           <div className="relative flex size-full ">
-            <SelectedTemplate
-              appState={appState}
-              setFocusedField={setFocusedField}
-              setIsSideBarOpen={setIsSideBarOpen}
-              setSection={setSection}
-              showButtonForm={showButtonForm}
-              setShowButtonForm={setShowButtonForm}
-            />
+            <div style={{ fontFamily: appState.selectedFont }} className="w-full">
+              <SelectedTemplate
+                appState={appState}
+                setFocusedField={setFocusedField}
+                setIsSideBarOpen={setIsSideBarOpen}
+                setSection={setSection}
+                showButtonForm={showButtonForm}
+                setShowButtonForm={setShowButtonForm}
+              />
+            </div>
             {appState.editable && (
               <>
                 {matches ? (
-                  <SlideOver
-                    open={isSideBarOpen}
-                    setIsOpen={setIsSideBarOpen}
-                    section={section}
-                    handleChange={handleChange}
-                    subdomain={
-                      getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
-                      ""
-                    }
-                    brandCustomizeFields={brandCustomizeFields}
-                    heroCustomizeFields={heroCustomizeFields}
-                    focusedField={focusedField}
-                    setBrandCustomizeFields={setBrandCustomizeFields}
-                    setHeroCustomizeFields={setHeroCustomizeFields}
-                    showButtonForm={showButtonForm}
-                    setShowButtonForm={setShowButtonForm}
-                  />
+                  <>
+                    <SlideOver
+                      open={isSideBarOpen}
+                      setIsOpen={setIsSideBarOpen}
+                      section={section}
+                      handleChange={handleChange}
+                      subdomain={
+                        getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
+                        ""
+                      }
+                      brandCustomizeFields={brandCustomizeFields}
+                      heroCustomizeFields={heroCustomizeFields}
+                      focusedField={focusedField}
+                      setBrandCustomizeFields={setBrandCustomizeFields}
+                      setHeroCustomizeFields={setHeroCustomizeFields}
+                      showButtonForm={showButtonForm}
+                      setShowButtonForm={setShowButtonForm}
+                    />
+                    <FontSlideOver
+                      open={isFontOpen}
+                      setIsOpen={setIsFontOpen}
+                    />
+                  </>
                 ) : (
-                  <CustomDrawer
-                    open={isSideBarOpen}
-                    setIsOpen={setIsSideBarOpen}
-                    section={section}
-                    handleChange={handleChange}
-                    subdomain={
-                      getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
-                      ""
-                    }
-                    brandCustomizeFields={brandCustomizeFields}
-                    heroCustomizeFields={heroCustomizeFields}
-                    setBrandCustomizeFields={setBrandCustomizeFields}
-                    setHeroCustomizeFields={setHeroCustomizeFields}
-                    focusedField={focusedField}
-                    showButtonForm={showButtonForm}
-                    setShowButtonForm={setShowButtonForm}
-                  />
+                  <>
+                    <CustomDrawer
+                      open={isSideBarOpen}
+                      setIsOpen={setIsSideBarOpen}
+                      section={section}
+                      handleChange={handleChange}
+                      subdomain={
+                        getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
+                        ""
+                      }
+                      brandCustomizeFields={brandCustomizeFields}
+                      heroCustomizeFields={heroCustomizeFields}
+                      setBrandCustomizeFields={setBrandCustomizeFields}
+                      setHeroCustomizeFields={setHeroCustomizeFields}
+                      focusedField={focusedField}
+                      showButtonForm={showButtonForm}
+                      setShowButtonForm={setShowButtonForm}
+                    />
+                    <FontsDrawer
+                      open={isFontOpen}
+                      setIsOpen={setIsFontOpen}
+                    />
+                  </>
                 )}
               </>
             )}

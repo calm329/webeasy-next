@@ -15,7 +15,7 @@ export default function CTA(props: TProps) {
       style={{
         backgroundColor: bgColor,
       }}
-      href={link}
+      href={link??""}
       target={external ? "_blank" : "_self"}
     >
       {text}

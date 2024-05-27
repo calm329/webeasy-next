@@ -161,6 +161,9 @@ export async function updateSite(
         case "aiResult":
           newData["aiResult"] = data[key];
           break;
+        case "font":
+          newData["font"] = data[key];
+          break;
         case "posts":
           newData["posts"] = data[key];
           break;

@@ -101,6 +101,7 @@ model Site {
   logo       String?
   posts      String
   aiResult   String
+  font       String    @default("")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

@@ -5,6 +5,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import CTA from "@/components/cta";
 import { updateAppState, appState as AS } from '@/lib/store/slices/site-slice';
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import FontPicker from "@/components/font-picker";
 
 type TProps = {
   hero: THero;
@@ -39,6 +40,7 @@ const EditableHero = (props: TProps) => {
         }
       }}
     >
+
       <div className="w-full p-8 md:w-1/2">
         <div className="md:max-w-lg">
           <h2

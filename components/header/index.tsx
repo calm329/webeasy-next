@@ -70,6 +70,7 @@ type TProps = {
   isAuth?: boolean;
   getData?: (flag?: "init" | "regenerate" | "text" | "image") => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
+  setIsFontOpen?:Dispatch<SetStateAction<boolean>>
 };
 export type TTemplate = {
   id: string;
@@ -81,7 +82,7 @@ export type TTemplate = {
 
 export default function SiteHeader(props: TProps) {
   const pathname = usePathname();
-  const { showNavigation, isAuth, getData, handleChange } = props;
+  const { showNavigation, isAuth, getData, handleChange,setIsFontOpen } = props;
   const router = useRouter();
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -139,7 +140,7 @@ export default function SiteHeader(props: TProps) {
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
     >
-      {pathname.startsWith("/auth") && (
+      {pathname.startsWith("/auth") && setIsFontOpen && (
         <BottomToolBar
           showNavigation={showNavigation}
           // appState={appState}
@@ -147,6 +148,7 @@ export default function SiteHeader(props: TProps) {
           handleChange={handleChange}
           isAuth={isAuth}
           setShowAuthModal={setShowAuthModal}
+          setIsFontOpen={setIsFontOpen}
         />
       )}
 
@@ -274,13 +276,14 @@ export default function SiteHeader(props: TProps) {
               <div
                 className={`ml-auto ${!isBottomBar && "hidden"}  flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2`}
               >
-                {getData && appState && (
+                {getData && appState && setIsFontOpen && (
                   <SettingMenu
                     getData={getData}
                     handleChange={handleChange ?? undefined}
                     appState={appState}
                     templates={templates}
                     setShowAuthModal={setShowAuthModal}
+                    setIsFontOpen={setIsFontOpen}
                   />
                 )}
               </div>
