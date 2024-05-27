@@ -128,10 +128,11 @@ export const getData = async (params: TParams) => {
       return;
     }
     const aiContent = JSON.parse(siteData.aiResult);
-
+    console.log("siteData",siteData)
     dispatch(
       updateAppState({
         ...appState,
+        selectedFont:siteData.font,
         subdomain: siteAvailable,
         status: "Done",
         aiContent: aiContent,
@@ -578,12 +579,12 @@ export function generateUniqueId() {
 
 export async function saveState(appState: AppState, dispatch: any) {
   try {
-    const data = { aiResult: appState.aiContent };
+    const data = { aiResult: appState.aiContent, font: appState.selectedFont };
     await dispatch(
       updateStateSite({
         subdomain: appState.subdomain,
         data,
-        keys: ["aiResult"],
+        keys:  Object.keys(data),
       }),
     ).unwrap();
     toast.success("Data saved successfully");

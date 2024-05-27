@@ -24,11 +24,18 @@ type TProps = {
   appState: AppState;
   templates: TTemplate | null;
   setShowAuthModal: Dispatch<SetStateAction<boolean>>;
+  setIsFontOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function SettingMenu(props: TProps) {
-  const { getData, handleChange, appState, templates, setShowAuthModal } =
-    props;
+  const {
+    getData,
+    handleChange,
+    appState,
+    templates,
+    setShowAuthModal,
+    setIsFontOpen,
+  } = props;
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [isColorOpen, setIsColorOpen] = useState(false);
@@ -193,11 +200,7 @@ export default function SettingMenu(props: TProps) {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                     )}
-                    // onClick={() =>
-                    //   status === "unauthenticated"
-                    //     ? setShowAuthModal(true)
-                    //     : setIsColorOpen(true)
-                    // }
+                    onClick={() => setIsFontOpen(true)}
                   >
                     Change Fonts
                   </button>

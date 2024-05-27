@@ -34,6 +34,7 @@ type TProps = {
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   setSelectedTemplate?: Dispatch<SetStateAction<TTemplateName>>;
   setShowAuthModal: Dispatch<SetStateAction<boolean>>;
+  setIsFontOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const BottomToolBar = (props: TProps) => {
@@ -47,6 +48,7 @@ const BottomToolBar = (props: TProps) => {
     getData,
     handleChange,
     setSelectedTemplate,
+    setIsFontOpen
   } = props;
   const matches = useMediaQuery("(max-width: 500px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
@@ -70,6 +72,7 @@ const BottomToolBar = (props: TProps) => {
                 appState={appState}
                 templates={templates}
                 setShowAuthModal={setShowAuthModal}
+                setIsFontOpen={setIsFontOpen}
               />
             )}
           </div>

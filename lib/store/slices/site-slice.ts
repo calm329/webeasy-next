@@ -15,6 +15,7 @@ type TInitialState = {
 
 const initialSite = {
   focusedField:null,
+  selectedFont:"",
   subdomain: "",
   status: "Loading Instagram",
   iPosts: [],
