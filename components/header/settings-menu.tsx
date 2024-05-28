@@ -182,11 +182,7 @@ export default function SettingMenu(props: TProps) {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                     )}
-                    onClick={() =>
-                      status === "unauthenticated"
-                        ? setShowAuthModal(true)
-                        : setIsColorOpen(true)
-                    }
+                    onClick={() => setIsColorOpen(true)}
                   >
                     Change Colors
                   </button>
