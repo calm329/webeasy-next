@@ -117,7 +117,6 @@ const BannerContent = (props: TProps) => {
     });
   }, []);
 
-
   useEffect(() => {
     for (const f of brandCustomizeFields) {
       // if (f.type === "button") {
@@ -154,19 +153,21 @@ const BannerContent = (props: TProps) => {
       result.destination.index,
     );
 
-    dispatch(updateAppState({
-      ...appState,
-      aiContent: {
-       ...appState.aiContent,
-        banner: {
-         ...appState.aiContent.banner,
-          button: {
-           ...appState.aiContent.banner.button,
-            list: updatedItemsForRedux,
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          banner: {
+            ...appState.aiContent.banner,
+            button: {
+              ...appState.aiContent.banner.button,
+              list: updatedItemsForRedux,
+            },
           },
         },
-      },
-    }))
+      }),
+    );
 
     const tempFields = brandCustomizeFields;
     tempFields[2].children = updatedItems;
@@ -204,13 +205,12 @@ const BannerContent = (props: TProps) => {
     );
   };
 
-
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    if(appState.focusedField === "businessName"){
-      inputRef.current?.focus()
+    if (appState.focusedField === "businessName") {
+      inputRef.current?.focus();
     }
-  },[appState])
+  }, [appState]);
   return (
     <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
       <form
@@ -273,12 +273,13 @@ const BannerContent = (props: TProps) => {
                     case "text":
                       return (
                         <div className="flex flex-col border-t pt-5">
-                          <label
-                            htmlFor="businessName"
-                            className="block text-sm font-medium leading-6 text-gray-900"
-                          >
-                            {data.label}
-                          </label>
+                          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="businessName" className="block">
+                              {data.label}
+                            </label>
+                            <span>Regenerate</span>
+                          </div>
+
                           <input
                             type="text"
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -332,10 +333,7 @@ const BannerContent = (props: TProps) => {
                           </div>
                           {appState.aiContent.banner.button.show && (
                             <>
-                              <DragDropContext
-                                onDragEnd={onDragEnd}
-                             
-                              >
+                              <DragDropContext onDragEnd={onDragEnd}>
                                 <Droppable droppableId="droppable">
                                   {(provided, snapshot) => (
                                     <div
