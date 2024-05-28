@@ -5,13 +5,12 @@ import PageStatus from "@/components/ui/pagestatus";
 
 export default function Example() {
   return (
-    <>
-      <SiteHeader showNavigation={true} />
+     
       <div className="relative isolate overflow-hidden bg-white">
-        <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 ">
+        <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 ">
+          <div className="mx-auto max-w-3xl lg:mx-0 lg:flex-shrink-0 ">
             {/* <Image src={tailwindIcon} alt="Your Company" className="h-11 ml-auto" /> */}
-            <PageStatus />
+            {/* <PageStatus /> */}
             <h1 className="mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Instantly create your website from your Instagram profile
             </h1>
@@ -32,6 +31,5 @@ export default function Example() {
           </div>
         </div>
       </div>
-    </>
   );
 }
