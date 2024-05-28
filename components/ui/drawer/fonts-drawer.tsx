@@ -11,9 +11,11 @@ export function FontsDrawer(props: TProps) {
   return (
     <Drawer open={!!open} onOpenChange={setIsOpen}>
       <DrawerContent>
-        <div className="mx-auto w-full max-w-sm px-5 pb-10">
+        <div className="mx-auto w-full max-w-sm">
+          <div className="p-5 max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto transition-all ease-in-out">
           <FontPicker
           />
+          </div>
         </div>
       </DrawerContent>
     </Drawer>
