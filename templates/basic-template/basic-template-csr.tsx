@@ -56,9 +56,9 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           setShowButtonForm={setShowButtonForm}
         />
       </section>
-      <section className="overflow-hidden bg-gray-50 py-10">
+      <section className=" bg-gray-50 py-10">
         <div className="container mx-auto px-4">
-          <div className="rounded-3xl bg-white px-8 py-16">
+          <div className="rounded-3xl bg-white px-8 py-16  pb-10">
             <div className="mx-auto max-w-7xl">
               <EditableHero
                 colors={colors}
@@ -70,7 +70,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 showButtonForm={showButtonForm}
                 setShowButtonForm={setShowButtonForm}
               />
-              <div className="rounded-3xl bg-gray-100 p-8 md:p-12">
+              <div className="rounded-3xl bg-gray-100 p-8 md:p-12 ">
                 <div className="-m-8 flex flex-wrap">
                   {services.map((service) => (
                     <ServiceCard
