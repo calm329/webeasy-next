@@ -8,7 +8,10 @@ import PublishMenu from "../menu/publish-menu";
 import { DebouncedState, useMediaQuery } from "usehooks-ts";
 import { AppState, TTemplate, TTemplateName } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { fetchTemplates,TemplatesData as TD } from "@/lib/store/slices/template-slice";
+import {
+  fetchTemplates,
+  TemplatesData as TD,
+} from "@/lib/store/slices/template-slice";
 import { WidgetDrawer } from "../ui/drawer/widget-drawer";
 import { FaUndoAlt, FaRedoAlt } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
@@ -26,6 +29,8 @@ import { saveState } from "@/lib/utils/function";
 import Loader from "../ui/loader";
 import { getAllTemplates } from "@/lib/fetchers";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import AiAssist from "../ai-assist";
 
 type TProps = {
   showNavigation: boolean;
@@ -40,7 +45,6 @@ type TProps = {
 const BottomToolBar = (props: TProps) => {
   const [showWidgetModal, setWidgetModal] = useState(false);
 
-
   const {
     showNavigation,
     isAuth,
@@ -48,7 +52,7 @@ const BottomToolBar = (props: TProps) => {
     getData,
     handleChange,
     setSelectedTemplate,
-    setIsFontOpen
+    setIsFontOpen,
   } = props;
   const matches = useMediaQuery("(max-width: 500px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
@@ -58,10 +62,10 @@ const BottomToolBar = (props: TProps) => {
   const loading = useAppSelector(LD);
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
-  const templates= useAppSelector(TD)
+  const templates = useAppSelector(TD);
   const { status } = useSession();
   return (
-    <div className="fixed bottom-0 z-1   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
+    <div className="z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
       {isBottomBar ? (
         <>
           <div className=" flex justify-end gap-5  max-sm:gap-2">
@@ -96,9 +100,10 @@ const BottomToolBar = (props: TProps) => {
             <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
           )}
 
-          <ViewMenu />
+          {/* <ViewMenu /> */}
 
-          <PublishMenu setShowAuthModal={setShowAuthModal}/>
+          <PublishMenu setShowAuthModal={setShowAuthModal} />
+          <AiAssist/>
         </>
       ) : (
         <div className="flex w-full justify-around">
@@ -119,21 +124,29 @@ const BottomToolBar = (props: TProps) => {
             Redo
           </button>
           <button className="flex flex-col items-center">
-            <ImCancelCircle size={18} onClick={() => {if(getData){ getData(); dispatch(clearPastAndFuture())}}} />
+            <ImCancelCircle
+              size={18}
+              onClick={() => {
+                if (getData) {
+                  getData();
+                  dispatch(clearPastAndFuture());
+                }
+              }}
+            />
             Cancel
           </button>
           <button className="flex flex-col items-center">
             <MdOutlineDownloadDone
               size={20}
-              onClick={() =>
-                {if(status === "authenticated"){
+              onClick={() => {
+                if (status === "authenticated") {
                   saveState(appState, dispatch).then(() =>
                     dispatch(clearPastAndFuture()),
-                  )
-                }else{
-                  setShowAuthModal(true)
-                }}
-              }
+                  );
+                } else {
+                  setShowAuthModal(true);
+                }
+              }}
             />
             Done
           </button>

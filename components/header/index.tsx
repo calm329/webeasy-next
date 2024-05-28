@@ -57,6 +57,7 @@ import BackModal from "../ui/modal/back-modal";
 import { BackDrawer } from "../ui/drawer/back-drawer";
 import { LeaveDrawer } from "../ui/drawer/leave-drawer";
 import LeaveModal from "../ui/modal/leave-modal";
+import AiAssist from "../ai-assist";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -296,7 +297,7 @@ export default function SiteHeader(props: TProps) {
                   />
                 )}
               </div>
-              <div className={` ml-3 flex ${!isBottomBar && "hidden"}`}>
+              <div className={` ml-3 mr-5 flex ${!isBottomBar && "hidden"}`}>
                 <span className="hidden sm:block">
                   <button
                     type="button"
@@ -324,6 +325,7 @@ export default function SiteHeader(props: TProps) {
                 <ViewMenu />
 
                 <PublishMenu setShowAuthModal={setShowAuthModal} />
+                <AiAssist/>
               </div>
               {status === "authenticated" ? (
                 <div className="max-lg:hidden">
