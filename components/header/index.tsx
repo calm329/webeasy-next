@@ -161,7 +161,7 @@ export default function SiteHeader(props: TProps) {
       <nav>
         {!isBottomBar && pathname.startsWith("/auth") && (
           <div className="mt-5 flex w-full justify-around border-b pb-5">
-            <button
+            {/* <button
               className="flex flex-col items-center"
               onClick={() => {
                 if (pastAppState.length > 0 || futureAppState.length > 0) {
@@ -173,8 +173,7 @@ export default function SiteHeader(props: TProps) {
               }}
             >
               <IoMdArrowRoundBack size={20} />
-              {/* Undo */}
-            </button>
+            </button> */}
             <button className="flex flex-col items-center">
               <IoMdAdd size={20} />
               {/* Undo */}
@@ -229,7 +228,7 @@ export default function SiteHeader(props: TProps) {
           aria-label="Global"
         >
           <div className="flex items-center gap-x-12 ">
-            {isAuth && isBottomBar && (
+            {/* {isAuth && isBottomBar && (
               <button
                 onClick={() => {
                   if (pastAppState.length > 0 || futureAppState.length > 0) {
@@ -245,7 +244,7 @@ export default function SiteHeader(props: TProps) {
                 <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
                 Back
               </button>
-            )}
+            )} */}
             <Link href="/" className="-m-1.5 p-1.5">
               <Image
                 src={"/WebEasy-logo-dark.svg"}
