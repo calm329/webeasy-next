@@ -92,7 +92,7 @@ const HeroContent = (props: TProps) => {
   const onLinkInvalid = () => {
     setIsLinkInValid(true);
   };
- 
+
   const onSubmit: SubmitHandler<any> = async (data) => {
     setLoading(true);
 
@@ -140,19 +140,21 @@ const HeroContent = (props: TProps) => {
       result.destination.index,
     );
 
-    dispatch(updateAppState({
-      ...appState,
-      aiContent: {
-       ...appState.aiContent,
-        hero: {
-         ...appState.aiContent.hero,
-          button: {
-           ...appState.aiContent.hero.button,
-            list: updatedItemsForRedux,
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          hero: {
+            ...appState.aiContent.hero,
+            button: {
+              ...appState.aiContent.hero.button,
+              list: updatedItemsForRedux,
+            },
           },
         },
-      },
-    }))
+      }),
+    );
 
     const tempFields = heroCustomizeFields;
     tempFields[3].children = updatedItems;
@@ -199,15 +201,15 @@ const HeroContent = (props: TProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(()=>{
-    if(appState.focusedField === "heading"){
+  useEffect(() => {
+    if (appState.focusedField === "heading") {
       inputRef.current?.focus();
     }
 
-    if(appState.focusedField === "subheading"){
+    if (appState.focusedField === "subheading") {
       textareaRef.current?.focus();
     }
-  },[appState])
+  }, [appState]);
 
   return (
     <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
@@ -271,12 +273,16 @@ const HeroContent = (props: TProps) => {
                     case "text":
                       return (
                         <div className="flex flex-col border-t pt-5">
-                          <label
-                            htmlFor={data.name}
-                            className="block text-sm font-medium leading-6 text-gray-900"
-                          >
-                            {data.label}
-                          </label>
+                         <div className="flex  text-sm font-medium leading-6 text-gray-900 justify-between">
+                            <label
+                              htmlFor={data.name}
+                              className="block"
+                            >
+                              {data.label}
+                            </label>
+                            <span>Regenerate</span>
+                          </div>
+
                           <input
                             type="text"
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -297,12 +303,15 @@ const HeroContent = (props: TProps) => {
                     case "textarea":
                       return (
                         <div className="flex flex-col border-t pt-5">
-                          <label
-                            htmlFor={data.name}
-                            className="block text-sm font-medium leading-6 text-gray-900"
-                          >
-                            {data.label}
-                          </label>
+                          <div className="flex  text-sm font-medium leading-6 text-gray-900 justify-between">
+                            <label
+                              htmlFor={data.name}
+                              className="block"
+                            >
+                              {data.label}
+                            </label>
+                            <span>Regenerate</span>
+                          </div>
                           <textarea
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             id={data.name}
@@ -356,10 +365,7 @@ const HeroContent = (props: TProps) => {
                           </div>
                           {appState.aiContent.hero.button.show && (
                             <>
-                              <DragDropContext
-                                onDragEnd={onDragEnd}
-                       
-                              >
+                              <DragDropContext onDragEnd={onDragEnd}>
                                 <Droppable droppableId="droppable">
                                   {(provided, snapshot) => (
                                     <div
