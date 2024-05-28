@@ -228,10 +228,17 @@ export default function SiteHeader(props: TProps) {
           <div className="flex items-center gap-x-12 ">
             <button
               onClick={() => {
-                if (futureAppState.length === 0 && pastAppState.length === 0) {
-                  router.push("/");
+                if (isAuth) {
+                  if (
+                    futureAppState.length === 0 &&
+                    pastAppState.length === 0
+                  ) {
+                    router.push("/");
+                  } else {
+                    setShowLeaveModal(true);
+                  }
                 } else {
-                  setShowLeaveModal(true);
+                  router.push("/");
                 }
               }}
             >

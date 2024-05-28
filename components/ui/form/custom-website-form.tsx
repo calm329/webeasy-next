@@ -218,8 +218,8 @@ const CustomWebsiteForm = () => {
     defaultValues,
   });
   return (
-    <form className="flex flex-col justify-center gap-5">
-      <div>
+    <form className="flex w-full items-center justify-center gap-5 max-sm:flex-col">
+      {/* <div>
         <label
           htmlFor="title"
           className="block text-sm font-medium leading-6 text-gray-900"
@@ -260,102 +260,103 @@ const CustomWebsiteForm = () => {
             </p>
           )}
         </div>
-      </div>
-
-      <div>
-        <label
-          htmlFor="business"
-          className="block text-sm font-medium leading-6 text-gray-900"
-        >
-          Business
-        </label>
-        <Combobox
-          value={selected}
-          onChange={(val) => {
-            setSelected(val);
-            setValue("business", val);
-          }}
-        >
-          <div className="relative">
-            <Combobox.Input
-              onChange={(event) => setQuery(event.target.value)}
-              className={clsx(
-                "w-full rounded-lg border border-gray-300 py-1.5  pl-3 pr-8 text-sm/6 text-black ",
-                "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 ",
-              )}
-            />
-            <Combobox.Button className="group absolute inset-y-0 right-0 px-2.5">
-              <ChevronDownIcon className="size-4 " />
-            </Combobox.Button>
-          </div>
-          <Transition
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-            afterLeave={() => setQuery("")}
+      </div> */}
+      <div className="flex flex-col gap-5">
+        <div>
+          <label
+            htmlFor="business"
+            className="block text-sm font-medium leading-6 text-gray-900"
           >
-            <Combobox.Options
-              // anchor="bottom"
-              className="absolute h-52 w-[90%] overflow-auto rounded-xl border border-gray-300 bg-white p-1 [--anchor-gap:var(--spacing-1)] empty:hidden"
+            What Type of Business are you building?
+          </label>
+          <Combobox
+            value={selected}
+            onChange={(val) => {
+              setSelected(val);
+              setValue("business", val);
+            }}
+          >
+            <div className="relative">
+              <Combobox.Input
+                onChange={(event) => setQuery(event.target.value)}
+                className={clsx(
+                  "w-full rounded-lg border border-gray-300 py-1.5  pl-3 pr-8 text-sm/6 text-black ",
+                  "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 ",
+                )}
+              />
+              <Combobox.Button className="group absolute inset-y-0 right-0 px-2.5">
+                <ChevronDownIcon className="size-4 " />
+              </Combobox.Button>
+            </div>
+            <Transition
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+              afterLeave={() => setQuery("")}
             >
-              {filteredBusinesses.map((business) => (
-                <Combobox.Option
-                  key={business}
-                  value={business}
-                  className="group flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-1.5 hover:bg-gray-200"
-                >
-                  <CheckIcon
-                    className={`${business !== selected && "invisible"} size-4 `}
-                  />
-                  <div className="text-sm/6 text-black">{business}</div>
-                </Combobox.Option>
-              ))}
-            </Combobox.Options>
-          </Transition>
-        </Combobox>
-      </div>
-
-      <div>
-        <label
-          htmlFor="location"
-          className="block text-sm font-medium leading-6 text-gray-900"
-        >
-          Business location
-        </label>
-        <div className="mt-2">
-          <input
-            type="text"
-            {...register("location")}
-            placeholder="We'd love to learn more about your business! Could you please provide some details?"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-          {errors.location && (
-            <p className="mt-2 text-sm text-red-600" id="location-error">
-              {errors.location.message}
-            </p>
-          )}
+              <Combobox.Options
+                // anchor="bottom"
+                className="absolute h-52 w-[90%] overflow-auto rounded-xl border border-gray-300 bg-white p-1 [--anchor-gap:var(--spacing-1)] empty:hidden"
+              >
+                {filteredBusinesses.map((business) => (
+                  <Combobox.Option
+                    key={business}
+                    value={business}
+                    className="group flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-1.5 hover:bg-gray-200"
+                  >
+                    <CheckIcon
+                      className={`${business !== selected && "invisible"} size-4 `}
+                    />
+                    <div className="text-sm/6 text-black">{business}</div>
+                  </Combobox.Option>
+                ))}
+              </Combobox.Options>
+            </Transition>
+          </Combobox>
         </div>
-      </div>
 
-      <div>
-        <label
-          htmlFor="businessName"
-          className="block text-sm font-medium leading-6 text-gray-900"
-        >
-          Business Name
-        </label>
-        <div className="mt-2">
-          <input
-            type="text"
-            {...register("businessName")}
-            placeholder="What is the name of your business?"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-          {errors.businessName && (
-            <p className="mt-2 text-sm text-red-600" id="businessName-error">
-              {errors.businessName.message}
-            </p>
-          )}
+        <div>
+          <label
+            htmlFor="location"
+            className="block text-sm font-medium leading-6 text-gray-900"
+          >
+            What is your business location?
+          </label>
+          <div className="mt-2">
+            <input
+              type="text"
+              {...register("location")}
+              placeholder="We'd love to learn more about your business! Could you please provide some details?"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+            {errors.location && (
+              <p className="mt-2 text-sm text-red-600" id="location-error">
+                {errors.location.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="businessName"
+            className="block text-sm font-medium leading-6 text-gray-900"
+          >
+            What is the name of the business?
+          </label>
+          <div className="mt-2">
+            <input
+              type="text"
+              {...register("businessName")}
+              placeholder="What is the name of your business?"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+            {errors.businessName && (
+              <p className="mt-2 text-sm text-red-600" id="businessName-error">
+                {errors.businessName.message}
+              </p>
+            )}
+          </div>
         </div>
       </div>
       <button
@@ -365,7 +366,7 @@ const CustomWebsiteForm = () => {
         disabled={loading}
       >
         {loading && <ImSpinner2 className="animate-spin text-lg text-white" />}
-        Submit
+        Generate your website
       </button>
     </form>
   );
