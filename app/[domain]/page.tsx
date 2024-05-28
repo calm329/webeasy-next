@@ -1,6 +1,6 @@
 import BasicTemplate from "@/templates/basic-template";
 import { getSiteData } from "@/lib/fetchers";
-import { makeStore } from "@/lib/store";
+// import { makeStore } from "@/lib/store";
 
 type TProps = {
   params: { domain: string };
