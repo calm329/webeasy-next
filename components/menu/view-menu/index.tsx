@@ -7,6 +7,7 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { useMediaQuery } from "usehooks-ts";
+import { FaDesktop } from "react-icons/fa";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -21,7 +22,7 @@ export default function ViewMenu() {
       <Menu.Button className="inline-flex items-center rounded-md  px-3 py-2 text-sm font-semibold  max-sm:text-xs text-black ">
         <div className="flex items-center justify-center gap-1 max-sm:flex-col max-sm:gap-2 sm:hidden">
           <div className="flex">
-            <LinkIcon
+            <FaDesktop 
               className="-ml-0.5 mr-1.5 h-5 w-5 max-sm:m-0"
               aria-hidden="true"
             />
@@ -29,7 +30,7 @@ export default function ViewMenu() {
           View
         </div>
         <div className={`flex  max-sm:hidden flex-col justify-center items-center gap-2`}>
-          <LinkIcon
+          <FaDesktop
             className="-ml-0.5 mr-1.5 h-5 w-5 "
             aria-hidden="true"
           />
