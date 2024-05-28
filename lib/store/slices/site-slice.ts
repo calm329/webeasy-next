@@ -4,6 +4,14 @@ import { RootState } from "..";
 import SiteApi from "@/lib/api/site-api";
 import { AppState, TSite } from "@/types";
 import { generateUniqueId } from "@/lib/utils/function";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const persistConfig = {
+  key: "site",
+  storage,
+};
+
 const MAX_HISTORY_LENGTH = 100;
 type TInitialState = {
   sites: {
@@ -12,6 +20,8 @@ type TInitialState = {
   };
   loading: boolean;
 };
+
+
 
 const initialSite = {
   focusedField:null,
@@ -317,4 +327,4 @@ export const futureAppState = (state: RootState) =>
   state.siteSlice.sites.domain.future;
 export const sitesData = (state: RootState) => state.siteSlice.sites.user;
 export const loading = (state: RootState) => state.siteSlice.loading;
-export default siteSlice.reducer;
+export default persistReducer(persistConfig, siteSlice.reducer);

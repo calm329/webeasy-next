@@ -4,6 +4,14 @@ import TemplateApi from "../../api/template-api";
 
 import { RootState } from "..";
 import { TTemplate } from "@/types";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const persistConfig = {
+  key: "template",
+  storage,
+  whiteList: ["selectedTemplate"],
+};
 
 type TInitialState = {
   templates: Array<TTemplate> | null;
@@ -55,12 +63,11 @@ const templateSlice = createSlice({
 
 //export async thunks
 export { fetchTemplates };
-export const { setSelectedTemplate} =
-  templateSlice.actions;
+export const { setSelectedTemplate } = templateSlice.actions;
 export const TemplatesData = (state: RootState) =>
   state.templateSlice.templates;
 export const selectedTemplate = (state: RootState) =>
   state.templateSlice.selectedTemplate;
 export const loading = (state: RootState) => state.templateSlice.loading;
 //export default reducer
-export default templateSlice.reducer;
+export default persistReducer(persistConfig, templateSlice.reducer);
