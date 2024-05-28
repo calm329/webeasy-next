@@ -55,6 +55,8 @@ import {
 import Loader from "../ui/loader";
 import BackModal from "../ui/modal/back-modal";
 import { BackDrawer } from "../ui/drawer/back-drawer";
+import { LeaveDrawer } from "../ui/drawer/leave-drawer";
+import LeaveModal from "../ui/modal/leave-modal";
 
 const navigation = [
   { name: "Customization", href: "#" },
@@ -93,6 +95,8 @@ export default function SiteHeader(props: TProps) {
   const [loading, setLoading] = useState(false);
   const [hideNavigation, setHideNavigation] = useState(false);
   const [showWidgetModal, setWidgetModal] = useState(false);
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
   const pastAppState = useAppSelector(PAS);
@@ -159,22 +163,15 @@ export default function SiteHeader(props: TProps) {
         <BackModal setOpen={setShowBackModal} open={showBackModal} />
       )}
 
+      {isMobile ? (
+        <LeaveDrawer setOpen={setShowLeaveModal} open={showLeaveModal} />
+      ) : (
+        <LeaveModal setOpen={setShowLeaveModal} open={showLeaveModal} />
+      )}
+
       <nav>
         {!isBottomBar && pathname.startsWith("/auth") && (
           <div className="mt-5 flex w-full justify-around border-b pb-5">
-            {/* <button
-              className="flex flex-col items-center"
-              onClick={() => {
-                if (pastAppState.length > 0 || futureAppState.length > 0) {
-                  setShowBackModal(true);
-                } else {
-                  dispatch(clearPastAndFuture());
-                  router.push("/settings/websites");
-                }
-              }}
-            >
-              <IoMdArrowRoundBack size={20} />
-            </button> */}
             <button className="flex flex-col items-center">
               <IoMdAdd size={20} />
               {/* Undo */}
@@ -229,24 +226,15 @@ export default function SiteHeader(props: TProps) {
           aria-label="Global"
         >
           <div className="flex items-center gap-x-12 ">
-            {/* {isAuth && isBottomBar && (
-              <button
-                onClick={() => {
-                  if (pastAppState.length > 0 || futureAppState.length > 0) {
-                    setShowBackModal(true);
-                  } else {
-                    dispatch(clearPastAndFuture());
-                    router.push("/settings/websites");
-                  }
-                }}
-                className="relative  flex  items-center  px-2 py-2 text-base font-medium  text-black  "
-              >
-                <span className="sr-only"> Previous</span>
-                <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-                Back
-              </button>
-            )} */}
-            <Link href="/" className="-m-1.5 p-1.5">
+            <button
+              onClick={() => {
+                if (futureAppState.length === 0 && pastAppState.length === 0) {
+                  router.push("/");
+                } else {
+                  setShowLeaveModal(true);
+                }
+              }}
+            >
               <Image
                 src={"/WebEasy-logo-dark.svg"}
                 alt={"Logo"}
@@ -254,7 +242,8 @@ export default function SiteHeader(props: TProps) {
                 width={200}
                 height={100}
               />
-            </Link>
+            </button>
+
             <div
               className={`flex lg:gap-x-12 ${hideNavigation && "hidden"} max-lg:hidden`}
             >
@@ -271,11 +260,11 @@ export default function SiteHeader(props: TProps) {
                 ))}
             </div>
           </div>
-          {isAuth &&isBottomBar && (
-            <div className="flex gap-2 ml-5">
-              <div className="flex justify-center rounded border border-gray-400 px-5 py-2 items-center gap-5 pr-2">
+          {isAuth && isBottomBar && (
+            <div className="ml-5 flex gap-2">
+              <div className="flex items-center justify-center gap-5 rounded border border-gray-400 px-5 py-2 pr-2">
                 <span>Home</span>
-                <span className="text-sm h-5 w-5">
+                <span className="h-5 w-5 text-sm">
                   <ChevronDownIcon />
                 </span>
               </div>
