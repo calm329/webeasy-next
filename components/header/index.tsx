@@ -118,8 +118,9 @@ export default function SiteHeader(props: TProps) {
 
     switch (pathname) {
       case "/":
-      case "/custom":
-      case "/amazon":
+      case "/website-builder":
+      case "/website-builder/instagram":
+      case "/website-builder/amazon":
         setHideNavigation(true);
         break;
       default:
@@ -325,7 +326,7 @@ export default function SiteHeader(props: TProps) {
                 <ViewMenu />
 
                 <PublishMenu setShowAuthModal={setShowAuthModal} />
-                <AiAssist/>
+                <AiAssist />
               </div>
               {status === "authenticated" ? (
                 <div className="max-lg:hidden">
