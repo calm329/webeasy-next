@@ -15,7 +15,7 @@ const sections: TSectionObject = [
     },
     {
         link:"/website-builder/instagram",
-        text:"Build a website from Instagram feed"
+        text:"Build a website from Instagram"
     },
     {
         link:"/website-builder/amazon",
