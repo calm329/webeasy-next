@@ -3,52 +3,52 @@ import axios from "axios";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 
+const fonts = [
+  "Roboto",
+  "Open Sans",
+  "Montserrat",
+  "Lato",
+  "Poppins",
+  "Source Sans Pro",
+  "Raleway",
+  "Noto Sans",
+  "Inter",
+  "Roboto Slab",
+  "Merriweather",
+  "Playfair Display",
+];
+
 const FontPicker = () => {
   const appState = useAppSelector(AS);
-  const [fonts, setFonts] = useState([]);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    const apiKey = "AIzaSyDG8abWoK3DvSh9s0bT7BEy_JxtalF6P-s"; // Ensure your API key is stored in .env.local
-    axios
-      .get(
-        `https://www.googleapis.com/webfonts/v1/webfonts?key=${apiKey}&sort=popularity`,
-      )
-      .then((response) => {
-        const fontFamilies = response.data.items.map(
-          (font: any) => font.family,
-        );
-        setFonts(fontFamilies);
-        // dispatch(
-        //   updateAppState({ ...appState, selectedFont: fontFamilies[0] }),
-        // ); // Set initial font to the first one in the list
-      })
-      .catch((error) => console.error("Error fetching fonts:", error));
-  }, []);
+    const WebFontLoader = require('webfontloader')
+    WebFontLoader.load({
+      google: {
+        families: fonts,
+      },
+    });
+  }, [fonts]);
 
   return (
-    <div className="flex flex-col gap-10">
-      <div>
-        <h1>Font Picker</h1>
-        <select
-          value={appState.selectedFont}
-          onChange={(e) =>
+    <div className=" flex gap-5 flex-col">
+      {fonts.map((font) => (
+        <div
+          key={font}
+          onClick={() =>
             dispatch(
-              updateAppState({ ...appState, selectedFont: e.target.value }),
+              updateAppState({ ...appState, selectedFont: font }),
             )
           }
-          style={{ fontFamily: appState.selectedFont, fontSize: "16px" }}
+          className="border p-5 rounded shadow cursor-pointer hover:bg-gray-100"
         >
-          {fonts.map((font) => (
-            <option key={font} value={font} style={{ fontFamily: font }}>
-              {font}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <p style={{ fontFamily: appState.selectedFont, fontSize: "24px" }}>
-        The quick brown fox jumps over the lazy dog.
-      </p>
+          <h1 style={{ fontFamily: font, fontSize: "20px" }}>{font}</h1>
+          <p style={{ fontFamily: font, fontSize: "16px" }}>
+            The quick brown fox jumps over the lazy dog.
+          </p>
+        </div>
+      ))}
     </div>
   );
 };
