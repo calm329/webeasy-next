@@ -70,7 +70,7 @@ type TProps = {
   isAuth?: boolean;
   getData?: (flag?: "init" | "regenerate" | "text" | "image") => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
-  setIsFontOpen?:Dispatch<SetStateAction<boolean>>
+  setIsFontOpen?: Dispatch<SetStateAction<boolean>>;
 };
 export type TTemplate = {
   id: string;
@@ -82,7 +82,8 @@ export type TTemplate = {
 
 export default function SiteHeader(props: TProps) {
   const pathname = usePathname();
-  const { showNavigation, isAuth, getData, handleChange,setIsFontOpen } = props;
+  const { showNavigation, isAuth, getData, handleChange, setIsFontOpen } =
+    props;
   const router = useRouter();
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -270,6 +271,19 @@ export default function SiteHeader(props: TProps) {
                 ))}
             </div>
           </div>
+          {isAuth &&isBottomBar && (
+            <div className="flex gap-2 ml-5">
+              <div className="flex justify-center rounded border border-gray-400 px-5 py-2 items-center gap-5 pr-2">
+                <span>Home</span>
+                <span className="text-sm h-5 w-5">
+                  <ChevronDownIcon />
+                </span>
+              </div>
+              <div className="rounded border border-gray-400 px-2 py-2">
+                <IoMdAdd size={20} />
+              </div>
+            </div>
+          )}
           {isAuth && (
             <>
               <div
@@ -313,7 +327,7 @@ export default function SiteHeader(props: TProps) {
                 )}
                 <ViewMenu />
 
-                <PublishMenu setShowAuthModal={setShowAuthModal}/>
+                <PublishMenu setShowAuthModal={setShowAuthModal} />
               </div>
               {status === "authenticated" ? (
                 <div className="max-lg:hidden">
