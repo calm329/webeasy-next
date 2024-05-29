@@ -68,7 +68,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
       </section>
       <section className="overflow-hidden bg-gray-50 py-10">
         <div className="container mx-auto px-4">
-          <div className="rounded-3xl bg-white px-8 py-16">
+          <div className="rounded-3xl bg-white px-8 py-16 pb-10">
             <div className="mx-auto max-w-7xl">
               <div className={`-m-8 mb-10 flex flex-wrap `}>
                 <div className="w-full p-8 md:w-1/2">
