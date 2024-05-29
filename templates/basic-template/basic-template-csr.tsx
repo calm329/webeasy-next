@@ -7,6 +7,8 @@ import { Dispatch, SetStateAction } from "react";
 import { TBanner, TColors, TFields, THero, TSection } from "@/types";
 import EditableBanner from "@/components/editable/banner";
 import EditableHero from "@/components/editable/hero";
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -44,6 +46,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
     showButtonForm,
     setShowButtonForm,
   } = props;
+  const dispatch = useAppDispatch()
+  const appState = useAppSelector(AS)
   return (
     <>
       <section className="bg-white py-6">
@@ -78,6 +82,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   if (setIsOpen && setSection) {
                     setIsOpen(true);
                     setSection("Services");
+                    dispatch(updateAppState({...appState,openedSlide:"Customize"}))
                   }
                 }}
               >

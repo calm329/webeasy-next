@@ -51,6 +51,7 @@ import {
   pastAppState as PAS,
   redo,
   undo,
+  updateAppState,
 } from "@/lib/store/slices/site-slice";
 import Loader from "../ui/loader";
 import BackModal from "../ui/modal/back-modal";
@@ -71,7 +72,10 @@ function classNames(...classes: any[]) {
 type TProps = {
   showNavigation: boolean;
   isAuth?: boolean;
-  getData?: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
+  getData?: (
+    flag?: "init" | "regenerate" | "text" | "image" | "individual",
+    fieldName?: string,
+  ) => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   setIsFontOpen?: Dispatch<SetStateAction<boolean>>;
 };
@@ -303,7 +307,12 @@ export default function SiteHeader(props: TProps) {
                   <button
                     type="button"
                     className="inline-flex flex-col items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-black"
-                    onClick={() => setWidgetModal(true)}
+                    onClick={() => {
+                      setWidgetModal(true);
+                      dispatch(
+                        updateAppState({ ...appState, openedSlide: null }),
+                      );
+                    }}
                   >
                     <ChatBubbleLeftIcon
                       className="-ml-0.5 mr-1.5 h-5 w-5 "
