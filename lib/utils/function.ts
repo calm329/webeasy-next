@@ -102,24 +102,27 @@ export const getData = async (params: TParams) => {
     setHeroCustomizeFields,
     fieldName,
   } = params;
-  dispatch(
-    updateAppState({
-      ...appState,
-      status: "Loading Instagram",
-    }),
-  );
+  if (flag !== "individual") {
+    dispatch(
+      updateAppState({
+        ...appState,
+        status: "Loading Instagram",
+      }),
+    );
+  }
   const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
     userId: searchParams.get("user_id") || "",
   });
-
-  dispatch(
-    updateAppState({
-      ...appState,
-      subdomain: siteAvailable,
-      status: "Loading Instagram",
-      editable,
-    }),
-  );
+  if (flag !== "individual") {
+    dispatch(
+      updateAppState({
+        ...appState,
+        subdomain: siteAvailable,
+        status: "Loading Instagram",
+        editable,
+      }),
+    );
+  }
 
   // check if user data exists
   // const userData = flag === "init" ? await getUserData() : null;
@@ -190,13 +193,15 @@ export const getData = async (params: TParams) => {
     mediaCaption = _mediaCaption || mediaCaption;
     imageIds = _imageIds || imageIds;
     iPosts = _posts || iPosts;
-    dispatch(
-      updateAppState({
-        ...appState,
-        subdomain: siteAvailable,
-        status: "Generating Content",
-      }),
-    );
+    if (flag !== "individual") {
+      dispatch(
+        updateAppState({
+          ...appState,
+          subdomain: siteAvailable,
+          status: "Generating Content",
+        }),
+      );
+    }
   }
 
   // generate content from user media using openai
@@ -260,14 +265,15 @@ export const getData = async (params: TParams) => {
         };
       }
     }
-
-    dispatch(
-      updateAppState({
-        ...appState,
-        subdomain: siteAvailable,
-        status: "Choosing Colors",
-      }),
-    );
+    if (flag !== "individual") {
+      dispatch(
+        updateAppState({
+          ...appState,
+          subdomain: siteAvailable,
+          status: "Choosing Colors",
+        }),
+      );
+    }
   }
 
   // generate colors from content using openai

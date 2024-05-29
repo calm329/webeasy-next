@@ -283,14 +283,19 @@ const BannerContent = (props: TProps) => {
                               {data.label}
                             </label>
                             <button
-                              onClick={() =>
-                                {
-                                  console.log('Business Name:'+field.name)
-                                  getData && getData("individual", field.name)}
-
-                              }
+                              onClick={() => {
+                                setLoading(true);
+                                getData &&
+                                  getData("individual", field.name).then(() => {
+                                    setLoading(false);
+                                  });
+                              }}
+                              className="flex gap-2"
                             >
                               Regenerate
+                              {loading && (
+                                <ImSpinner2 className="animate-spin text-lg text-black" />
+                              )}
                             </button>
                           </div>
 
