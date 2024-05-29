@@ -12,12 +12,14 @@ type TProps = {
   setSection: Dispatch<SetStateAction<TSection>>;
   setIsSideBarOpen: Dispatch<SetStateAction<boolean>>;
   setFocusedField: Dispatch<SetStateAction<TFields>>;
-  showButtonForm: {
+  showForm: {
+    form:string;
     edit: string;
     show: boolean;
   };
-  setShowButtonForm: React.Dispatch<
+  setShowForm: React.Dispatch<
     React.SetStateAction<{
+      form:string;
       edit: string;
       show: boolean;
     }>
@@ -31,8 +33,8 @@ const SelectedTemplate = (props: TProps) => {
     setSection,
     setIsSideBarOpen,
     setFocusedField,
-    showButtonForm,
-    setShowButtonForm,
+    showForm,
+    setShowForm,
   } = props;
   return (
     <div className="h-full w-full">
@@ -47,8 +49,8 @@ const SelectedTemplate = (props: TProps) => {
           services={appState.aiContent["services"]["list"]}
           posts={appState.iPosts}
           setFocusedField={setFocusedField}
-          showButtonForm={showButtonForm}
-          setShowButtonForm={setShowButtonForm}
+          showForm={showForm}
+          setShowForm={setShowForm}
         />
       )}
       {selectedTemplate?.name === "Blue-Based template" && (

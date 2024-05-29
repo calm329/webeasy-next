@@ -35,7 +35,8 @@ export default function Page() {
   const [section, setSection] = useState<TSection>("Banner");
   const dispatch = useAppDispatch();
   const saveLoading = useAppSelector(LD);
-  const [showButtonForm, setShowButtonForm] = useState({
+  const [showForm, setShowForm] = useState({
+    form: "",
     edit: "",
     show: false,
   });
@@ -221,8 +222,8 @@ export default function Page() {
                 setFocusedField={setFocusedField}
                 setIsSideBarOpen={setIsSideBarOpen}
                 setSection={setSection}
-                showButtonForm={showButtonForm}
-                setShowButtonForm={setShowButtonForm}
+                showForm={showForm}
+                setShowForm={setShowForm}
               />
             </div>
             {appState.editable && (
@@ -230,7 +231,9 @@ export default function Page() {
                 {matches ? (
                   <>
                     <SlideOver
-                      open={appState.openedSlide === "Customize" && isSideBarOpen}
+                      open={
+                        appState.openedSlide === "Customize" && isSideBarOpen
+                      }
                       setIsOpen={setIsSideBarOpen}
                       section={section}
                       handleChange={handleChange}
@@ -243,8 +246,8 @@ export default function Page() {
                       focusedField={focusedField}
                       setBrandCustomizeFields={setBrandCustomizeFields}
                       setHeroCustomizeFields={setHeroCustomizeFields}
-                      showButtonForm={showButtonForm}
-                      setShowButtonForm={setShowButtonForm}
+                      showForm={showForm}
+                      setShowForm={setShowForm}
                       getData={(flag, fieldName) =>
                         getData({
                           flag: flag ?? "init",
@@ -260,7 +263,7 @@ export default function Page() {
                     />
 
                     <FontSlideOver
-                      open={appState.openedSlide === "Font"&& isFontOpen}
+                      open={appState.openedSlide === "Font" && isFontOpen}
                       setIsOpen={setIsFontOpen}
                     />
                   </>
@@ -292,8 +295,8 @@ export default function Page() {
                       setBrandCustomizeFields={setBrandCustomizeFields}
                       setHeroCustomizeFields={setHeroCustomizeFields}
                       focusedField={focusedField}
-                      showButtonForm={showButtonForm}
-                      setShowButtonForm={setShowButtonForm}
+                      showForm={showForm}
+                      setShowForm={setShowForm}
                     />
                     <FontsDrawer open={isFontOpen} setIsOpen={setIsFontOpen} />
                   </>

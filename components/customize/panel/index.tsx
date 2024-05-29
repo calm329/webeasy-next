@@ -2,6 +2,7 @@ import { FormField, TFields, TSection } from "@/types";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import CustomButton from "@/components/ui/form/custom-button";
 import { DebouncedState } from "use-debounce";
+import CustomService from "@/components/ui/form/custom-service";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -12,19 +13,21 @@ type TProps = {
   focusedField: TFields;
   isMobile?: boolean;
   children: React.ReactNode;
-  showButtonForm: {
+  showForm: {
+    form: string;
     edit: string;
     show: boolean;
   };
-  setShowButtonForm: React.Dispatch<
+  setShowForm: React.Dispatch<
     React.SetStateAction<{
+      form: string;
       edit: string;
       show: boolean;
     }>
   >;
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
-  handleChange:DebouncedState<(name: string, value: string) => void>
+  handleChange: DebouncedState<(name: string, value: string) => void>;
 };
 
 const CustomizePanel = (props: TProps) => {
@@ -37,26 +40,40 @@ const CustomizePanel = (props: TProps) => {
     focusedField,
     isMobile,
     children,
-    showButtonForm,
-    setShowButtonForm,
+    showForm,
+    setShowForm,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
-    handleChange
+    handleChange,
   } = props;
   const [isContent, setIsContent] = useState(true);
+  console.log("showForm.form",showForm.form)
+  return showForm.show ? (
+    <>
+      {showForm.form === "Button" && (
+        <CustomButton
+          section={section}
+          heroCustomizeFields={heroCustomizeFields}
+          brandCustomizeFields={brandCustomizeFields}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          setBrandCustomizeFields={setBrandCustomizeFields}
+          setHeroCustomizeFields={setHeroCustomizeFields}
+          showForm={showForm}
+          handleChange={handleChange}
+        />
+      )}
 
-  return showButtonForm.show ? (
-    <CustomButton
-      section={section}
-      heroCustomizeFields={heroCustomizeFields}
-      brandCustomizeFields={brandCustomizeFields}
-      setIsOpen={setIsOpen}
-      setShowButtonForm={setShowButtonForm}
-      setBrandCustomizeFields={setBrandCustomizeFields}
-      setHeroCustomizeFields={setHeroCustomizeFields}
-      showButtonForm={showButtonForm}
-      handleChange={handleChange}
-    />
+      {showForm.form === "Service" && (
+        <CustomService
+        handleChange={handleChange}
+        section={section}
+        setIsOpen={setIsOpen}
+        setShowForm={setShowForm}
+        showForm={showForm}
+        />
+      )}
+    </>
   ) : (
     <div className=" ">
       {!isMobile && (

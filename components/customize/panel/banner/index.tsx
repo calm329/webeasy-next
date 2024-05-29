@@ -30,8 +30,9 @@ type TProps = {
   brandCustomizeFields: FormField[];
   focusedField: TFields;
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
-  setShowButtonForm: React.Dispatch<
+  setShowForm: React.Dispatch<
     React.SetStateAction<{
+      form:string;
       edit: string;
       show: boolean;
     }>
@@ -64,7 +65,7 @@ const BannerContent = (props: TProps) => {
     subdomain,
     brandCustomizeFields,
     focusedField,
-    setShowButtonForm,
+    setShowForm,
     setBrandCustomizeFields,
     getData,
   } = props;
@@ -391,7 +392,8 @@ const BannerContent = (props: TProps) => {
                                                     color="blue"
                                                     size={20}
                                                     onClick={() =>
-                                                      setShowButtonForm({
+                                                      setShowForm({
+                                                        form:"Button",
                                                         show: true,
                                                         edit: item.name,
                                                       })
@@ -423,7 +425,8 @@ const BannerContent = (props: TProps) => {
                                   <button
                                     className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                                     onClick={() =>
-                                      setShowButtonForm({
+                                      setShowForm({
+                                        form:"Button",
                                         edit: "",
                                         show: true,
                                       })

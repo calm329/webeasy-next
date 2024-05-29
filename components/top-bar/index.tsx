@@ -14,7 +14,8 @@ type TopBarProps = {
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
-  setShowButtonForm?:React.Dispatch<React.SetStateAction<{
+  setShowForm?:React.Dispatch<React.SetStateAction<{
+    form:string;
     edit:string,
     show: boolean,
   }>>;
@@ -25,7 +26,7 @@ export default function TopBar(props: TopBarProps) {
     banner,
 
     colors,
-    setShowButtonForm,
+    setShowForm,
     editable,
     setFocusedField,
     setIsOpen,
@@ -49,11 +50,12 @@ export default function TopBar(props: TopBarProps) {
                     alt={banner.logo.alt}
                     className={`h-8 w-auto ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
                     onClick={() => {
-                      if (setIsOpen && setSection && setFocusedField && setShowButtonForm) {
+                      if (setIsOpen && setSection && setFocusedField && setShowForm) {
                         setSection("Banner");
                         setIsOpen(true);
                         setFocusedField("logo");
-                        setShowButtonForm({
+                        setShowForm({
+                          form:"",
                           edit:"",
                           show:false,
                         })
@@ -78,10 +80,11 @@ export default function TopBar(props: TopBarProps) {
                 className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                 onClick={(e) => {
                   e.stopPropagation()
-                  if (setIsOpen && setSection && setFocusedField && setShowButtonForm) {
+                  if (setIsOpen && setSection && setFocusedField && setShowForm) {
                     setSection("Banner");
                     setIsOpen(true);
-                    setShowButtonForm({
+                    setShowForm({
+                      form:"",
                       edit:"",
                       show:false,
                     })
@@ -118,7 +121,8 @@ export default function TopBar(props: TopBarProps) {
                     }}
                   >
                     {banner.button.list.map((data, i) => (
-                      <div key={i} onClick={()=>setShowButtonForm && setShowButtonForm({
+                      <div key={i} onClick={()=>setShowForm && setShowForm({
+                        form:"Button",
                         edit:data.name,
                         show:true,
                       })}>

@@ -21,12 +21,14 @@ type BasicTemplateProps = {
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
-  showButtonForm: {
+  showForm: {
+    form:string,
     edit: string;
     show: boolean;
   };
-  setShowButtonForm: React.Dispatch<
+  setShowForm: React.Dispatch<
     React.SetStateAction<{
+      form:string,
       edit: string;
       show: boolean;
     }>
@@ -44,8 +46,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
     setSection,
     editable,
     setFocusedField,
-    showButtonForm,
-    setShowButtonForm,
+    showForm,
+    setShowForm,
   } = props;
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
@@ -59,8 +61,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           setFocusedField={setFocusedField}
           setIsOpen={setIsOpen}
           setSection={setSection}
-          showButtonForm={showButtonForm}
-          setShowButtonForm={setShowButtonForm}
+          showForm={showForm}
+          setShowForm={setShowForm}
         />
       </section>
       <section className=" bg-gray-50 py-10">
@@ -74,8 +76,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 setFocusedField={setFocusedField}
                 setIsOpen={setIsOpen}
                 setSection={setSection}
-                showButtonForm={showButtonForm}
-                setShowButtonForm={setShowButtonForm}
+                showForm={showForm}
+                setShowForm={setShowForm}
               />
 
               <div
@@ -90,13 +92,15 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                         openedSlide: "Customize",
                       }),
                     );
+           
                   }
                 }}
               >
                 {appState.aiContent.services.show && (
                   <div className="-m-8 flex flex-wrap">
-                    {services.map((service) => (
+                    {appState.aiContent.services.list.map((service) => (
                       <ServiceCard
+                        id={service["id"]}
                         key={service["name"]}
                         name={service["name"]}
                         description={service["description"]}
@@ -104,6 +108,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                         editable={editable}
                         setIsOpen={setIsOpen}
                         setSection={setSection}
+                        showForm={showForm}
+                        setShowForm={setShowForm}
                       />
                     ))}
                   </div>

@@ -449,6 +449,31 @@ export const handleChangeAppState = (
         );
         break;
     }
+  } else if ((value as any)["section"] === "Services") {
+    console.log("i came here",name,value)
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          services: {
+            ...appState.aiContent.services,
+            list: appState.aiContent.services.list.map((service) => {
+              if (service.id === name) {
+                return {
+                  id: service.id,
+                  image:service.image,
+                  description: (value as any)["description"],
+                  name: (value as any)["name"],
+                };
+              } else {
+                return service;
+              }
+            }),
+          },
+        },
+      }),
+    );
   } else {
     switch (name) {
       case "alt":

@@ -17,13 +17,15 @@ type TProps = {
   focusedField: TFields;
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
-  setShowButtonForm: React.Dispatch<
+  setShowForm: React.Dispatch<
     React.SetStateAction<{
+      form: string;
       edit: string;
       show: boolean;
     }>
   >;
-  showButtonForm: {
+  showForm: {
+    form: string;
     edit: string;
     show: boolean;
   };
@@ -45,8 +47,8 @@ function SlideOver(props: TProps) {
     focusedField,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
-    showButtonForm,
-    setShowButtonForm,
+    showForm,
+    setShowForm,
     getData,
   } = props;
 
@@ -63,8 +65,8 @@ function SlideOver(props: TProps) {
             heroCustomizeFields={heroCustomizeFields}
             brandCustomizeFields={brandCustomizeFields}
             focusedField={focusedField}
-            showButtonForm={showButtonForm}
-            setShowButtonForm={setShowButtonForm}
+            showForm={showForm}
+            setShowForm={setShowForm}
             setBrandCustomizeFields={setBrandCustomizeFields}
             setHeroCustomizeFields={setHeroCustomizeFields}
             handleChange={handleChange}
@@ -77,7 +79,7 @@ function SlideOver(props: TProps) {
                 heroCustomizeFields={heroCustomizeFields}
                 setHeroCustomizeFields={setHeroCustomizeFields}
                 focusedField={focusedField}
-                setShowButtonForm={setShowButtonForm}
+                setShowForm={setShowForm}
                 getData={getData}
               />
             )}
@@ -88,12 +90,12 @@ function SlideOver(props: TProps) {
                 subdomain={subdomain}
                 brandCustomizeFields={brandCustomizeFields}
                 focusedField={focusedField}
-                setShowButtonForm={setShowButtonForm}
+                setShowForm={setShowForm}
                 setBrandCustomizeFields={setBrandCustomizeFields}
                 getData={getData}
               />
             )}
-            {section === "Services" && <ServiceContent />}
+            {section === "Services" && <ServiceContent setShowForm={setShowForm}/>}
           </CustomizePanel>
         </div>
       </div>

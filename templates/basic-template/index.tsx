@@ -112,6 +112,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 <div className="-m-8 flex flex-wrap">
                   {services.map((service) => (
                     <ServiceCard
+                      id={service["id"]}
                       key={service["name"]}
                       name={service["name"]}
                       description={service["description"]}

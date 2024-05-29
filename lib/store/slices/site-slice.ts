@@ -58,6 +58,7 @@ const initialSite = {
       secondary: "",
     },
     services: {
+      show:true,
       description: "",
       list: [],
       title: "",

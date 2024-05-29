@@ -28,8 +28,9 @@ type TProps = {
   subdomain: string;
   heroCustomizeFields: FormField[];
   focusedField: TFields;
-  setShowButtonForm: React.Dispatch<
+  setShowForm: React.Dispatch<
     React.SetStateAction<{
+      form:string;
       edit: string;
       show: boolean;
     }>
@@ -65,7 +66,7 @@ const HeroContent = (props: TProps) => {
     heroCustomizeFields,
     focusedField,
     setHeroCustomizeFields,
-    setShowButtonForm,
+    setShowForm,
     getData,
   } = props;
   const [loading, setLoading] = useState(false);
@@ -434,7 +435,8 @@ const HeroContent = (props: TProps) => {
                                                     color="blue"
                                                     size={20}
                                                     onClick={() =>
-                                                      setShowButtonForm({
+                                                      setShowForm({
+                                                        form:"Button",
                                                         show: true,
                                                         edit: item.name,
                                                       })
@@ -466,7 +468,8 @@ const HeroContent = (props: TProps) => {
                                   <button
                                     className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                                     onClick={() =>
-                                      setShowButtonForm({
+                                      setShowForm({
+                                        form:"Button",
                                         edit: "",
                                         show: true,
                                       })

@@ -105,6 +105,7 @@ export type TServices = {
   title: string;
   description: string;
   list: Array<{
+    id:string;
     name: string;
     description: string;
     image: string;
