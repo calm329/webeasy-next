@@ -179,7 +179,7 @@ export default function Page() {
   const matches = useMediaQuery("(min-width: 768px)");
 
   useEffect(() => {
-    const WebFontLoader = require('webfontloader')
+    const WebFontLoader = require("webfontloader");
     WebFontLoader.load({
       google: {
         families: [appState.selectedFont],
@@ -194,7 +194,7 @@ export default function Page() {
           <SiteHeader
             showNavigation={false}
             isAuth={true}
-            getData={(flag,fieldName) =>
+            getData={(flag, fieldName) =>
               getData({
                 flag: flag ?? "init",
                 searchParams,
@@ -203,7 +203,7 @@ export default function Page() {
                 // setAppState,
                 setBrandCustomizeFields,
                 setHeroCustomizeFields,
-                fieldName
+                fieldName,
               })
             }
             handleChange={handleChange}
@@ -212,7 +212,10 @@ export default function Page() {
           <EditWebsiteHeader />
 
           <div className="relative flex size-full ">
-            <div style={{ fontFamily: appState.selectedFont }} className="w-full">
+            <div
+              style={{ fontFamily: appState.selectedFont }}
+              className="w-full"
+            >
               <SelectedTemplate
                 appState={appState}
                 setFocusedField={setFocusedField}
@@ -227,7 +230,7 @@ export default function Page() {
                 {matches ? (
                   <>
                     <SlideOver
-                      open={isSideBarOpen}
+                      open={appState.openedSlide === "Customize" && isSideBarOpen}
                       setIsOpen={setIsSideBarOpen}
                       section={section}
                       handleChange={handleChange}
@@ -242,7 +245,7 @@ export default function Page() {
                       setHeroCustomizeFields={setHeroCustomizeFields}
                       showButtonForm={showButtonForm}
                       setShowButtonForm={setShowButtonForm}
-                      getData={(flag,fieldName) =>
+                      getData={(flag, fieldName) =>
                         getData({
                           flag: flag ?? "init",
                           searchParams,
@@ -251,19 +254,20 @@ export default function Page() {
                           // setAppState,
                           setBrandCustomizeFields,
                           setHeroCustomizeFields,
-                          fieldName
+                          fieldName,
                         })
                       }
                     />
+
                     <FontSlideOver
-                      open={isFontOpen}
+                      open={appState.openedSlide === "Font"&& isFontOpen}
                       setIsOpen={setIsFontOpen}
                     />
                   </>
                 ) : (
                   <>
                     <CustomDrawer
-                       getData={(flag,fieldName) =>
+                      getData={(flag, fieldName) =>
                         getData({
                           flag: flag ?? "init",
                           searchParams,
@@ -272,7 +276,7 @@ export default function Page() {
                           // setAppState,
                           setBrandCustomizeFields,
                           setHeroCustomizeFields,
-                          fieldName
+                          fieldName,
                         })
                       }
                       open={isSideBarOpen}
@@ -291,10 +295,7 @@ export default function Page() {
                       showButtonForm={showButtonForm}
                       setShowButtonForm={setShowButtonForm}
                     />
-                    <FontsDrawer
-                      open={isFontOpen}
-                      setIsOpen={setIsFontOpen}
-                    />
+                    <FontsDrawer open={isFontOpen} setIsOpen={setIsFontOpen} />
                   </>
                 )}
               </>

@@ -13,13 +13,18 @@ import { ColorDrawer } from "../ui/drawer/color-drawer";
 import SelectTemplateModal from "../ui/modal/select-template-modal";
 import { TTemplate } from ".";
 import SelectTemplateDrawer from "../ui/drawer/select-template-drawer";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { updateAppState } from "@/lib/store/slices/site-slice";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 type TProps = {
-  getData: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
+  getData: (
+    flag?: "init" | "regenerate" | "text" | "image" | "individual",
+    fieldName?: string,
+  ) => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
   templates: TTemplate | null;
@@ -42,6 +47,7 @@ export default function SettingMenu(props: TProps) {
   const [isTemplateOpen, setIsTemplateOpen] = useState(false);
   const matches = useMediaQuery("(max-width: 900px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
+  const dispatch = useAppDispatch();
   return (
     <>
       {isMobile ? (
@@ -95,6 +101,9 @@ export default function SettingMenu(props: TProps) {
         <div>
           <Menu.Button
             className={`inline-flex w-full items-center justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-black max-sm:text-xs `}
+            onClick={() =>
+              dispatch(updateAppState({ ...appState, openedSlide: null }))
+            }
           >
             <div className="flex flex-col items-center justify-center gap-2 sm:hidden">
               <div className="flex">
@@ -165,11 +174,10 @@ export default function SettingMenu(props: TProps) {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                     )}
-                    onClick={() =>
-                      status === "unauthenticated"
-                        ? setShowAuthModal(true)
-                        : setIsTemplateOpen(true)
-                    }
+                    onClick={() => {
+                      setIsTemplateOpen(true);
+
+                    }}
                   >
                     Switch Template
                   </button>
@@ -182,7 +190,9 @@ export default function SettingMenu(props: TProps) {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                     )}
-                    onClick={() => setIsColorOpen(true)}
+                    onClick={() => {
+                      setIsColorOpen(true);
+                    }}
                   >
                     Change Colors
                   </button>
@@ -196,7 +206,12 @@ export default function SettingMenu(props: TProps) {
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                     )}
-                    onClick={() => setIsFontOpen(true)}
+                    onClick={() => {
+                      setIsFontOpen(true);
+                      dispatch(
+                        updateAppState({ ...appState, openedSlide: "Font" }),
+                      );
+                    }}
                   >
                     Change Fonts
                   </button>
@@ -233,9 +248,7 @@ export default function SettingMenu(props: TProps) {
                 {({ active }) => (
                   <button
                     onClick={() =>
-                      status === "unauthenticated"
-                        ? setShowAuthModal(true)
-                        : getData("regenerate")
+                      getData("regenerate")
                     }
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",

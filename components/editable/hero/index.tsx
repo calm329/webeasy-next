@@ -37,6 +37,7 @@ const EditableHero = (props: TProps) => {
         if (editable && setIsOpen && setSection) {
           setSection("Hero");
           setIsOpen(true);
+          dispatch(updateAppState({...appState,openedSlide:"Customize"}))
         }
       }}
     >

@@ -1,4 +1,6 @@
 import TopBar from "@/components/top-bar";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { updateAppState, appState as AS } from '@/lib/store/slices/site-slice';
 import { TBanner, TColors, TFields, TSection } from "@/types";
 import React, { Dispatch, SetStateAction } from "react";
 
@@ -22,6 +24,8 @@ type TProps = {
 const EditableBanner = (props: TProps) => {
   const { banner, colors, setIsOpen, setSection, editable, setFocusedField ,setShowButtonForm,showButtonForm} =
     props;
+    const dispatch= useAppDispatch()
+    const appState = useAppSelector(AS);
   return (
     <div
       className={`container mx-auto px-4 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -29,6 +33,7 @@ const EditableBanner = (props: TProps) => {
         if (editable && setIsOpen && setSection) {
           setSection("Banner");
           setIsOpen(true);
+          dispatch(updateAppState({...appState,openedSlide:"Customize"}))
         }
       }}
     >

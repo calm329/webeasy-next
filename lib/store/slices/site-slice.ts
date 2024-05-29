@@ -24,6 +24,7 @@ type TInitialState = {
 
 
 const initialSite = {
+  openedSlide:null,
   focusedField:null,
   selectedFont:"",
   subdomain: "",

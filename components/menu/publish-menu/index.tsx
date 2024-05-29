@@ -4,8 +4,8 @@ import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useMediaQuery } from "usehooks-ts";
-import { useAppSelector } from "@/lib/store/hooks";
-import { appState as AS } from "@/lib/store/slices/site-slice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useSession } from "next-auth/react";
 
 function classNames(...classes: any[]) {
@@ -22,10 +22,14 @@ export default function PublishMenu(props: TProps) {
   const isMobile = useMediaQuery("(max-width: 900px)");
   const appState = useAppSelector(AS);
   const { status } = useSession();
+  const dispatch = useAppDispatch()
   return (
     <Menu as="div" className={`relative ml-3`}>
       <Menu.Button
         className={`inline-flex items-center rounded-md  px-3 py-2 text-sm font-semibold text-black max-sm:bg-transparent max-sm:text-xs max-sm:shadow-none max-sm:hover:bg-transparent`}
+        onClick={() =>
+          dispatch(updateAppState({ ...appState, openedSlide: null }))
+        }
       >
         <div className="flex items-center justify-center gap-1 max-sm:flex-col max-sm:gap-3 sm:hidden">
           <div className="flex">
@@ -39,14 +43,14 @@ export default function PublishMenu(props: TProps) {
               aria-hidden="true"
             /> */}
           </div>
-          Publish
+          Preview
         </div>
         <div
           className={`flex  flex-col items-center justify-center gap-3 max-sm:hidden`}
         >
           <FaExternalLinkAlt className="mr-2 h-4 w-4 " aria-hidden="true" />
           <div className="flex">
-            Publish
+            Preview
             {isMobile ? (
               <ChevronUpIcon
                 className="-mr-1 ml-1.5 h-5 w-5 "
@@ -99,7 +103,7 @@ export default function PublishMenu(props: TProps) {
                     "block px-4 py-2 text-sm text-gray-700",
                   )}
                 >
-                  Publish Product
+                  Publish Website
                 </Link>
               ) : (
                 <button

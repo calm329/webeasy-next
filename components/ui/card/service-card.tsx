@@ -16,7 +16,7 @@ export default function ServiceCard(props: ServiceCardProps) {
   return (
     <div
       className={`w-full p-8 md:w-1/3 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-
+    
     >
       <div className="-m-3 flex flex-wrap">
         <div className="w-auto p-3 md:w-full lg:w-auto">

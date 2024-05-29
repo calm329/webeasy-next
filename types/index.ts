@@ -68,6 +68,7 @@ export type TTemplateName =
   | "General template";
 
 export interface AppState {
+  openedSlide:"Customize"|"Font"|null,
   selectedFont: string;
   focusedField:TFields | null;
   subdomain:string;
