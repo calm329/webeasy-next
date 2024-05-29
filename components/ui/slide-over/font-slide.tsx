@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { DebouncedState } from "use-debounce";
 import CustomizePanel from "@/components/customize/panel";
 import HeroContent from "@/components/customize/panel/hero";
-import BannerContent from "@/components/customize/panel/banner.tsx";
+import BannerContent from "@/components/customize/panel/banner";
 import FontPicker from "@/components/font-picker";
 import { IoClose } from "react-icons/io5";
 

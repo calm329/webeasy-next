@@ -9,6 +9,7 @@ import EditableBanner from "@/components/editable/banner";
 import EditableHero from "@/components/editable/hero";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { appState } from "../../lib/store/slices/site-slice";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -46,8 +47,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
     showButtonForm,
     setShowButtonForm,
   } = props;
-  const dispatch = useAppDispatch()
-  const appState = useAppSelector(AS)
+  const dispatch = useAppDispatch();
+  const appState = useAppSelector(AS);
   return (
     <>
       <section className="bg-white py-6">
@@ -76,29 +77,37 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 showButtonForm={showButtonForm}
                 setShowButtonForm={setShowButtonForm}
               />
+
               <div
                 className={`rounded-3xl bg-gray-100 p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                 onClick={() => {
                   if (setIsOpen && setSection) {
                     setIsOpen(true);
                     setSection("Services");
-                    dispatch(updateAppState({...appState,openedSlide:"Customize"}))
+                    dispatch(
+                      updateAppState({
+                        ...appState,
+                        openedSlide: "Customize",
+                      }),
+                    );
                   }
                 }}
               >
-                <div className="-m-8 flex flex-wrap">
-                  {services.map((service) => (
-                    <ServiceCard
-                      key={service["name"]}
-                      name={service["name"]}
-                      description={service["description"]}
-                      color={colors.primary}
-                      editable={editable}
-                      setIsOpen={setIsOpen}
-                      setSection={setSection}
-                    />
-                  ))}
-                </div>
+                {appState.aiContent.services.show && (
+                  <div className="-m-8 flex flex-wrap">
+                    {services.map((service) => (
+                      <ServiceCard
+                        key={service["name"]}
+                        name={service["name"]}
+                        description={service["description"]}
+                        color={colors.primary}
+                        editable={editable}
+                        setIsOpen={setIsOpen}
+                        setSection={setSection}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
