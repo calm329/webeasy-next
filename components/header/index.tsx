@@ -273,7 +273,7 @@ export default function SiteHeader(props: TProps) {
                 ))}
             </div>
           </div>
-          {isAuth && isBottomBar && (
+          {isAuth && isBottomBar && status === "authenticated" && (
             <div className="ml-5 flex gap-2">
               <div className="flex items-center justify-center gap-5 rounded border border-gray-400 px-5 py-2 pr-2">
                 <span>Home</span>
