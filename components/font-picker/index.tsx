@@ -16,6 +16,18 @@ const fonts = [
   "Roboto Slab",
   "Merriweather",
   "Playfair Display",
+  "Oswald",
+  "Nunito",
+  "Inter Rubik",
+  "PT Serif",
+  "Ubuntu",
+  "Barlow",
+  "Lobster",
+  "LoRa",
+  "Monospace",
+  "Muli",
+  "Alegreya",
+  "Work Sans"
 ];
 
 const FontPicker = () => {

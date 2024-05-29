@@ -30,19 +30,21 @@ const LeaveContent = (props: TProps) => {
           className="mr-2 rounded bg-indigo-600 px-4 py-2 text-white"
           onClick={() => {
             setOpen(false);
+          }}
+        >
+          Continue building
+        
+        </button>
+        <button
+          className="rounded bg-gray-500 px-4 py-2 text-white"
+          
+          onClick={() => {
+            setOpen(false);
             dispatch(clearPastAndFuture());
             router.push("/");
           }}
         >
-          Yes, leave now
-        </button>
-        <button
-          className="rounded bg-gray-500 px-4 py-2 text-white"
-          onClick={() => {
-            setOpen(false);
-          }}
-        >
-          Continue building
+            Yes, leave now
         </button>
       </div>
     </div>
