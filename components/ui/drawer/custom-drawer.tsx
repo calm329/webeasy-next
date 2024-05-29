@@ -4,7 +4,7 @@ import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { FormField, TFields, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
 import HeroContent from "@/components/customize/panel/hero";
-import BannerContent from "@/components/customize/panel/banner.tsx";
+import BannerContent from "@/components/customize/panel/banner";
 type TProps = {
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;

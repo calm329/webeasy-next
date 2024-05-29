@@ -85,15 +85,7 @@ export interface AppState {
     banner: TBanner
 
     hero: THero;
-    services: {
-      title: string;
-      description: string;
-      list: Array<{
-        name: string;
-        description: string;
-        image: string;
-      }>;
-    };
+    services: TServices;
     colors: {
       primary: string;
       secondary: string;
@@ -105,6 +97,18 @@ export interface AppState {
     title: string;
     description: string;
   };
+}
+
+
+export type TServices = {
+  show:boolean;
+  title: string;
+  description: string;
+  list: Array<{
+    name: string;
+    description: string;
+    image: string;
+  }>;
 }
 
 export type TBanner = {

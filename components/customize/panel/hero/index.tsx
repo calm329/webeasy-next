@@ -285,7 +285,7 @@ const HeroContent = (props: TProps) => {
                             </label>
                             <button
                               onClick={() => {
-                                setSelectedField("heading")
+                                setSelectedField("heading");
                                 setLoading(true);
                                 getData &&
                                   getData("individual", data.name).then(() => {
@@ -327,8 +327,7 @@ const HeroContent = (props: TProps) => {
                             </label>
                             <button
                               onClick={() => {
-                               
-                                setSelectedField("subheading")
+                                setSelectedField("subheading");
                                 setLoading(true);
                                 getData &&
                                   getData("individual", data.name).then(() => {

@@ -3,7 +3,8 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { DebouncedState } from "use-debounce";
 import CustomizePanel from "@/components/customize/panel";
 import HeroContent from "@/components/customize/panel/hero";
-import BannerContent from "@/components/customize/panel/banner.tsx";
+import BannerContent from "@/components/customize/panel/banner";
+import ServiceContent from "@/components/customize/panel/service";
 
 type TProps = {
   open: boolean;
@@ -16,15 +17,20 @@ type TProps = {
   focusedField: TFields;
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
-  setShowButtonForm:React.Dispatch<React.SetStateAction<{
-    edit:string,
-    show: boolean,
-  }>>;
-  showButtonForm:{
-    edit:string,
-    show: boolean,
-  }
-  getData?: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
+  setShowButtonForm: React.Dispatch<
+    React.SetStateAction<{
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  showButtonForm: {
+    edit: string;
+    show: boolean;
+  };
+  getData?: (
+    flag?: "init" | "regenerate" | "text" | "image" | "individual",
+    fieldName?: string,
+  ) => Promise<void>;
 };
 
 function SlideOver(props: TProps) {
@@ -41,7 +47,7 @@ function SlideOver(props: TProps) {
     setHeroCustomizeFields,
     showButtonForm,
     setShowButtonForm,
-    getData
+    getData,
   } = props;
 
   return (
@@ -87,6 +93,7 @@ function SlideOver(props: TProps) {
                 getData={getData}
               />
             )}
+            {section === "Services" && <ServiceContent />}
           </CustomizePanel>
         </div>
       </div>
