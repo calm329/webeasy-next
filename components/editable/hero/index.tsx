@@ -47,7 +47,8 @@ const EditableHero = (props: TProps) => {
           <h2
             className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             style={{ color: colors.primary }}
-            onClick={() => {
+            onClick={(e) => {
+               e.stopPropagation()
               if (editable && setIsOpen && setSection && setFocusedField && setShowButtonForm) {
                 setSection("Hero");
                 setIsOpen(true);
@@ -57,7 +58,8 @@ const EditableHero = (props: TProps) => {
                 })
                 dispatch(updateAppState({
                   ...appState,
-                  focusedField:"heading"
+                  focusedField:"heading",
+                  openedSlide:"Customize"
                 }))
               }
             }}
@@ -66,7 +68,8 @@ const EditableHero = (props: TProps) => {
           </h2>
           <p
             className={`mb-8 text-xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation()
               if (editable && setIsOpen && setSection && setFocusedField && setShowButtonForm) {
                 setSection("Hero");
                 setIsOpen(true);
@@ -76,7 +79,8 @@ const EditableHero = (props: TProps) => {
                 })
                 dispatch(updateAppState({
                   ...appState,
-                  focusedField:"subheading"
+                  focusedField:"subheading",
+                  openedSlide:"Customize"
                 }))
               }
             }}

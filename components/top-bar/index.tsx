@@ -73,10 +73,11 @@ export default function TopBar(props: TopBarProps) {
                   />
                 )}
             {editable ? (
-              <Link
-                href="#"
+              <button
+              
                 className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation()
                   if (setIsOpen && setSection && setFocusedField && setShowButtonForm) {
                     setSection("Banner");
                     setIsOpen(true);
@@ -86,13 +87,14 @@ export default function TopBar(props: TopBarProps) {
                     })
                     dispatch(updateAppState({
                       ...appState,
-                      focusedField:"businessName"
+                      focusedField:"businessName",
+                      openedSlide:"Customize"
                     }))
                   }
                 }}
               >
                 {banner.businessName}
-              </Link>
+              </button>
             ) : (
               <Link href="#">{banner.businessName}</Link>
             )}
