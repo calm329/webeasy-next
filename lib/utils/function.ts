@@ -9,14 +9,16 @@ import {
   updateSite as updateStateSite,
 } from "../store/slices/site-slice";
 import { toast } from "sonner";
+import { prompt } from "./common-constant";
 
 type TParams = {
-  flag: "init" | "regenerate" | "text" | "image";
+  flag: "init" | "regenerate" | "text" | "image" | "individual";
   searchParams: ReadonlyURLSearchParams;
   dispatch: any;
   appState: AppState;
   setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>;
   setHeroCustomizeFields: Dispatch<SetStateAction<FormField[]>>;
+  fieldName?: string;
 };
 
 const updateDefaultValues = (
@@ -98,6 +100,7 @@ export const getData = async (params: TParams) => {
     appState,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
+    fieldName,
   } = params;
   dispatch(
     updateAppState({
@@ -128,11 +131,11 @@ export const getData = async (params: TParams) => {
       return;
     }
     const aiContent = JSON.parse(siteData.aiResult);
-    console.log("siteData",siteData)
+    console.log("siteData", siteData);
     dispatch(
       updateAppState({
         ...appState,
-        selectedFont:siteData.font,
+        selectedFont: siteData.font,
         subdomain: siteAvailable,
         status: "Done",
         aiContent: aiContent,
@@ -197,10 +200,16 @@ export const getData = async (params: TParams) => {
   }
 
   // generate content from user media using openai
-  if (flag === "regenerate" || flag === "text" || flag === "image") {
+  if (
+    flag === "regenerate" ||
+    flag === "text" ||
+    flag === "image" ||
+    flag === "individual"
+  ) {
+    console.log("fieldName: " + fieldName, flag);
     const response = await fetch("/api/content", {
       method: "POST",
-      body: JSON.stringify({ mediaCaption }),
+      body: JSON.stringify({ mediaCaption, fieldName }),
     });
 
     let content = "";
@@ -218,7 +227,7 @@ export const getData = async (params: TParams) => {
     }
     if (content) {
       aiContent = JSON.parse(content);
-
+      console.log("content", content);
       if (flag === "regenerate") {
         aiContent["hero"]["image"]["imageUrl"] =
           imageIds[aiContent["hero"]["image"]["imageId"]];
@@ -287,14 +296,59 @@ export const getData = async (params: TParams) => {
     aiContent["colors"] = appState.aiContent.colors;
   }
 
-  dispatch(
-    updateAppState({
-      ...appState,
-      subdomain: siteAvailable,
-      aiContent: Object.keys(aiContent).length ? aiContent : appState.aiContent,
-      iPosts: iPosts,
-    }),
-  );
+  if (flag === "individual") {
+    switch (fieldName) {
+      case "businessName":
+        aiContent = {
+          ...appState.aiContent,
+          banner: {
+            ...appState.aiContent.banner,
+            businessName: aiContent.banner.businessName,
+          },
+        };
+        break;
+      case "heading":
+        aiContent = {
+          ...appState.aiContent,
+          hero: {
+            ...appState.aiContent.hero,
+            heading: aiContent.hero.heading,
+          },
+        };
+        break;
+      case "subheading":
+        aiContent = {
+          ...appState.aiContent,
+          hero: {
+            ...appState.aiContent.hero,
+            subheading: aiContent.hero.subheading,
+          },
+        };
+        break;
+    }
+    console.log("updated field name: " + JSON.stringify(aiContent));
+    dispatch(
+      updateAppState({
+        ...appState,
+        subdomain: siteAvailable,
+        aiContent: Object.keys(aiContent).length
+          ? aiContent
+          : appState.aiContent,
+        iPosts: iPosts,
+      }),
+    );
+  } else {
+    dispatch(
+      updateAppState({
+        ...appState,
+        subdomain: siteAvailable,
+        aiContent: Object.keys(aiContent).length
+          ? aiContent
+          : appState.aiContent,
+        iPosts: iPosts,
+      }),
+    );
+  }
 
   if (!siteAvailable && flag === "init") {
     await createNewSite({
@@ -311,7 +365,7 @@ export const getData = async (params: TParams) => {
 
   updateDefaultValues(
     {
-      businessName: aiContent?.businessName,
+      businessName: aiContent?.banner.businessName,
       ctaLink: aiContent?.hero?.ctaLink,
       heading: aiContent?.hero?.heading,
       subheading: aiContent?.hero?.subheading,
@@ -584,7 +638,7 @@ export async function saveState(appState: AppState, dispatch: any) {
       updateStateSite({
         subdomain: appState.subdomain,
         data,
-        keys:  Object.keys(data),
+        keys: Object.keys(data),
       }),
     ).unwrap();
     toast.success("Data saved successfully");

@@ -24,6 +24,7 @@ type TProps = {
     edit:string,
     show: boolean,
   }
+  getData?: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
 };
 
 function SlideOver(props: TProps) {
@@ -39,7 +40,8 @@ function SlideOver(props: TProps) {
     setBrandCustomizeFields,
     setHeroCustomizeFields,
     showButtonForm,
-    setShowButtonForm
+    setShowButtonForm,
+    getData
   } = props;
 
   return (
@@ -70,6 +72,7 @@ function SlideOver(props: TProps) {
                 setHeroCustomizeFields={setHeroCustomizeFields}
                 focusedField={focusedField}
                 setShowButtonForm={setShowButtonForm}
+                getData={getData}
               />
             )}
             {section === "Banner" && (
@@ -81,6 +84,7 @@ function SlideOver(props: TProps) {
                 focusedField={focusedField}
                 setShowButtonForm={setShowButtonForm}
                 setBrandCustomizeFields={setBrandCustomizeFields}
+                getData={getData}
               />
             )}
           </CustomizePanel>

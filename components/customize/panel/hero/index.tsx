@@ -35,6 +35,10 @@ type TProps = {
     }>
   >;
   setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
+  getData?: (
+    flag?: "init" | "regenerate" | "text" | "image" | "individual",
+    fieldName?: string,
+  ) => Promise<void>;
 };
 
 const grid = 2;
@@ -62,6 +66,7 @@ const HeroContent = (props: TProps) => {
     focusedField,
     setHeroCustomizeFields,
     setShowButtonForm,
+    getData,
   } = props;
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false);
@@ -273,14 +278,17 @@ const HeroContent = (props: TProps) => {
                     case "text":
                       return (
                         <div className="flex flex-col border-t pt-5">
-                         <div className="flex  text-sm font-medium leading-6 text-gray-900 justify-between">
-                            <label
-                              htmlFor={data.name}
-                              className="block"
-                            >
+                          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor={data.name} className="block">
                               {data.label}
                             </label>
-                            <span>Regenerate</span>
+                            <button
+                              onClick={() =>
+                                getData && getData("individual", data.name)
+                              }
+                            >
+                              Regenerate
+                            </button>
                           </div>
 
                           <input
@@ -303,14 +311,17 @@ const HeroContent = (props: TProps) => {
                     case "textarea":
                       return (
                         <div className="flex flex-col border-t pt-5">
-                          <div className="flex  text-sm font-medium leading-6 text-gray-900 justify-between">
-                            <label
-                              htmlFor={data.name}
-                              className="block"
-                            >
+                          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor={data.name} className="block">
                               {data.label}
                             </label>
-                            <span>Regenerate</span>
+                            <button
+                              onClick={() =>
+                                getData && getData("individual", data.name)
+                              }
+                            >
+                              Regenerate
+                            </button>
                           </div>
                           <textarea
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

@@ -35,7 +35,7 @@ import AiAssist from "../ai-assist";
 type TProps = {
   showNavigation: boolean;
   isAuth?: boolean;
-  getData?: (flag?: "init" | "regenerate" | "text" | "image") => Promise<void>;
+  getData?: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   setSelectedTemplate?: Dispatch<SetStateAction<TTemplateName>>;
   setShowAuthModal: Dispatch<SetStateAction<boolean>>;

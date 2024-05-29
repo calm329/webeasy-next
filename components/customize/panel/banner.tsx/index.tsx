@@ -36,6 +36,10 @@ type TProps = {
       show: boolean;
     }>
   >;
+  getData?: (
+    flag?: "init" | "regenerate" | "text" | "image" | "individual",
+    fieldName?: string,
+  ) => Promise<void>;
 };
 
 const grid = 2;
@@ -62,6 +66,7 @@ const BannerContent = (props: TProps) => {
     focusedField,
     setShowButtonForm,
     setBrandCustomizeFields,
+    getData,
   } = props;
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false);
@@ -277,7 +282,16 @@ const BannerContent = (props: TProps) => {
                             <label htmlFor="businessName" className="block">
                               {data.label}
                             </label>
-                            <span>Regenerate</span>
+                            <button
+                              onClick={() =>
+                                {
+                                  console.log('Business Name:'+field.name)
+                                  getData && getData("individual", field.name)}
+
+                              }
+                            >
+                              Regenerate
+                            </button>
                           </div>
 
                           <input
