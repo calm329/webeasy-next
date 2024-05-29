@@ -11,18 +11,20 @@ type TProps = {
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
-  showButtonForm:{
+  showForm:{
+    form:string,
     edit:string,
     show: boolean,
   };
-  setShowButtonForm:React.Dispatch<React.SetStateAction<{
+  setShowForm:React.Dispatch<React.SetStateAction<{
+    form:string,
     edit:string,
     show: boolean,
   }>>;
 };
 
 const EditableBanner = (props: TProps) => {
-  const { banner, colors, setIsOpen, setSection, editable, setFocusedField ,setShowButtonForm,showButtonForm} =
+  const { banner, colors, setIsOpen, setSection, editable, setFocusedField ,setShowForm,showForm} =
     props;
     const dispatch= useAppDispatch()
     const appState = useAppSelector(AS);
@@ -44,7 +46,7 @@ const EditableBanner = (props: TProps) => {
         setFocusedField={setFocusedField}
         setSection={setSection}
         setIsOpen={setIsOpen}
-        setShowButtonForm={setShowButtonForm}
+        setShowForm={setShowForm}
       />
     </div>
   );

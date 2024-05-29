@@ -3,8 +3,9 @@ import { ImSpinner2 } from "react-icons/im";
 
 type TProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowButtonForm: React.Dispatch<
+  setShowForm: React.Dispatch<
     React.SetStateAction<{
+      form:string;
       edit: string;
       show: boolean;
     }>
@@ -14,7 +15,8 @@ type TProps = {
   section: TSection;
   brandCustomizeFields: FormField[];
   heroCustomizeFields: FormField[];
-  showButtonForm: {
+  showForm: {
+    form:string;
     edit: string;
     show: boolean;
   };
@@ -42,13 +44,13 @@ const linkTypes = ["External", "Section"];
 const CustomButton = (props: TProps) => {
   const {
     setIsOpen,
-    setShowButtonForm,
+    setShowForm,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
     brandCustomizeFields,
     heroCustomizeFields,
     section,
-    showButtonForm,
+    showForm,
     handleChange,
   } = props;
   const [loading, setLoading] = useState(false);
@@ -58,13 +60,13 @@ const CustomButton = (props: TProps) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
   
-    if (showButtonForm.edit) {
+    if (showForm.edit) {
       switch (section) {
         case "Banner":
           brandCustomizeFields.forEach((field) => {
             field.children?.forEach((child) => {
       
-              if (child.name === showButtonForm.edit) {
+              if (child.name === showForm.edit) {
                 setData(child);
               }
             });
@@ -74,7 +76,7 @@ const CustomButton = (props: TProps) => {
           heroCustomizeFields.forEach((field) => {
             field.children?.forEach((child) => {
               
-              if (child.name === showButtonForm.edit) {
+              if (child.name === showForm.edit) {
                 setData(child);
               }
             });
@@ -82,10 +84,10 @@ const CustomButton = (props: TProps) => {
           break;
       }
     }
-  }, [showButtonForm]);
+  }, [showForm]);
 
   function handleButtonSubmit(name: string) {
-    if (showButtonForm.edit) {
+    if (showForm.edit) {
       switch (section) {
         case "Banner":
           dispatch(
@@ -266,7 +268,8 @@ const CustomButton = (props: TProps) => {
       }
     }
 
-    setShowButtonForm({
+    setShowForm({
+      form:"",
       edit: "",
       show: false,
     });
@@ -282,7 +285,8 @@ const CustomButton = (props: TProps) => {
           >
             <IoMdArrowBack
               onClick={() =>
-                setShowButtonForm({
+                setShowForm({
+                  form:"",
                   edit: "",
                   show: false,
                 })
@@ -330,7 +334,7 @@ const CustomButton = (props: TProps) => {
             defaultValue={data?.type ?? "External"}
             onValueChange={(value) => {
               setData({ ...data, type: value });
-              if (showButtonForm.edit) {
+              if (showForm.edit) {
                 handleChange(data?.name, {
                   ...{ ...data, type: value },
                   fieldType: "button",
@@ -367,7 +371,7 @@ const CustomButton = (props: TProps) => {
             defaultValue={data?.label ?? ""}
             onChange={(e) => {
               setData({ ...data, label: e.target.value });
-              if (showButtonForm.edit) {
+              if (showForm.edit) {
                 handleChange(data.name, {
                   ...{ ...data, label: e.target.value },
                   fieldType: "button",
@@ -391,7 +395,7 @@ const CustomButton = (props: TProps) => {
             defaultValue={data?.link ?? ""}
             onChange={(e) => {
               setData({ ...data, link: e.target.value });
-              if (showButtonForm.edit) {
+              if (showForm.edit) {
                 handleChange(data.name, {
                   ...{ ...data, link: e.target.value },
                   fieldType: "button",

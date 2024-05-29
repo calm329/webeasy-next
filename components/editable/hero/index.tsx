@@ -14,18 +14,20 @@ type TProps = {
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
-  showButtonForm:{
+  showForm:{
+    form:string,
     edit:string,
     show: boolean,
   };
-  setShowButtonForm:React.Dispatch<React.SetStateAction<{
+  setShowForm:React.Dispatch<React.SetStateAction<{
+    form:string,
     edit:string,
     show: boolean,
   }>>;
 };
 
 const EditableHero = (props: TProps) => {
-  const { hero, colors, setIsOpen, setSection, editable, setFocusedField,showButtonForm,setShowButtonForm } =
+  const { hero, colors, setIsOpen, setSection, editable, setFocusedField,showForm,setShowForm } =
     props;
 
     const dispatch = useAppDispatch();
@@ -49,10 +51,11 @@ const EditableHero = (props: TProps) => {
             style={{ color: colors.primary }}
             onClick={(e) => {
                e.stopPropagation()
-              if (editable && setIsOpen && setSection && setFocusedField && setShowButtonForm) {
+              if (editable && setIsOpen && setSection && setFocusedField && setShowForm) {
                 setSection("Hero");
                 setIsOpen(true);
-                setShowButtonForm({
+                setShowForm({
+                  form:"",
                   edit:"",
                   show:false
                 })
@@ -70,10 +73,11 @@ const EditableHero = (props: TProps) => {
             className={`mb-8 text-xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             onClick={(e) => {
               e.stopPropagation()
-              if (editable && setIsOpen && setSection && setFocusedField && setShowButtonForm) {
+              if (editable && setIsOpen && setSection && setFocusedField && setShowForm) {
                 setSection("Hero");
                 setIsOpen(true);
-                setShowButtonForm({
+                setShowForm({
+                  form:"",
                   edit:"",
                   show:false
                 })
@@ -100,7 +104,8 @@ const EditableHero = (props: TProps) => {
                 }}
               >
                 {hero.button.list.map((data, i) => (
-                  <div key={i} onClick={()=>setShowButtonForm({
+                  <div key={i} onClick={()=>setShowForm({
+                    form:"Button",
                     edit:data.name,
                     show:true,
                   })}>
@@ -126,11 +131,12 @@ const EditableHero = (props: TProps) => {
             alt="Hero Image"
             className={`mx-auto rounded-3xl object-contain md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             onClick={() => {
-              if (editable && setIsOpen && setSection && setFocusedField && setShowButtonForm) {
+              if (editable && setIsOpen && setSection && setFocusedField && setShowForm) {
                 setSection("Hero");
                 setIsOpen(true);
                 setFocusedField("imageUrl");
-                setShowButtonForm({
+                setShowForm({
+                  form:"",
                   edit:"",
                   show:false
                 })

@@ -5,6 +5,7 @@ import { FormField, TFields, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
 import HeroContent from "@/components/customize/panel/hero";
 import BannerContent from "@/components/customize/panel/banner";
+import ServiceContent from "@/components/customize/panel/service";
 type TProps = {
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,15 +17,22 @@ type TProps = {
   focusedField: TFields;
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
-  showButtonForm:{
-    edit:string,
-    show: boolean,
-  }
-  setShowButtonForm:React.Dispatch<React.SetStateAction<{
-    edit:string,
-    show: boolean,
-  }>>;
-  getData?: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
+  showForm: {
+    form: string;
+    edit: string;
+    show: boolean;
+  };
+  setShowForm: React.Dispatch<
+    React.SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  getData?: (
+    flag?: "init" | "regenerate" | "text" | "image" | "individual",
+    fieldName?: string,
+  ) => Promise<void>;
 };
 export function CustomDrawer(props: TProps) {
   const {
@@ -38,9 +46,9 @@ export function CustomDrawer(props: TProps) {
     focusedField,
     setBrandCustomizeFields,
     setHeroCustomizeFields,
-    showButtonForm,
-    setShowButtonForm,
-    getData
+    showForm,
+    setShowForm,
+    getData,
   } = props;
 
   return (
@@ -54,8 +62,8 @@ export function CustomDrawer(props: TProps) {
             heroCustomizeFields={heroCustomizeFields}
             brandCustomizeFields={brandCustomizeFields}
             focusedField={focusedField}
-            showButtonForm={showButtonForm}
-            setShowButtonForm={setShowButtonForm}
+            showForm={showForm}
+            setShowForm={setShowForm}
             setHeroCustomizeFields={setHeroCustomizeFields}
             setBrandCustomizeFields={setBrandCustomizeFields}
             handleChange={handleChange}
@@ -68,7 +76,7 @@ export function CustomDrawer(props: TProps) {
                 setHeroCustomizeFields={setHeroCustomizeFields}
                 heroCustomizeFields={heroCustomizeFields}
                 focusedField={focusedField}
-                setShowButtonForm={setShowButtonForm}
+                setShowForm={setShowForm}
                 getData={getData}
               />
             )}
@@ -80,9 +88,12 @@ export function CustomDrawer(props: TProps) {
                 setBrandCustomizeFields={setBrandCustomizeFields}
                 brandCustomizeFields={brandCustomizeFields}
                 focusedField={focusedField}
-                setShowButtonForm={setShowButtonForm}
+                setShowForm={setShowForm}
                 getData={getData}
               />
+            )}
+            {section === "Services" && (
+              <ServiceContent setShowForm={setShowForm} />
             )}
           </CustomizePanel>
         </div>

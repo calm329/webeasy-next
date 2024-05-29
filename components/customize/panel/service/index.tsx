@@ -1,7 +1,7 @@
 import { Switch } from "@/components/ui/switch";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -27,10 +27,20 @@ const getItemStyle = (
 
 const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
 
-const ServiceContent = () => {
+type TProps = {
+  setShowForm: Dispatch<
+    SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+};
+
+const ServiceContent = (props: TProps) => {
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
-
+  const { setShowForm } = props;
   const reorder = (list: any, startIndex: number, endIndex: number): any => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -63,7 +73,7 @@ const ServiceContent = () => {
     );
   };
 
-  const handleDeleteService = (name: string) => {
+  const handleDeleteService = (id: string) => {
     dispatch(
       updateAppState({
         ...appState,
@@ -72,7 +82,7 @@ const ServiceContent = () => {
           services: {
             ...appState.aiContent.services,
             list: appState.aiContent.services.list.filter((service) => {
-              if (service.name !== name) {
+              if (service.id !== id) {
                 return service;
               }
             }),
@@ -154,8 +164,22 @@ const ServiceContent = () => {
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
-                              <MdModeEditOutline color="blue" size={20} />
-                              <MdDeleteForever color="red" size={20} onClick={()=>handleDeleteService(item.name)}/>
+                              <MdModeEditOutline
+                                color="blue"
+                                size={20}
+                                onClick={() => {
+                                  setShowForm({
+                                    edit: item.id,
+                                    show: true,
+                                    form: "Service",
+                                  });
+                                }}
+                              />
+                              <MdDeleteForever
+                                color="red"
+                                size={20}
+                                onClick={() => handleDeleteService(item.id)}
+                              />
                             </div>
                           </div>
                         )}
@@ -168,7 +192,16 @@ const ServiceContent = () => {
             </DragDropContext>
             {appState.aiContent.services.list &&
               appState.aiContent.services.list.length !== 9 && (
-                <button className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800">
+                <button
+                  className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                  onClick={() => {
+                    setShowForm({
+                      edit: "",
+                      show: true,
+                      form: "Service",
+                    });
+                  }}
+                >
                   Add Service
                   <IoMdAdd size={20} />
                 </button>

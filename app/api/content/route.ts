@@ -76,6 +76,7 @@ export async function POST(request: NextRequest) {
           "description": "*services heading*",
           "list": [
             {
+              "id":"**unique id**",
               "name": "*first service or feature*",
               "description": "*description*",
               "image": "url-to-service1-image.jpg"
