@@ -23,7 +23,7 @@ const FontPicker = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const WebFontLoader = require('webfontloader')
+    const WebFontLoader = require("webfontloader");
     WebFontLoader.load({
       google: {
         families: fonts,
@@ -32,16 +32,14 @@ const FontPicker = () => {
   }, [fonts]);
 
   return (
-    <div className=" flex gap-5 flex-col">
+    <div className=" flex flex-col gap-5">
       {fonts.map((font) => (
         <div
           key={font}
           onClick={() =>
-            dispatch(
-              updateAppState({ ...appState, selectedFont: font }),
-            )
+            dispatch(updateAppState({ ...appState, selectedFont: font }))
           }
-          className="border p-5 rounded shadow cursor-pointer hover:bg-gray-100"
+          className={`cursor-pointer rounded border p-5 shadow hover:bg-gray-100 ${appState.selectedFont === font && "border-2 border-indigo-700"}`}
         >
           <h1 style={{ fontFamily: font, fontSize: "20px" }}>{font}</h1>
           <p style={{ fontFamily: font, fontSize: "16px" }}>
