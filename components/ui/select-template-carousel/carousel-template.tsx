@@ -19,7 +19,7 @@ import { setSelectedTemplate } from "@/lib/store/slices/template-slice";
 type TProps = {
   templates: TTemplate | null;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  getData: (flag?: "init" | "regenerate" | "text" | "image") => Promise<void>;
+  getData: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
 };
 const SelectTemplateCarousel = (props: TProps) => {
   const { templates, setOpen, getData } = props;

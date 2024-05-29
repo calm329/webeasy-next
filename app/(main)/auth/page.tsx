@@ -194,7 +194,7 @@ export default function Page() {
           <SiteHeader
             showNavigation={false}
             isAuth={true}
-            getData={(flag) =>
+            getData={(flag,fieldName) =>
               getData({
                 flag: flag ?? "init",
                 searchParams,
@@ -203,6 +203,7 @@ export default function Page() {
                 // setAppState,
                 setBrandCustomizeFields,
                 setHeroCustomizeFields,
+                fieldName
               })
             }
             handleChange={handleChange}
@@ -241,6 +242,18 @@ export default function Page() {
                       setHeroCustomizeFields={setHeroCustomizeFields}
                       showButtonForm={showButtonForm}
                       setShowButtonForm={setShowButtonForm}
+                      getData={(flag,fieldName) =>
+                        getData({
+                          flag: flag ?? "init",
+                          searchParams,
+                          dispatch,
+                          appState,
+                          // setAppState,
+                          setBrandCustomizeFields,
+                          setHeroCustomizeFields,
+                          fieldName
+                        })
+                      }
                     />
                     <FontSlideOver
                       open={isFontOpen}
@@ -250,6 +263,18 @@ export default function Page() {
                 ) : (
                   <>
                     <CustomDrawer
+                       getData={(flag,fieldName) =>
+                        getData({
+                          flag: flag ?? "init",
+                          searchParams,
+                          dispatch,
+                          appState,
+                          // setAppState,
+                          setBrandCustomizeFields,
+                          setHeroCustomizeFields,
+                          fieldName
+                        })
+                      }
                       open={isSideBarOpen}
                       setIsOpen={setIsSideBarOpen}
                       section={section}

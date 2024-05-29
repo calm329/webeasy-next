@@ -19,7 +19,7 @@ function classNames(...classes: string[]) {
 }
 
 type TProps = {
-  getData: (flag?: "init" | "regenerate" | "text" | "image") => Promise<void>;
+  getData: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
   templates: TTemplate | null;

@@ -9,7 +9,7 @@ type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   templates: TTemplate | null;
-  getData: (flag?: "init" | "regenerate" | "text" | "image") => Promise<void>;
+  getData: (flag?:"init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
 };
 export default function SelectTemplateModal(props: TProps) {
   const { open, setOpen, templates, getData } = props;

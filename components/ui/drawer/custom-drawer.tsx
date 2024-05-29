@@ -24,6 +24,7 @@ type TProps = {
     edit:string,
     show: boolean,
   }>>;
+  getData?: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
 };
 export function CustomDrawer(props: TProps) {
   const {
@@ -38,7 +39,8 @@ export function CustomDrawer(props: TProps) {
     setBrandCustomizeFields,
     setHeroCustomizeFields,
     showButtonForm,
-    setShowButtonForm
+    setShowButtonForm,
+    getData
   } = props;
 
   return (
@@ -67,6 +69,7 @@ export function CustomDrawer(props: TProps) {
                 heroCustomizeFields={heroCustomizeFields}
                 focusedField={focusedField}
                 setShowButtonForm={setShowButtonForm}
+                getData={getData}
               />
             )}
             {section === "Banner" && (
@@ -78,6 +81,7 @@ export function CustomDrawer(props: TProps) {
                 brandCustomizeFields={brandCustomizeFields}
                 focusedField={focusedField}
                 setShowButtonForm={setShowButtonForm}
+                getData={getData}
               />
             )}
           </CustomizePanel>
