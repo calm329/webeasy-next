@@ -18,14 +18,16 @@ type BasicTemplateProps = {
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
-  showButtonForm:{
-    edit:string,
-    show: boolean,
+  showButtonForm: {
+    edit: string;
+    show: boolean;
   };
-  setShowButtonForm:React.Dispatch<React.SetStateAction<{
-    edit:string,
-    show: boolean,
-  }>>;
+  setShowButtonForm: React.Dispatch<
+    React.SetStateAction<{
+      edit: string;
+      show: boolean;
+    }>
+  >;
 };
 
 export default function BasicTemplate(props: BasicTemplateProps) {
@@ -70,7 +72,15 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 showButtonForm={showButtonForm}
                 setShowButtonForm={setShowButtonForm}
               />
-              <div className="rounded-3xl bg-gray-100 p-8 md:p-12 ">
+              <div
+                className={`rounded-3xl bg-gray-100 p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                onClick={() => {
+                  if (setIsOpen && setSection) {
+                    setIsOpen(true);
+                    setSection("Services");
+                  }
+                }}
+              >
                 <div className="-m-8 flex flex-wrap">
                   {services.map((service) => (
                     <ServiceCard
@@ -78,6 +88,9 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                       name={service["name"]}
                       description={service["description"]}
                       color={colors.primary}
+                      editable={editable}
+                      setIsOpen={setIsOpen}
+                      setSection={setSection}
                     />
                   ))}
                 </div>
