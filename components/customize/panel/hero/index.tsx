@@ -71,6 +71,7 @@ const HeroContent = (props: TProps) => {
   const [loading, setLoading] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
+  const [selectedField, setSelectedField] = useState("heading");
   useEffect(() => {
     heroCustomizeFields.forEach((field) => {
       if (field.type === "image") {
@@ -283,11 +284,20 @@ const HeroContent = (props: TProps) => {
                               {data.label}
                             </label>
                             <button
-                              onClick={() =>
-                                getData && getData("individual", data.name)
-                              }
+                              onClick={() => {
+                                setSelectedField("heading")
+                                setLoading(true);
+                                getData &&
+                                  getData("individual", data.name).then(() => {
+                                    setLoading(false);
+                                  });
+                              }}
+                              className="flex gap-2"
                             >
                               Regenerate
+                              {loading && selectedField === "heading" && (
+                                <ImSpinner2 className="animate-spin text-lg text-black" />
+                              )}
                             </button>
                           </div>
 
@@ -316,11 +326,20 @@ const HeroContent = (props: TProps) => {
                               {data.label}
                             </label>
                             <button
-                              onClick={() =>
-                                getData && getData("individual", data.name)
-                              }
+                              onClick={() => {
+                                setSelectedField("subheading")
+                                setLoading(true);
+                                getData &&
+                                  getData("individual", data.name).then(() => {
+                                    setLoading(false);
+                                  });
+                              }}
+                              className="flex gap-2"
                             >
                               Regenerate
+                              {loading && selectedField === "subheading" && (
+                                <ImSpinner2 className="animate-spin text-lg text-black" />
+                              )}
                             </button>
                           </div>
                           <textarea
