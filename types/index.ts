@@ -36,7 +36,7 @@ export type FormField = {
   }>;
 };
 
-export type TSection = "Hero" | "Banner";
+export type TSection = "Hero" | "Banner"|"Services";
 
 export type TFields =
   | "logo"

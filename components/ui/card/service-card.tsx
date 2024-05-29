@@ -1,15 +1,23 @@
+import { Dispatch, SetStateAction } from "react";
 import { ServiceIcon } from "../../icons";
+import { TSection } from "@/types";
 
 type ServiceCardProps = {
   name: string;
   description: string;
   color: string;
+  editable?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>
 };
 
 export default function ServiceCard(props: ServiceCardProps) {
-  const { name, description, color } = props;
+  const { name, description, color, editable,setIsOpen,setSection } = props;
   return (
-    <div className="w-full p-8 md:w-1/3">
+    <div
+      className={`w-full p-8 md:w-1/3 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+
+    >
       <div className="-m-3 flex flex-wrap">
         <div className="w-auto p-3 md:w-full lg:w-auto">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white">
