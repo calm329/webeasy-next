@@ -233,7 +233,7 @@ export const getData = async (params: TParams) => {
     if (content) {
       aiContent = JSON.parse(content);
       console.log("content", content);
-      if (flag === "regenerate") {
+      if (flag === "regenerate"|| (flag === "init" && !siteAvailable)) {
         aiContent["hero"]["image"]["imageUrl"] =
           imageIds[aiContent["hero"]["image"]["imageId"]];
       }
@@ -292,7 +292,7 @@ export const getData = async (params: TParams) => {
 
     dispatch(
       updateAppState({
-        ...appState,
+        ...aiContent,
 
         subdomain: siteAvailable,
         status: "Done",
