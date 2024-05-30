@@ -83,7 +83,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                       {hero.subheading}
                     </p>
                     <div className="-m-2 flex flex-wrap">
-                      <div className={`w-full p-2 md:w-auto `}>
+                      <div className={`w-full p-2 md:w-auto flex gap-5`}>
                         {hero.button.list.map((button) => (
                           <div key={button.name}>
                             <CTA
