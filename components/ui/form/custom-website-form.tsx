@@ -15,6 +15,7 @@ import {
 import { Combobox, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { error } from "console";
 
 const businesses = [
   "Accounting",
@@ -184,8 +185,6 @@ const businesses = [
 
 const CustomWebsiteForm = () => {
   const formSchema = z.object({
-    title: z.string().min(1, "Required"),
-    subTitle: z.string().min(1, "Required"),
     business: z.string().min(1, "Required"),
     location: z.string().min(1, "Required"),
     businessName: z.string().min(1, "Required"),
@@ -201,12 +200,11 @@ const CustomWebsiteForm = () => {
         });
 
   const defaultValues = {
-    title: "",
-    subTitle: "",
-    business: "",
+    business: businesses[0],
     location: "",
     businessName: "",
   };
+
   const {
     register,
     handleSubmit,
@@ -217,8 +215,42 @@ const CustomWebsiteForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues,
   });
+  console.log("errors", errors);
+  const onSubmit = async () => {
+    try {
+      console.log("onSubmit");
+      const response = await fetch("/api/content/custom", {
+        method: "POST",
+        body: JSON.stringify({
+          data: {
+            businessType: getValues().business,
+            location: getValues().location,
+            businessName: getValues().businessName,
+          },
+        }),
+      });
+
+      let content = "";
+      const reader = response.body?.getReader();
+      if (!reader) return;
+
+      const decoder = new TextDecoder();
+      let done = false;
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+
+        if (chunkValue && chunkValue !== "###") content += chunkValue;
+      }
+      console.log("custom-content", JSON.parse(content));
+    } catch (error) {}
+  };
   return (
-    <form className="flex w-full items-center justify-center gap-5 max-sm:flex-col">
+    <form
+      className="flex w-full items-center justify-center gap-5 max-sm:flex-col"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       {/* <div>
         <label
           htmlFor="title"
@@ -287,6 +319,11 @@ const CustomWebsiteForm = () => {
               <Combobox.Button className="group absolute inset-y-0 right-0 px-2.5">
                 <ChevronDownIcon className="size-4 " />
               </Combobox.Button>
+              {errors.business && (
+                <p className="mt-2 text-sm text-red-600" id="business-error">
+                  {errors.business.message}
+                </p>
+              )}
             </div>
             <Transition
               leave="transition ease-in duration-100"
@@ -296,7 +333,7 @@ const CustomWebsiteForm = () => {
             >
               <Combobox.Options
                 // anchor="bottom"
-                className="absolute h-52 w-[90%] overflow-auto rounded-xl border border-gray-300 bg-white p-1 [--anchor-gap:var(--spacing-1)] empty:hidden"
+                className="absolute h-52 w-64 overflow-auto rounded-xl border border-gray-300 bg-white p-1 [--anchor-gap:var(--spacing-1)] empty:hidden"
               >
                 {filteredBusinesses.map((business) => (
                   <Combobox.Option
@@ -361,7 +398,7 @@ const CustomWebsiteForm = () => {
       </div>
       <button
         //   onClick={() => handleButtonSubmit(data.name)}
-        type="button"
+        type="submit"
         className={`mx-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
         disabled={loading}
       >
