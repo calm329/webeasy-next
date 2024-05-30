@@ -209,12 +209,12 @@ export const getData = async (params: TParams) => {
     flag === "regenerate" ||
     flag === "text" ||
     flag === "image" ||
-    flag === "individual"
+    flag === "individual"||(!siteAvailable && flag === "init")
   ) {
     console.log("fieldName: " + fieldName?.split(".")?fieldName?.split(".")[0]:fieldName, flag);
     const response = await fetch("/api/content", {
       method: "POST",
-      body: JSON.stringify({ mediaCaption, fieldName:fieldName?.split(".")?fieldName?.split(".")[0]:fieldName }),
+      body: JSON.stringify({ mediaCaption, fieldName:fieldName?.split(".")?fieldName?.split(".")[0]:fieldName??"" }),
     });
 
     let content = "";
@@ -277,7 +277,7 @@ export const getData = async (params: TParams) => {
   }
 
   // generate colors from content using openai
-  if (flag === "regenerate") {
+  if (flag === "regenerate" || (!siteAvailable && flag === "init")) {
     const { colors } = await fetchData("/api/color", {
       method: "POST",
       body: JSON.stringify({
@@ -402,8 +402,8 @@ export const getData = async (params: TParams) => {
   }
 
   // update default values
-  const heroButtonList = appState.aiContent.hero.button.list;
-  const bannerButtonList = appState.aiContent.banner.button.list;
+  const heroButtonList = appState.aiContent?.hero?.button?.list;
+  const bannerButtonList = appState.aiContent?.banner?.button?.list;
 
   updateDefaultValues(
     {
