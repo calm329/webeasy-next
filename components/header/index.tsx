@@ -177,7 +177,7 @@ export default function SiteHeader(props: TProps) {
 
       <nav>
         {!isBottomBar && pathname.startsWith("/auth") && (
-          <div className="mt-5 flex w-full justify-around border-b pb-5">
+          <div className="pt-5 flex w-full justify-around border-b pb-5 fixed top-0 z-10 bg-white">
             <button className="flex flex-col items-center">
               <IoMdAdd size={20} />
               {/* Undo */}
@@ -228,7 +228,7 @@ export default function SiteHeader(props: TProps) {
           </div>
         )}
         <div
-          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "w-full max-w-full justify-between"}`}
+          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "w-full max-w-full justify-between mt-14"}`}
           aria-label="Global"
         >
           <div className="flex items-center gap-x-12 ">
