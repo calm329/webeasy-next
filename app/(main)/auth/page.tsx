@@ -31,14 +31,12 @@ import { IoMdAdd } from "react-icons/io";
 import { FaRedoAlt, FaUndoAlt } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
-import { fetchAccessToken } from "@/lib/store/slices/accesstoken-slice";
-import { AccessTokensData as ATD } from "../../../lib/store/slices/accesstoken-slice";
 
 export default function Page() {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session,status } = useSession();
   const searchParams = useSearchParams();
-  const accessTokenData = useAppSelector(ATD);
+  // const [appState, setAppState] = useState<AppState>(initialState);
   const appState = useAppSelector(AS);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [isFontOpen, setIsFontOpen] = useState(false);
@@ -134,30 +132,40 @@ export default function Page() {
     handleChangeAppState(dispatch, appState, name, value);
   }, 300);
 
-  const fetchData = async () => {
-    try {
-      const res = await dispatch(
-        fetchAccessToken({ siteId: appState.id }),
-      ).unwrap();
-      return res;
-    } catch (error) {}
-  };
+  useEffect(() => {
+    const getInstaCredentials = async () => {
+      const { access_token, user_id } = await fetchData(
+        `/api/instagram/access_token?code=${searchParams.get("code")}`,
+      );
+
+      if (access_token && user_id) {
+        const newURLSearchParams = new URLSearchParams(searchParams);
+
+        newURLSearchParams.delete("code");
+        newURLSearchParams.set("access_token", access_token);
+        newURLSearchParams.set("user_id", user_id);
+
+        router.replace(`?${newURLSearchParams.toString()}`);
+      }
+    };
+
+    if (searchParams.get("code") && !searchParams.get("access_token")) {
+      getInstaCredentials();
+    }
+  }, []);
 
   useEffect(() => {
-    fetchData().then((res) => {
+    if (searchParams.get("access_token") && searchParams.get("user_id")) {
       getData({
         flag: "init",
-        data: {
-          accessToken: res?.token ?? "",
-          userId: res?.userId ?? "",
-        },
+        searchParams,
         appState,
         dispatch,
         // setAppState,
         setBrandCustomizeFields,
         setHeroCustomizeFields,
       });
-    });
+    }
   }, [searchParams]);
 
   useEffect(() => {
@@ -188,20 +196,80 @@ export default function Page() {
       },
     });
   }, [appState.selectedFont]);
+  const isBottomBar = useMediaQuery("(min-width: 900px)");
+  const pathname = usePathname();
+  const pastAppState = useAppSelector(PAS);
+  const futureAppState = useAppSelector(FAS);
   return (
     <>
       {appState.status === "Done" ? (
         <>
+          {/* !isBottomBar && pathname.startsWith("/auth") && (
+            <div className="fixed top-0 z-10 mt-5 flex w-full justify-around border-b pb-5">
+              <button className="flex flex-col items-center">
+                <IoMdAdd size={20} />
+              
+              </button>
+              <button
+                className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`}
+                onClick={() => dispatch(undo())}
+                disabled={pastAppState.length === 0}
+              >
+                <FaUndoAlt />
+           
+              </button>
+              <button
+                className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`}
+                onClick={() => dispatch(redo())}
+                disabled={futureAppState.length === 0}
+              >
+                <FaRedoAlt />
+           
+              </button>
+              <button className="flex flex-col items-center">
+                <ImCancelCircle
+                  size={18}
+                  onClick={() => {
+                    if (getData) {
+                      getData({
+                        flag: "init",
+                        searchParams,
+                        appState,
+                        dispatch,
+                        // setAppState,
+                        setBrandCustomizeFields,
+                        setHeroCustomizeFields,
+                      });
+                      dispatch(clearPastAndFuture());
+                    }
+                  }}
+                />
+          
+              </button>
+              <button className="flex flex-col items-center">
+                <MdOutlineDownloadDone
+                  size={20}
+                  onClick={() => {
+                    if (status === "authenticated") {
+                      saveState(appState, dispatch).then(() =>
+                        dispatch(clearPastAndFuture()),
+                      );
+                    } else {
+                      // setShowAuthModal(true);
+                    }
+                  }}
+                />
+            
+              </button>
+            </div>
+          )} */}
           <SiteHeader
             showNavigation={false}
             isAuth={true}
             getData={(flag, fieldName) =>
               getData({
                 flag: flag ?? "init",
-                data: {
-                  accessToken: accessTokenData?.token ?? "",
-                  userId: accessTokenData?.userId ?? "",
-                },
+                searchParams,
                 dispatch,
                 appState,
                 // setAppState,
@@ -254,10 +322,7 @@ export default function Page() {
                       getData={(flag, fieldName) =>
                         getData({
                           flag: flag ?? "init",
-                          data: {
-                            accessToken: accessTokenData?.token ?? "",
-                            userId: accessTokenData?.userId ?? "",
-                          },
+                          searchParams,
                           dispatch,
                           appState,
                           // setAppState,
@@ -279,10 +344,7 @@ export default function Page() {
                       getData={(flag, fieldName) =>
                         getData({
                           flag: flag ?? "init",
-                          data: {
-                            accessToken: accessTokenData?.token ?? "",
-                            userId: accessTokenData?.userId ?? "",
-                          },
+                          searchParams,
                           dispatch,
                           appState,
                           // setAppState,
