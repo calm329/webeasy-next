@@ -13,10 +13,7 @@ import { prompt } from "./common-constant";
 
 type TParams = {
   flag: "init" | "regenerate" | "text" | "image" | "individual";
-  data:{
-    accessToken:string,
-    userId:string,
-  } ;
+  searchParams: ReadonlyURLSearchParams;
   dispatch: any;
   appState: AppState;
   setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>;
@@ -98,7 +95,7 @@ const updateDefaultValues = (
 export const getData = async (params: TParams) => {
   const {
     flag,
-    data,
+    searchParams,
     dispatch,
     appState,
     setBrandCustomizeFields,
@@ -114,7 +111,7 @@ export const getData = async (params: TParams) => {
     );
   }
   const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
-    userId: data.userId,
+    userId: searchParams.get("user_id") || "",
   });
   if (flag !== "individual") {
     dispatch(
@@ -184,7 +181,9 @@ export const getData = async (params: TParams) => {
       imageIds: _imageIds,
       posts: _posts,
     } = await fetchData(
-      `/api/instagram/media?access_token=${data.accessToken}&user_id=${data.userId}`,
+      `/api/instagram/media?access_token=${searchParams.get(
+        "access_token",
+      )}&user_id=${searchParams.get("user_id")}`,
     );
 
     if (!_mediaCaption || !_imageIds || !_posts) {
@@ -361,8 +360,8 @@ export const getData = async (params: TParams) => {
     await createNewSite({
       aiResult: JSON.stringify(aiContent),
       posts: JSON.stringify(iPosts),
-      accessToken: data.accessToken || "",
-      userId: data.userId || "",
+      accessToken: searchParams.get("access_token") || "",
+      userId: searchParams.get("user_id") || "",
     });
   }
 
