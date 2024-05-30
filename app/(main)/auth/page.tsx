@@ -190,11 +190,13 @@ export default function Page() {
 
   useEffect(() => {
     const WebFontLoader = require("webfontloader");
-    WebFontLoader.load({
-      google: {
-        families: [appState.selectedFont],
-      },
-    });
+    if(appState.selectedFont){
+      window && WebFontLoader.load({
+        google: {
+          families: [appState.selectedFont],
+        },
+      });
+    }
   }, [appState.selectedFont]);
   const isBottomBar = useMediaQuery("(min-width: 900px)");
   const pathname = usePathname();
