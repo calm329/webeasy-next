@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ImSpinner2 } from "react-icons/im";
+import { ImPower, ImSpinner2 } from "react-icons/im";
 
 type TProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -165,13 +165,14 @@ const CustomService = (props: TProps) => {
                     setLoading(false);
                   });
               }}
-              className="flex gap-2"
-            >
-              Regenerate
-              {loading && selectedField === "name" && (
-                <ImSpinner2 className="animate-spin text-lg text-black" />
-              )}
-            </button>
+              className="flex gap-2 items-center "
+              >
+                
+                Regenerate
+                {loading&& selectedField === "name" ? (
+                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                ):<ImPower className=" text-xs " />}
+              </button>
           </div>
           <input
             type="text"
@@ -205,13 +206,14 @@ const CustomService = (props: TProps) => {
                     },
                   );
               }}
-              className="flex gap-2"
-            >
-              Regenerate
-              {loading && selectedField === "description" && (
-                <ImSpinner2 className="animate-spin text-lg text-black" />
-              )}
-            </button>
+              className="flex gap-2 items-center "
+              >
+                
+                Regenerate
+                {loading && selectedField === "description" ? (
+                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                ):<ImPower className=" text-xs " />}
+              </button>
           </div>
           <textarea
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
