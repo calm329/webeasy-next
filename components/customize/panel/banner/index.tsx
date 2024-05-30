@@ -23,6 +23,7 @@ import {
   Droppable,
   DropResult,
 } from "react-beautiful-dnd";
+import { ImPower } from "react-icons/im";
 type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
@@ -279,7 +280,7 @@ const BannerContent = (props: TProps) => {
                     case "text":
                       return (
                         <div className="flex flex-col border-t pt-5">
-                          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900 items-center ">
                             <label htmlFor="businessName" className="block">
                               {data.label}
                             </label>
@@ -291,12 +292,13 @@ const BannerContent = (props: TProps) => {
                                     setLoading(false);
                                   });
                               }}
-                              className="flex gap-2"
+                              className="flex gap-2 items-center "
                             >
+                              
                               Regenerate
-                              {loading && (
+                              {loading ? (
                                 <ImSpinner2 className="animate-spin text-lg text-black" />
-                              )}
+                              ):<ImPower className=" text-xs " />}
                             </button>
                           </div>
 
