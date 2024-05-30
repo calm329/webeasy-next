@@ -17,6 +17,10 @@ type TProps = {
     show: boolean;
   };
   handleChange: DebouncedState<(name: string, value: string) => void>;
+  getData?: (
+    flag?: "init" | "regenerate" | "text" | "image" | "individual",
+    fieldName?: string,
+  ) => Promise<void>;
 };
 import { IoMdArrowBack } from "react-icons/io";
 import { FormField, TSection } from "@/types";
@@ -26,14 +30,16 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { generateUniqueId } from "@/lib/utils/function";
 
 const CustomService = (props: TProps) => {
-  const { setIsOpen, setShowForm, section, showForm, handleChange } = props;
+  const { setIsOpen, setShowForm, section, showForm, handleChange, getData } =
+    props;
   const [loading, setLoading] = useState(false);
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
-
+  const [selectedField, setSelectedField] = useState<string | null>(null);
   const [data, setData] = useState<any>();
 
   function handleServiceSubmit(id: string) {
+    setSelectedField(null);
     console.log("hi");
     if (showForm.edit) {
       dispatch(
@@ -96,7 +102,7 @@ const CustomService = (props: TProps) => {
       services = services.filter((service) => service.id === showForm.edit);
       setData(services[0]);
     }
-  }, [showForm.edit]);
+  }, [showForm.edit,appState]);
 
   console.log("data", data);
   return (
@@ -147,12 +153,26 @@ const CustomService = (props: TProps) => {
       </div>
       <form className="flex flex-col gap-5 p-5">
         <div className="flex flex-col ">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Name
-          </label>
+          <div className="flex justify-between text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="name">Name</label>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedField("name");
+                setLoading(true);
+                getData &&
+                  getData("individual", "serviceName." + data.id).then(() => {
+                    setLoading(false);
+                  });
+              }}
+              className="flex gap-2"
+            >
+              Regenerate
+              {loading && selectedField === "name" && (
+                <ImSpinner2 className="animate-spin text-lg text-black" />
+              )}
+            </button>
+          </div>
           <input
             type="text"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -171,12 +191,28 @@ const CustomService = (props: TProps) => {
         </div>
 
         <div className="flex flex-col ">
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Description
-          </label>
+          <div className="flex justify-between text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="description"> Description</label>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedField("description");
+                setLoading(true);
+                getData &&
+                  getData("individual", "serviceDescription." + data.id).then(
+                    () => {
+                      setLoading(false);
+                    },
+                  );
+              }}
+              className="flex gap-2"
+            >
+              Regenerate
+              {loading && selectedField === "description" && (
+                <ImSpinner2 className="animate-spin text-lg text-black" />
+              )}
+            </button>
+          </div>
           <textarea
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             id={"description"}
@@ -199,7 +235,7 @@ const CustomService = (props: TProps) => {
           className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
           disabled={loading}
         >
-          {loading && (
+          {loading && !selectedField && (
             <ImSpinner2 className="animate-spin text-lg text-white" />
           )}
           Save

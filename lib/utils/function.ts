@@ -211,10 +211,10 @@ export const getData = async (params: TParams) => {
     flag === "image" ||
     flag === "individual"
   ) {
-    console.log("fieldName: " + fieldName, flag);
+    console.log("fieldName: " + fieldName?.split(".")?fieldName?.split(".")[0]:fieldName, flag);
     const response = await fetch("/api/content", {
       method: "POST",
-      body: JSON.stringify({ mediaCaption, fieldName }),
+      body: JSON.stringify({ mediaCaption, fieldName:fieldName?.split(".")?fieldName?.split(".")[0]:fieldName }),
     });
 
     let content = "";
@@ -303,7 +303,7 @@ export const getData = async (params: TParams) => {
   }
 
   if (flag === "individual") {
-    switch (fieldName) {
+    switch (fieldName?.split(".")?fieldName?.split(".")[0]:fieldName) {
       case "businessName":
         aiContent = {
           ...appState.aiContent,
@@ -330,6 +330,42 @@ export const getData = async (params: TParams) => {
             subheading: aiContent.hero.subheading,
           },
         };
+        break;
+        case "serviceName":
+        aiContent = {
+          ...appState.aiContent,
+          services:{
+            ...appState.aiContent.services,
+            list:appState.aiContent.services.list.map((service)=>{
+              if(service.id === fieldName?.split(".")[1]){
+                return {
+                 ...service,
+                  name:aiContent.services.list[0].name
+                }
+              }else{
+                return service;
+              }
+            })
+          }
+        };
+        break;
+        case "serviceDescription":
+          aiContent = {
+            ...appState.aiContent,
+            services:{
+              ...appState.aiContent.services,
+              list:appState.aiContent.services.list.map((service)=>{
+                if(service.id === fieldName?.split(".")[1]){
+                  return {
+                   ...service,
+                    description:aiContent.services.list[0].description
+                  }
+                }else{
+                  return service;
+                }
+              })
+            }
+          };
         break;
     }
     console.log("updated field name: " + JSON.stringify(aiContent));
@@ -450,7 +486,7 @@ export const handleChangeAppState = (
         break;
     }
   } else if ((value as any)["section"] === "Services") {
-    console.log("i came here",name,value)
+    console.log("i came here", name, value);
     dispatch(
       updateAppState({
         ...appState,
@@ -462,7 +498,7 @@ export const handleChangeAppState = (
               if (service.id === name) {
                 return {
                   id: service.id,
-                  image:service.image,
+                  image: service.image,
                   description: (value as any)["description"],
                   name: (value as any)["name"],
                 };

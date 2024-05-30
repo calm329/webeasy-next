@@ -67,6 +67,7 @@ export function CustomDrawer(props: TProps) {
             setHeroCustomizeFields={setHeroCustomizeFields}
             setBrandCustomizeFields={setBrandCustomizeFields}
             handleChange={handleChange}
+            getData={getData}
           >
             {section === "Hero" && (
               <HeroContent

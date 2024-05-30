@@ -11,7 +11,7 @@ const openai = new OpenAI({
 export async function POST(request: NextRequest) {
   const { mediaCaption, fieldName } = await request.json();
   console.log("prompt", fieldName);
-  if (!mediaCaption ) {
+  if (!mediaCaption) {
     return NextResponse.json({ error: "Missing data" }, { status: 400 });
   }
   let fields;
@@ -20,13 +20,27 @@ export async function POST(request: NextRequest) {
       fields =
         'only generate the data for the given fields {"banner":{"businessName": "*Name of the business inferred from all the content*"}}';
       break;
-      case "heading":
-        fields =
-          'only generate the data for the given fields "hero": {"heading": "*insert heading here*"}';
-        break;
-        case "subheading":
+    case "heading":
       fields =
-      'only generate the data for the given fields "hero": {"subheading": "*insert subheading here*"}';
+        'only generate the data for the given fields "hero": {"heading": "*insert heading here*"}';
+      break;
+    case "subheading":
+      fields =
+        'only generate the data for the given fields "hero": {"subheading": "*insert subheading here*"}';
+      break;
+    case "serviceName":
+      fields =
+      `only generate the data for the given fields "services": {"list": [
+        {
+          "name": "*first service or feature*",
+        }]}`;
+      break;
+    case "serviceDescription":
+      fields =
+        `only generate the data for the given fields "services": {"list": [
+          {
+            "description": "*description*",
+          }]}`;
       break;
     default:
       fields = `

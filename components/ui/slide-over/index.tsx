@@ -70,6 +70,7 @@ function SlideOver(props: TProps) {
             setBrandCustomizeFields={setBrandCustomizeFields}
             setHeroCustomizeFields={setHeroCustomizeFields}
             handleChange={handleChange}
+            getData={getData}
           >
             {section === "Hero" && (
               <HeroContent
