@@ -37,7 +37,7 @@ const SelectedTemplate = (props: TProps) => {
     setShowForm,
   } = props;
   return (
-    <div className={`h-full overflow-auto mx-auto ${appState.view === "Mobile" && "w-[480px] h-[800px] border-8 rounded-xl border-black"} ${appState.view === "Tablet" && "w-[768px] h-[1024px] border-8 rounded-xl  border-black"} ${appState.view === "Desktop" && "w-full h-full"}`}>
+    <div className={` overflow-auto mx-auto ${appState.view === "Mobile" && "w-[480px] h-[800px] border-8 rounded-xl border-black"} ${appState.view === "Tablet" && "w-[768px] h-[1024px] border-8 rounded-xl  border-black"} ${appState.view === "Desktop" && "w-full h-full"}`}>
       {selectedTemplate?.name === "Basic template" && (
         <BasicTemplate
           editable={appState.editable}
