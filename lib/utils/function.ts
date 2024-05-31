@@ -407,6 +407,7 @@ export const getData = async (params: TParams) => {
 
   updateDefaultValues(
     {
+      logo: appState.aiContent.banner.logo.link,
       businessName: aiContent?.banner.businessName,
       ctaLink: aiContent?.hero?.ctaLink,
       heading: aiContent?.hero?.heading,
