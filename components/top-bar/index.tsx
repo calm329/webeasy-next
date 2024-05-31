@@ -35,8 +35,8 @@ export default function TopBar(props: TopBarProps) {
   const dispatch =useAppDispatch()
   const appState  = useAppSelector(AS)
   return (
-    <div className="flex items-center justify-between rounded-full border border-gray-100 bg-gray-100 px-6 py-3.5 max-sm:flex-col max-sm:gap-5">
-      <div className="w-auto">
+    <div className="flex flex-wrap gap-5 items-center justify-between rounded-full border border-gray-100 bg-gray-100 px-6 py-3.5 max-sm:flex-col max-sm:gap-5">
+      <div className={`w-auto max-sm:mx-auto ${appState.view === "Mobile" && "mx-auto"}`}>
         <div className="flex flex-wrap items-center">
           <div
             className="text-black-300 flex w-auto items-center gap-2 text-xl font-medium"
@@ -104,7 +104,7 @@ export default function TopBar(props: TopBarProps) {
           </div>
         </div>
       </div>
-      <div className="w-auto">
+      <div className={`w-auto max-sm:mx-auto ${appState.view === "Mobile" &&"mx-auto" }`}>
         <div className="flex flex-wrap items-center">
           <div className="w-auto lg:block">
             <div className="-m-2 flex flex-wrap">

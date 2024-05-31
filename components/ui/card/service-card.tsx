@@ -29,7 +29,7 @@ export default function ServiceCard(props: ServiceCardProps) {
     props;
   return editable ? (
     <div
-      className={`w-full p-8 md:w-1/3 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`w-full p-8 max-w-96  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={(e) => {
         setShowForm &&
           setShowForm({
