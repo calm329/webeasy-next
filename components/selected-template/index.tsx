@@ -37,7 +37,7 @@ const SelectedTemplate = (props: TProps) => {
     setShowForm,
   } = props;
   return (
-    <div className="h-full w-full">
+    <div className={`h-full w-full ${appState.view === "Mobile" && "w-96 border-2 border-black"}`}>
       {selectedTemplate?.name === "Basic template" && (
         <BasicTemplate
           editable={appState.editable}

@@ -21,12 +21,10 @@ type TInitialState = {
   loading: boolean;
 };
 
-
-
-const initialSite = {
-  openedSlide:null,
-  focusedField:null,
-  selectedFont:"",
+const initialSite: AppState = {
+  openedSlide: null,
+  focusedField: null,
+  selectedFont: "",
   subdomain: "",
   status: "Loading Instagram",
   iPosts: {limit:8,show:true,list:[]},
@@ -58,13 +56,13 @@ const initialSite = {
       secondary: "",
     },
     services: {
-      show:true,
+      show: true,
       description: "",
       list: [],
       title: "",
     },
   },
-
+  view: "Desktop",
   editable: true,
   meta: {
     title: "",
@@ -171,7 +169,8 @@ const siteSlice = createSlice({
       const newState = action.payload;
       // Check if the new state is different from the current present state
       const isStateDifferent =
-        JSON.stringify(newState.aiContent) !== JSON.stringify(present.aiContent);
+        JSON.stringify(newState.aiContent) !==
+        JSON.stringify(present.aiContent);
 
       if (isStateDifferent && present.status === "Done") {
         past.push(present);
@@ -193,7 +192,7 @@ const siteSlice = createSlice({
     },
     redo(state) {
       const { present, past, future } = state.sites.domain;
-   
+
       if (future.length > 0) {
         past.push(present);
         state.sites.domain.present = future.shift()!;
