@@ -65,9 +65,9 @@ const BottomToolBar = (props: TProps) => {
   const templates = useAppSelector(TD);
   const { status } = useSession();
   return (
-    <div className="z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white p-5  shadow-xl">
+    <div className="z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white   shadow-xl py-2 ">
       {isBottomBar ? (
-        <>
+        <div className="max-w-7xl flex justify-between">
           <div className=" flex justify-end gap-5  max-sm:gap-2">
             {getData && appState && (
               <SettingMenu
@@ -104,9 +104,9 @@ const BottomToolBar = (props: TProps) => {
 
           <PublishMenu setShowAuthModal={setShowAuthModal} />
           <AiAssist/>
-        </>
+        </div>
       ) : (
-        <div className="flex w-full justify-around">
+        <div className="flex max-w-7xl w-full justify-around">
           <button
             className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`}
             onClick={() => dispatch(undo())}
