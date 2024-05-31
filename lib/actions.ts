@@ -42,8 +42,8 @@ export async function createNewSite({
     };
   }
 
-  const username = getUsernameFromPosts(posts);
-
+  const username = getUsernameFromPosts(JSON.stringify(JSON.parse(posts).list));
+  console.log("username: " + username)
   try {
     const siteResponse = await prisma.site.create({
       data: {
