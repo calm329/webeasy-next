@@ -81,7 +81,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               />
 
               <div
-                className={`rounded-3xl bg-gray-100 p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${!appState.aiContent.services.show ?"bg-transparent":"bg-gray-100"}`}
                 onClick={() => {
                   if (setIsOpen && setSection) {
                     setIsOpen(true);
