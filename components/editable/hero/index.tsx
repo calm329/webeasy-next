@@ -44,7 +44,7 @@ const EditableHero = (props: TProps) => {
       }}
     >
 
-      <div className=" p-8 w-3/4">
+      <div className=" p-8 w-2/3 max-sm:w-full">
         <div className="md:max-w-lg">
           <h2
             className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -123,7 +123,7 @@ const EditableHero = (props: TProps) => {
         </div>
       </div>
       {hero.image.show && (
-        <div className={`w-1/4 min-w-72 p-8   `}>
+        <div className={`w-1/4 min-w-72 p-8  max-sm:w-full `}>
           <Image
             src={hero.image.imageUrl}
             width={256}
