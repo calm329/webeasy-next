@@ -411,6 +411,7 @@ export const getData = async (params: TParams) => {
       ctaLink: aiContent?.hero?.ctaLink,
       heading: aiContent?.hero?.heading,
       subheading: aiContent?.hero?.subheading,
+      imageUrl: aiContent?.hero.image?.imageUrl,
       cta: aiContent?.hero?.cta,
     },
     setBrandCustomizeFields,
