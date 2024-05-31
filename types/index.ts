@@ -73,6 +73,7 @@ export interface AppState {
   focusedField: TFields | null;
   subdomain: string;
   status: string;
+  view:"Mobile"|"Tablet"|"Desktop"
   iPosts: TPosts;
   aiContent: {
     banner: TBanner;

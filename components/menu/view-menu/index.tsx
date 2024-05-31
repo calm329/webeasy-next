@@ -72,41 +72,50 @@ export default function ViewMenu() {
         >
           <Menu.Item>
             {({ active }) => (
-              <Link
-                href="#"
+              <button
+                type="button"
                 className={classNames(
                   active ? "bg-gray-100" : "",
                   "block px-4 py-2 text-sm text-gray-700",
                 )}
+                onClick={() =>
+                  dispatch(updateAppState({ ...appState, view: "Desktop" }))
+                }
               >
                 Desktop
-              </Link>
+              </button>
             )}
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <Link
-                href="#"
+              <button
                 className={classNames(
                   active ? "bg-gray-100" : "",
                   "block px-4 py-2 text-sm text-gray-700",
                 )}
+                type="button"
+                onClick={() =>
+                  dispatch(updateAppState({ ...appState, view: "Tablet" }))
+                }
               >
                 Tablet
-              </Link>
+              </button>
             )}
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <Link
-                href="#"
+              <button
                 className={classNames(
                   active ? "bg-gray-100" : "",
                   "block px-4 py-2 text-sm text-gray-700",
                 )}
+                type="button"
+                onClick={() =>
+                  dispatch(updateAppState({ ...appState, view: "Mobile" }))
+                }
               >
                 Mobile
-              </Link>
+              </button>
             )}
           </Menu.Item>
         </Menu.Items>
