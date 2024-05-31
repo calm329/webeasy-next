@@ -27,7 +27,7 @@ const initialSite: AppState = {
   selectedFont: "",
   subdomain: "",
   status: "Loading Instagram",
-  iPosts: {limit:8,show:true,list:[]},
+  iPosts: {limit:20,show:true,list:[]},
   aiContent: {
     banner: {
       businessName: "",

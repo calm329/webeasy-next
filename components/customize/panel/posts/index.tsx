@@ -86,6 +86,7 @@ const PostsContent = () => {
             <input
               type="number"
               className="w-20 rounded"
+              value={appState.iPosts.limit}
               onChange={(e) => {
                 const num = parseInt(e.target.value, 10); // Convert string to number
                 dispatch(
