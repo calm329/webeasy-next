@@ -147,7 +147,7 @@ export async function updateSite(
     let newData: any = {
       aiResult: JSON.parse(site.aiResult),
     };
-
+    
     for (const key of keys) {
       switch (key) {
         case "subdomain":
@@ -185,6 +185,12 @@ export async function updateSite(
       typeof newData.aiResult === "string"
         ? newData.aiResult
         : JSON.stringify(newData.aiResult);
+
+     newData.posts =
+      typeof newData.posts === "string"
+        ? newData.posts
+        : JSON.stringify(newData.posts);
+
 
     if (user) {
       newData["userId"] = user.id;

@@ -86,6 +86,7 @@ export async function POST(request: NextRequest) {
           "subheading": "*insert subheading here*"
         },
         "services": {
+          show: true,
           "title": "*type of services title Services or Features*",
           "description": "*services heading*",
           "list": [

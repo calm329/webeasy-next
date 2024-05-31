@@ -391,11 +391,11 @@ export const getData = async (params: TParams) => {
       }),
     );
   }
-  console.log("SIte Creation",!siteAvailable, flag === "init")
+  console.log("SIte Creation",aiContent)
   if (!siteAvailable && flag === "init") {
     await createNewSite({
       aiResult: JSON.stringify(aiContent),
-      posts: JSON.stringify({show:true,list:iPosts}),
+      posts: JSON.stringify({limit:20,show:true,list:iPosts}),
       accessToken: searchParams.get("access_token") || "",
       userId: searchParams.get("user_id") || "",
     });
