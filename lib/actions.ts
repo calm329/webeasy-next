@@ -18,7 +18,7 @@ export async function createNewSite({
   userId: string;
 }) {
   const session = await getServerSession(authOptions);
-
+  console.log("i came here")
   let user;
 
   if (session) {

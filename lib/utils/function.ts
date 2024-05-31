@@ -284,16 +284,15 @@ export const getData = async (params: TParams) => {
         imageUrl: aiContent["hero"]["image"]["imageUrl"],
       }),
     });
-
+    console.log("colors", colors);
     if (colors) {
       const aiColors = JSON.parse(colors);
       aiContent = { ...aiContent, colors: aiColors };
     } // else return;
-
+    console.log("aiContent",aiContent)
     dispatch(
       updateAppState({
         ...aiContent,
-
         subdomain: siteAvailable,
         status: "Done",
       }),
@@ -388,10 +387,11 @@ export const getData = async (params: TParams) => {
           ? aiContent
           : appState.aiContent,
         iPosts: {...appState.iPosts,list:iPosts},
+        status: "Done",
       }),
     );
   }
-
+  console.log("SIte Creation",!siteAvailable, flag === "init")
   if (!siteAvailable && flag === "init") {
     await createNewSite({
       aiResult: JSON.stringify(aiContent),
