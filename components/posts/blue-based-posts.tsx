@@ -5,6 +5,7 @@ import Image from "next/image";
 import clsx from "clsx";
 
 import { Container } from "@/components/container";
+import { TPosts } from "@/types";
 
 function ImageClipPaths({
   id,
@@ -28,7 +29,7 @@ function ImageClipPaths({
 }
 
 type TProps = {
-  posts: any[];
+  posts: TPosts;
   colors: {
     primary: string;
     secondary: string;
@@ -62,7 +63,7 @@ export function Speakers(props: TProps) {
         <div className="mt-14 grid grid-cols-1 items-start gap-x-8 gap-y-8 sm:mt-16 sm:gap-y-16 lg:mt-24 lg:grid-cols-4">
           <div className="lg:col-span-3">
             <div className="ui-not-focus-visible:outline-none grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 sm:gap-y-16 md:grid-cols-3">
-              {posts.map((data, i) => (
+              {posts.list.map((data, i) => (
                 <div key={data.id}>
                   <div className="rounded-4xl group relative h-[17.5rem] transform overflow-hidden">
                     <div

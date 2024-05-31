@@ -1,4 +1,5 @@
 import { Container } from "@/components/container";
+import { TPosts } from "@/types";
 import Image from "next/image";
 
 function QuoteIcon(props: React.ComponentPropsWithoutRef<"svg">) {
@@ -10,7 +11,7 @@ function QuoteIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 }
 
 type TProps = {
-  posts: any[];
+  posts: TPosts;
 };
 
 export function Testimonials(props: TProps) {
@@ -31,7 +32,7 @@ export function Testimonials(props: TProps) {
           role="list"
           className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3"
         >
-          {posts.map((data, i) => (
+          {posts.list.map((data, i) => (
             <li key={i}>
               <ul role="list" className="flex flex-col gap-y-6 sm:gap-y-8">
                 <li key={i}>

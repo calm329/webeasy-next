@@ -376,7 +376,7 @@ export const getData = async (params: TParams) => {
         aiContent: Object.keys(aiContent).length
           ? aiContent
           : appState.aiContent,
-        iPosts: iPosts,
+        iPosts: {...appState.iPosts,list:iPosts},
       }),
     );
   } else {
@@ -387,7 +387,7 @@ export const getData = async (params: TParams) => {
         aiContent: Object.keys(aiContent).length
           ? aiContent
           : appState.aiContent,
-        iPosts: iPosts,
+        iPosts: {...appState.iPosts,list:iPosts},
       }),
     );
   }
@@ -395,7 +395,7 @@ export const getData = async (params: TParams) => {
   if (!siteAvailable && flag === "init") {
     await createNewSite({
       aiResult: JSON.stringify(aiContent),
-      posts: JSON.stringify(iPosts),
+      posts: JSON.stringify({show:true,list:iPosts}),
       accessToken: searchParams.get("access_token") || "",
       userId: searchParams.get("user_id") || "",
     });
@@ -700,7 +700,8 @@ export function generateUniqueId() {
 
 export async function saveState(appState: AppState, dispatch: any) {
   try {
-    const data = { aiResult: appState.aiContent, font: appState.selectedFont };
+    const data = { aiResult: appState.aiContent, font: appState.selectedFont,posts:appState.iPosts };
+    console.log("Saved state",data)
     await dispatch(
       updateStateSite({
         subdomain: appState.subdomain,

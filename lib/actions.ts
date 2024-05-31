@@ -116,6 +116,7 @@ export async function updateSite(
   data: { [key: string]: string },
   keys: string[],
 ) {
+  console.log("updateSite")
   const session = await getServerSession(authOptions);
 
   try {
@@ -188,7 +189,7 @@ export async function updateSite(
     if (user) {
       newData["userId"] = user.id;
     }
-
+    console.log("newData",newData)
     const response = await prisma.site.update({
       where: {
         id: site.id,

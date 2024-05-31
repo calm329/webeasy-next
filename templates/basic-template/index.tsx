@@ -4,7 +4,7 @@ import ServiceCard from "@/components/ui/card/service-card";
 import CTA from "@/components/cta";
 import TopBar from "@/components/top-bar";
 import { generateUniqueId } from "@/lib/utils/function";
-import { TBanner, TColors, THero } from "@/types";
+import { TBanner, TColors, THero, TPosts } from "@/types";
 import Link from "next/link";
 
 type BasicTemplateProps = {
@@ -12,7 +12,7 @@ type BasicTemplateProps = {
   hero: THero;
   colors: TColors;
   services: any[];
-  posts: any[];
+  posts:TPosts;
 };
 
 export default function BasicTemplate(props: BasicTemplateProps) {
@@ -125,11 +125,12 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           </div>
         </div>
       </section>
+      
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Posts</h2>
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {posts.map((post) => (
+          {posts.list.map((post) => (
             <PostCard
               key={post.id}
               id={post.id}

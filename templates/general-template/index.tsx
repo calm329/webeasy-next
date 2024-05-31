@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card/general-card";
 import { Container } from "@/components/container/nested-container";
 import { Header } from "@/components/header/general-header";
 import { Dispatch, SetStateAction } from "react";
-import { TBanner, TColors, TFields, THero, TSection } from "@/types";
+import { TBanner, TColors, TFields, THero, TPosts, TSection } from "@/types";
 
 function Service({
   service,
@@ -22,7 +22,7 @@ function Service({
 }
 
 type TPostProps = {
-  posts: any[];
+  posts: TPosts;
 };
 
 function Photos(props: TPostProps) {
@@ -39,7 +39,7 @@ function Photos(props: TPostProps) {
     <>
       <div className="mt-16 sm:mt-20">
         <div className="-my-4 flex flex-wrap justify-center gap-10 overflow-hidden py-4 ">
-          {posts.map((data, i) => (
+          {posts.list.map((data, i) => (
             <div className="flex w-72 flex-col" key={data.id}>
               <div
                 className={clsx(
@@ -70,7 +70,7 @@ type TProps = {
   banner: TBanner;
   colors: TColors;
   services: any[];
-  posts: any[];
+  posts: TPosts;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;

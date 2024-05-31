@@ -6,6 +6,7 @@ import { DebouncedState } from "use-debounce";
 import HeroContent from "@/components/customize/panel/hero";
 import BannerContent from "@/components/customize/panel/banner";
 import ServiceContent from "@/components/customize/panel/service";
+import PostsContent from "@/components/customize/panel/posts";
 type TProps = {
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -95,6 +96,9 @@ export function CustomDrawer(props: TProps) {
             )}
             {section === "Services" && (
               <ServiceContent setShowForm={setShowForm} />
+            )}
+             {section === "Posts" && (
+              <PostsContent />
             )}
           </CustomizePanel>
         </div>

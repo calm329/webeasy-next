@@ -36,7 +36,7 @@ export type FormField = {
   }>;
 };
 
-export type TSection = "Hero" | "Banner"|"Services";
+export type TSection = "Hero" | "Banner" | "Services" | "Posts";
 
 export type TFields =
   | "logo"
@@ -68,21 +68,14 @@ export type TTemplateName =
   | "General template";
 
 export interface AppState {
-  openedSlide:"Customize"|"Font"|null,
+  openedSlide: "Customize" | "Font" | null;
   selectedFont: string;
-  focusedField:TFields | null;
-  subdomain:string;
+  focusedField: TFields | null;
+  subdomain: string;
   status: string;
-  iPosts: Array<{
-    id: string;
-    media_url: string;
-    permalink: string;
-    caption: string;
-    media_type: string;
-    username: string;
-  }>;
+  iPosts: TPosts;
   aiContent: {
-    banner: TBanner
+    banner: TBanner;
 
     hero: THero;
     services: TServices;
@@ -99,41 +92,52 @@ export interface AppState {
   };
 }
 
+export type TPosts = {
+  show: boolean;
+  limit:number;
+  list: Array<{
+    id: string;
+    media_url: string;
+    permalink: string;
+    caption: string;
+    media_type: string;
+    username: string;
+    timestamp: string;
+  }>;
+};
 
 export type TServices = {
-  show:boolean;
+  show: boolean;
   title: string;
   description: string;
   list: Array<{
-    id:string;
+    id: string;
     name: string;
     description: string;
     image: string;
   }>;
-}
-
-export type TBanner = {
- 
-    logo: {
-      link: string;
-      alt: string;
-      show: boolean;
-    };
-    businessName: string;
-
-    button: {
-      show: boolean;
-      list: Array<{
-        name:string;
-        type: "External" | "Section";
-        value: string;
-        label: string;
-      }>;
-    };
- 
 };
 
-export type THero ={
+export type TBanner = {
+  logo: {
+    link: string;
+    alt: string;
+    show: boolean;
+  };
+  businessName: string;
+
+  button: {
+    show: boolean;
+    list: Array<{
+      name: string;
+      type: "External" | "Section";
+      value: string;
+      label: string;
+    }>;
+  };
+};
+
+export type THero = {
   heading: string;
   subheading: string;
   image: {
@@ -146,13 +150,13 @@ export type THero ={
   button: {
     show: boolean;
     list: Array<{
-      name:string;
+      name: string;
       type: "External" | "Section";
       value: string;
       label: string;
     }>;
   };
-}
+};
 
 export type TData = Partial<{
   logo: string;

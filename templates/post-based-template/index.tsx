@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { SecondaryFeatures } from "../../components/services/post-based-services";
 import { Testimonials } from "../../components/posts/post-based-posts";
-import { TBanner, TColors, TFields, THero, TSection } from "@/types";
+import { TBanner, TColors, TFields, THero, TPosts, TSection } from "@/types";
 import { Header } from "@/components/header/post-based-header";
 import { Hero } from "@/components/hero/post-based-hero";
 type TProps = {
@@ -9,7 +9,7 @@ type TProps = {
   banner: TBanner;
   colors: TColors;
   services: any[];
-  posts: any[];
+  posts: TPosts;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
