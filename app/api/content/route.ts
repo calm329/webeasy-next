@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       break;
     default:
       fields = `
-      Make the list of services the most important ones identified from the instagram posts and list size of services should be from 3 to 6.
+      Make the list of services the most important ones identified from the instagram posts and list size of services should be from 3 to 6 and services name and description should be unique.
       
       {
         "banner": {
