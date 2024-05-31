@@ -167,8 +167,7 @@ const CustomService = (props: TProps) => {
               }}
               className="flex gap-2 items-center "
               >
-                
-                Regenerate
+                {showForm.edit ?"Regenerate":"Generate"}
                 {loading&& selectedField === "name" ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ):<ImPower className=" text-xs " />}
@@ -209,7 +208,7 @@ const CustomService = (props: TProps) => {
               className="flex gap-2 items-center "
               >
                 
-                Regenerate
+                {showForm.edit ?"Regenerate":"Generate"}
                 {loading && selectedField === "description" ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ):<ImPower className=" text-xs " />}
