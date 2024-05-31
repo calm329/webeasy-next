@@ -4,7 +4,7 @@ import ServiceCard from "@/components/ui/card/service-card";
 import CTA from "@/components/cta";
 import TopBar from "@/components/top-bar";
 import { Dispatch, SetStateAction } from "react";
-import { TBanner, TColors, TFields, THero, TSection } from "@/types";
+import { TBanner, TColors, TFields, THero, TPosts, TSection } from "@/types";
 import EditableBanner from "@/components/editable/banner";
 import EditableHero from "@/components/editable/hero";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
@@ -16,7 +16,7 @@ type BasicTemplateProps = {
   banner: TBanner;
   colors: TColors;
   services: any[];
-  posts: any[];
+  posts: TPosts;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
@@ -119,22 +119,35 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           </div>
         </div>
       </section>
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+      <div className={`mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`} onClick={()=>{
+        if (setIsOpen && setSection) {
+          setIsOpen(true);
+          setSection("Posts");
+          dispatch(
+            updateAppState({
+              ...appState,
+              openedSlide: "Customize",
+            }),
+          );
+ 
+        }
+      }}>
         <h2 className="sr-only">Posts</h2>
-
+       { appState.iPosts.show && 
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {posts.map((post) => (
+          {posts.list.map((post,i) => (
+            posts.limit > i &&
             <PostCard
               key={post.id}
               id={post.id}
-              permalink={post.permalink}
+              permalink={editable?"#":post.permalink}
               media_url={post.media_url}
               media_type={post.media_type}
               caption={post.caption}
               timestamp={post.timestamp}
             />
           ))}
-        </div>
+        </div>}
       </div>
     </>
   );

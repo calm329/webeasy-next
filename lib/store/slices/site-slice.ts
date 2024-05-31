@@ -29,7 +29,7 @@ const initialSite = {
   selectedFont:"",
   subdomain: "",
   status: "Loading Instagram",
-  iPosts: [],
+  iPosts: {limit:8,show:true,list:[]},
   aiContent: {
     banner: {
       businessName: "",
@@ -210,6 +210,7 @@ const siteSlice = createSlice({
     });
     builder.addCase(fetchSitesByDomain.fulfilled, (state, action) => {
       state.loading = false;
+      console.log("history",action.payload?.posts)
       state.sites.domain.present.meta = {
         title: action.payload?.title ?? "",
         description: action.payload?.description ?? "",
@@ -217,6 +218,7 @@ const siteSlice = createSlice({
       state.sites.domain.present.subdomain = action.payload?.subdomain ?? "";
 
       (state.sites.domain.present.status = "Done"),
+    
         (state.sites.domain.present.iPosts = JSON.parse(
           action.payload?.posts ?? "",
         )),
@@ -303,6 +305,7 @@ const siteSlice = createSlice({
     });
     builder.addCase(updateSite.fulfilled, (state, action) => {
       state.loading = false;
+      console.log('action.payload',action.payload)
       state.sites.user?.forEach((site, index) => {
         if (site.id === action?.payload?.id) {
           if (state.sites.user) {

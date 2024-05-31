@@ -27,20 +27,9 @@ const getItemStyle = (
 
 const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
 
-type TProps = {
-  setShowForm: Dispatch<
-    SetStateAction<{
-      form: string;
-      edit: string;
-      show: boolean;
-    }>
-  >;
-};
-
-const ServiceContent = (props: TProps) => {
+const PostsContent = () => {
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
-  const { setShowForm } = props;
   const reorder = (list: any, startIndex: number, endIndex: number): any => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -54,7 +43,7 @@ const ServiceContent = (props: TProps) => {
     }
 
     const updatedItems = reorder(
-      appState.aiContent.services.list,
+      appState.iPosts.list,
       result.source.index,
       result.destination.index,
     );
@@ -62,13 +51,7 @@ const ServiceContent = (props: TProps) => {
     dispatch(
       updateAppState({
         ...appState,
-        aiContent: {
-          ...appState.aiContent,
-          services: {
-            ...appState.aiContent.services,
-            list: updatedItems,
-          },
-        },
+        iPosts: { ...appState.iPosts, list: updatedItems },
       }),
     );
   };
@@ -77,16 +60,13 @@ const ServiceContent = (props: TProps) => {
     dispatch(
       updateAppState({
         ...appState,
-        aiContent: {
-          ...appState.aiContent,
-          services: {
-            ...appState.aiContent.services,
-            list: appState.aiContent.services.list.filter((service) => {
-              if (service.id !== id) {
-                return service;
-              }
-            }),
-          },
+        iPosts: {
+          ...appState.iPosts,
+          list: appState.iPosts.list.filter((service) => {
+            if (service.id !== id) {
+              return service;
+            }
+          }),
         },
       }),
     );
@@ -98,31 +78,45 @@ const ServiceContent = (props: TProps) => {
         <div className="flex justify-between gap-10">
           <div>
             <h3 className="block text-sm font-medium leading-6 text-gray-900">
-              Services
+              Posts
             </h3>
-            <p className="text-xs text-gray-400 ">
-              Add, Update or delete a service
-            </p>
+            <p className="text-xs text-gray-400 ">Re-Order and limit Posts</p>
           </div>
-          <Switch
-            onCheckedChange={(checked) =>
-              dispatch(
-                updateAppState({
-                  ...appState,
-                  aiContent: {
-                    ...appState.aiContent,
-                    services: {
-                      ...appState.aiContent.services,
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              className="w-20 rounded"
+              onChange={(e) => {
+                const num = parseInt(e.target.value, 10); // Convert string to number
+                dispatch(
+                  updateAppState({
+                    ...appState,
+                    iPosts: {
+                      ...appState.iPosts,
+                      limit: num,
+                    },
+                  }),
+                );
+              }}
+            />
+            <Switch
+              onCheckedChange={(checked) => {
+                console.log("checked", checked);
+                dispatch(
+                  updateAppState({
+                    ...appState,
+                    iPosts: {
+                      ...appState.iPosts,
                       show: checked,
                     },
-                  },
-                }),
-              )
-            }
-            checked={appState.aiContent.services.show}
-          />
+                  }),
+                );
+              }}
+              checked={appState.iPosts.show}
+            />
+          </div>
         </div>
-        {appState.aiContent.services.show && (
+        {appState.iPosts.show && (
           <>
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="droppable">
@@ -133,16 +127,16 @@ const ServiceContent = (props: TProps) => {
                     style={getListStyle(snapshot.isDraggingOver)}
                     className="flex flex-col gap-5"
                   >
-                    {appState.aiContent.services?.list?.map((item, index) => (
+                    {appState.iPosts?.list?.map((item, index) => (
                       <Draggable
-                        key={item.name}
-                        draggableId={item.name}
+                        key={item.id}
+                        draggableId={item.id}
                         index={index}
                       >
                         {(provided, snapshot) => (
                           <div
                             className=" flex items-center justify-between"
-                            key={item.name}
+                            key={item.id}
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
@@ -157,13 +151,11 @@ const ServiceContent = (props: TProps) => {
                               </div>
                               {/* <FiLink /> */}
                               <div>
-                                <h4>{item.name}</h4>
-                                <p className="line-clamp-1 ">
-                                  {item.description}
-                                </p>
+                                <h4>{item.username}</h4>
+                                <p className="line-clamp-1 ">{item.caption}</p>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
+                            {/* <div className="flex items-center gap-2">
                               <MdModeEditOutline
                                 color="blue"
                                 size={20}
@@ -171,7 +163,7 @@ const ServiceContent = (props: TProps) => {
                                   setShowForm({
                                     edit: item.id,
                                     show: true,
-                                    form: "Service",
+                                    form: "Post",
                                   });
                                 }}
                               />
@@ -180,7 +172,7 @@ const ServiceContent = (props: TProps) => {
                                 size={20}
                                 onClick={() => handleDeleteService(item.id)}
                               />
-                            </div>
+                            </div> */}
                           </div>
                         )}
                       </Draggable>
@@ -190,7 +182,7 @@ const ServiceContent = (props: TProps) => {
                 )}
               </Droppable>
             </DragDropContext>
-            {appState.aiContent.services.list &&
+            {/* {appState.aiContent.services.list &&
               appState.aiContent.services.list.length !== 9 && (
                 <button
                   className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
@@ -198,14 +190,14 @@ const ServiceContent = (props: TProps) => {
                     setShowForm({
                       edit: "",
                       show: true,
-                      form: "Service",
+                      form: "Post",
                     });
                   }}
                 >
                   Add Service
                   <IoMdAdd size={20} />
                 </button>
-              )}
+              )} */}
           </>
         )}
       </div>
@@ -213,4 +205,4 @@ const ServiceContent = (props: TProps) => {
   );
 };
 
-export default ServiceContent;
+export default PostsContent;

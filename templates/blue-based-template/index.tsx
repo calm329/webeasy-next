@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Speakers } from "../../components/posts/blue-based-posts";
 import { Schedule } from "../../components/services/blue-based-services";
-import { TBanner, TColors, TFields, THero, TSection } from "@/types";
+import { TBanner, TColors, TFields, THero, TPosts, TSection } from "@/types";
 import { Header } from "@/components/header/blue-based-header";
 import { Hero } from "@/components/hero/blue-based-hero";
 
@@ -10,7 +10,7 @@ type TProps = {
   banner: TBanner;
   colors: TColors;
   services: any[];
-  posts: any[];
+  posts: TPosts;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
