@@ -28,6 +28,7 @@ import { DebouncedState } from "use-debounce";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { generateUniqueId } from "@/lib/utils/function";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const CustomService = (props: TProps) => {
   const { setIsOpen, setShowForm, section, showForm, handleChange, getData } =
@@ -102,7 +103,7 @@ const CustomService = (props: TProps) => {
       services = services.filter((service) => service.id === showForm.edit);
       setData(services[0]);
     }
-  }, [showForm.edit,appState]);
+  }, [showForm.edit, appState]);
 
   console.log("data", data);
   return (
@@ -155,6 +156,7 @@ const CustomService = (props: TProps) => {
         <div className="flex flex-col ">
           <div className="flex justify-between text-sm font-medium leading-6 text-gray-900">
             <label htmlFor="name">Name</label>
+            <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => {
@@ -165,13 +167,17 @@ const CustomService = (props: TProps) => {
                     setLoading(false);
                   });
               }}
-              className="flex gap-2 items-center "
-              >
-                {showForm.edit ?"Regenerate":"Generate"}
-                {loading&& selectedField === "name" ? (
-                  <ImSpinner2 className="animate-spin text-lg text-black" />
-                ):<ImPower className=" text-xs " />}
-              </button>
+              className="flex items-center gap-2 "
+            >
+              {showForm.edit ? "Regenerate" : "Generate"}
+              {loading && selectedField === "name" ? (
+                <ImSpinner2 className="animate-spin text-lg text-black" />
+              ) : (
+                <ImPower className=" text-xs " />
+              )}
+            </button>
+            <BsThreeDotsVertical />
+            </div>
           </div>
           <input
             type="text"
@@ -193,26 +199,30 @@ const CustomService = (props: TProps) => {
         <div className="flex flex-col ">
           <div className="flex justify-between text-sm font-medium leading-6 text-gray-900">
             <label htmlFor="description"> Description</label>
-            <button
-              type="button"
-              onClick={() => {
-                setSelectedField("description");
-                setLoading(true);
-                getData &&
-                  getData("individual", "serviceDescription." + data.id).then(
-                    () => {
-                      setLoading(false);
-                    },
-                  );
-              }}
-              className="flex gap-2 items-center "
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedField("description");
+                  setLoading(true);
+                  getData &&
+                    getData("individual", "serviceDescription." + data.id).then(
+                      () => {
+                        setLoading(false);
+                      },
+                    );
+                }}
+                className="flex items-center gap-2 "
               >
-                
-                {showForm.edit ?"Regenerate":"Generate"}
+                {showForm.edit ? "Regenerate" : "Generate"}
                 {loading && selectedField === "description" ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
-                ):<ImPower className=" text-xs " />}
+                ) : (
+                  <ImPower className=" text-xs " />
+                )}
               </button>
+              <BsThreeDotsVertical />
+            </div>
           </div>
           <textarea
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

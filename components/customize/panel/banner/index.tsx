@@ -24,6 +24,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { ImPower } from "react-icons/im";
+import { BsThreeDotsVertical } from "react-icons/bs";
 type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
@@ -284,6 +285,7 @@ const BannerContent = (props: TProps) => {
                             <label htmlFor="businessName" className="block">
                               {data.label}
                             </label>
+                            <div className="flex items-center gap-2">
                             <button
                               onClick={() => {
                                 setLoading(true);
@@ -300,6 +302,8 @@ const BannerContent = (props: TProps) => {
                                 <ImSpinner2 className="animate-spin text-lg text-black" />
                               ):<ImPower className=" text-xs " />}
                             </button>
+                              <BsThreeDotsVertical/>
+                              </div>
                           </div>
 
                           <input
