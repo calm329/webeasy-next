@@ -50,8 +50,7 @@ export default function WebsitesForm() {
     useState<TSectionName>("Instagram");
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [showMobileMenu, setMobileMenuOpen] = useState(false);
-  const [showSelectSourceModal, setSelectSourceModal] = useState(false);
+
   const sites = useAppSelector(SD)
   const isLoading = useAppSelector(LD)
   const dispatch = useAppDispatch();
@@ -118,7 +117,7 @@ export default function WebsitesForm() {
                     src={JSON.parse(site?.aiResult)?.hero?.image.imageUrl}
                     height={200}
                     width={500}
-                    className="cover rounded-t-lg"
+                    className="contain rounded-t-lg h-80"
                     alt=""
                   />
                   <div className="flex flex-col gap-5 p-5">
@@ -151,20 +150,8 @@ export default function WebsitesForm() {
                   </div>
                 </div>
               ))}
-              <div className=" flex  w-80 max-w-80 flex-col items-center justify-center rounded-lg border   shadow">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectSourceModal(true), setMobileMenuOpen(false);
-                  }}
-                >
-                  <IoMdAdd size={100} />
-                </button>
-              </div>
-              <SelectSourceModal
-                open={showSelectSourceModal}
-                setOpen={setSelectSourceModal}
-              />
+            
+           
             </div>
           )}
           {selectedSection === "Amazon" && <div>Amazon</div>}
