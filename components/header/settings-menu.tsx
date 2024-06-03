@@ -15,7 +15,11 @@ import { TTemplate } from ".";
 import SelectTemplateDrawer from "../ui/drawer/select-template-drawer";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAppState } from "@/lib/store/slices/site-slice";
-import { getInstagramData } from "@/lib/utils/function";
+import {
+  getInstagramData,
+  regenerateImage,
+  regenerateText,
+} from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
 
 function classNames(...classes: string[]) {
@@ -211,6 +215,13 @@ export default function SettingMenu(props: TProps) {
               <Menu.Item>
                 {({ active }) => (
                   <button
+                    onClick={() => {
+                      regenerateText({
+                        appState,
+                        dispatch,
+                        searchParams,
+                      });
+                    }}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
@@ -223,6 +234,13 @@ export default function SettingMenu(props: TProps) {
               <Menu.Item>
                 {({ active }) => (
                   <button
+                    onClick={() => {
+                      regenerateImage({
+                        appState,
+                        dispatch,
+                        searchParams,
+                      });
+                    }}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
