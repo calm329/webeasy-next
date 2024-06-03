@@ -33,6 +33,7 @@ const CustomService = (props: TProps) => {
   const [loading, setLoading] = useState(false);
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
+  const [type, setType] = useState("");
   const [selectedField, setSelectedField] = useState<string | null>(null);
   const [data, setData] = useState<any>();
   const searchParams = useSearchParams();
@@ -164,6 +165,7 @@ const CustomService = (props: TProps) => {
                     dispatch,
                     searchParams,
                     fieldName: "serviceName." + data.id,
+                    type,
                   }).then(() => {
                     setLoading(false);
                   });
@@ -177,7 +179,7 @@ const CustomService = (props: TProps) => {
                   <ImPower className=" text-xs " />
                 )}
               </button>
-              <RegenerateOptions />
+              <RegenerateOptions setType={setType} type={type} />
             </div>
           </div>
           <input
@@ -211,6 +213,7 @@ const CustomService = (props: TProps) => {
                     dispatch,
                     searchParams,
                     fieldName: "serviceDescription." + data.id,
+                    type,
                   }).then(() => {
                     setLoading(false);
                   });
@@ -224,7 +227,7 @@ const CustomService = (props: TProps) => {
                   <ImPower className=" text-xs " />
                 )}
               </button>
-              <RegenerateOptions />
+              <RegenerateOptions setType={setType} type={type} />
             </div>
           </div>
           <textarea

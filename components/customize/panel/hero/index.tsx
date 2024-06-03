@@ -63,7 +63,7 @@ const HeroContent = (props: TProps) => {
   const onLinkInvalid = () => {
     setIsLinkInValid(true);
   };
-
+  const [type, setType] = useState("");
   const reorder = (list: any, startIndex: number, endIndex: number): any => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -203,6 +203,7 @@ const HeroContent = (props: TProps) => {
                                 dispatch,
                                 searchParams,
                                 fieldName: data,
+                                type,
                               }).then(() => {
                                 setLoading(false);
                               });
@@ -216,7 +217,7 @@ const HeroContent = (props: TProps) => {
                               <ImPower className=" text-xs " />
                             )}
                           </button>
-                          <RegenerateOptions />
+                          <RegenerateOptions setType={setType} type={type} />
                         </div>
                       </div>
 
@@ -251,6 +252,7 @@ const HeroContent = (props: TProps) => {
                                 dispatch,
                                 searchParams,
                                 fieldName: data,
+                                type,
                               }).then(() => {
                                 setLoading(false);
                               });
@@ -264,7 +266,7 @@ const HeroContent = (props: TProps) => {
                               <ImPower className=" text-xs " />
                             )}
                           </button>
-                          <RegenerateOptions />
+                          <RegenerateOptions setType={setType} type={type} />
                         </div>
                       </div>
                       <textarea
