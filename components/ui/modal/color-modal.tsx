@@ -47,7 +47,7 @@ export default function ColorModal(props: TProps) {
     },
   ]);
   useEffect(() => {
-    if (appState.aiContent.colors) {
+    if (appState?.aiContent?.colors) {
       const tempColorFields = colorFields;
       tempColorFields[0].defaultValue = appState.aiContent.colors.primary;
       tempColorFields[1].defaultValue = appState.aiContent.colors.secondary;

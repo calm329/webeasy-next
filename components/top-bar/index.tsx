@@ -40,7 +40,7 @@ export default function TopBar(props: TopBarProps) {
         <div className="flex flex-wrap items-center">
           <div
             className="text-black-300 flex w-auto items-center gap-2 text-xl font-medium"
-            style={{ color: colors.primary }}
+            style={{ color: colors?.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {banner.logo && editable
@@ -142,7 +142,7 @@ export default function TopBar(props: TopBarProps) {
                     <div key={i}>
                       <CTA
                         text={data.label}
-                        bgColor={colors.secondary}
+                        bgColor={colors?.secondary}
                         link={editable ? "#" : data.value ??""}
                         external={data.type === "External"}
                       />

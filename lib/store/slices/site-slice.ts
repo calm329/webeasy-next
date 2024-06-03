@@ -16,6 +16,7 @@ const MAX_HISTORY_LENGTH = 100;
 type TInitialState = {
   sites: {
     domain: { past: AppState[]; present: AppState; future: AppState[] };
+    custom: { past: AppState[]; present: AppState; future: AppState[] };
     user: Array<TSite> | null;
   };
   loading: boolean;
@@ -73,6 +74,11 @@ const initialSite: AppState = {
 const initialState: TInitialState = {
   sites: {
     domain: {
+      past: [],
+      present: { ...initialSite },
+      future: [],
+    },
+    custom: {
       past: [],
       present: { ...initialSite },
       future: [],
@@ -202,6 +208,9 @@ const siteSlice = createSlice({
       state.sites.domain.past = [];
       state.sites.domain.future = [];
     },
+    updateCustomState(state, action) {
+      state.sites.custom.present = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSitesByDomain.pending, (state) => {
@@ -321,10 +330,13 @@ const siteSlice = createSlice({
 
 //export async thunks
 export { fetchSitesByDomain, createSite, updateSite, fetchSitesByUser };
-export const { updateAppState, undo, redo, clearPastAndFuture } =
+export const { updateAppState, undo, redo, clearPastAndFuture,updateCustomState } =
   siteSlice.actions;
 export const appState = (state: RootState) =>
   state.siteSlice.sites.domain.present;
+
+export const customAppState = (state: RootState) =>
+  state.siteSlice.sites.custom.present;
 export const pastAppState = (state: RootState) =>
   state.siteSlice.sites.domain.past;
 export const futureAppState = (state: RootState) =>
