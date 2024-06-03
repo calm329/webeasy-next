@@ -81,7 +81,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               />
 
               <div
-                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${!appState.aiContent.services.show ?"bg-transparent":"bg-gray-100"}`}
+                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${!appState.aiContent?.services?.show ?"bg-transparent":"bg-gray-100"}`}
                 onClick={() => {
                   if (setIsOpen && setSection) {
                     setIsOpen(true);
@@ -96,9 +96,9 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   }
                 }}
               >
-                {appState.aiContent.services.show && (
+                {appState.aiContent?.services?.show && (
                   <div className="-m-8 flex flex-wrap">
-                    {appState.aiContent.services.list.map((service) => (
+                    {appState.aiContent?.services?.list.map((service) => (
                       <ServiceCard
                         id={service["id"]}
                         key={service["name"]}
@@ -133,7 +133,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
         }
       }}>
         <h2 className="sr-only">Posts</h2>
-       { appState.iPosts.show && 
+       { appState?.iPosts?.show && 
         <div className="flex flex-wrap gap-5">
           {posts.list.map((post,i) => (
             posts.limit > i &&

@@ -48,7 +48,7 @@ const EditableHero = (props: TProps) => {
         <div className="md:max-w-lg">
           <h2
             className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-            style={{ color: colors.primary }}
+            style={{ color: colors?.primary }}
             onClick={(e) => {
                e.stopPropagation()
               if (editable && setIsOpen && setSection && setFocusedField && setShowForm) {
@@ -111,7 +111,7 @@ const EditableHero = (props: TProps) => {
                   })}>
                     <CTA
                       text={data.label}
-                      bgColor={colors.secondary}
+                      bgColor={colors?.secondary}
                       link={editable ? "#" : data.value}
                       external={editable?false:data.type === "External"}
                     />

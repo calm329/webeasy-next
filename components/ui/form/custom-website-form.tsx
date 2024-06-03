@@ -4,10 +4,12 @@ import { useForm } from "react-hook-form";
 import { ImSpinner2 } from "react-icons/im";
 import { z } from "zod";
 import CreatableSelect from "react-select/creatable";
-import { Combobox, Transition } from "@headlessui/react";
-import clsx from "clsx";
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
-import { error } from "console";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { useRouter } from "next/navigation";
+import {
+  customAppState as CAS,
+  updateCustomState,
+} from "@/lib/store/slices/site-slice";
 
 const options = [
   { value: "Accounting", label: "Accounting" },
@@ -199,9 +201,11 @@ const CustomWebsiteForm = () => {
     location: z.string().min(1, "Required"),
     businessName: z.string().min(1, "Required"),
   });
+  const customAppState = useAppSelector(CAS);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const [query, setQuery] = useState("");
-
+  const dispatch = useAppDispatch();
   const defaultValues = {
     business: options[0].value,
     location: "",
@@ -221,6 +225,7 @@ const CustomWebsiteForm = () => {
   console.log("errors", errors);
   const onSubmit = async () => {
     try {
+      setLoading(true);
       console.log("onSubmit");
       const response = await fetch("/api/content/custom", {
         method: "POST",
@@ -246,7 +251,15 @@ const CustomWebsiteForm = () => {
 
         if (chunkValue && chunkValue !== "###") content += chunkValue;
       }
-      console.log("custom-content", JSON.parse(content));
+      const data = JSON.parse(content);
+      dispatch(
+        updateCustomState({
+          ...customAppState,
+          aiContent: { ...customAppState.aiContent, ...data },
+        }),
+      );
+      router.push("/custom");
+      setLoading(false);
     } catch (error) {}
   };
   return (
@@ -254,48 +267,6 @@ const CustomWebsiteForm = () => {
       className="flex w-full items-center justify-center gap-5 max-sm:flex-col"
       onSubmit={handleSubmit(onSubmit)}
     >
-      {/* <div>
-        <label
-          htmlFor="title"
-          className="block text-sm font-medium leading-6 text-gray-900"
-        >
-          Title
-        </label>
-        <div className="mt-2">
-          <input
-            type="text"
-            {...register("title")}
-            placeholder="Your Business Profile"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-          {errors.title && (
-            <p className="mt-2 text-sm text-red-600" id="title-error">
-              {errors.title.message}
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div>
-        <label
-          htmlFor="subTitle"
-          className="block text-sm font-medium leading-6 text-gray-900"
-        >
-          Subtitle
-        </label>
-        <div className="mt-2">
-          <textarea
-            {...register("subTitle")}
-            placeholder="We'd love to learn more about your business! Could you please provide some details?"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-          {errors.subTitle && (
-            <p className="mt-2 text-sm text-red-600" id="subTitle-error">
-              {errors.subTitle.message}
-            </p>
-          )}
-        </div>
-      </div> */}
       <div className="flex flex-col gap-5">
         <div>
           <label
