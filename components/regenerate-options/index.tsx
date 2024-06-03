@@ -19,12 +19,21 @@ const writingStyles = [
   "Educational",
 ];
 
-const RegenerateOptions = () => {
+type TProps = {
+  type: string;
+  setType: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const RegenerateOptions = (props: TProps) => {
+  const { type, setType } = props;
   return (
     <div>
-      {/* <BsThreeDotsVertical /> */}
-
-      <Select>
+      <Select
+        defaultValue={type ?? "External"}
+        onValueChange={(value) => {
+          setType(value);
+        }}
+      >
         <SelectTrigger className="w-10 border-none outline-none ">
           <BsThreeDotsVertical />
         </SelectTrigger>

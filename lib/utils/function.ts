@@ -11,6 +11,8 @@ import {
 import { toast } from "sonner";
 import { prompt } from "./common-constant";
 import { appState } from "../store/slices/site-slice";
+import Search from "../../components/ui/search/index";
+import App from "next/app";
 
 type TParams = {
   regenerate?: boolean;
@@ -91,7 +93,11 @@ const updateDefaultValues = (
   );
 };
 
-export const getContent = async (mediaCaption?: string, fieldName?: string) => {
+export const getContent = async (
+  mediaCaption?: string,
+  fieldName?: string,
+  type?: string,
+) => {
   try {
     const response = await fetch("/api/content", {
       method: "POST",
@@ -100,6 +106,7 @@ export const getContent = async (mediaCaption?: string, fieldName?: string) => {
         fieldName: fieldName?.split(".")
           ? fieldName?.split(".")[0]
           : fieldName ?? "",
+        type: type ?? "",
       }),
     });
 
@@ -159,8 +166,16 @@ export const getInstagramDetails = async (
   }
 };
 
-export const regenerateIndividual = async (params: TParams) => {
-  const { fieldName, searchParams, dispatch, appState } = params;
+type TRParams = {
+  fieldName: string;
+  searchParams: ReadonlyURLSearchParams;
+  dispatch: any;
+  appState: AppState;
+  type: string;
+};
+
+export const regenerateIndividual = async (params: TRParams) => {
+  const { fieldName, searchParams, dispatch, appState, type } = params;
   const userId = searchParams.get("user_id") ?? "";
   const accessToken = searchParams.get("access_token") ?? "";
   try {
@@ -169,6 +184,7 @@ export const regenerateIndividual = async (params: TParams) => {
       const content = await getContent(
         instagramDetails.mediaCaption,
         fieldName,
+        type,
       );
       switch (fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName) {
         case "businessName":

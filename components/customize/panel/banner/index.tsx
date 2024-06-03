@@ -61,6 +61,7 @@ const BannerContent = (props: TProps) => {
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
+  const [type, setType] = useState("");
   const [isLinkInValid, setIsLinkInValid] = useState(false);
   const onLinkInvalid = () => {
     setIsLinkInValid(true);
@@ -194,7 +195,8 @@ const BannerContent = (props: TProps) => {
                                 dispatch,
                                 searchParams,
                                 fieldName: data,
-                              }).then(()=>{
+                                type,
+                              }).then(() => {
                                 setLoading(false);
                               });
                             }}
@@ -207,7 +209,7 @@ const BannerContent = (props: TProps) => {
                               <ImPower className=" text-xs " />
                             )}
                           </button>
-                          <RegenerateOptions />
+                          <RegenerateOptions setType={setType} type={type} />
                         </div>
                       </div>
 
