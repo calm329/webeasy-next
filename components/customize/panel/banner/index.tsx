@@ -30,9 +30,6 @@ type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   subdomain: string;
-  brandCustomizeFields: FormField[];
-  focusedField: TFields;
-  setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setShowForm: React.Dispatch<
     React.SetStateAction<{
       form: string;
@@ -62,82 +59,14 @@ const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
 
 const BannerContent = (props: TProps) => {
   const appState = useAppSelector(AS);
-  const {
-    section,
-    handleChange,
-    subdomain,
-    brandCustomizeFields,
-    focusedField,
-    setShowForm,
-    setBrandCustomizeFields,
-    getData,
-  } = props;
+  const { section, handleChange, subdomain, setShowForm, getData } = props;
   const [loading, setLoading] = useState(false);
-  const [showImage, setShowImage] = useState(false);
-  const [showButtons, setShowButtons] = useState(true);
-  const dispatch = useAppDispatch();
-  const zodSchema = generateZodSchema(brandCustomizeFields);
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    getValues,
-  } = useForm({
-    resolver: zodResolver(zodSchema),
-  });
 
+  const dispatch = useAppDispatch();
   const [isLinkInValid, setIsLinkInValid] = useState(false);
   const onLinkInvalid = () => {
     setIsLinkInValid(true);
   };
-
-  const onSubmit: SubmitHandler<any> = async (data) => {
-    setLoading(true);
-
-    try {
-      const response = await fetch(data["ctaLink"], { mode: "no-cors" });
-      setIsLinkInValid(false);
-
-      await updateSite(
-        subdomain,
-        data,
-        brandCustomizeFields.map((f) => f.name as string),
-      );
-      toast.success("Your brand customization has been saved");
-      // handleNext?.();
-    } catch (error: any) {
-      if (error.message === "Failed to fetch") {
-        onLinkInvalid();
-      }
-      console.error("Form submission error:", error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    brandCustomizeFields.forEach((field) => {
-      if (field.type === "image") {
-        setShowImage(field.show ?? false);
-      }
-      if (field.type === "button") {
-        setShowButtons(field.show ?? false);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    for (const f of brandCustomizeFields) {
-      // if (f.type === "button") {
-      //   f.children?.forEach((child) =>
-      //     setValue(child.name, child.defaultValue),
-      //   );
-      // } else {
-      setValue(f.name, f.defaultValue);
-      // }
-    }
-  }, [brandCustomizeFields]);
-
   const reorder = (list: any, startIndex: number, endIndex: number): any => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -151,12 +80,6 @@ const BannerContent = (props: TProps) => {
     }
 
     const updatedItems = reorder(
-      brandCustomizeFields[2]?.children,
-      result.source.index,
-      result.destination.index,
-    );
-
-    const updatedItemsForRedux = reorder(
       appState.aiContent.banner.button.list,
       result.source.index,
       result.destination.index,
@@ -171,28 +94,15 @@ const BannerContent = (props: TProps) => {
             ...appState.aiContent.banner,
             button: {
               ...appState.aiContent.banner.button,
-              list: updatedItemsForRedux,
+              list: updatedItems,
             },
           },
         },
       }),
     );
-
-    const tempFields = brandCustomizeFields;
-    tempFields[2].children = updatedItems;
-    setBrandCustomizeFields(tempFields);
   };
 
   const handleDeleteButton = (name: string) => {
-    const updatedBrandCustomizeFields = brandCustomizeFields.map((field) => {
-      if (field.type === "button" && Array.isArray(field.children)) {
-        // Filter out the child with the provided name
-        field.children = field.children.filter((child) => child.name !== name);
-      }
-      return field;
-    });
-
-    setBrandCustomizeFields(updatedBrandCustomizeFields);
     dispatch(
       updateAppState({
         ...appState,
@@ -222,26 +132,17 @@ const BannerContent = (props: TProps) => {
   }, [appState]);
   return (
     <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
-      <form
-        action=""
-        className="flex flex-col gap-5 px-5"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {brandCustomizeFields.map((data) => (
-          <Controller
-            key={data.name}
-            name={data.name}
-            control={control}
-            render={({ field }) => (
+      <form action="" className="flex flex-col gap-5 px-5">
+        {Object.keys(appState.aiContent.banner).map((data) => (
               <>
                 {(() => {
-                  switch (data.type) {
-                    case "image":
+                  switch (data) {
+                    case "logo":
                       return (
                         <div className="flex flex-col gap-5">
                           <div className="flex justify-between ">
                             <h3 className="block text-sm font-medium leading-6 text-gray-900">
-                              {data.label}
+                              {data}
                             </h3>
                             <Switch
                               onCheckedChange={(checked) =>
@@ -267,36 +168,38 @@ const BannerContent = (props: TProps) => {
                           {appState.aiContent.banner.logo.show && (
                             <div>
                               <Uploader
-                                defaultValue={data.defaultValue}
-                                name={data.name as "logo" | "image"}
+                                defaultValue={
+                                  appState.aiContent.banner.logo.link
+                                }
+                                name={data as "logo" | "image"}
                                 label={""}
                                 onChange={(value) => {
-                                  handleChange(data.name, value);
-                                  field.onChange(value);
+                                  handleChange(data, value);
+                                  
                                 }}
                               />
                             </div>
                           )}
                         </div>
                       );
-                    case "text":
+                    case "businessName":
                       return (
                         <div className="flex flex-col border-t pt-5">
                           <div className="flex  items-center justify-between text-sm font-medium leading-6 text-gray-900 ">
                             <label htmlFor="businessName" className="block">
-                              {data.label}
+                              {data}
                             </label>
                             <div className="flex items-center gap-2">
                               <button
-                                onClick={() => {
-                                  setLoading(true);
-                                  getData &&
-                                    getData("individual", field.name).then(
-                                      () => {
-                                        setLoading(false);
-                                      },
-                                    );
-                                }}
+                                // onClick={() => {
+                                //   setLoading(true);
+                                //   getData &&
+                                //     getData("individual", field.name).then(
+                                //       () => {
+                                //         setLoading(false);
+                                //       },
+                                //     );
+                                // }}
                                 className="flex items-center gap-2 "
                               >
                                 Regenerate
@@ -313,16 +216,17 @@ const BannerContent = (props: TProps) => {
                           <input
                             type="text"
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            {...field}
-                            placeholder={data.placeholder}
-                            aria-invalid={errors[field.name] ? "true" : "false"}
-                            aria-describedby={field.name}
+                           
+                            placeholder={"Enter Business Name"}
+                          
                             onChange={(e) => {
-                              handleChange(data.name, e.target.value);
-                              field.onChange(e.target.value);
+                              handleChange(data, e.target.value);
+                             
                             }}
                             ref={inputRef}
-                            defaultValue={data.defaultValue}
+                            defaultValue={
+                              appState.aiContent.banner.businessName
+                            }
                           />
                         </div>
                       );
@@ -373,7 +277,7 @@ const BannerContent = (props: TProps) => {
                                         snapshot.isDraggingOver,
                                       )}
                                     >
-                                      {brandCustomizeFields[2].children?.map(
+                                      {appState.aiContent.banner.button.list.map(
                                         (item, index) => (
                                           <Draggable
                                             key={item.name}
@@ -429,23 +333,22 @@ const BannerContent = (props: TProps) => {
                                   )}
                                 </Droppable>
                               </DragDropContext>
-                              {brandCustomizeFields[2].children &&
-                                brandCustomizeFields[2].children.length !==
-                                  2 && (
-                                  <button
-                                    className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-                                    onClick={() =>
-                                      setShowForm({
-                                        form: "Button",
-                                        edit: "",
-                                        show: true,
-                                      })
-                                    }
-                                  >
-                                    Add Button
-                                    <IoMdAdd size={20} />
-                                  </button>
-                                )}
+                              {appState.aiContent.banner.button.list.length !==
+                                2 && (
+                                <button
+                                  className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                                  onClick={() =>
+                                    setShowForm({
+                                      form: "Button",
+                                      edit: "",
+                                      show: true,
+                                    })
+                                  }
+                                >
+                                  Add Button
+                                  <IoMdAdd size={20} />
+                                </button>
+                              )}
                             </>
                           )}
                         </div>
@@ -453,8 +356,6 @@ const BannerContent = (props: TProps) => {
                   }
                 })()}
               </>
-            )}
-          />
         ))}
 
         {/* <button

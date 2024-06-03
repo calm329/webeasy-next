@@ -8,9 +8,6 @@ type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   section: TSection;
   subdomain: string;
-  brandCustomizeFields: FormField[];
-  heroCustomizeFields: FormField[];
-  focusedField: TFields;
   isMobile?: boolean;
   children: React.ReactNode;
   showForm: {
@@ -25,8 +22,6 @@ type TProps = {
       show: boolean;
     }>
   >;
-  setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
-  setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   getData?: ((flag?: "init" | "regenerate" | "text" | "image" | "individual", fieldName?: string) => Promise<void>)
 };
@@ -35,16 +30,10 @@ const CustomizePanel = (props: TProps) => {
   const {
     setIsOpen,
     section,
-    subdomain,
-    heroCustomizeFields,
-    brandCustomizeFields,
-    focusedField,
     isMobile,
     children,
     showForm,
     setShowForm,
-    setBrandCustomizeFields,
-    setHeroCustomizeFields,
     handleChange,
     getData
   } = props;
@@ -55,12 +44,8 @@ const CustomizePanel = (props: TProps) => {
       {showForm.form === "Button" && (
         <CustomButton
           section={section}
-          heroCustomizeFields={heroCustomizeFields}
-          brandCustomizeFields={brandCustomizeFields}
           setIsOpen={setIsOpen}
           setShowForm={setShowForm}
-          setBrandCustomizeFields={setBrandCustomizeFields}
-          setHeroCustomizeFields={setHeroCustomizeFields}
           showForm={showForm}
           handleChange={handleChange}
         />

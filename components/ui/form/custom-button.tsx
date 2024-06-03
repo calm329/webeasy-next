@@ -5,18 +5,14 @@ type TProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setShowForm: React.Dispatch<
     React.SetStateAction<{
-      form:string;
+      form: string;
       edit: string;
       show: boolean;
     }>
   >;
-  setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
-  setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   section: TSection;
-  brandCustomizeFields: FormField[];
-  heroCustomizeFields: FormField[];
   showForm: {
-    form:string;
+    form: string;
     edit: string;
     show: boolean;
   };
@@ -42,44 +38,28 @@ import { generateUniqueId } from "@/lib/utils/function";
 const linkTypes = ["External", "Section"];
 
 const CustomButton = (props: TProps) => {
-  const {
-    setIsOpen,
-    setShowForm,
-    setBrandCustomizeFields,
-    setHeroCustomizeFields,
-    brandCustomizeFields,
-    heroCustomizeFields,
-    section,
-    showForm,
-    handleChange,
-  } = props;
+  const { setIsOpen, setShowForm, section, showForm, handleChange } = props;
   const [loading, setLoading] = useState(false);
   const appState = useAppSelector(AS);
 
   const [data, setData] = useState<any>();
   const dispatch = useAppDispatch();
   useEffect(() => {
-  
     if (showForm.edit) {
       switch (section) {
         case "Banner":
-          brandCustomizeFields.forEach((field) => {
-            field.children?.forEach((child) => {
-      
-              if (child.name === showForm.edit) {
-                setData(child);
-              }
-            });
+          appState.aiContent.banner.button.list?.forEach((child) => {
+            if (child.name === showForm.edit) {
+              setData(child);
+            }
           });
+
           break;
         case "Hero":
-          heroCustomizeFields.forEach((field) => {
-            field.children?.forEach((child) => {
-              
-              if (child.name === showForm.edit) {
-                setData(child);
-              }
-            });
+          appState.aiContent.hero.button.list?.forEach((child) => {
+            if (child.name === showForm.edit) {
+              setData(child);
+            }
           });
           break;
       }
@@ -100,7 +80,6 @@ const CustomButton = (props: TProps) => {
                   button: {
                     ...appState.aiContent.banner.button,
                     list: appState.aiContent.banner.button.list.map((item) => {
-                 
                       if (item.name === name) {
                         return {
                           name: name,
@@ -117,20 +96,6 @@ const CustomButton = (props: TProps) => {
               },
             }),
           );
-
-          const tempBrand = brandCustomizeFields;
-          tempBrand.forEach((field) => {
-            if (field.type === "button") {
-              field.children?.forEach((child) => {
-                if (child.name === name) {
-                  child.label = data.label;
-                  child.type = data.type;
-                  child.link = data.link;
-                }
-              });
-            }
-          });
-          setBrandCustomizeFields(tempBrand);
           break;
         case "Hero":
           dispatch(
@@ -143,7 +108,6 @@ const CustomButton = (props: TProps) => {
                   button: {
                     ...appState.aiContent.hero.button,
                     list: appState.aiContent.hero.button.list.map((item) => {
-             
                       if (item.name === name) {
                         return {
                           name: name,
@@ -160,20 +124,6 @@ const CustomButton = (props: TProps) => {
               },
             }),
           );
-
-          const tempHero = heroCustomizeFields;
-          tempHero.forEach((field) => {
-            if (field.type === "button") {
-              field.children?.forEach((child) => {
-                if (child.name === name) {
-                  child.label = data.label;
-                  child.type = data.type;
-                  child.link = data.link;
-                }
-              });
-            }
-          });
-          setHeroCustomizeFields(tempHero);
           break;
       }
     } else {
@@ -203,24 +153,6 @@ const CustomButton = (props: TProps) => {
               },
             }),
           );
-
-          const tempBrand = brandCustomizeFields;
-          tempBrand.forEach((field) => {
-            if (field.type === "button") {
-              field.children?.push({
-                name: id,
-                type: "External",
-                label: data.label,
-                defaultValue: "",
-                placeholder: "Enter",
-                link: data.link,
-                validation: {
-                  required: true,
-                },
-              });
-            }
-          });
-          setHeroCustomizeFields(tempBrand);
           break;
         case "Hero":
           dispatch(
@@ -246,30 +178,12 @@ const CustomButton = (props: TProps) => {
               },
             }),
           );
-
-          const tempData = heroCustomizeFields;
-          tempData.forEach((field) => {
-            if (field.type === "button") {
-              field.children?.push({
-                name: id,
-                type: "External",
-                label: data.label,
-                defaultValue: "",
-                placeholder: "Enter",
-                link: data.link,
-                validation: {
-                  required: true,
-                },
-              });
-            }
-          });
-          setHeroCustomizeFields(tempData);
           break;
       }
     }
 
     setShowForm({
-      form:"",
+      form: "",
       edit: "",
       show: false,
     });
@@ -286,7 +200,7 @@ const CustomButton = (props: TProps) => {
             <IoMdArrowBack
               onClick={() =>
                 setShowForm({
-                  form:"",
+                  form: "",
                   edit: "",
                   show: false,
                 })

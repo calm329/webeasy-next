@@ -11,9 +11,9 @@ const openai = new OpenAI({
 export async function POST(request: NextRequest) {
   const { mediaCaption, fieldName } = await request.json();
   console.log("prompt", fieldName);
-  if (!mediaCaption) {
-    return NextResponse.json({ error: "Missing data" }, { status: 400 });
-  }
+  // if (!mediaCaption) {
+  //   return NextResponse.json({ error: "Missing data" }, { status: 400 });
+  // }
   let fields;
   switch (fieldName) {
     case "businessName":
@@ -48,6 +48,11 @@ export async function POST(request: NextRequest) {
       
       {
         "banner": {
+          "logo": {
+            "link":  "https://xhq5zxhb2o7dgubv.public.blob.vercel-storage.com/2weWEVnPETmQLpQx52_W1-Ofz4wnOvkqM6307M1pfxfkLAZXXBbX.jpeg",
+            "alt": "",
+            "show": true
+          },
           "businessName": "*Name of the business inferred from all the content*",
           "button": {
             "show": true,
@@ -58,14 +63,17 @@ export async function POST(request: NextRequest) {
                 "type": "External"
               }
             ]
-          },
-          "logo": {
-            "link":  "https://xhq5zxhb2o7dgubv.public.blob.vercel-storage.com/2weWEVnPETmQLpQx52_W1-Ofz4wnOvkqM6307M1pfxfkLAZXXBbX.jpeg",
-            "alt": "",
-            "show": true
           }
         },
         "hero": {
+          "image": {
+            "heroImagePrompt": "*Create a prompt for dall-e-3 to create a hero image to represent the business and content from the instagram posts in a simple above the fold style*",
+            "imageId": "*The id of the post that best matches the heading and subheading*",
+            "alt": "",
+            "show": true
+          },
+          "heading": "*insert heading here*",
+          "subheading": "*insert subheading here*",
           "button": {
             "show": true,
             "list": [
@@ -75,15 +83,7 @@ export async function POST(request: NextRequest) {
                 "type": "External"
               }
             ]
-          },
-          "image": {
-            "heroImagePrompt": "*Create a prompt for dall-e-3 to create a hero image to represent the business and content from the instagram posts in a simple above the fold style*",
-            "imageId": "*The id of the post that best matches the heading and subheading*",
-            "alt": "",
-            "show": true
-          },
-          "heading": "*insert heading here*",
-          "subheading": "*insert subheading here*"
+          }
         },
         "services": {
           show: true,
