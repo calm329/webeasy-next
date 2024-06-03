@@ -9,10 +9,9 @@ type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   templates: TTemplate | null;
-  getData: (flag?:"init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
 };
 export default function SelectTemplateModal(props: TProps) {
-  const { open, setOpen, templates, getData } = props;
+  const { open, setOpen, templates } = props;
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" open={open} className="relative z-10" onClose={setOpen}>
@@ -43,7 +42,6 @@ export default function SelectTemplateModal(props: TProps) {
                 <SelectTemplateCarousel
                   templates={templates}
                   setOpen={setOpen}
-                  getData={getData}
                 />
               </Dialog.Panel>
             </Transition.Child>

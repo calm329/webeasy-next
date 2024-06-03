@@ -114,13 +114,6 @@ export default function Page() {
           <SiteHeader
             showNavigation={false}
             isAuth={true}
-            getData={() =>
-              getInstagramData({
-                searchParams,
-                dispatch,
-                appState,
-              })
-            }
             handleChange={handleChange}
             setIsFontOpen={setIsFontOpen}
           />
@@ -157,18 +150,6 @@ export default function Page() {
                       }
                       showForm={showForm}
                       setShowForm={setShowForm}
-                      getData={(flag, fieldName) =>
-                        getInstagramData({
-                          // flag: flag ?? "init",
-                          searchParams,
-                          dispatch,
-                          appState,
-                          // setAppState,
-                          // setBrandCustomizeFields,
-                          // setHeroCustomizeFields,
-                          // fieldName,
-                        })
-                      }
                     />
 
                     <FontSlideOver
@@ -179,18 +160,6 @@ export default function Page() {
                 ) : (
                   <>
                     <CustomDrawer
-                      getData={(flag, fieldName) =>
-                        getInstagramData({
-                          // flag: flag ?? "init",
-                          searchParams,
-                          dispatch,
-                          appState,
-                          // setAppState,
-                          // setBrandCustomizeFields,
-                          // setHeroCustomizeFields,
-                          // fieldName,
-                        })
-                      }
                       open={isSideBarOpen}
                       setIsOpen={setIsSideBarOpen}
                       section={section}

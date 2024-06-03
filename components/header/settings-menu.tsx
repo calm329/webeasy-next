@@ -15,16 +15,14 @@ import { TTemplate } from ".";
 import SelectTemplateDrawer from "../ui/drawer/select-template-drawer";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAppState } from "@/lib/store/slices/site-slice";
+import { getInstagramData } from "@/lib/utils/function";
+import { useSearchParams } from "next/navigation";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 type TProps = {
-  getData: (
-    flag?: "init" | "regenerate" | "text" | "image" | "individual",
-    fieldName?: string,
-  ) => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   appState: AppState;
   templates: TTemplate | null;
@@ -33,14 +31,8 @@ type TProps = {
 };
 
 export default function SettingMenu(props: TProps) {
-  const {
-    getData,
-    handleChange,
-    appState,
-    templates,
-    setShowAuthModal,
-    setIsFontOpen,
-  } = props;
+  const { handleChange, appState, templates, setShowAuthModal, setIsFontOpen } =
+    props;
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [isColorOpen, setIsColorOpen] = useState(false);
@@ -48,6 +40,7 @@ export default function SettingMenu(props: TProps) {
   const matches = useMediaQuery("(max-width: 900px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
   return (
     <>
       {isMobile ? (
@@ -55,14 +48,12 @@ export default function SettingMenu(props: TProps) {
           open={isTemplateOpen}
           setOpen={setIsTemplateOpen}
           templates={templates}
-          getData={getData}
         />
       ) : (
         <SelectTemplateModal
           open={isTemplateOpen}
           setOpen={setIsTemplateOpen}
           templates={templates}
-          getData={getData}
         />
       )}
       {handleChange &&
@@ -176,7 +167,6 @@ export default function SettingMenu(props: TProps) {
                     )}
                     onClick={() => {
                       setIsTemplateOpen(true);
-
                     }}
                   >
                     Switch Template
@@ -221,7 +211,6 @@ export default function SettingMenu(props: TProps) {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    onClick={() => getData("text")}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
@@ -234,7 +223,6 @@ export default function SettingMenu(props: TProps) {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    onClick={() => getData("image")}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full cursor-pointer px-4 py-2 text-left text-sm",
@@ -248,7 +236,12 @@ export default function SettingMenu(props: TProps) {
                 {({ active }) => (
                   <button
                     onClick={() =>
-                      getData("regenerate")
+                      getInstagramData({
+                        appState,
+                        dispatch,
+                        searchParams,
+                        regenerate: true,
+                      })
                     }
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",

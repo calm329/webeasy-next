@@ -17,10 +17,6 @@ type TProps = {
     show: boolean;
   };
   handleChange: DebouncedState<(name: string, value: string) => void>;
-  getData?: (
-    flag?: "init" | "regenerate" | "text" | "image" | "individual",
-    fieldName?: string,
-  ) => Promise<void>;
 };
 import { IoMdArrowBack } from "react-icons/io";
 import { FormField, TSection } from "@/types";
@@ -32,7 +28,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import RegenerateOptions from "@/components/regenerate-options";
 
 const CustomService = (props: TProps) => {
-  const { setIsOpen, setShowForm, section, showForm, handleChange, getData } =
+  const { setIsOpen, setShowForm, section, showForm, handleChange,  } =
     props;
   const [loading, setLoading] = useState(false);
   const appState = useAppSelector(AS);
@@ -163,10 +159,6 @@ const CustomService = (props: TProps) => {
               onClick={() => {
                 setSelectedField("name");
                 setLoading(true);
-                getData &&
-                  getData("individual", "serviceName." + data.id).then(() => {
-                    setLoading(false);
-                  });
               }}
               className="flex items-center gap-2 "
             >
@@ -206,12 +198,6 @@ const CustomService = (props: TProps) => {
                 onClick={() => {
                   setSelectedField("description");
                   setLoading(true);
-                  getData &&
-                    getData("individual", "serviceDescription." + data.id).then(
-                      () => {
-                        setLoading(false);
-                      },
-                    );
                 }}
                 className="flex items-center gap-2 "
               >

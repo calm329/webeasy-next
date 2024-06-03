@@ -37,10 +37,6 @@ type TProps = {
       show: boolean;
     }>
   >;
-  getData?: (
-    flag?: "init" | "regenerate" | "text" | "image" | "individual",
-    fieldName?: string,
-  ) => Promise<void>;
 };
 
 const grid = 2;
@@ -59,7 +55,7 @@ const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
 
 const BannerContent = (props: TProps) => {
   const appState = useAppSelector(AS);
-  const { section, handleChange, subdomain, setShowForm, getData } = props;
+  const { section, handleChange, subdomain, setShowForm } = props;
   const [loading, setLoading] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -191,15 +187,6 @@ const BannerContent = (props: TProps) => {
                             </label>
                             <div className="flex items-center gap-2">
                               <button
-                                // onClick={() => {
-                                //   setLoading(true);
-                                //   getData &&
-                                //     getData("individual", field.name).then(
-                                //       () => {
-                                //         setLoading(false);
-                                //       },
-                                //     );
-                                // }}
                                 className="flex items-center gap-2 "
                               >
                                 Regenerate

@@ -19,10 +19,9 @@ import { setSelectedTemplate } from "@/lib/store/slices/template-slice";
 type TProps = {
   templates: TTemplate | null;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  getData: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
 };
 const SelectTemplateCarousel = (props: TProps) => {
-  const { templates, setOpen, getData } = props;
+  const { templates, setOpen } = props;
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const [activeIndex, setActiveIndex] = React.useState(0);
   const dispatch = useAppDispatch()
@@ -31,7 +30,6 @@ const SelectTemplateCarousel = (props: TProps) => {
       const templateData = templates[activeIndex];
       dispatch(setSelectedTemplate(templateData))
       setOpen(false);
-      getData("regenerate");
     }
   }
   const sortedTemplates = templates ? [...templates].sort((a, b) => a.name.localeCompare(b.name)) : null;
