@@ -35,10 +35,6 @@ type TProps = {
       show: boolean;
     }>
   >;
-  getData?: (
-    flag?: "init" | "regenerate" | "text" | "image" | "individual",
-    fieldName?: string,
-  ) => Promise<void>;
 };
 
 const grid = 2;
@@ -58,7 +54,7 @@ const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
 const HeroContent = (props: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
-  const { section, handleChange, subdomain, setShowForm, getData } = props;
+  const { section, handleChange, subdomain, setShowForm } = props;
   const [loading, setLoading] = useState(false);
   const [selectedField, setSelectedField] = useState("heading");
   const [isLinkInValid, setIsLinkInValid] = useState(false);
@@ -199,10 +195,6 @@ const HeroContent = (props: TProps) => {
                             onClick={() => {
                               setSelectedField(data);
                               setLoading(true);
-                              getData &&
-                                getData("individual", data).then(() => {
-                                  setLoading(false);
-                                });
                             }}
                             className="flex items-center gap-2 "
                           >
@@ -242,10 +234,7 @@ const HeroContent = (props: TProps) => {
                             onClick={() => {
                               setSelectedField(data);
                               setLoading(true);
-                              getData &&
-                                getData("individual", data).then(() => {
-                                  setLoading(false);
-                                });
+
                             }}
                             className="flex items-center gap-2 "
                           >

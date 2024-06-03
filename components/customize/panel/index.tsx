@@ -23,7 +23,7 @@ type TProps = {
     }>
   >;
   handleChange: DebouncedState<(name: string, value: string) => void>;
-  getData?: ((flag?: "init" | "regenerate" | "text" | "image" | "individual", fieldName?: string) => Promise<void>)
+ 
 };
 
 const CustomizePanel = (props: TProps) => {
@@ -35,7 +35,6 @@ const CustomizePanel = (props: TProps) => {
     showForm,
     setShowForm,
     handleChange,
-    getData
   } = props;
   const [isContent, setIsContent] = useState(true);
   console.log("showForm.form",showForm.form)
@@ -58,7 +57,6 @@ const CustomizePanel = (props: TProps) => {
         setIsOpen={setIsOpen}
         setShowForm={setShowForm}
         showForm={showForm}
-        getData={getData}
         />
       )}
     </>

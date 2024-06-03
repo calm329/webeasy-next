@@ -25,10 +25,6 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  getData?: (
-    flag?: "init" | "regenerate" | "text" | "image" | "individual",
-    fieldName?: string,
-  ) => Promise<void>;
 };
 
 function SlideOver(props: TProps) {
@@ -40,7 +36,6 @@ function SlideOver(props: TProps) {
     subdomain,
     showForm,
     setShowForm,
-    getData,
   } = props;
 
   return (
@@ -56,7 +51,6 @@ function SlideOver(props: TProps) {
             showForm={showForm}
             setShowForm={setShowForm}
             handleChange={handleChange}
-            getData={getData}
           >
             {section === "Hero" && (
               <HeroContent
@@ -64,7 +58,6 @@ function SlideOver(props: TProps) {
                 handleChange={handleChange}
                 subdomain={subdomain}
                 setShowForm={setShowForm}
-                getData={getData}
               />
             )}
             {section === "Banner" && (
@@ -73,7 +66,6 @@ function SlideOver(props: TProps) {
                 handleChange={handleChange}
                 subdomain={subdomain}
                 setShowForm={setShowForm}
-                getData={getData}
               />
             )}
             {section === "Services" && (

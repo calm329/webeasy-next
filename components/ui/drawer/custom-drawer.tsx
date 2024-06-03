@@ -25,10 +25,6 @@ type TProps = {
       show: boolean;
     }>
   >;
-  getData?: (
-    flag?: "init" | "regenerate" | "text" | "image" | "individual",
-    fieldName?: string,
-  ) => Promise<void>;
 };
 export function CustomDrawer(props: TProps) {
   const {
@@ -39,7 +35,6 @@ export function CustomDrawer(props: TProps) {
     subdomain,
     showForm,
     setShowForm,
-    getData,
   } = props;
 
   return (
@@ -53,7 +48,7 @@ export function CustomDrawer(props: TProps) {
             showForm={showForm}
             setShowForm={setShowForm}
             handleChange={handleChange}
-            getData={getData}
+           
           >
             {section === "Hero" && (
               <HeroContent
@@ -61,7 +56,7 @@ export function CustomDrawer(props: TProps) {
                 handleChange={handleChange}
                 subdomain={subdomain}
                 setShowForm={setShowForm}
-                getData={getData}
+               
               />
             )}
             {section === "Banner" && (
@@ -70,7 +65,7 @@ export function CustomDrawer(props: TProps) {
                 handleChange={handleChange}
                 subdomain={subdomain}
                 setShowForm={setShowForm}
-                getData={getData}
+               
               />
             )}
             {section === "Services" && (

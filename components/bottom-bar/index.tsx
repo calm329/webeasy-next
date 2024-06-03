@@ -25,17 +25,17 @@ import {
   redo,
   undo,
 } from "@/lib/store/slices/site-slice";
-import { saveState } from "@/lib/utils/function";
+import { getInstagramData, saveState } from "@/lib/utils/function";
 import Loader from "../ui/loader";
 import { getAllTemplates } from "@/lib/fetchers";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import AiAssist from "../ai-assist";
+import { useSearchParams } from "next/navigation";
 
 type TProps = {
   showNavigation: boolean;
   isAuth?: boolean;
-  getData?: (flag?: "init" | "regenerate" | "text" | "image" | "individual",fieldName?:string) => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   setSelectedTemplate?: Dispatch<SetStateAction<TTemplateName>>;
   setShowAuthModal: Dispatch<SetStateAction<boolean>>;
@@ -49,7 +49,6 @@ const BottomToolBar = (props: TProps) => {
     showNavigation,
     isAuth,
     setShowAuthModal,
-    getData,
     handleChange,
     setSelectedTemplate,
     setIsFontOpen,
@@ -64,14 +63,14 @@ const BottomToolBar = (props: TProps) => {
   const futureAppState = useAppSelector(FAS);
   const templates = useAppSelector(TD);
   const { status } = useSession();
+  const searchParams = useSearchParams();
   return (
-    <div className="z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white   shadow-xl py-2 ">
+    <div className="z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white   py-2 shadow-xl ">
       {isBottomBar ? (
-        <div className="max-w-7xl flex justify-between">
+        <div className="flex max-w-7xl justify-between">
           <div className=" flex justify-end gap-5  max-sm:gap-2">
-            {getData && appState && (
+            {appState && (
               <SettingMenu
-                getData={getData}
                 handleChange={handleChange ?? undefined}
                 appState={appState}
                 templates={templates}
@@ -103,10 +102,10 @@ const BottomToolBar = (props: TProps) => {
           {/* <ViewMenu /> */}
 
           <PublishMenu setShowAuthModal={setShowAuthModal} />
-          <AiAssist/>
+          <AiAssist />
         </div>
       ) : (
-        <div className="flex max-w-7xl w-full justify-around">
+        <div className="flex w-full max-w-7xl justify-around">
           <button
             className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`}
             onClick={() => dispatch(undo())}
@@ -127,10 +126,12 @@ const BottomToolBar = (props: TProps) => {
             <ImCancelCircle
               size={18}
               onClick={() => {
-                if (getData) {
-                  getData();
-                  dispatch(clearPastAndFuture());
-                }
+                getInstagramData({
+                  appState,
+                  dispatch,
+                  searchParams,
+                });
+                dispatch(clearPastAndFuture());
               }}
             />
             Cancel

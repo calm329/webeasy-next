@@ -79,7 +79,7 @@ const CustomizeColor = (props: TProps) => {
                   data,
                   keys,
                 );
-                // getData();
+  
                 toast.success("Your Colors has been saved");
               } catch (error) {}
             }} // updateSite}

@@ -13,7 +13,7 @@ import { DebouncedState } from "use-debounce";
 import { useMediaQuery } from "usehooks-ts";
 import { TMeta, TTemplateName, AppState, TUser } from "@/types";
 import { getAllTemplates, getUserById } from "@/lib/fetchers";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
   fetchTemplates,
@@ -42,7 +42,7 @@ import { isBot } from "next/dist/server/web/spec-extension/user-agent";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { IoMdAdd, IoMdArrowRoundBack } from "react-icons/io";
-import { saveState } from "@/lib/utils/function";
+import { getInstagramData, saveState } from "@/lib/utils/function";
 import {
   appState as AS,
   clearPastAndFuture,
@@ -72,10 +72,6 @@ function classNames(...classes: any[]) {
 type TProps = {
   showNavigation: boolean;
   isAuth?: boolean;
-  getData?: (
-    flag?: "init" | "regenerate" | "text" | "image" | "individual",
-    fieldName?: string,
-  ) => Promise<void>;
   handleChange?: DebouncedState<(name: string, value: string) => void>;
   setIsFontOpen?: Dispatch<SetStateAction<boolean>>;
 };
@@ -89,8 +85,7 @@ export type TTemplate = {
 
 export default function SiteHeader(props: TProps) {
   const pathname = usePathname();
-  const { showNavigation, isAuth, getData, handleChange, setIsFontOpen } =
-    props;
+  const { showNavigation, isAuth, handleChange, setIsFontOpen } = props;
   const router = useRouter();
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -101,7 +96,7 @@ export default function SiteHeader(props: TProps) {
   const [hideNavigation, setHideNavigation] = useState(false);
   const [showWidgetModal, setWidgetModal] = useState(false);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
-
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
   const pastAppState = useAppSelector(PAS);
@@ -155,7 +150,6 @@ export default function SiteHeader(props: TProps) {
         <BottomToolBar
           showNavigation={showNavigation}
           // appState={appState}
-          getData={getData}
           handleChange={handleChange}
           isAuth={isAuth}
           setShowAuthModal={setShowAuthModal}
@@ -177,7 +171,7 @@ export default function SiteHeader(props: TProps) {
 
       <nav>
         {!isBottomBar && pathname.startsWith("/auth") && (
-          <div className="pt-5 flex w-full justify-around border-b pb-5 fixed top-0 z-10 bg-white">
+          <div className="fixed top-0 z-10 flex w-full justify-around border-b bg-white pb-5 pt-5">
             <button className="flex flex-col items-center">
               <IoMdAdd size={20} />
               {/* Undo */}
@@ -202,10 +196,12 @@ export default function SiteHeader(props: TProps) {
               <ImCancelCircle
                 size={18}
                 onClick={() => {
-                  if (getData) {
-                    getData();
-                    dispatch(clearPastAndFuture());
-                  }
+                  getInstagramData({
+                    appState,
+                    dispatch,
+                    searchParams,
+                  });
+                  dispatch(clearPastAndFuture());
                 }}
               />
               {/* Cancel */}
@@ -228,7 +224,7 @@ export default function SiteHeader(props: TProps) {
           </div>
         )}
         <div
-          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "w-full max-w-full justify-between mt-14"}`}
+          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "mt-14 w-full max-w-full justify-between"}`}
           aria-label="Global"
         >
           <div className="flex items-center gap-x-12 ">
@@ -291,9 +287,8 @@ export default function SiteHeader(props: TProps) {
               <div
                 className={`ml-auto ${!isBottomBar && "hidden"}  flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2`}
               >
-                {getData && appState && setIsFontOpen && (
+                {appState && setIsFontOpen && (
                   <SettingMenu
-                    getData={getData}
                     handleChange={handleChange ?? undefined}
                     appState={appState}
                     templates={templates}

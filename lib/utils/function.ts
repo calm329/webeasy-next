@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { prompt } from "./common-constant";
 
 type TParams = {
+  regenerate?: boolean,
   searchParams: ReadonlyURLSearchParams;
   dispatch: any;
   appState: AppState;
@@ -157,8 +158,18 @@ export const getInstagramDetails = async (
   }
 };
 
+type TRParams = {};
+
+export const regenerateInstagramData = async (params: TRParams) => {
+  try {
+
+  } catch (error) {
+
+  }
+};
+
 export const getInstagramData = async (params: TParams) => {
-  const { searchParams, dispatch, appState } = params;
+  const { regenerate,searchParams, dispatch, appState } = params;
   const userId = searchParams.get("user_id") ?? "";
   const accessToken = searchParams.get("access_token") ?? "";
   dispatch(
@@ -178,8 +189,8 @@ export const getInstagramData = async (params: TParams) => {
       editable,
     }),
   );
-  console.log("siteAvailable",siteAvailable)
-  if (siteAvailable) {
+  console.log("siteAvailable", siteAvailable);
+  if (siteAvailable && !regenerate) {
     const siteData = await getSiteData(siteAvailable);
 
     if (!siteData) {
@@ -187,7 +198,7 @@ export const getInstagramData = async (params: TParams) => {
     }
     const aiContent = JSON.parse(siteData.aiResult);
     console.log("siteData", siteData);
-    console.log("aiContent",aiContent)
+    console.log("aiContent", aiContent);
     dispatch(
       updateAppState({
         ...appState,
@@ -223,7 +234,7 @@ export const getInstagramData = async (params: TParams) => {
           }),
         );
 
-        const colors = getColors(content["hero"]["image"]["imageUrl"]);
+        const colors = await getColors(content["hero"]["image"]["imageUrl"]);
         content["colors"] = colors;
 
         dispatch(
@@ -237,18 +248,19 @@ export const getInstagramData = async (params: TParams) => {
             status: "Done",
           }),
         );
-
-        await createNewSite({
-          aiResult: JSON.stringify(content),
-          posts: JSON.stringify({
-            limit: 20,
-            show: true,
-            list: instagramDetails.iPosts,
-          }),
-          accessToken: searchParams.get("access_token") || "",
-          userId: searchParams.get("user_id") || "",
-        });
-      }else{
+        if(!regenerate){
+          await createNewSite({
+            aiResult: JSON.stringify(content),
+            posts: JSON.stringify({
+              limit: 20,
+              show: true,
+              list: instagramDetails.iPosts,
+            }),
+            accessToken: searchParams.get("access_token") || "",
+            userId: searchParams.get("user_id") || "",
+          });
+        }
+      } else {
         dispatch(
           updateAppState({
             ...appState,
@@ -256,7 +268,7 @@ export const getInstagramData = async (params: TParams) => {
           }),
         );
       }
-    }else{
+    } else {
       dispatch(
         updateAppState({
           ...appState,
@@ -264,11 +276,7 @@ export const getInstagramData = async (params: TParams) => {
         }),
       );
     }
-
-   
   }
-
-  
 };
 
 export const handleChangeAppState = (
