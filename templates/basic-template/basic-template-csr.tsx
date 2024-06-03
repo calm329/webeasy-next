@@ -4,7 +4,7 @@ import ServiceCard from "@/components/ui/card/service-card";
 import CTA from "@/components/cta";
 import TopBar from "@/components/top-bar";
 import { Dispatch, SetStateAction } from "react";
-import { TBanner, TColors, TFields, THero, TPosts, TSection } from "@/types";
+import { TBanner, TColors, TFields, THero, TPosts, TSection, TServices } from "@/types";
 import EditableBanner from "@/components/editable/banner";
 import EditableHero from "@/components/editable/hero";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
@@ -15,7 +15,7 @@ type BasicTemplateProps = {
   hero: THero;
   banner: TBanner;
   colors: TColors;
-  services: any[];
+  services: TServices;
   posts: TPosts;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
   setSection?: Dispatch<SetStateAction<TSection>>;
@@ -51,6 +51,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
   } = props;
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
+  console.log("services",services)
   return (
     <>
       <section className="bg-white py-6">
@@ -81,7 +82,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               />
 
               <div
-                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${!appState.aiContent?.services?.show ?"bg-transparent":"bg-gray-100"}`}
+                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${!services?.show ?"bg-transparent":"bg-gray-100"}`}
                 onClick={() => {
                   if (setIsOpen && setSection) {
                     setIsOpen(true);
@@ -96,9 +97,9 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   }
                 }}
               >
-                {appState.aiContent?.services?.show && (
+                {services?.show  && (
                   <div className="-m-8 flex flex-wrap">
-                    {appState.aiContent?.services?.list.map((service) => (
+                    {services?.list.map((service) => (
                       <ServiceCard
                         id={service["id"]}
                         key={service["name"]}

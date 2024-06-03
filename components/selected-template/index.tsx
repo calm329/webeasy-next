@@ -46,7 +46,7 @@ const SelectedTemplate = (props: TProps) => {
           banner={appState.aiContent.banner}
           hero={appState.aiContent.hero}
           colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
+          services={appState.aiContent.services}
           posts={appState.iPosts}
           setFocusedField={setFocusedField}
           showForm={showForm}
