@@ -10,9 +10,10 @@ import {
 } from "../store/slices/site-slice";
 import { toast } from "sonner";
 import { prompt } from "./common-constant";
+import { appState } from "../store/slices/site-slice";
 
 type TParams = {
-  regenerate?: boolean,
+  regenerate?: boolean;
   searchParams: ReadonlyURLSearchParams;
   dispatch: any;
   appState: AppState;
@@ -158,18 +159,87 @@ export const getInstagramDetails = async (
   }
 };
 
-type TRParams = {};
-
-export const regenerateInstagramData = async (params: TRParams) => {
+export const regenerateText = async (params: TParams) => {
+  const { searchParams, dispatch, appState } = params;
+  const userId = searchParams.get("user_id") ?? "";
+  const accessToken = searchParams.get("access_token") ?? "";
   try {
+    const instagramDetails = await getInstagramDetails(userId, accessToken);
+    if (instagramDetails) {
+      dispatch(
+        updateAppState({
+          ...appState,
+          status: "Generating Content",
+        }),
+      );
 
+      const content = await getContent(instagramDetails.mediaCaption);
+
+      if (content) {
+        console.log("content", content);
+        content["hero"]["image"]["imageUrl"] =
+          appState.aiContent.hero.image.imageUrl;
+
+        content["colors"] = appState.aiContent.colors;
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: Object.keys(content).length
+              ? content
+              : appState.aiContent,
+            status: "Done",
+          }),
+        );
+      }
+    }
+  } catch (error) {}
+};
+
+export const regenerateImage = async (params: TParams) => {
+  const { searchParams, dispatch, appState } = params;
+  const userId = searchParams.get("user_id") ?? "";
+  const accessToken = searchParams.get("access_token") ?? "";
+  try {
+    const instagramDetails = await getInstagramDetails(userId, accessToken);
+    if (instagramDetails) {
+      dispatch(
+        updateAppState({
+          ...appState,
+          status: "Generating Images",
+        }),
+      );
+
+      let content = await getContent(instagramDetails.mediaCaption);
+
+      if (content) {
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              hero: {
+                ...appState.aiContent.hero,
+                image: {
+                  ...content["hero"]["image"],
+                  imageUrl:
+                    instagramDetails.imageIds[
+                      content["hero"]["image"]["imageId"]
+                    ],
+                },
+              },
+            },
+            status: "Done",
+          }),
+        );
+      }
+    }
   } catch (error) {
-
+    console.log("error", error);
   }
 };
 
 export const getInstagramData = async (params: TParams) => {
-  const { regenerate,searchParams, dispatch, appState } = params;
+  const { regenerate, searchParams, dispatch, appState } = params;
   const userId = searchParams.get("user_id") ?? "";
   const accessToken = searchParams.get("access_token") ?? "";
   dispatch(
@@ -248,7 +318,7 @@ export const getInstagramData = async (params: TParams) => {
             status: "Done",
           }),
         );
-        if(!regenerate){
+        if (!regenerate) {
           await createNewSite({
             aiResult: JSON.stringify(content),
             posts: JSON.stringify({
