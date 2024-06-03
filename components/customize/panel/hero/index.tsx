@@ -24,6 +24,8 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import RegenerateOptions from "@/components/regenerate-options";
+import { regenerateIndividual } from "@/lib/utils/function";
+import { useSearchParams } from "next/navigation";
 type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
@@ -120,7 +122,7 @@ const HeroContent = (props: TProps) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
+  const searchParams = useSearchParams();
   useEffect(() => {
     if (appState.focusedField === "heading") {
       inputRef.current?.focus();
@@ -192,9 +194,18 @@ const HeroContent = (props: TProps) => {
                         </label>
                         <div className="flex items-center gap-2">
                           <button
+                            type="button"
                             onClick={() => {
                               setSelectedField(data);
                               setLoading(true);
+                              regenerateIndividual({
+                                appState,
+                                dispatch,
+                                searchParams,
+                                fieldName: data,
+                              }).then(() => {
+                                setLoading(false);
+                              });
                             }}
                             className="flex items-center gap-2 "
                           >
@@ -218,7 +229,7 @@ const HeroContent = (props: TProps) => {
                           handleChange(data, e.target.value);
                         }}
                         ref={inputRef}
-                        defaultValue={appState.aiContent.hero.heading}
+                        value={appState.aiContent.hero.heading}
                       />
                     </div>
                   );
@@ -231,10 +242,18 @@ const HeroContent = (props: TProps) => {
                         </label>
                         <div className="flex items-center gap-2">
                           <button
+                            type="button"
                             onClick={() => {
                               setSelectedField(data);
                               setLoading(true);
-
+                              regenerateIndividual({
+                                appState,
+                                dispatch,
+                                searchParams,
+                                fieldName: data,
+                              }).then(() => {
+                                setLoading(false);
+                              });
                             }}
                             className="flex items-center gap-2 "
                           >
@@ -256,7 +275,7 @@ const HeroContent = (props: TProps) => {
                           handleChange(data, e.target.value);
                         }}
                         ref={textareaRef}
-                        defaultValue={appState.aiContent.hero.subheading}
+                        value={appState.aiContent.hero.subheading}
                       />
                     </div>
                   );
