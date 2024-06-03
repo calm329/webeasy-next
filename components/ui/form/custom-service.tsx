@@ -29,6 +29,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { generateUniqueId } from "@/lib/utils/function";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import RegenerateOptions from "@/components/regenerate-options";
 
 const CustomService = (props: TProps) => {
   const { setIsOpen, setShowForm, section, showForm, handleChange, getData } =
@@ -176,7 +177,7 @@ const CustomService = (props: TProps) => {
                 <ImPower className=" text-xs " />
               )}
             </button>
-            <BsThreeDotsVertical />
+            <RegenerateOptions />
             </div>
           </div>
           <input
@@ -221,7 +222,7 @@ const CustomService = (props: TProps) => {
                   <ImPower className=" text-xs " />
                 )}
               </button>
-              <BsThreeDotsVertical />
+              <RegenerateOptions />
             </div>
           </div>
           <textarea

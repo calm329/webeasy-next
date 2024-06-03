@@ -25,6 +25,7 @@ import {
 } from "react-beautiful-dnd";
 import { ImPower } from "react-icons/im";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import RegenerateOptions from "@/components/regenerate-options";
 type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
@@ -34,7 +35,7 @@ type TProps = {
   setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setShowForm: React.Dispatch<
     React.SetStateAction<{
-      form:string;
+      form: string;
       edit: string;
       show: boolean;
     }>
@@ -281,29 +282,32 @@ const BannerContent = (props: TProps) => {
                     case "text":
                       return (
                         <div className="flex flex-col border-t pt-5">
-                          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900 items-center ">
+                          <div className="flex  items-center justify-between text-sm font-medium leading-6 text-gray-900 ">
                             <label htmlFor="businessName" className="block">
                               {data.label}
                             </label>
                             <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => {
-                                setLoading(true);
-                                getData &&
-                                  getData("individual", field.name).then(() => {
-                                    setLoading(false);
-                                  });
-                              }}
-                              className="flex gap-2 items-center "
-                            >
-                              
-                              Regenerate
-                              {loading ? (
-                                <ImSpinner2 className="animate-spin text-lg text-black" />
-                              ):<ImPower className=" text-xs " />}
-                            </button>
-                              <BsThreeDotsVertical/>
-                              </div>
+                              <button
+                                onClick={() => {
+                                  setLoading(true);
+                                  getData &&
+                                    getData("individual", field.name).then(
+                                      () => {
+                                        setLoading(false);
+                                      },
+                                    );
+                                }}
+                                className="flex items-center gap-2 "
+                              >
+                                Regenerate
+                                {loading ? (
+                                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                                ) : (
+                                  <ImPower className=" text-xs " />
+                                )}
+                              </button>
+                              <RegenerateOptions />
+                            </div>
                           </div>
 
                           <input
@@ -399,7 +403,7 @@ const BannerContent = (props: TProps) => {
                                                     size={20}
                                                     onClick={() =>
                                                       setShowForm({
-                                                        form:"Button",
+                                                        form: "Button",
                                                         show: true,
                                                         edit: item.name,
                                                       })
@@ -432,7 +436,7 @@ const BannerContent = (props: TProps) => {
                                     className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                                     onClick={() =>
                                       setShowForm({
-                                        form:"Button",
+                                        form: "Button",
                                         edit: "",
                                         show: true,
                                       })
