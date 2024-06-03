@@ -231,50 +231,69 @@ export const regenerateIndividual = async (params: TRParams) => {
 
           break;
         case "serviceName":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                services: {
-                  ...appState.aiContent.services,
-                  list: appState.aiContent.services.list.map((service) => {
-                    if (service.id === fieldName?.split(".")[1]) {
-                      return {
-                        ...service,
-                        name: content.services.list[0].name,
-                      };
-                    } else {
-                      return service;
-                    }
-                  }),
+          if (fieldName?.split(".")[1]) {
+            dispatch(
+              updateAppState({
+                ...appState,
+                aiContent: {
+                  ...appState.aiContent,
+                  services: {
+                    ...appState.aiContent.services,
+                    list: appState.aiContent.services.list.map((service) => {
+                      if (service.id === fieldName?.split(".")[1]) {
+                        return {
+                          ...service,
+                          name: content.services.list[0].name,
+                        };
+                      } else {
+                        return service;
+                      }
+                    }),
+                  },
                 },
-              },
-            }),
-          );
+              }),
+            );
+          } else {
+            return {
+              id: "",
+              name: content.services.list[0].name,
+              image: "",
+              description: "",
+            };
+          }
+
           break;
         case "serviceDescription":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                services: {
-                  ...appState.aiContent.services,
-                  list: appState.aiContent.services.list.map((service) => {
-                    if (service.id === fieldName?.split(".")[1]) {
-                      return {
-                        ...service,
-                        description: content.services.list[0].description,
-                      };
-                    } else {
-                      return service;
-                    }
-                  }),
+          if (fieldName?.split(".")[1]) {
+            dispatch(
+              updateAppState({
+                ...appState,
+                aiContent: {
+                  ...appState.aiContent,
+                  services: {
+                    ...appState.aiContent.services,
+                    list: appState.aiContent.services.list.map((service) => {
+                      if (service.id === fieldName?.split(".")[1]) {
+                        return {
+                          ...service,
+                          description: content.services.list[0].description,
+                        };
+                      } else {
+                        return service;
+                      }
+                    }),
+                  },
                 },
-              },
-            }),
-          );
+              }),
+            );
+          } else {
+            return {
+              id: "",
+              name: "",
+              image: "",
+              description: content.services.list[0].description,
+            };
+          }
           break;
       }
     }

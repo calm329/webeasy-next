@@ -164,15 +164,16 @@ const CustomService = (props: TProps) => {
                     appState,
                     dispatch,
                     searchParams,
-                    fieldName: "serviceName." + data.id,
+                    fieldName: "serviceName." + (data?.id ?? ""),
                     type,
-                  }).then(() => {
+                  }).then((res) => {
                     setLoading(false);
+                    res && setData({...data,name:res.name})
                   });
                 }}
                 className="flex items-center gap-2 "
               >
-                {showForm.edit ? "Regenerate" : "Generate"}
+                {(showForm.edit || data?.name) ? "Regenerate" : "Generate"}
                 {loading && selectedField === "name" ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
@@ -190,7 +191,7 @@ const CustomService = (props: TProps) => {
             onChange={(e) => {
               setData({ ...data, name: e.target.value });
               if (showForm.edit) {
-                handleChange(data.id, {
+                handleChange(data?.id, {
                   ...{ ...data, name: e.target.value },
                   section,
                 });
@@ -212,15 +213,16 @@ const CustomService = (props: TProps) => {
                     appState,
                     dispatch,
                     searchParams,
-                    fieldName: "serviceDescription." + data.id,
+                    fieldName: "serviceDescription." + (data?.id ?? ""),
                     type,
-                  }).then(() => {
+                  }).then((res) => {
                     setLoading(false);
+                    res && setData({...data,description:res.description})
                   });
                 }}
                 className="flex items-center gap-2 "
               >
-                {showForm.edit ? "Regenerate" : "Generate"}
+                {(showForm.edit || data?.description) ? "Regenerate" : "Generate"}
                 {loading && selectedField === "description" ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
@@ -237,7 +239,7 @@ const CustomService = (props: TProps) => {
             onChange={(e) => {
               setData({ ...data, description: e.target.value });
               if (showForm.edit) {
-                handleChange(data.id, {
+                handleChange(data?.id, {
                   ...{ ...data, description: e.target.value },
                   section,
                 });
@@ -247,7 +249,7 @@ const CustomService = (props: TProps) => {
         </div>
 
         <button
-          onClick={() => handleServiceSubmit(data.id)}
+          onClick={() => handleServiceSubmit(data?.id)}
           type="button"
           className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
           disabled={loading}
