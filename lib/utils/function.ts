@@ -159,6 +159,112 @@ export const getInstagramDetails = async (
   }
 };
 
+export const regenerateIndividual = async (params: TParams) => {
+  const { fieldName, searchParams, dispatch, appState } = params;
+  const userId = searchParams.get("user_id") ?? "";
+  const accessToken = searchParams.get("access_token") ?? "";
+  try {
+    const instagramDetails = await getInstagramDetails(userId, accessToken);
+    if (instagramDetails) {
+      const content = await getContent(
+        instagramDetails.mediaCaption,
+        fieldName,
+      );
+      switch (fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName) {
+        case "businessName":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                banner: {
+                  ...appState.aiContent.banner,
+                  businessName: content.banner.businessName,
+                },
+              },
+            }),
+          );
+          break;
+        case "heading":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                hero: {
+                  ...appState.aiContent.hero,
+                  heading: content.hero.heading,
+                },
+              },
+            }),
+          );
+          break;
+        case "subheading":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                hero: {
+                  ...appState.aiContent.hero,
+                  subheading: content.hero.subheading,
+                },
+              },
+            }),
+          );
+
+          break;
+        case "serviceName":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                services: {
+                  ...appState.aiContent.services,
+                  list: appState.aiContent.services.list.map((service) => {
+                    if (service.id === fieldName?.split(".")[1]) {
+                      return {
+                        ...service,
+                        name: content.services.list[0].name,
+                      };
+                    } else {
+                      return service;
+                    }
+                  }),
+                },
+              },
+            }),
+          );
+          break;
+        case "serviceDescription":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                services: {
+                  ...appState.aiContent.services,
+                  list: appState.aiContent.services.list.map((service) => {
+                    if (service.id === fieldName?.split(".")[1]) {
+                      return {
+                        ...service,
+                        description: content.services.list[0].description,
+                      };
+                    } else {
+                      return service;
+                    }
+                  }),
+                },
+              },
+            }),
+          );
+          break;
+      }
+    }
+  } catch (error) {}
+};
+
 export const regenerateText = async (params: TParams) => {
   const { searchParams, dispatch, appState } = params;
   const userId = searchParams.get("user_id") ?? "";
