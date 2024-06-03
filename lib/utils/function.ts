@@ -12,12 +12,9 @@ import { toast } from "sonner";
 import { prompt } from "./common-constant";
 
 type TParams = {
-  flag: "init" | "regenerate" | "text" | "image" | "individual";
   searchParams: ReadonlyURLSearchParams;
   dispatch: any;
   appState: AppState;
-  setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>;
-  setHeroCustomizeFields: Dispatch<SetStateAction<FormField[]>>;
   fieldName?: string;
 };
 
@@ -92,129 +89,16 @@ const updateDefaultValues = (
   );
 };
 
-export const getData = async (params: TParams) => {
-  const {
-    flag,
-    searchParams,
-    dispatch,
-    appState,
-    setBrandCustomizeFields,
-    setHeroCustomizeFields,
-    fieldName,
-  } = params;
-  if (flag !== "individual") {
-    dispatch(
-      updateAppState({
-        ...appState,
-        status: "Loading Instagram",
-      }),
-    );
-  }
-  const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
-    userId: searchParams.get("user_id") || "",
-  });
-  if (flag !== "individual") {
-    dispatch(
-      updateAppState({
-        ...appState,
-        subdomain: siteAvailable,
-        status: "Loading Instagram",
-        editable,
-      }),
-    );
-  }
-
-  // check if user data exists
-  // const userData = flag === "init" ? await getUserData() : null;
-
-  if (siteAvailable && flag === "init") {
-    const siteData = await getSiteData(siteAvailable);
-
-    if (!siteData) {
-      return;
-    }
-    const aiContent = JSON.parse(siteData.aiResult);
-    console.log("siteData", siteData);
-    dispatch(
-      updateAppState({
-        ...appState,
-        selectedFont: siteData.font,
-        subdomain: siteAvailable,
-        status: "Done",
-        aiContent: aiContent,
-        iPosts: JSON.parse(siteData.posts),
-        meta: { title: siteData.title, description: siteData.description },
-      }),
-    );
-    const heroButtonList = aiContent.hero.button.list;
-    const bannerButtonList = aiContent.banner.button.list;
-    // update default values
-
-    updateDefaultValues(
-      {
-        logo: siteData.logo || undefined,
-        businessName: aiContent.banner?.businessName,
-        ctaLink: aiContent?.hero?.ctaLink,
-        heading: aiContent?.hero?.heading,
-        subheading: aiContent?.hero?.subheading,
-        imageUrl: aiContent?.hero.image?.imageUrl,
-        cta: aiContent?.hero?.cta,
-      },
-      setBrandCustomizeFields,
-      setHeroCustomizeFields,
-      heroButtonList,
-      bannerButtonList,
-    );
-
-    return;
-  }
-
-  let imageIds: any = {};
-  let iPosts: any[] = [];
-  let mediaCaption = "";
-  let aiContent: any = {};
-
-  // get user media
-  {
-    const {
-      mediaCaption: _mediaCaption,
-      imageIds: _imageIds,
-      posts: _posts,
-    } = await fetchData(
-      `/api/instagram/media?access_token=${searchParams.get(
-        "access_token",
-      )}&user_id=${searchParams.get("user_id")}`,
-    );
-
-    if (!_mediaCaption || !_imageIds || !_posts) {
-      return;
-    }
-
-    mediaCaption = _mediaCaption || mediaCaption;
-    imageIds = _imageIds || imageIds;
-    iPosts = _posts || iPosts;
-    if (flag !== "individual") {
-      dispatch(
-        updateAppState({
-          ...appState,
-          subdomain: siteAvailable,
-          status: "Generating Content",
-        }),
-      );
-    }
-  }
-
-  // generate content from user media using openai
-  if (
-    flag === "regenerate" ||
-    flag === "text" ||
-    flag === "image" ||
-    flag === "individual"||(!siteAvailable && flag === "init")
-  ) {
-    console.log("fieldName: " + fieldName?.split(".")?fieldName?.split(".")[0]:fieldName, flag);
+export const getContent = async (mediaCaption?: string, fieldName?: string) => {
+  try {
     const response = await fetch("/api/content", {
       method: "POST",
-      body: JSON.stringify({ mediaCaption, fieldName:fieldName?.split(".")?fieldName?.split(".")[0]:fieldName??"" }),
+      body: JSON.stringify({
+        mediaCaption,
+        fieldName: fieldName?.split(".")
+          ? fieldName?.split(".")[0]
+          : fieldName ?? "",
+      }),
     });
 
     let content = "";
@@ -230,196 +114,161 @@ export const getData = async (params: TParams) => {
 
       if (chunkValue && chunkValue !== "###") content += chunkValue;
     }
-    if (content) {
-      aiContent = JSON.parse(content);
-      console.log("content", content);
-      if (flag === "regenerate"|| (flag === "init" && !siteAvailable)) {
-        aiContent["hero"]["image"]["imageUrl"] =
-          imageIds[aiContent["hero"]["image"]["imageId"]];
-      }
-      if (flag === "image") {
-        // console.log("Hero", imageIds[aiContent["hero"]["image"]["imageId"]])
-        const updatedImage = imageIds[aiContent["hero"]["image"]["imageId"]];
-        aiContent = {
-          ...appState.aiContent,
-          hero: {
-            ...appState.aiContent.hero,
-            image: {
-              ...appState.aiContent.hero.image,
-              imageUrl: updatedImage,
-            },
-          },
-        };
-      }
-
-      if (flag === "text") {
-        aiContent = {
-          ...aiContent,
-          hero: {
-            ...aiContent.hero,
-            image: {
-              ...aiContent.hero.image,
-              imageUrl: appState.aiContent.hero.image.imageUrl,
-            },
-          },
-        };
-      }
-    }
-    if (flag !== "individual") {
-      dispatch(
-        updateAppState({
-          ...appState,
-          subdomain: siteAvailable,
-          status: "Choosing Colors",
-        }),
-      );
-    }
+    return JSON.parse(content);
+  } catch (error) {
+    console.log("error", error);
   }
+};
 
-  // generate colors from content using openai
-  if (flag === "regenerate" || (!siteAvailable && flag === "init")) {
+export const getColors = async (imageUrl: string) => {
+  try {
     const { colors } = await fetchData("/api/color", {
       method: "POST",
       body: JSON.stringify({
-        imageUrl: aiContent["hero"]["image"]["imageUrl"],
+        imageUrl,
       }),
     });
-    console.log("colors", colors);
-    if (colors) {
-      const aiColors = JSON.parse(colors);
-      aiContent = { ...aiContent, colors: aiColors };
-    } // else return;
+    return JSON.parse(colors);
+  } catch (error) {
+    console.log("errors");
+  }
+};
+
+export const getInstagramDetails = async (
+  userId: string,
+  accessToken: string,
+) => {
+  try {
+    const {
+      mediaCaption: _mediaCaption,
+      imageIds: _imageIds,
+      posts: _posts,
+    } = await fetchData(
+      `/api/instagram/media?access_token=${accessToken}&user_id=${userId}`,
+    );
+
+    return {
+      mediaCaption: _mediaCaption ?? "",
+      imageIds: _imageIds ?? {},
+      iPosts: _posts ?? [],
+    };
+  } catch (error) {
+    console.log("getInstagramDetails", error);
+  }
+};
+
+export const getInstagramData = async (params: TParams) => {
+  const { searchParams, dispatch, appState } = params;
+  const userId = searchParams.get("user_id") ?? "";
+  const accessToken = searchParams.get("access_token") ?? "";
+  dispatch(
+    updateAppState({
+      ...appState,
+      status: "Loading Instagram",
+    }),
+  );
+  const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
+    userId,
+  });
+  dispatch(
+    updateAppState({
+      ...appState,
+      subdomain: siteAvailable,
+      status: "Loading Instagram",
+      editable,
+    }),
+  );
+  console.log("siteAvailable",siteAvailable)
+  if (siteAvailable) {
+    const siteData = await getSiteData(siteAvailable);
+
+    if (!siteData) {
+      return;
+    }
+    const aiContent = JSON.parse(siteData.aiResult);
+    console.log("siteData", siteData);
     console.log("aiContent",aiContent)
     dispatch(
       updateAppState({
-        ...aiContent,
+        ...appState,
+        selectedFont: siteData.font,
         subdomain: siteAvailable,
         status: "Done",
+        aiContent: aiContent,
+        iPosts: JSON.parse(siteData.posts),
+        meta: { title: siteData.title, description: siteData.description },
       }),
     );
   } else {
-    aiContent["colors"] = appState.aiContent.colors;
-  }
+    const instagramDetails = await getInstagramDetails(userId, accessToken);
 
-  if (flag === "individual") {
-    switch (fieldName?.split(".")?fieldName?.split(".")[0]:fieldName) {
-      case "businessName":
-        aiContent = {
-          ...appState.aiContent,
-          banner: {
-            ...appState.aiContent.banner,
-            businessName: aiContent.banner.businessName,
-          },
-        };
-        break;
-      case "heading":
-        aiContent = {
-          ...appState.aiContent,
-          hero: {
-            ...appState.aiContent.hero,
-            heading: aiContent.hero.heading,
-          },
-        };
-        break;
-      case "subheading":
-        aiContent = {
-          ...appState.aiContent,
-          hero: {
-            ...appState.aiContent.hero,
-            subheading: aiContent.hero.subheading,
-          },
-        };
-        break;
-        case "serviceName":
-        aiContent = {
-          ...appState.aiContent,
-          services:{
-            ...appState.aiContent.services,
-            list:appState.aiContent.services.list.map((service)=>{
-              if(service.id === fieldName?.split(".")[1]){
-                return {
-                 ...service,
-                  name:aiContent.services.list[0].name
-                }
-              }else{
-                return service;
-              }
-            })
-          }
-        };
-        break;
-        case "serviceDescription":
-          aiContent = {
-            ...appState.aiContent,
-            services:{
-              ...appState.aiContent.services,
-              list:appState.aiContent.services.list.map((service)=>{
-                if(service.id === fieldName?.split(".")[1]){
-                  return {
-                   ...service,
-                    description:aiContent.services.list[0].description
-                  }
-                }else{
-                  return service;
-                }
-              })
-            }
-          };
-        break;
+    if (instagramDetails) {
+      dispatch(
+        updateAppState({
+          ...appState,
+          status: "Generating Content",
+        }),
+      );
+
+      const content = await getContent(instagramDetails.mediaCaption);
+      if (content) {
+        console.log("content", content);
+        content["hero"]["image"]["imageUrl"] =
+          instagramDetails.imageIds[content["hero"]["image"]["imageId"]];
+
+        dispatch(
+          updateAppState({
+            ...appState,
+            status: "Choosing Colors",
+          }),
+        );
+
+        const colors = getColors(content["hero"]["image"]["imageUrl"]);
+        content["colors"] = colors;
+
+        dispatch(
+          updateAppState({
+            ...appState,
+            subdomain: siteAvailable,
+            aiContent: Object.keys(content).length
+              ? content
+              : appState.aiContent,
+            iPosts: { ...appState.iPosts, list: instagramDetails.iPosts },
+            status: "Done",
+          }),
+        );
+
+        await createNewSite({
+          aiResult: JSON.stringify(content),
+          posts: JSON.stringify({
+            limit: 20,
+            show: true,
+            list: instagramDetails.iPosts,
+          }),
+          accessToken: searchParams.get("access_token") || "",
+          userId: searchParams.get("user_id") || "",
+        });
+      }else{
+        dispatch(
+          updateAppState({
+            ...appState,
+            status: "Done",
+          }),
+        );
+      }
+    }else{
+      dispatch(
+        updateAppState({
+          ...appState,
+          status: "Done",
+        }),
+      );
     }
-    console.log("updated field name: " + JSON.stringify(aiContent));
-    dispatch(
-      updateAppState({
-        ...appState,
-        subdomain: siteAvailable,
-        aiContent: Object.keys(aiContent).length
-          ? aiContent
-          : appState.aiContent,
-        iPosts: {...appState.iPosts,list:iPosts},
-      }),
-    );
-  } else {
-    dispatch(
-      updateAppState({
-        ...appState,
-        subdomain: siteAvailable,
-        aiContent: Object.keys(aiContent).length
-          ? aiContent
-          : appState.aiContent,
-        iPosts: {...appState.iPosts,list:iPosts},
-        status: "Done",
-      }),
-    );
-  }
-  console.log("SIte Creation",aiContent)
-  if (!siteAvailable && flag === "init") {
-    await createNewSite({
-      aiResult: JSON.stringify(aiContent),
-      posts: JSON.stringify({limit:20,show:true,list:iPosts}),
-      accessToken: searchParams.get("access_token") || "",
-      userId: searchParams.get("user_id") || "",
-    });
+
+   
   }
 
-  // update default values
-  const heroButtonList = appState.aiContent?.hero?.button?.list;
-  const bannerButtonList = appState.aiContent?.banner?.button?.list;
-
-  updateDefaultValues(
-    {
-      logo: appState.aiContent.banner.logo.link,
-      businessName: aiContent?.banner.businessName,
-      ctaLink: aiContent?.hero?.ctaLink,
-      heading: aiContent?.hero?.heading,
-      subheading: aiContent?.hero?.subheading,
-      imageUrl: aiContent?.hero.image?.imageUrl,
-      cta: aiContent?.hero?.cta,
-    },
-    setBrandCustomizeFields,
-    setHeroCustomizeFields,
-    heroButtonList,
-    bannerButtonList,
-  );
+  
 };
 
 export const handleChangeAppState = (
@@ -702,8 +551,12 @@ export function generateUniqueId() {
 
 export async function saveState(appState: AppState, dispatch: any) {
   try {
-    const data = { aiResult: appState.aiContent, font: appState.selectedFont,posts:appState.iPosts };
-    console.log("Saved state",data)
+    const data = {
+      aiResult: appState.aiContent,
+      font: appState.selectedFont,
+      posts: appState.iPosts,
+    };
+    console.log("Saved state", data);
     await dispatch(
       updateStateSite({
         subdomain: appState.subdomain,

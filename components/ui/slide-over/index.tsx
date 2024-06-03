@@ -13,11 +13,6 @@ type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   subdomain: string;
-  brandCustomizeFields: FormField[];
-  heroCustomizeFields: FormField[];
-  focusedField: TFields;
-  setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
-  setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   setShowForm: React.Dispatch<
     React.SetStateAction<{
       form: string;
@@ -43,11 +38,6 @@ function SlideOver(props: TProps) {
     section,
     handleChange,
     subdomain,
-    heroCustomizeFields,
-    brandCustomizeFields,
-    focusedField,
-    setBrandCustomizeFields,
-    setHeroCustomizeFields,
     showForm,
     setShowForm,
     getData,
@@ -63,13 +53,8 @@ function SlideOver(props: TProps) {
             setIsOpen={setIsOpen}
             section={section}
             subdomain={subdomain}
-            heroCustomizeFields={heroCustomizeFields}
-            brandCustomizeFields={brandCustomizeFields}
-            focusedField={focusedField}
             showForm={showForm}
             setShowForm={setShowForm}
-            setBrandCustomizeFields={setBrandCustomizeFields}
-            setHeroCustomizeFields={setHeroCustomizeFields}
             handleChange={handleChange}
             getData={getData}
           >
@@ -78,9 +63,6 @@ function SlideOver(props: TProps) {
                 section={section}
                 handleChange={handleChange}
                 subdomain={subdomain}
-                heroCustomizeFields={heroCustomizeFields}
-                setHeroCustomizeFields={setHeroCustomizeFields}
-                focusedField={focusedField}
                 setShowForm={setShowForm}
                 getData={getData}
               />
@@ -90,10 +72,7 @@ function SlideOver(props: TProps) {
                 section={section}
                 handleChange={handleChange}
                 subdomain={subdomain}
-                brandCustomizeFields={brandCustomizeFields}
-                focusedField={focusedField}
                 setShowForm={setShowForm}
-                setBrandCustomizeFields={setBrandCustomizeFields}
                 getData={getData}
               />
             )}

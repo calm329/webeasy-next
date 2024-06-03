@@ -13,11 +13,6 @@ type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
   subdomain: string;
-  brandCustomizeFields: FormField[];
-  heroCustomizeFields: FormField[];
-  focusedField: TFields;
-  setBrandCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
-  setHeroCustomizeFields: React.Dispatch<React.SetStateAction<FormField[]>>;
   showForm: {
     form: string;
     edit: string;
@@ -42,11 +37,6 @@ export function CustomDrawer(props: TProps) {
     section,
     handleChange,
     subdomain,
-    brandCustomizeFields,
-    heroCustomizeFields,
-    focusedField,
-    setBrandCustomizeFields,
-    setHeroCustomizeFields,
     showForm,
     setShowForm,
     getData,
@@ -60,13 +50,8 @@ export function CustomDrawer(props: TProps) {
             setIsOpen={setIsOpen}
             section={section}
             subdomain={subdomain}
-            heroCustomizeFields={heroCustomizeFields}
-            brandCustomizeFields={brandCustomizeFields}
-            focusedField={focusedField}
             showForm={showForm}
             setShowForm={setShowForm}
-            setHeroCustomizeFields={setHeroCustomizeFields}
-            setBrandCustomizeFields={setBrandCustomizeFields}
             handleChange={handleChange}
             getData={getData}
           >
@@ -75,9 +60,6 @@ export function CustomDrawer(props: TProps) {
                 section={section}
                 handleChange={handleChange}
                 subdomain={subdomain}
-                setHeroCustomizeFields={setHeroCustomizeFields}
-                heroCustomizeFields={heroCustomizeFields}
-                focusedField={focusedField}
                 setShowForm={setShowForm}
                 getData={getData}
               />
@@ -87,9 +69,6 @@ export function CustomDrawer(props: TProps) {
                 section={section}
                 handleChange={handleChange}
                 subdomain={subdomain}
-                setBrandCustomizeFields={setBrandCustomizeFields}
-                brandCustomizeFields={brandCustomizeFields}
-                focusedField={focusedField}
                 setShowForm={setShowForm}
                 getData={getData}
               />

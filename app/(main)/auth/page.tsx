@@ -5,32 +5,23 @@ import Loader from "@/components/ui/loader";
 import SlideOver from "@/components/ui/slide-over";
 import { checkSiteAvailability } from "@/lib/actions";
 import { fetchData, getUsernameFromPosts } from "@/lib/utils";
-import { AppState, FormField, TFields, TSection, TTemplateName } from "@/types";
+import { TFields, TSection } from "@/types";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
 import SelectedTemplate from "@/components/selected-template";
-import { getData, handleChangeAppState, saveState } from "@/lib/utils/function";
+import { getInstagramData, handleChangeAppState} from "@/lib/utils/function";
 import EditWebsiteHeader from "@/components/header/edit-website-header";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
   appState as AS,
   updateAppState,
   loading as LD,
-  pastAppState as PAS,
-  futureAppState as FAS,
-  undo,
-  redo,
-  clearPastAndFuture,
 } from "@/lib/store/slices/site-slice";
 import FontSlideOver from "@/components/ui/slide-over/font-slide";
 import { FontsDrawer } from "@/components/ui/drawer/fonts-drawer";
-import { IoMdAdd } from "react-icons/io";
-import { FaRedoAlt, FaUndoAlt } from "react-icons/fa";
-import { ImCancelCircle } from "react-icons/im";
-import { MdOutlineDownloadDone } from "react-icons/md";
 
 export default function Page() {
   const router = useRouter();
@@ -49,85 +40,7 @@ export default function Page() {
     edit: "",
     show: false,
   });
-  const [brandCustomizeFields, setBrandCustomizeFields] = useState<FormField[]>(
-    [
-      {
-        name: "logo",
-        show: true,
-        type: "image",
 
-        label: "Logo Image",
-        defaultValue: "",
-        placeholder: "Enter your first name",
-        validation: {
-          required: true,
-        },
-      },
-      {
-        name: "businessName",
-        type: "text",
-        label: "Business Name",
-        defaultValue: "",
-        placeholder: "Enter your business name",
-        validation: {
-          required: true,
-        },
-      },
-      {
-        name: "cta",
-        show: true,
-        type: "button",
-        children: [],
-        validation: {
-          required: true,
-        },
-      },
-    ],
-  );
-
-  const [heroCustomizeFields, setHeroCustomizeFields] = useState<FormField[]>([
-    {
-      name: "imageUrl",
-      type: "image",
-      show: true,
-      label: "Banner Image",
-      defaultValue: "",
-
-      placeholder: "Select Banner Image",
-      validation: {
-        required: true,
-      },
-    },
-    {
-      name: "heading",
-      type: "text",
-      label: "Heading",
-      defaultValue: "",
-      placeholder: "Enter a Heading",
-      validation: {
-        required: true,
-      },
-    },
-    {
-      name: "subheading",
-      type: "textarea",
-      label: "Sub-Heading",
-      defaultValue: "",
-      placeholder: "Enter a Sub-Heading",
-      validation: {
-        required: true,
-      },
-    },
-    {
-      name: "cta",
-      show: true,
-      type: "button",
-      validation: {
-        required: true,
-      },
-      children: [],
-    },
-  ]);
   const handleChange = useDebouncedCallback((name: string, value: string) => {
     handleChangeAppState(dispatch, appState, name, value);
   }, 300);
@@ -156,14 +69,10 @@ export default function Page() {
 
   useEffect(() => {
     if (searchParams.get("access_token") && searchParams.get("user_id")) {
-      getData({
-        flag: "init",
+      getInstagramData({
         searchParams,
         appState,
         dispatch,
-        // setAppState,
-        setBrandCustomizeFields,
-        setHeroCustomizeFields,
       });
     }
   }, [searchParams]);
@@ -198,86 +107,18 @@ export default function Page() {
       });
     }
   }, [appState.selectedFont]);
-  const isBottomBar = useMediaQuery("(min-width: 900px)");
-  const pathname = usePathname();
-  const pastAppState = useAppSelector(PAS);
-  const futureAppState = useAppSelector(FAS);
   return (
     <>
       {appState.status === "Done" ? (
         <>
-          {/* !isBottomBar && pathname.startsWith("/auth") && (
-            <div className="fixed top-0 z-10 mt-5 flex w-full justify-around border-b pb-5">
-              <button className="flex flex-col items-center">
-                <IoMdAdd size={20} />
-              
-              </button>
-              <button
-                className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`}
-                onClick={() => dispatch(undo())}
-                disabled={pastAppState.length === 0}
-              >
-                <FaUndoAlt />
-           
-              </button>
-              <button
-                className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`}
-                onClick={() => dispatch(redo())}
-                disabled={futureAppState.length === 0}
-              >
-                <FaRedoAlt />
-           
-              </button>
-              <button className="flex flex-col items-center">
-                <ImCancelCircle
-                  size={18}
-                  onClick={() => {
-                    if (getData) {
-                      getData({
-                        flag: "init",
-                        searchParams,
-                        appState,
-                        dispatch,
-                        // setAppState,
-                        setBrandCustomizeFields,
-                        setHeroCustomizeFields,
-                      });
-                      dispatch(clearPastAndFuture());
-                    }
-                  }}
-                />
-          
-              </button>
-              <button className="flex flex-col items-center">
-                <MdOutlineDownloadDone
-                  size={20}
-                  onClick={() => {
-                    if (status === "authenticated") {
-                      saveState(appState, dispatch).then(() =>
-                        dispatch(clearPastAndFuture()),
-                      );
-                    } else {
-                      // setShowAuthModal(true);
-                    }
-                  }}
-                />
-            
-              </button>
-            </div>
-          )} */}
           <SiteHeader
             showNavigation={false}
             isAuth={true}
-            getData={(flag, fieldName) =>
-              getData({
-                flag: flag ?? "init",
+            getData={() =>
+              getInstagramData({
                 searchParams,
                 dispatch,
                 appState,
-                // setAppState,
-                setBrandCustomizeFields,
-                setHeroCustomizeFields,
-                fieldName,
               })
             }
             handleChange={handleChange}
@@ -314,23 +155,18 @@ export default function Page() {
                         getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
                         ""
                       }
-                      brandCustomizeFields={brandCustomizeFields}
-                      heroCustomizeFields={heroCustomizeFields}
-                      focusedField={focusedField}
-                      setBrandCustomizeFields={setBrandCustomizeFields}
-                      setHeroCustomizeFields={setHeroCustomizeFields}
                       showForm={showForm}
                       setShowForm={setShowForm}
                       getData={(flag, fieldName) =>
-                        getData({
-                          flag: flag ?? "init",
+                        getInstagramData({
+                          // flag: flag ?? "init",
                           searchParams,
                           dispatch,
                           appState,
                           // setAppState,
-                          setBrandCustomizeFields,
-                          setHeroCustomizeFields,
-                          fieldName,
+                          // setBrandCustomizeFields,
+                          // setHeroCustomizeFields,
+                          // fieldName,
                         })
                       }
                     />
@@ -344,15 +180,15 @@ export default function Page() {
                   <>
                     <CustomDrawer
                       getData={(flag, fieldName) =>
-                        getData({
-                          flag: flag ?? "init",
+                        getInstagramData({
+                          // flag: flag ?? "init",
                           searchParams,
                           dispatch,
                           appState,
                           // setAppState,
-                          setBrandCustomizeFields,
-                          setHeroCustomizeFields,
-                          fieldName,
+                          // setBrandCustomizeFields,
+                          // setHeroCustomizeFields,
+                          // fieldName,
                         })
                       }
                       open={isSideBarOpen}
@@ -363,11 +199,6 @@ export default function Page() {
                         getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
                         ""
                       }
-                      brandCustomizeFields={brandCustomizeFields}
-                      heroCustomizeFields={heroCustomizeFields}
-                      setBrandCustomizeFields={setBrandCustomizeFields}
-                      setHeroCustomizeFields={setHeroCustomizeFields}
-                      focusedField={focusedField}
                       showForm={showForm}
                       setShowForm={setShowForm}
                     />
