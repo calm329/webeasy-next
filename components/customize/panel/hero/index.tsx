@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import RegenerateOptions from "@/components/regenerate-options";
 type TProps = {
   section: TSection;
   handleChange: DebouncedState<(name: string, value: string) => void>;
@@ -303,7 +304,7 @@ const HeroContent = (props: TProps) => {
                                   <ImSpinner2 className="animate-spin text-lg text-black" />
                                 ):<ImPower className=" text-xs " />}
                               </button>
-                                <BsThreeDotsVertical />
+                                <RegenerateOptions />
                                 </div>
                           </div>
 
@@ -349,7 +350,7 @@ const HeroContent = (props: TProps) => {
                                   <ImSpinner2 className="animate-spin text-lg text-black" />
                                 ):<ImPower className=" text-xs " />}
                               </button>
-                                <BsThreeDotsVertical/>
+                                <RegenerateOptions/>
                                 </div>
                           </div>
                           <textarea
