@@ -285,7 +285,9 @@ const CustomWebsiteForm = () => {
       });
       router.push("/custom");
       setLoading(false);
-    } catch (error) {}
+    } catch (error) {
+      console.log("error:creatingCustom", error);
+    }
   };
   return (
     <form
