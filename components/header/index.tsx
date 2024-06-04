@@ -146,7 +146,7 @@ export default function SiteHeader(props: TProps) {
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
     >
-      {pathname.startsWith("/auth") && setIsFontOpen && (
+      {(pathname.startsWith("/auth")||pathname.startsWith("/custom")) && setIsFontOpen && (
         <BottomToolBar
           showNavigation={showNavigation}
           // appState={appState}
@@ -170,7 +170,7 @@ export default function SiteHeader(props: TProps) {
       )}
 
       <nav>
-        {!isBottomBar && pathname.startsWith("/auth") && (
+        {!isBottomBar && (pathname.startsWith("/auth")||pathname.startsWith("/custom")) && (
           <div className="fixed top-0 z-10 flex w-full justify-around border-b bg-white pb-5 pt-5">
             <button className="flex flex-col items-center">
               <IoMdAdd size={20} />

@@ -6,12 +6,9 @@ import { z } from "zod";
 import CreatableSelect from "react-select/creatable";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useRouter } from "next/navigation";
-import {
-  customAppState as CAS,
-  updateCustomState,
-} from "@/lib/store/slices/site-slice";
 import { createNewSite } from "@/lib/actions";
 import { getColors } from "@/lib/utils/function";
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
 
 const options = [
   { value: "Accounting", label: "Accounting" },
@@ -203,7 +200,7 @@ const CustomWebsiteForm = () => {
     location: z.string().min(1, "Required"),
     businessName: z.string().min(1, "Required"),
   });
-  const customAppState = useAppSelector(CAS);
+  const appState = useAppSelector(AS);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -271,7 +268,7 @@ const CustomWebsiteForm = () => {
       const colors = await getColors(image);
       console.log("imageUrl", image);
       const finalData = {
-        ...customAppState.aiContent,
+        ...appState.aiContent,
         ...data,
         banner:{
           ...data.banner,
@@ -290,8 +287,8 @@ const CustomWebsiteForm = () => {
         colors: colors,
       };
       dispatch(
-        updateCustomState({
-          ...customAppState,
+        updateAppState({
+          ...appState,
           aiContent: finalData,
         }),
       );
