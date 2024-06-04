@@ -66,7 +66,7 @@ export default function WebsitesForm() {
   const getData = async () => {
     try {
       const siteData = await dispatch(fetchSitesByUser()).unwrap();
-      console.log("siteData",siteData)
+      console.log("siteData", siteData);
     } catch (error) {}
   };
 
@@ -88,6 +88,8 @@ export default function WebsitesForm() {
       }
     } catch (error) {}
   };
+  if(sites)
+  console.log(JSON.parse(sites[1]?.aiResult)?.hero?.image.imageUrl)
 
   return (
     <div className="">
@@ -112,15 +114,15 @@ export default function WebsitesForm() {
           <Loader text="Fetching Websites Data" />
         </div>
       ) : (
-        <>
-          {selectedSection === "Instagram" && (
-            <div className="flex flex-wrap gap-10 px-5 pt-10">
-              {sites?.map((site) => (
+        <div className="flex flex-wrap gap-10 px-5 pt-10">
+          {sites?.map(
+            (site) =>
+              site.type === selectedSection && (
                 <div
                   key={site.id}
                   className=" relative flex max-w-80 flex-col items-center justify-center rounded-lg border   shadow"
                 >
-                  <button className="absolute z-1 top-2 right-2 bg-white rounded-full p-2" >
+                  <button className="z-1 absolute right-2 top-2 rounded-full bg-white p-2">
                     <BsTrash3 color="red" />
                   </button>
                   <Image
@@ -159,11 +161,9 @@ export default function WebsitesForm() {
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              ),
           )}
-          {selectedSection === "Amazon" && <div>Amazon</div>}
-        </>
+        </div>
       )}
     </div>
   );
