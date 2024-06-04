@@ -123,7 +123,7 @@ export const getContent = async (
 
       if (chunkValue && chunkValue !== "###") content += chunkValue;
     }
-    const data = JSON.parse(content)
+    const data = JSON.parse(content);
     const res = await fetch("/api/image", {
       method: "POST",
       body: JSON.stringify({
@@ -131,7 +131,7 @@ export const getContent = async (
       }),
     });
     const image = await res.json();
-    data["banner"]["logo"]["link"] = image.imageUrl
+    data["banner"]["logo"]["link"] = image.imageUrl;
     return data;
   } catch (error) {
     console.log("error", error);
@@ -329,8 +329,7 @@ export const regenerateText = async (params: TParams) => {
         console.log("content", content);
         content["hero"]["image"]["imageUrl"] =
           appState.aiContent.hero.image.imageUrl;
-          content["banner"]["logo"]["link"] =
-          appState.aiContent.banner.logo.link;
+        content["banner"]["logo"]["link"] = appState.aiContent.banner.logo.link;
 
         content["colors"] = appState.aiContent.colors;
         dispatch(
@@ -369,14 +368,12 @@ export const regenerateImage = async (params: TParams) => {
             ...appState,
             aiContent: {
               ...appState.aiContent,
-              banner:{
+              banner: {
                 ...appState.aiContent.banner,
-                logo:{
+                logo: {
                   ...appState.aiContent.banner.logo,
-                  link: content["banner"]["logo"]["link"]
-
-                }
-
+                  link: content["banner"]["logo"]["link"],
+                },
               },
               hero: {
                 ...appState.aiContent.hero,
@@ -437,7 +434,7 @@ export const getInstagramData = async (params: TParams) => {
         subdomain: siteAvailable,
         status: "Done",
         aiContent: aiContent,
-        iPosts: JSON.parse(siteData?.posts??""),
+        iPosts: JSON.parse(siteData?.posts ?? ""),
         meta: { title: siteData.title, description: siteData.description },
       }),
     );
@@ -481,7 +478,9 @@ export const getInstagramData = async (params: TParams) => {
         );
         if (!regenerate) {
           await createNewSite({
-            subdomain:getUsernameFromPosts(JSON.stringify(instagramDetails.iPosts)),
+            subdomain: getUsernameFromPosts(
+              JSON.stringify(instagramDetails.iPosts),
+            ),
             aiResult: JSON.stringify(content),
             posts: JSON.stringify({
               limit: 20,
@@ -490,7 +489,7 @@ export const getInstagramData = async (params: TParams) => {
             }),
             accessToken: searchParams.get("access_token") || "",
             userId: searchParams.get("user_id") || "",
-            type:"Instagram"
+            type: "Instagram",
           });
         }
       } else {

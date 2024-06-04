@@ -261,11 +261,25 @@ const CustomWebsiteForm = () => {
         }),
       });
       const image = await res.json();
+      const logoRes = await fetch("/api/image", {
+        method: "POST",
+        body: JSON.stringify({
+          prompt: getValues().businessName,
+        }),
+      });
+      const logo = await logoRes.json();
       const colors = await getColors(image);
       console.log("imageUrl", image);
       const finalData = {
         ...customAppState.aiContent,
         ...data,
+        banner:{
+          ...data.banner,
+          logo: {
+           ...data.banner.logo,
+            link: logo.imageUrl,
+          },
+        },
         hero: {
           ...data.hero,
           image: {
