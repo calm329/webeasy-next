@@ -216,3 +216,5 @@ export type TSite = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type TSiteType="Instagram"|"Custom"

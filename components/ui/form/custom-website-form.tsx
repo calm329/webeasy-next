@@ -10,6 +10,7 @@ import {
   customAppState as CAS,
   updateCustomState,
 } from "@/lib/store/slices/site-slice";
+import { createNewSite } from "@/lib/actions";
 
 const options = [
   { value: "Accounting", label: "Accounting" },
@@ -260,22 +261,28 @@ const CustomWebsiteForm = () => {
       });
       const image = await res.json();
       console.log("imageUrl", image);
+      const finalData = {
+        ...customAppState.aiContent,
+        ...data,
+        hero: {
+          ...data.hero,
+          image: {
+            ...data.hero.image,
+            imageUrl: image.imageUrl,
+          },
+        },
+      };
       dispatch(
         updateCustomState({
           ...customAppState,
-          aiContent: {
-            ...customAppState.aiContent,
-            ...data,
-            hero: {
-              ...data.hero,
-              image: {
-                ...data.hero.image,
-                imageUrl: image.imageUrl,
-              },
-            },
-          },
+          aiContent: finalData,
         }),
       );
+      await createNewSite({
+        subdomain: getValues().businessName,
+        aiResult: JSON.stringify(finalData),
+        type: "Custom",
+      });
       router.push("/custom");
       setLoading(false);
     } catch (error) {}
