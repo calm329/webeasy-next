@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useRouter } from "next/navigation";
 import { createNewSite } from "@/lib/actions";
 import { getColors } from "@/lib/utils/function";
-import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 
 const options = [
   { value: "Accounting", label: "Accounting" },
@@ -261,7 +261,10 @@ const CustomWebsiteForm = () => {
       const logoRes = await fetch("/api/image", {
         method: "POST",
         body: JSON.stringify({
-          prompt: "generate logo for "+getValues().businessName+" but don't add living things in it",
+          prompt:
+            "generate logo for " +
+            getValues().businessName +
+            " but don't add living things in it",
         }),
       });
       const logo = await logoRes.json();
@@ -270,10 +273,10 @@ const CustomWebsiteForm = () => {
       const finalData = {
         ...appState.aiContent,
         ...data,
-        banner:{
+        banner: {
           ...data.banner,
           logo: {
-           ...data.banner.logo,
+            ...data.banner.logo,
             link: logo.imageUrl,
           },
         },
@@ -290,6 +293,7 @@ const CustomWebsiteForm = () => {
         updateAppState({
           ...appState,
           aiContent: finalData,
+          subdomain: getValues().businessName,
         }),
       );
       await createNewSite({
