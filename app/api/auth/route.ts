@@ -46,7 +46,7 @@ async function getMedia(accessToken: string) {
 async function getAccessTokenAndUserId(code: string) {
   //transfer auth code to access token
   return await unirest
-    .post(`${process.env.INSTAGRAM_API_AUTH_ENDPOINT}access_token`)
+    .post(`${process.env.NEXT_PUBLIC_INSTAGRAM_API_AUTH_ENDPOINT}access_token`)
     .field("client_id", process.env.NEXT_PUBLIC_FB_CLIENT_ID)
     .field("client_secret", process.env.INSTAGRAM_API_SECRET)
     .field("grant_type", "authorization_code")
