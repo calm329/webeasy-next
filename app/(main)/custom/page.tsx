@@ -16,7 +16,7 @@ import { getInstagramData, handleChangeAppState } from "@/lib/utils/function";
 import EditWebsiteHeader from "@/components/header/edit-website-header";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
-  customAppState as CAS,
+  appState as AS,
   updateAppState,
   loading as LD,
 } from "@/lib/store/slices/site-slice";
@@ -27,7 +27,7 @@ export default function Page() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const searchParams = useSearchParams();
-  const appState = useAppSelector(CAS);
+  const appState = useAppSelector(AS);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [isFontOpen, setIsFontOpen] = useState(false);
   const [focusedField, setFocusedField] = useState<TFields>(null);

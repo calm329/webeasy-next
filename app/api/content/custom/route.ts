@@ -9,9 +9,9 @@ const openai = new OpenAI({
 });
 
 export async function POST(request: NextRequest) {
-  const {  fieldName,data } = await request.json();
+  const { fieldName, data } = await request.json();
   console.log("prompt", data);
-  if ( !data ) {
+  if (!data) {
     return NextResponse.json({ error: "Missing data" }, { status: 400 });
   }
   let fields;
@@ -20,13 +20,13 @@ export async function POST(request: NextRequest) {
       fields =
         'only generate the data for the given fields {"banner":{"businessName": "*Name of the business inferred from all the content*"}}';
       break;
-      case "heading":
-        fields =
-          'only generate the data for the given fields "hero": {"heading": "*insert heading here*"}';
-        break;
-        case "subheading":
+    case "heading":
       fields =
-      'only generate the data for the given fields "hero": {"subheading": "*insert subheading here*"}';
+        'only generate the data for the given fields "hero": {"heading": "*insert heading here*"}';
+      break;
+    case "subheading":
+      fields =
+        'only generate the data for the given fields "hero": {"subheading": "*insert subheading here*"}';
       break;
     default:
       fields = `
@@ -34,6 +34,12 @@ export async function POST(request: NextRequest) {
       
       {
         "banner": {
+          
+          "logo": {
+            "link":  "https://xhq5zxhb2o7dgubv.public.blob.vercel-storage.com/2weWEVnPETmQLpQx52_W1-Ofz4wnOvkqM6307M1pfxfkLAZXXBbX.jpeg",
+            "alt": "",
+            "show": true
+          },
           "businessName": "*Name of the business inferred from all the content*",
           "button": {
             "show": true,
@@ -44,14 +50,17 @@ export async function POST(request: NextRequest) {
                 "type": "External"
               }
             ]
-          },
-          "logo": {
-            "link":  "https://xhq5zxhb2o7dgubv.public.blob.vercel-storage.com/2weWEVnPETmQLpQx52_W1-Ofz4wnOvkqM6307M1pfxfkLAZXXBbX.jpeg",
-            "alt": "",
-            "show": true
           }
         },
         "hero": {
+          "image": {
+            "heroImagePrompt": "*Create a prompt for dall-e-3 to create a hero image to represent the business and content from the instagram posts in a simple above the fold style*",
+            "imageId": "*The id of the post that best matches the heading and subheading*",
+            "alt": "",
+            "show": true
+          },
+          "heading": "*insert heading here*",
+          "subheading": "*insert subheading here*",
           "button": {
             "show": true,
             "list": [
@@ -61,15 +70,8 @@ export async function POST(request: NextRequest) {
                 "type": "External"
               }
             ]
-          },
-          "image": {
-            "heroImagePrompt": "*Create a prompt for dall-e-3 to create a hero image to represent the business and content from the instagram posts in a simple above the fold style*",
-            "imageId": "*The id of the post that best matches the heading and subheading*",
-            "alt": "",
-            "show": true
-          },
-          "heading": "*insert heading here*",
-          "subheading": "*insert subheading here*"
+          }
+          
         },
         "services": {
           "show":true,

@@ -62,7 +62,7 @@ export default function SigninForm(props: TProps) {
       password: data.password,
       redirect: false,
     });
-    if(!pathname.startsWith("/auth")){
+    if(!(pathname.startsWith("/auth")||pathname.startsWith("/custom"))){
       router.push("/settings/websites")
     }
 
