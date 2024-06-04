@@ -11,6 +11,7 @@ import {
   updateCustomState,
 } from "@/lib/store/slices/site-slice";
 import { createNewSite } from "@/lib/actions";
+import { getColors } from "@/lib/utils/function";
 
 const options = [
   { value: "Accounting", label: "Accounting" },
@@ -260,6 +261,7 @@ const CustomWebsiteForm = () => {
         }),
       });
       const image = await res.json();
+      const colors = await getColors(image);
       console.log("imageUrl", image);
       const finalData = {
         ...customAppState.aiContent,
@@ -271,6 +273,7 @@ const CustomWebsiteForm = () => {
             imageUrl: image.imageUrl,
           },
         },
+        colors: colors,
       };
       dispatch(
         updateCustomState({
@@ -313,52 +316,6 @@ const CustomWebsiteForm = () => {
             options={options}
             className="businessType"
           />
-          {/* <Combobox
-            value={selected}
-          
-          >
-            <div className="relative">
-              <Combobox.Input
-                onChange={(event) => setQuery(event.target.value)}
-                className={clsx(
-                  "w-full rounded-lg border border-gray-300 py-1.5  pl-3 pr-8 text-sm/6 text-black ",
-                  "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 ",
-                )}
-              />
-              <Combobox.Button className="group absolute inset-y-0 right-0 px-2.5">
-                <ChevronDownIcon className="size-4 " />
-              </Combobox.Button>
-              {errors.business && (
-                <p className="mt-2 text-sm text-red-600" id="business-error">
-                  {errors.business.message}
-                </p>
-              )}
-            </div>
-            <Transition
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-              afterLeave={() => setQuery("")}
-            >
-              <Combobox.Options
-                // anchor="bottom"
-                className="absolute h-52 w-64 overflow-auto rounded-xl border border-gray-300 bg-white p-1 [--anchor-gap:var(--spacing-1)] empty:hidden"
-              >
-                {filteredBusinesses.map((business) => (
-                  <Combobox.Option
-                    key={business}
-                    value={business}
-                    className="group flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-1.5 hover:bg-gray-200"
-                  >
-                    <CheckIcon
-                      className={`${business !== selected && "invisible"} size-4 `}
-                    />
-                    <div className="text-sm/6 text-black">{business}</div>
-                  </Combobox.Option>
-                ))}
-              </Combobox.Options>
-            </Transition>
-          </Combobox> */}
         </div>
 
         <div>
