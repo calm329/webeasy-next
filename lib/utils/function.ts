@@ -180,7 +180,7 @@ type TRParams = {
   searchParams: ReadonlyURLSearchParams;
   dispatch: any;
   appState: AppState;
-  type: string;
+  type?: string;
 };
 
 export const regenerateIndividual = async (params: TRParams) => {
@@ -205,6 +205,44 @@ export const regenerateIndividual = async (params: TRParams) => {
                 banner: {
                   ...appState.aiContent.banner,
                   businessName: content.banner.businessName,
+                },
+              },
+            }),
+          );
+          break;
+        case "logo":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                banner: {
+                  ...appState.aiContent.banner,
+                  logo: {
+                    ...appState.aiContent.banner.logo,
+                    link: content.banner.logo.link,
+                  },
+                },
+              },
+            }),
+          );
+          break;
+
+        case "image":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                hero: {
+                  ...appState.aiContent.hero,
+                  image: {
+                    ...appState.aiContent.hero.image,
+                    imageUrl:
+                      instagramDetails.imageIds[
+                        content["hero"]["image"]["imageId"]
+                      ],
+                  },
                 },
               },
             }),

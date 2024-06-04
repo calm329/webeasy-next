@@ -57,6 +57,7 @@ const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
 
 const BannerContent = (props: TProps) => {
   const appState = useAppSelector(AS);
+  const [selectedField, setSelectedField] = useState("businessName");
   const { section, handleChange, subdomain, setShowForm } = props;
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
@@ -143,26 +144,52 @@ const BannerContent = (props: TProps) => {
                         <h3 className="block text-sm font-medium leading-6 text-gray-900">
                           {data}
                         </h3>
-                        <Switch
-                          onCheckedChange={(checked) =>
-                            dispatch(
-                              updateAppState({
-                                ...appState,
-                                aiContent: {
-                                  ...appState.aiContent,
-                                  banner: {
-                                    ...appState.aiContent.banner,
-                                    logo: {
-                                      ...appState.aiContent.banner.logo,
-                                      show: checked,
+                        <div className="flex gap-5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedField(data)
+                              setLoading(true);
+                              regenerateIndividual({
+                                appState,
+                                dispatch,
+                                searchParams,
+                                fieldName: data,
+                                // type,
+                              }).then(() => {
+                                setLoading(false);
+                              });
+                            }}
+                            className="flex items-center gap-2 "
+                          >
+                            Regenerate
+                            {loading && data === selectedField ? (
+                              <ImSpinner2 className="animate-spin text-lg text-black" />
+                            ) : (
+                              <ImPower className=" text-xs " />
+                            )}
+                          </button>
+                          <Switch
+                            onCheckedChange={(checked) =>
+                              dispatch(
+                                updateAppState({
+                                  ...appState,
+                                  aiContent: {
+                                    ...appState.aiContent,
+                                    banner: {
+                                      ...appState.aiContent.banner,
+                                      logo: {
+                                        ...appState.aiContent.banner.logo,
+                                        show: checked,
+                                      },
                                     },
                                   },
-                                },
-                              }),
-                            )
-                          }
-                          checked={appState.aiContent.banner.logo.show}
-                        />
+                                }),
+                              )
+                            }
+                            checked={appState.aiContent.banner.logo.show}
+                          />
+                        </div>
                       </div>
                       {appState.aiContent.banner.logo.show && (
                         <div>
@@ -189,6 +216,7 @@ const BannerContent = (props: TProps) => {
                           <button
                             type="button"
                             onClick={() => {
+                              setSelectedField(data)
                               setLoading(true);
                               regenerateIndividual({
                                 appState,
@@ -203,7 +231,7 @@ const BannerContent = (props: TProps) => {
                             className="flex items-center gap-2 "
                           >
                             Regenerate
-                            {loading ? (
+                            {loading && data === selectedField ? (
                               <ImSpinner2 className="animate-spin text-lg text-black" />
                             ) : (
                               <ImPower className=" text-xs " />
