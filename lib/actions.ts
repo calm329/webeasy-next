@@ -99,6 +99,28 @@ export async function createNewSite({
   }
 }
 
+export async function deleteSiteBySiteId({
+  id
+}: {
+ id:string
+}) {
+  console.log("deleting site by id: " + id);
+  try {
+    await prisma.site.delete({
+      where:{
+        id:id
+      }
+    });
+
+    return id;
+  } catch (error) {
+    console.log(error);
+
+    return { error: "Failed to create site" };
+  }
+}
+
+
 export async function checkSiteAvailability(
   data: Partial<{ userId: string; token: string }>,
 ) {

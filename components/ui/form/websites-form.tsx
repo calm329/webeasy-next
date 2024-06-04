@@ -13,6 +13,7 @@ import { FaAmazon, FaEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import SelectSourceModal from "../modal/select-source-modal";
 import {
+  deleteSite,
   fetchSitesByUser,
   loading as LD,
   sitesData as SD,
@@ -88,8 +89,7 @@ export default function WebsitesForm() {
       }
     } catch (error) {}
   };
-  if(sites)
-  console.log(JSON.parse(sites[1]?.aiResult)?.hero?.image.imageUrl)
+  if (sites) console.log(JSON.parse(sites[1]?.aiResult)?.hero?.image.imageUrl);
 
   return (
     <div className="">
@@ -122,7 +122,12 @@ export default function WebsitesForm() {
                   key={site.id}
                   className=" relative flex max-w-80 flex-col items-center justify-center rounded-lg border   shadow"
                 >
-                  <button className="z-1 absolute right-2 top-2 rounded-full bg-white p-2">
+                  <button
+                    className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
+                    onClick={() => {
+                      dispatch(deleteSite({ id: site.id }));
+                    }}
+                  >
                     <BsTrash3 color="red" />
                   </button>
                   <Image
