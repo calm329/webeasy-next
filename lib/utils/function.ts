@@ -417,7 +417,7 @@ export const getInstagramData = async (params: TParams) => {
         subdomain: siteAvailable,
         status: "Done",
         aiContent: aiContent,
-        iPosts: JSON.parse(siteData.posts),
+        iPosts: JSON.parse(siteData?.posts??""),
         meta: { title: siteData.title, description: siteData.description },
       }),
     );
