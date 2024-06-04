@@ -166,6 +166,27 @@ const updateSite = createAsyncThunk(
   },
 );
 
+//delete site
+const deleteSite = createAsyncThunk(
+  "site/delete",
+  async (
+    {
+      id
+    }: {
+      id: string;
+    },
+    thunkApi,
+  ) => {
+    try {
+      return thunkApi.fulfillWithValue(
+        await SiteApi.deleteSiteById(id),
+      );
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
 const siteSlice = createSlice({
   name: "site",
   initialState,
@@ -325,11 +346,25 @@ const siteSlice = createSlice({
     builder.addCase(updateSite.rejected, (state) => {
       state.loading = false;
     });
+    builder.addCase(deleteSite.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteSite.fulfilled, (state, action) => {
+      state.loading = false;
+      console.log('action.payload',action.payload)
+      const updatedData = state.sites.user?.filter(site => site.id !== action.meta.arg.id)
+      if(updatedData){
+        state.sites.user = updatedData
+      }
+    });
+    builder.addCase(deleteSite.rejected, (state) => {
+      state.loading = false;
+    });
   },
 });
 
 //export async thunks
-export { fetchSitesByDomain, updateSite, fetchSitesByUser };
+export { fetchSitesByDomain, updateSite, fetchSitesByUser,deleteSite };
 export const { updateAppState, undo, redo, clearPastAndFuture,updateCustomState } =
   siteSlice.actions;
 export const appState = (state: RootState) =>

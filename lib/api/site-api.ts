@@ -1,4 +1,4 @@
-import { checkSiteAvailability, createNewSite, updateSite } from "../actions";
+import { checkSiteAvailability, createNewSite, deleteSiteBySiteId, updateSite } from "../actions";
 import { getSiteData, getSitesByUserId } from "../fetchers";
 
 class SiteApiService {
@@ -53,6 +53,10 @@ class SiteApiService {
    */
   public async getByUserId() {
     return getSitesByUserId();
+  }
+
+  public async deleteSiteById(id:string){
+    return deleteSiteBySiteId({id})
   }
 }
 const SiteApi = new SiteApiService();
