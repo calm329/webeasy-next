@@ -252,10 +252,28 @@ const CustomWebsiteForm = () => {
         if (chunkValue && chunkValue !== "###") content += chunkValue;
       }
       const data = JSON.parse(content);
+      const res = await fetch("/api/image", {
+        method: "POST",
+        body: JSON.stringify({
+          prompt: getValues().businessName,
+        }),
+      });
+      const image = await res.json();
+      console.log("imageUrl", image);
       dispatch(
         updateCustomState({
           ...customAppState,
-          aiContent: { ...customAppState.aiContent, ...data },
+          aiContent: {
+            ...customAppState.aiContent,
+            ...data,
+            hero: {
+              ...data.hero,
+              image: {
+                ...data.hero.image,
+                imageUrl: image.imageUrl,
+              },
+            },
+          },
         }),
       );
       router.push("/custom");

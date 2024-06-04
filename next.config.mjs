@@ -15,6 +15,7 @@ const nextConfig = {
       "xhq5zxhb2o7dgubv.public.blob.vercel-storage.com",
       "tailwindui.com",
       "images.unsplash.com",
+      'oaidalleapiprodscus.blob.core.windows.net'
     ],
   },
 };
