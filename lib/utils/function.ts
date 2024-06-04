@@ -127,7 +127,10 @@ export const getContent = async (
     const res = await fetch("/api/image", {
       method: "POST",
       body: JSON.stringify({
-        prompt: data.banner.businessName ?? "",
+        prompt:
+          "generate logo for " +
+          data.banner.businessName +
+          " but don't add living things in it",
       }),
     });
     const image = await res.json();
