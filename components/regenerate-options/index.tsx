@@ -34,7 +34,7 @@ const RegenerateOptions = (props: TProps) => {
           setType(value);
         }}
       >
-        <SelectTrigger className="w-10 border-none outline-none ">
+        <SelectTrigger className="w-10 border-none outline-none focus:ring-offset-0 ring-0 ring-offset-0 focus:ring-0">
           <BsThreeDotsVertical />
         </SelectTrigger>
         <SelectContent>
