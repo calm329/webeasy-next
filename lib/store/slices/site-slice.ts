@@ -223,9 +223,6 @@ const siteSlice = createSlice({
       state.sites.domain.past = [];
       state.sites.domain.future = [];
     },
-    updateCustomState(state, action) {
-      state.sites.custom.present = action.payload;
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSitesByDomain.pending, (state) => {
@@ -359,7 +356,7 @@ const siteSlice = createSlice({
 
 //export async thunks
 export { fetchSitesByDomain, updateSite, fetchSitesByUser,deleteSite };
-export const { updateAppState, undo, redo, clearPastAndFuture,updateCustomState } =
+export const { updateAppState, undo, redo, clearPastAndFuture } =
   siteSlice.actions;
 export const appState = (state: RootState) =>
   state.siteSlice.sites.domain.present;
