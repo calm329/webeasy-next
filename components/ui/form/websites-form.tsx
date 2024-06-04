@@ -12,7 +12,12 @@ import { FaExternalLinkAlt, FaInstagram } from "react-icons/fa";
 import { FaAmazon, FaEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import SelectSourceModal from "../modal/select-source-modal";
-import { fetchSitesByUser, loading as LD, sitesData as SD } from "@/lib/store/slices/site-slice";
+import {
+  fetchSitesByUser,
+  loading as LD,
+  sitesData as SD,
+} from "@/lib/store/slices/site-slice";
+import { BsTrash3 } from "react-icons/bs";
 
 type TSectionObject = Array<{
   logo: React.ReactNode;
@@ -28,8 +33,12 @@ const sections: TSectionObject = [
     logo: <FaAmazon />,
     name: "Amazon",
   },
+  {
+    logo: "",
+    name: "Custom",
+  },
 ];
-type TSectionName = "Instagram" | "Amazon";
+type TSectionName = "Instagram" | "Amazon" | "Custom";
 
 type TSites = Array<{
   id: string;
@@ -51,13 +60,14 @@ export default function WebsitesForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const sites = useAppSelector(SD)
-  const isLoading = useAppSelector(LD)
+  const sites = useAppSelector(SD);
+  const isLoading = useAppSelector(LD);
   const dispatch = useAppDispatch();
   const getData = async () => {
     try {
       const siteData = await dispatch(fetchSitesByUser()).unwrap();
-    } catch (error) { }
+      console.log("siteData",siteData)
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -69,7 +79,6 @@ export default function WebsitesForm() {
       const accessToken = await getAccessTokenBySiteId(siteId);
       const res = await dispatch(fetchAccessToken({ siteId })).unwrap();
 
-     
       if (accessToken) {
         const newURLSearchParams = new URLSearchParams(searchParams);
         newURLSearchParams.set("access_token", accessToken.token);
@@ -77,9 +86,7 @@ export default function WebsitesForm() {
 
         router.replace(`/auth?${newURLSearchParams.toString()}`);
       }
-    } catch (error) {
-    
-    }
+    } catch (error) {}
   };
 
   return (
@@ -111,13 +118,16 @@ export default function WebsitesForm() {
               {sites?.map((site) => (
                 <div
                   key={site.id}
-                  className=" flex  max-w-80 flex-col items-center justify-center rounded-lg border   shadow"
+                  className=" relative flex max-w-80 flex-col items-center justify-center rounded-lg border   shadow"
                 >
+                  <button className="absolute z-1 top-2 right-2 bg-white rounded-full p-2" >
+                    <BsTrash3 color="red" />
+                  </button>
                   <Image
                     src={JSON.parse(site?.aiResult)?.hero?.image.imageUrl}
                     height={200}
                     width={500}
-                    className="contain rounded-t-lg h-80"
+                    className="contain h-80 rounded-t-lg"
                     alt=""
                   />
                   <div className="flex flex-col gap-5 p-5">
@@ -150,8 +160,6 @@ export default function WebsitesForm() {
                   </div>
                 </div>
               ))}
-            
-           
             </div>
           )}
           {selectedSection === "Amazon" && <div>Amazon</div>}
