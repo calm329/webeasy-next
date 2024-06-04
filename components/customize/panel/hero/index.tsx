@@ -147,26 +147,52 @@ const HeroContent = (props: TProps) => {
                         <h3 className="block text-sm font-medium leading-6 text-gray-900">
                           Hero Image
                         </h3>
-                        <Switch
-                          onCheckedChange={(checked) =>
-                            dispatch(
-                              updateAppState({
-                                ...appState,
-                                aiContent: {
-                                  ...appState.aiContent,
-                                  hero: {
-                                    ...appState.aiContent.hero,
-                                    image: {
-                                      ...appState.aiContent.hero.image,
-                                      show: checked,
+                        <div className="flex gap-5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedField(data);
+                              setLoading(true);
+                              regenerateIndividual({
+                                appState,
+                                dispatch,
+                                searchParams,
+                                fieldName: data,
+                                type,
+                              }).then(() => {
+                                setLoading(false);
+                              });
+                            }}
+                            className="flex items-center gap-2 "
+                          >
+                            Regenerate
+                            {loading && selectedField === data ? (
+                              <ImSpinner2 className="animate-spin text-lg text-black" />
+                            ) : (
+                              <ImPower className=" text-xs " />
+                            )}
+                          </button>
+                          <Switch
+                            onCheckedChange={(checked) =>
+                              dispatch(
+                                updateAppState({
+                                  ...appState,
+                                  aiContent: {
+                                    ...appState.aiContent,
+                                    hero: {
+                                      ...appState.aiContent.hero,
+                                      image: {
+                                        ...appState.aiContent.hero.image,
+                                        show: checked,
+                                      },
                                     },
                                   },
-                                },
-                              }),
-                            )
-                          }
-                          checked={appState.aiContent.hero.image.show}
-                        />
+                                }),
+                              )
+                            }
+                            checked={appState.aiContent.hero.image.show}
+                          />
+                        </div>
                       </div>
                       {appState.aiContent.hero.image.show && (
                         <div>
