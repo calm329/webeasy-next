@@ -73,7 +73,7 @@ export interface AppState {
   focusedField: TFields | null;
   subdomain: string;
   status: string;
-  view:"Mobile"|"Tablet"|"Desktop"
+  view: "Mobile" | "Tablet" | "Desktop";
   iPosts: TPosts;
   aiContent: {
     banner: TBanner;
@@ -95,7 +95,7 @@ export interface AppState {
 
 export type TPosts = {
   show: boolean;
-  limit:number;
+  limit: number;
   list: Array<{
     id: string;
     media_url: string;
@@ -211,10 +211,11 @@ export type TSite = {
   userId: string | null;
   templateId: string;
   logo: string | null;
-  posts: string;
+  posts: string | null;
   aiResult: string;
   createdAt: Date;
+  type: string;
   updatedAt: Date;
 };
 
-export type TSiteType="Instagram"|"Custom"
+export type TSiteType = "Instagram" | "Custom";

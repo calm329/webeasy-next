@@ -5,19 +5,19 @@ class SiteApiService {
   /**
    * create a new site
    */
-  public async create({
-    aiResult,
-    posts,
-    accessToken,
-    userId,
-  }: {
-    aiResult: string;
-    posts: string;
-    accessToken: string;
-    userId: string;
-  }) {
-    return createNewSite({ aiResult, posts, accessToken, userId });
-  }
+  // public async create({
+  //   aiResult,
+  //   posts,
+  //   accessToken,
+  //   userId,
+  // }: {
+  //   aiResult: string;
+  //   posts: string;
+  //   accessToken: string;
+  //   userId: string;
+  // }) {
+  //   return createNewSite({ aiResult, posts, accessToken, userId });
+  // }
 
   /**
    * check if site is available
