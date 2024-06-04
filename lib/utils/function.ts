@@ -3,7 +3,7 @@ import { ReadonlyURLSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 import { checkSiteAvailability, createNewSite, updateSite } from "../actions";
 import { getSiteData } from "../fetchers";
-import { fetchData } from "../utils";
+import { fetchData, getUsernameFromPosts } from "../utils";
 import {
   updateAppState,
   updateSite as updateStateSite,
@@ -461,6 +461,7 @@ export const getInstagramData = async (params: TParams) => {
         );
         if (!regenerate) {
           await createNewSite({
+            subdomain:getUsernameFromPosts(JSON.stringify(instagramDetails.iPosts)),
             aiResult: JSON.stringify(content),
             posts: JSON.stringify({
               limit: 20,
@@ -469,6 +470,7 @@ export const getInstagramData = async (params: TParams) => {
             }),
             accessToken: searchParams.get("access_token") || "",
             userId: searchParams.get("user_id") || "",
+            type:"Instagram"
           });
         }
       } else {

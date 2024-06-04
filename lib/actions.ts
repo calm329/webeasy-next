@@ -5,20 +5,25 @@ import { getServerSession } from "next-auth";
 import { revalidateTag } from "next/cache";
 import { getUsernameFromPosts } from "./utils";
 import { authOptions } from "./auth";
+import { TSiteType } from "@/types";
 
 export async function createNewSite({
+  subdomain,
   aiResult,
   posts,
   accessToken,
   userId,
+  type,
 }: {
+  subdomain: string;
   aiResult: string;
-  posts: string;
-  accessToken: string;
-  userId: string;
+  posts?: string;
+  accessToken?: string;
+  userId?: string;
+  type: TSiteType;
 }) {
   const session = await getServerSession(authOptions);
-  console.log("i came here")
+  console.log("i came here");
   let user;
 
   if (session) {
@@ -42,34 +47,51 @@ export async function createNewSite({
     };
   }
 
-  const username = getUsernameFromPosts(JSON.stringify(JSON.parse(posts).list));
-  console.log("username: " + username)
-  try {
-    const siteResponse = await prisma.site.create({
-      data: {
-        subdomain: username,
+  let data;
+
+  switch (type) {
+    case "Custom":
+      data = {
+        subdomain,
+        aiResult,
+        userId: user?.id,
+        templateId: defaultTemplate.id,
+        type: type as string,
+      };
+      break;
+    case "Instagram":
+      data = {
+        subdomain,
         posts,
         aiResult,
         userId: user?.id,
         templateId: defaultTemplate.id,
-      },
-    });
+        type: type as string,
+      };
+      break;
+  }
 
-    // create access token
-    const accessTokenResponse = await prisma.accessToken.create({
-      data: {
-        token: accessToken,
-        userId: userId,
-        siteId: siteResponse.id,
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 60), // add 60 days to current date
-      },
+  try {
+    const siteResponse = await prisma.site.create({
+      data,
     });
+    if (type === "Instagram") {
+      const accessTokenResponse = await prisma.accessToken.create({
+        data: {
+          token: accessToken ?? "",
+          userId: userId ?? "",
+          siteId: siteResponse.id,
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 60), // add 60 days to current date
+        },
+      });
+    }
+    // create access token
 
     await revalidateTag(
-      `${username}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
+      `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
     );
 
-    return { subdomain: username };
+    return { subdomain };
   } catch (error) {
     console.log(error);
 
@@ -116,7 +138,7 @@ export async function updateSite(
   data: { [key: string]: string },
   keys: string[],
 ) {
-  console.log("updateSite")
+  console.log("updateSite");
   const session = await getServerSession(authOptions);
 
   try {
@@ -147,7 +169,7 @@ export async function updateSite(
     let newData: any = {
       aiResult: JSON.parse(site.aiResult),
     };
-    
+
     for (const key of keys) {
       switch (key) {
         case "subdomain":
@@ -186,16 +208,15 @@ export async function updateSite(
         ? newData.aiResult
         : JSON.stringify(newData.aiResult);
 
-     newData.posts =
+    newData.posts =
       typeof newData.posts === "string"
         ? newData.posts
         : JSON.stringify(newData.posts);
 
-
     if (user) {
       newData["userId"] = user.id;
     }
-    console.log("newData",newData)
+    console.log("newData", newData);
     const response = await prisma.site.update({
       where: {
         id: site.id,
