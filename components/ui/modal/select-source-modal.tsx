@@ -60,7 +60,7 @@ export default function SelectSourceModal(props: TProps) {
 
                   <div className="mt-6 grid grid-cols-1 gap-4">
                     <Link
-                      href="/website-builder/instagram"
+                      href={`${process.env.NEXT_PUBLIC_INSTAGRAM_API_AUTH_ENDPOINT}authorize?client_id=${process.env.NEXT_PUBLIC_FB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_FB_REDIRECT_URL}&scope=user_profile,user_media&response_type=code`}
                       className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                     >
                       <FaInstagram className="size-5 text-[#4267B2]" />
