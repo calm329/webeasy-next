@@ -264,7 +264,7 @@ const CustomWebsiteForm = () => {
       const logoRes = await fetch("/api/image", {
         method: "POST",
         body: JSON.stringify({
-          prompt: getValues().businessName,
+          prompt: "generate logo for "+getValues().businessName+" but don't add living things in it",
         }),
       });
       const logo = await logoRes.json();
