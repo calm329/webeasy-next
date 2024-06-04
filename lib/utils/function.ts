@@ -123,7 +123,16 @@ export const getContent = async (
 
       if (chunkValue && chunkValue !== "###") content += chunkValue;
     }
-    return JSON.parse(content);
+    const data = JSON.parse(content)
+    const res = await fetch("/api/image", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt: data.banner.businessName ?? "",
+      }),
+    });
+    const image = await res.json();
+    data["banner"]["logo"]["link"] = image.imageUrl
+    return data;
   } catch (error) {
     console.log("error", error);
   }
@@ -320,6 +329,8 @@ export const regenerateText = async (params: TParams) => {
         console.log("content", content);
         content["hero"]["image"]["imageUrl"] =
           appState.aiContent.hero.image.imageUrl;
+          content["banner"]["logo"]["link"] =
+          appState.aiContent.banner.logo.link;
 
         content["colors"] = appState.aiContent.colors;
         dispatch(
@@ -358,6 +369,15 @@ export const regenerateImage = async (params: TParams) => {
             ...appState,
             aiContent: {
               ...appState.aiContent,
+              banner:{
+                ...appState.aiContent.banner,
+                logo:{
+                  ...appState.aiContent.banner.logo,
+                  link: content["banner"]["logo"]["link"]
+
+                }
+
+              },
               hero: {
                 ...appState.aiContent.hero,
                 image: {
