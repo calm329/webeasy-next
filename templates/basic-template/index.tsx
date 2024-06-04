@@ -71,7 +71,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           <div className="rounded-3xl bg-white px-8 py-16 pb-10">
             <div className="mx-auto max-w-7xl">
               <div className={`-m-8 mb-10 flex flex-wrap `}>
-                <div className="w-full p-8 md:w-1/2">
+                <div className="max-md:w-full p-8 w-1/2">
                   <div className="md:max-w-lg">
                     <h2
                       className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl `}
@@ -98,7 +98,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     </div>
                   </div>
                 </div>
-                <div className={`w-full p-8 md:w-1/2  `}>
+                <div className={`max-md:w-full p-8 w-1/2  `}>
                   <Image
                     src={hero.image.imageUrl}
                     width={256}
