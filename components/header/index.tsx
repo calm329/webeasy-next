@@ -285,7 +285,7 @@ export default function SiteHeader(props: TProps) {
           {isAuth && (
             <>
               <div
-                className={`ml-auto ${!isBottomBar && "hidden"}  flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2`}
+                className={`ml-auto ${!isBottomBar && "hidden"}  flex justify-end gap-5 max-sm:ml-5  max-sm:gap-2 `}
               >
                 {appState && setIsFontOpen && (
                   <SettingMenu
@@ -332,21 +332,23 @@ export default function SiteHeader(props: TProps) {
                 <PublishMenu setShowAuthModal={setShowAuthModal} />
                 <AiAssist />
               </div>
-              {status === "authenticated" ? (
-                <div className="max-lg:hidden">
-                  <AccountMenu user={user} />
-                </div>
-              ) : (
-                <button
-                  className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-lg:hidden"
-                  onClick={() => {
-                    setShowAuthModal(true);
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  Sign in
-                </button>
-              )}
+              <div className="-mt-4">
+                {status === "authenticated" ? (
+                  <div className="max-lg:hidden">
+                    <AccountMenu user={user} />
+                  </div>
+                ) : (
+                  <button
+                    className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-lg:hidden"
+                    onClick={() => {
+                      setShowAuthModal(true);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Sign in
+                  </button>
+                )}
+              </div>
             </>
           )}
           <div
