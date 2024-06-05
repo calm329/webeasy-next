@@ -19,6 +19,7 @@ import {
   appState as AS,
   updateAppState,
   loading as LD,
+  fetchSitesByDomain,
 } from "@/lib/store/slices/site-slice";
 import FontSlideOver from "@/components/ui/slide-over/font-slide";
 import { FontsDrawer } from "@/components/ui/drawer/fonts-drawer";
@@ -45,7 +46,13 @@ export default function Page() {
   }, 300);
 
   const matches = useMediaQuery("(min-width: 768px)");
-
+  useEffect(() => {
+    if (searchParams.get("subdomain")) {
+      dispatch(
+        fetchSitesByDomain({ subdomain: searchParams.get("subdomain") ?? "" }),
+      );
+    }
+  }, [searchParams]);
   useEffect(() => {
     const WebFontLoader = require("webfontloader");
     if (appState.selectedFont) {
@@ -57,7 +64,7 @@ export default function Page() {
         });
     }
   }, [appState.selectedFont]);
-  console.log("appState",appState)
+  console.log("appState", appState);
   return (
     <>
       <SiteHeader
@@ -119,7 +126,7 @@ export default function Page() {
           </>
         )}
       </div>
-      {saveLoading && <Loader text="Saving Data" />}
+      {saveLoading && <Loader text="" />}
     </>
   );
 }

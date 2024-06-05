@@ -150,7 +150,11 @@ export default function WebsitesForm() {
                     <div className="flex gap-5">
                       <button
                         className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
-                        onClick={() => redirectToAuth(site.id)}
+                        onClick={() =>
+                          site.type === "Custom"
+                            ? router.push("/custom?subdomain=" + site.subdomain)
+                            : redirectToAuth(site.id)
+                        }
                       >
                         <FaEdit />
                         Edit

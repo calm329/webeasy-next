@@ -27,7 +27,7 @@ const initialSite: AppState = {
   selectedFont: "",
   subdomain: "",
   status: "Loading Instagram",
-  iPosts: {limit:20,show:true,list:[]},
+  iPosts: { limit: 20, show: true, list: [] },
   aiContent: {
     banner: {
       businessName: "",
@@ -165,16 +165,14 @@ const deleteSite = createAsyncThunk(
   "site/delete",
   async (
     {
-      id
+      id,
     }: {
       id: string;
     },
     thunkApi,
   ) => {
     try {
-      return thunkApi.fulfillWithValue(
-        await SiteApi.deleteSiteById(id),
-      );
+      return thunkApi.fulfillWithValue(await SiteApi.deleteSiteById(id));
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
@@ -230,82 +228,20 @@ const siteSlice = createSlice({
     });
     builder.addCase(fetchSitesByDomain.fulfilled, (state, action) => {
       state.loading = false;
-      console.log("history",action.payload?.posts)
+      console.log("history", action.payload?.posts);
       state.sites.domain.present.meta = {
         title: action.payload?.title ?? "",
         description: action.payload?.description ?? "",
       };
       state.sites.domain.present.subdomain = action.payload?.subdomain ?? "";
 
-      (state.sites.domain.present.status = "Done"),
-    
-        (state.sites.domain.present.iPosts = JSON.parse(
+      state.sites.domain.present.status = "Done";
+      if (action?.payload?.posts) {
+        state.sites.domain.present.iPosts = JSON.parse(
           action.payload?.posts ?? "",
-        )),
-        (state.sites.domain.present.aiContent = {
-          banner: {
-            businessName: JSON.parse(action.payload?.aiResult ?? "")
-              .businessName,
-            button: {
-              ...state.sites.domain.present.aiContent.banner.button,
-              list: [
-                {
-                  name: generateUniqueId(),
-                  label: JSON.parse(action.payload?.aiResult ?? "")["hero"][
-                    "cta"
-                  ],
-                  type: "External",
-                  value: JSON.parse(action.payload?.aiResult ?? "")["hero"][
-                    "ctaLink"
-                  ],
-                },
-              ],
-            },
-            logo: {
-              ...state.sites.domain.present.aiContent.banner.logo,
-              link: action.payload?.logo ?? action.payload?.logo ?? "",
-              alt: action.payload?.logo ?? "",
-            },
-          },
-          colors: JSON.parse(action.payload?.aiResult ?? "")["colors"],
-          hero: {
-            button: {
-              ...state.sites.domain.present.aiContent.hero.button,
-              list: [
-                {
-                  name: generateUniqueId(),
-                  label: JSON.parse(action.payload?.aiResult ?? "")["hero"][
-                    "cta"
-                  ],
-                  type: "External",
-                  value: JSON.parse(action.payload?.aiResult ?? "")["hero"][
-                    "ctaLink"
-                  ],
-                },
-              ],
-            },
-            heading: JSON.parse(action.payload?.aiResult ?? "")["hero"][
-              "heading"
-            ],
-            image: {
-              show: state.sites.domain.present.aiContent.hero.image.show,
-              alt: state.sites.domain.present.aiContent.hero.image.alt,
-              heroImagePrompt: JSON.parse(action.payload?.aiResult ?? "")[
-                "heroImagePrompt"
-              ],
-              imageId: JSON.parse(action.payload?.aiResult ?? "")["hero"][
-                "imageId"
-              ],
-              imageUrl: JSON.parse(action.payload?.aiResult ?? "")["hero"][
-                "imageUrl"
-              ],
-            },
-            subheading: JSON.parse(action.payload?.aiResult ?? "")["hero"][
-              "subheading"
-            ],
-          },
-          services: JSON.parse(action.payload?.aiResult ?? "")["services"],
-        });
+        );
+      }
+      state.sites.domain.present.aiContent = JSON.parse(action.payload?.aiResult??"");
     });
     builder.addCase(fetchSitesByDomain.rejected, (state) => {
       state.loading = false;
@@ -325,7 +261,7 @@ const siteSlice = createSlice({
     });
     builder.addCase(updateSite.fulfilled, (state, action) => {
       state.loading = false;
-      console.log('action.payload',action.payload)
+      console.log("action.payload", action.payload);
       state.sites.user?.forEach((site, index) => {
         if (site.id === action?.payload?.id) {
           if (state.sites.user) {
@@ -342,10 +278,12 @@ const siteSlice = createSlice({
     });
     builder.addCase(deleteSite.fulfilled, (state, action) => {
       state.loading = false;
-      console.log('action.payload',action.payload)
-      const updatedData = state.sites.user?.filter(site => site.id !== action.meta.arg.id)
-      if(updatedData){
-        state.sites.user = updatedData
+      console.log("action.payload", action.payload);
+      const updatedData = state.sites.user?.filter(
+        (site) => site.id !== action.meta.arg.id,
+      );
+      if (updatedData) {
+        state.sites.user = updatedData;
       }
     });
     builder.addCase(deleteSite.rejected, (state) => {
@@ -355,7 +293,7 @@ const siteSlice = createSlice({
 });
 
 //export async thunks
-export { fetchSitesByDomain, updateSite, fetchSitesByUser,deleteSite };
+export { fetchSitesByDomain, updateSite, fetchSitesByUser, deleteSite };
 export const { updateAppState, undo, redo, clearPastAndFuture } =
   siteSlice.actions;
 export const appState = (state: RootState) =>
