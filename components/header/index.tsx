@@ -146,16 +146,17 @@ export default function SiteHeader(props: TProps) {
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
     >
-      {(pathname.startsWith("/auth")||pathname.startsWith("/custom")) && setIsFontOpen && (
-        <BottomToolBar
-          showNavigation={showNavigation}
-          // appState={appState}
-          handleChange={handleChange}
-          isAuth={isAuth}
-          setShowAuthModal={setShowAuthModal}
-          setIsFontOpen={setIsFontOpen}
-        />
-      )}
+      {(pathname.startsWith("/auth") || pathname.startsWith("/custom")) &&
+        setIsFontOpen && (
+          <BottomToolBar
+            showNavigation={showNavigation}
+            // appState={appState}
+            handleChange={handleChange}
+            isAuth={isAuth}
+            setShowAuthModal={setShowAuthModal}
+            setIsFontOpen={setIsFontOpen}
+          />
+        )}
 
       {isMobile ? (
         <BackDrawer setOpen={setShowBackModal} open={showBackModal} />
@@ -170,59 +171,60 @@ export default function SiteHeader(props: TProps) {
       )}
 
       <nav>
-        {!isBottomBar && (pathname.startsWith("/auth")||pathname.startsWith("/custom")) && (
-          <div className="fixed top-0 z-10 flex w-full justify-around border-b bg-white pb-5 pt-5">
-            <button className="flex flex-col items-center">
-              <IoMdAdd size={20} />
-              {/* Undo */}
-            </button>
-            <button
-              className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`}
-              onClick={() => dispatch(undo())}
-              disabled={pastAppState.length === 0}
-            >
-              <FaUndoAlt />
-              {/* Undo */}
-            </button>
-            <button
-              className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`}
-              onClick={() => dispatch(redo())}
-              disabled={futureAppState.length === 0}
-            >
-              <FaRedoAlt />
-              {/* Redo */}
-            </button>
-            <button className="flex flex-col items-center">
-              <ImCancelCircle
-                size={18}
-                onClick={() => {
-                  getInstagramData({
-                    appState,
-                    dispatch,
-                    searchParams,
-                  });
-                  dispatch(clearPastAndFuture());
-                }}
-              />
-              {/* Cancel */}
-            </button>
-            <button className="flex flex-col items-center">
-              <MdOutlineDownloadDone
-                size={20}
-                onClick={() => {
-                  if (status === "authenticated") {
-                    saveState(appState, dispatch).then(() =>
-                      dispatch(clearPastAndFuture()),
-                    );
-                  } else {
-                    setShowAuthModal(true);
-                  }
-                }}
-              />
-              {/* Done */}
-            </button>
-          </div>
-        )}
+        {!isBottomBar &&
+          (pathname.startsWith("/auth") || pathname.startsWith("/custom")) && (
+            <div className="fixed top-0 z-10 flex w-full justify-around border-b bg-white pb-5 pt-5">
+              <button className="flex flex-col items-center">
+                <IoMdAdd size={20} />
+                {/* Undo */}
+              </button>
+              <button
+                className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`}
+                onClick={() => dispatch(undo())}
+                disabled={pastAppState.length === 0}
+              >
+                <FaUndoAlt />
+                {/* Undo */}
+              </button>
+              <button
+                className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`}
+                onClick={() => dispatch(redo())}
+                disabled={futureAppState.length === 0}
+              >
+                <FaRedoAlt />
+                {/* Redo */}
+              </button>
+              <button className="flex flex-col items-center">
+                <ImCancelCircle
+                  size={18}
+                  onClick={() => {
+                    getInstagramData({
+                      appState,
+                      dispatch,
+                      searchParams,
+                    });
+                    dispatch(clearPastAndFuture());
+                  }}
+                />
+                {/* Cancel */}
+              </button>
+              <button className="flex flex-col items-center">
+                <MdOutlineDownloadDone
+                  size={20}
+                  onClick={() => {
+                    if (status === "authenticated") {
+                      saveState(appState, dispatch).then(() =>
+                        dispatch(clearPastAndFuture()),
+                      );
+                    } else {
+                      setShowAuthModal(true);
+                    }
+                  }}
+                />
+                {/* Done */}
+              </button>
+            </div>
+          )}
         <div
           className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "mt-14 w-full max-w-full justify-between"}`}
           aria-label="Global"
@@ -334,9 +336,16 @@ export default function SiteHeader(props: TProps) {
               </div>
               <div className="-mt-4">
                 {status === "authenticated" ? (
-                  <div className="max-lg:hidden">
+                  <button
+                    className="max-lg:hidden"
+                    onClick={() =>
+                      dispatch(
+                        updateAppState({ ...appState, openedSlide: null })
+                      )
+                    }
+                  >
                     <AccountMenu user={user} />
-                  </div>
+                  </button>
                 ) : (
                   <button
                     className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-lg:hidden"
