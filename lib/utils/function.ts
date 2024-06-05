@@ -153,7 +153,7 @@ export const getContent = async (
     });
     const image = await res.json();
     data["banner"]["logo"]["link"] = image.imageUrl;
-    console.log("data",data)
+    console.log("data", data);
     return data;
   } catch (error) {
     console.log("error", error);
@@ -266,10 +266,11 @@ export const regenerateIndividual = async (params: TRParams) => {
                   ...appState.aiContent.hero,
                   image: {
                     ...appState.aiContent.hero.image,
-                    imageUrl:subdomain? content["hero"]["image"]["imageUrl"]:
-                      instagramDetails.imageIds[
-                        content["hero"]["image"]["imageId"]
-                      ],
+                    imageUrl: subdomain
+                      ? content["hero"]["image"]["imageUrl"]
+                      : instagramDetails.imageIds[
+                          content["hero"]["image"]["imageId"]
+                        ],
                   },
                 },
               },
@@ -417,6 +418,11 @@ export const regenerateImage = async (params: TParams) => {
   const userId = searchParams.get("user_id") ?? "";
   const accessToken = searchParams.get("access_token") ?? "";
   try {
+    const urlObj = new URL(window.location.href);
+
+    // Use URLSearchParams to extract the 'subdomain' parameter
+    const params = new URLSearchParams(urlObj.search);
+    const subdomain = params.get("subdomain");
     const instagramDetails = await getInstagramDetails(userId, accessToken);
     if (instagramDetails) {
       dispatch(
@@ -445,10 +451,11 @@ export const regenerateImage = async (params: TParams) => {
                 ...appState.aiContent.hero,
                 image: {
                   ...content["hero"]["image"],
-                  imageUrl:
-                    instagramDetails.imageIds[
-                      content["hero"]["image"]["imageId"]
-                    ],
+                  imageUrl: subdomain
+                    ? content["hero"]["image"]["imageUrl"]
+                    : instagramDetails.imageIds[
+                        content["hero"]["image"]["imageId"]
+                      ],
                 },
               },
             },
