@@ -6,6 +6,7 @@ import GeneralTemplate from "@/templates/general-template";
 import { AppState, TFields, TSection } from "@/types";
 import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
 import { useAppSelector } from "@/lib/store/hooks";
+import { usePathname } from "next/navigation";
 
 type TProps = {
   appState: AppState;
@@ -13,13 +14,13 @@ type TProps = {
   setIsSideBarOpen: Dispatch<SetStateAction<boolean>>;
   setFocusedField: Dispatch<SetStateAction<TFields>>;
   showForm: {
-    form:string;
+    form: string;
     edit: string;
     show: boolean;
   };
   setShowForm: React.Dispatch<
     React.SetStateAction<{
-      form:string;
+      form: string;
       edit: string;
       show: boolean;
     }>
@@ -36,8 +37,11 @@ const SelectedTemplate = (props: TProps) => {
     showForm,
     setShowForm,
   } = props;
+  const pathname = usePathname();
   return (
-    <div className={` overflow-auto mx-auto ${appState.view === "Mobile" && "w-[480px] h-[800px] border-8 rounded-xl border-black"} ${appState.view === "Tablet" && "w-[768px] h-[1024px] border-8 rounded-xl  border-black"} ${appState.view === "Desktop" && "w-full h-full"}`}>
+    <div
+      className={` mx-auto overflow-auto ${appState.view === "Mobile" && "h-[800px] w-[480px] rounded-xl border-8 border-black"} ${appState.view === "Tablet" && "h-[1024px] w-[768px] rounded-xl border-8  border-black"} ${appState.view === "Desktop" && "h-full w-full"}`}
+    >
       {selectedTemplate?.name === "Basic template" && (
         <BasicTemplate
           editable={appState.editable}
@@ -47,7 +51,11 @@ const SelectedTemplate = (props: TProps) => {
           hero={appState.aiContent.hero}
           colors={appState.aiContent["colors"]}
           services={appState.aiContent.services}
-          posts={appState.iPosts}
+          posts={
+            pathname.startsWith("/auth")
+              ? appState.iPosts
+              : { ...appState.iPosts, list: [] }
+          }
           setFocusedField={setFocusedField}
           showForm={showForm}
           setShowForm={setShowForm}
@@ -62,7 +70,11 @@ const SelectedTemplate = (props: TProps) => {
           hero={appState.aiContent.hero}
           colors={appState.aiContent["colors"]}
           services={appState.aiContent["services"]["list"]}
-          posts={appState.iPosts}
+          posts={
+            pathname.startsWith("/auth")
+              ? appState.iPosts
+              : { ...appState.iPosts, list: [] }
+          }
           setFocusedField={setFocusedField}
         />
       )}
@@ -75,7 +87,11 @@ const SelectedTemplate = (props: TProps) => {
           hero={appState.aiContent.hero}
           colors={appState.aiContent["colors"]}
           services={appState.aiContent["services"]["list"]}
-          posts={appState.iPosts}
+          posts={
+            pathname.startsWith("/auth")
+              ? appState.iPosts
+              : { ...appState.iPosts, list: [] }
+          }
           setFocusedField={setFocusedField}
         />
       )}
@@ -88,7 +104,11 @@ const SelectedTemplate = (props: TProps) => {
           hero={appState.aiContent.hero}
           colors={appState.aiContent["colors"]}
           services={appState.aiContent["services"]["list"]}
-          posts={appState.iPosts}
+          posts={
+            pathname.startsWith("/auth")
+              ? appState.iPosts
+              : { ...appState.iPosts, list: [] }
+          }
           setFocusedField={setFocusedField}
         />
       )}
