@@ -258,7 +258,7 @@ export default function SettingMenu(props: TProps) {
                         appState,
                         dispatch,
                         searchParams,
-                        regenerate: true,
+                        regenerate: true
                       })
                     }
                     className={classNames(

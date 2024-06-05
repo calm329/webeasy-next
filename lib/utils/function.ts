@@ -444,7 +444,7 @@ export const getInstagramData = async (params: TParams) => {
   dispatch(
     updateAppState({
       ...appState,
-      status: "Loading Instagram",
+      status: "Loading",
     }),
   );
   const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
@@ -454,7 +454,7 @@ export const getInstagramData = async (params: TParams) => {
     updateAppState({
       ...appState,
       subdomain: siteAvailable,
-      status: "Loading Instagram",
+      status: "Loading",
       editable,
     }),
   );
