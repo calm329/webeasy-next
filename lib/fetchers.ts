@@ -8,11 +8,13 @@ import { authOptions } from "./auth";
 export async function getSiteData(subdomain?: string) {
   return await unstable_cache(
     async () => {
-      return prisma.site.findFirst({
+      const site = await prisma.site.findFirst({
         where: {
-          subdomain: subdomain || "",
+          subdomain: subdomain ?? "",
         },
       });
+      console.log("site found", site);
+      return site
     },
     [`${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
     {

@@ -297,7 +297,7 @@ const CustomWebsiteForm = () => {
         }),
       );
       await createNewSite({
-        subdomain: getValues().businessName,
+        subdomain: getValues().businessName.toLowerCase().split(' ').join(''),
         aiResult: JSON.stringify(finalData),
         type: "Custom",
       });
