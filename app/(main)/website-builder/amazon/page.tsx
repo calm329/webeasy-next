@@ -1,9 +1,12 @@
-"use client"
+"use client";
 import SiteHeader from "@/components/header";
 import PageStatus from "@/components/ui/pagestatus";
 import Link from "next/link";
 import LearnMoreButton from "@/components/ui/button/learn-more-button";
+import { useState } from "react";
 export default function Example() {
+  const [productUrl, setProductUrl] = useState("");
+  const [loading,setLoading] = useState(false);
   return (
     <div className="relative isolate overflow-hidden bg-white">
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 ">
@@ -23,41 +26,49 @@ export default function Example() {
                 type="text"
                 className="border-1 rounded-md border-gray-300"
                 placeholder={"Product Url"}
+                onChange={(e) => setProductUrl(e.target.value)}
               />
               <button
                 // href={`/amazon/producturl`}
                 type="button"
                 onClick={() => {
-                  const url = "/api/amazon";
+                  if (productUrl) {
+                    setLoading(true);
+                    const url = "/api/amazon";
 
-                  const requestData = {
-                    itemIds: ["B09QRD1TTK"],
-                  };
+                    const requestData = {
+                      itemIds: [productUrl.split("/")[5]],
+                    };
 
-                  fetch(url, {
-                    method: "POST", // Assuming this is a POST request
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(requestData),
-                  })
-                    .then((response) => {
-                      if (!response.ok) {
-                        throw new Error(
-                          "Network response was not ok " + response.statusText,
+                    fetch(url, {
+                      method: "POST", // Assuming this is a POST request
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(requestData),
+                    })
+                      .then((response) => {
+                        if (!response.ok) {
+                          throw new Error(
+                            "Network response was not ok " +
+                              response.statusText,
+                          );
+                        }
+                        return response.json();
+                      })
+                      .then((data) => {
+                        console.log(data);
+                      })
+                      .catch((error) => {
+                        console.error(
+                          "There was a problem with the fetch operation:",
+                          error,
                         );
-                      }
-                      return response.json();
-                    })
-                    .then((data) => {
-                      console.log(data);
-                    })
-                    .catch((error) => {
-                      console.error(
-                        "There was a problem with the fetch operation:",
-                        error,
-                      );
-                    });
+                      }).finally(() => {
+                        setLoading(false);
+                      });
+                      
+                  }
                 }}
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
