@@ -9,8 +9,9 @@ type TProps = {
 export default async function SiteHomePage(props: TProps) {
   const { params } = props;
   const domain = decodeURIComponent(params.domain);
+  console.log("domain",domain)
   const data = await getSiteData(domain);
-
+  console.log("data",data);
   if (!data) {
     return (
       <div>
