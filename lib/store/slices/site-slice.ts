@@ -26,7 +26,7 @@ const initialSite: AppState = {
   focusedField: null,
   selectedFont: "",
   subdomain: "",
-  status: "Loading Instagram",
+  status: "Loading",
   iPosts: { limit: 20, show: true, list: [] },
   aiContent: {
     banner: {
