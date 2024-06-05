@@ -65,7 +65,7 @@ const BottomToolBar = (props: TProps) => {
   const templates = useAppSelector(TD);
   const { status } = useSession();
   const searchParams = useSearchParams();
-  const pathname= usePathname()
+  const pathname = usePathname();
   return (
     <div className="z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white   py-2 shadow-xl ">
       {isBottomBar ? (
@@ -128,20 +128,22 @@ const BottomToolBar = (props: TProps) => {
             <ImCancelCircle
               size={18}
               onClick={() => {
-                if(pathname.startsWith("/custom")){
+                if (pathname.startsWith("/custom")) {
                   if (searchParams.get("subdomain")) {
                     dispatch(
-                      fetchSitesByDomain({ subdomain: searchParams.get("subdomain") ?? "" }),
+                      fetchSitesByDomain({
+                        subdomain: searchParams.get("subdomain") ?? "",
+                      }),
                     );
                   }
-                }else{
+                } else {
                   getInstagramData({
                     appState,
                     dispatch,
                     searchParams,
                   });
-                  dispatch(clearPastAndFuture());
                 }
+                dispatch(clearPastAndFuture());
               }}
             />
             Cancel
