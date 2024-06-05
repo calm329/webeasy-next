@@ -64,7 +64,7 @@ export default function Page() {
         });
     }
   }, [appState.selectedFont]);
-  console.log("appState", appState);
+  
   return (
     <>
       <SiteHeader
