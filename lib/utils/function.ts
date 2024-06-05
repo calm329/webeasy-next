@@ -124,17 +124,36 @@ export const getContent = async (
       if (chunkValue && chunkValue !== "###") content += chunkValue;
     }
     const data = JSON.parse(content);
+    // Create a URL object
+    const urlObj = new URL(window.location.href);
+
+    // Use URLSearchParams to extract the 'subdomain' parameter
+    const params = new URLSearchParams(urlObj.search);
+    const subdomain = params.get("subdomain");
+    if (subdomain) {
+      console.log("subdomain: " + subdomain);
+      const res = await fetch("/api/image", {
+        method: "POST",
+        body: JSON.stringify({
+          prompt: data.banner.businessName ?? "",
+        }),
+      });
+      const image = await res.json();
+      data["hero"]["image"]["imageUrl"] = image.imageUrl;
+    }
+
     const res = await fetch("/api/image", {
       method: "POST",
       body: JSON.stringify({
         prompt:
           "generate logo for " +
-          (data.banner.businessName??"") +
+          (data.banner.businessName ?? "") +
           " but don't add living things in it",
       }),
     });
     const image = await res.json();
     data["banner"]["logo"]["link"] = image.imageUrl;
+    console.log("data",data)
     return data;
   } catch (error) {
     console.log("error", error);
@@ -191,6 +210,12 @@ export const regenerateIndividual = async (params: TRParams) => {
   const userId = searchParams.get("user_id") ?? "";
   const accessToken = searchParams.get("access_token") ?? "";
   try {
+    // Create a URL object
+    const urlObj = new URL(window.location.href);
+
+    // Use URLSearchParams to extract the 'subdomain' parameter
+    const params = new URLSearchParams(urlObj.search);
+    const subdomain = params.get("subdomain");
     const instagramDetails = await getInstagramDetails(userId, accessToken);
     if (instagramDetails) {
       const content = await getContent(
@@ -241,7 +266,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                   ...appState.aiContent.hero,
                   image: {
                     ...appState.aiContent.hero.image,
-                    imageUrl:
+                    imageUrl:subdomain? content["hero"]["image"]["imageUrl"]:
                       instagramDetails.imageIds[
                         content["hero"]["image"]["imageId"]
                       ],
@@ -441,6 +466,7 @@ export const getInstagramData = async (params: TParams) => {
   const { regenerate, searchParams, dispatch, appState } = params;
   const userId = searchParams.get("user_id") ?? "";
   const accessToken = searchParams.get("access_token") ?? "";
+  const customSubDomain = searchParams.get("subdomain") ?? "";
   dispatch(
     updateAppState({
       ...appState,
@@ -493,8 +519,10 @@ export const getInstagramData = async (params: TParams) => {
       const content = await getContent(instagramDetails.mediaCaption);
       if (content) {
         console.log("content", content);
-        content["hero"]["image"]["imageUrl"] =
-          instagramDetails.imageIds[content["hero"]["image"]["imageId"]];
+        if (!customSubDomain) {
+          content["hero"]["image"]["imageUrl"] =
+            instagramDetails.imageIds[content["hero"]["image"]["imageId"]];
+        }
 
         dispatch(
           updateAppState({
