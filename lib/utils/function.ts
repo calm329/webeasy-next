@@ -129,7 +129,7 @@ export const getContent = async (
       body: JSON.stringify({
         prompt:
           "generate logo for " +
-          data.banner.businessName +
+          (data.banner.businessName??"") +
           " but don't add living things in it",
       }),
     });
