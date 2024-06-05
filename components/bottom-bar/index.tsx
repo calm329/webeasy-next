@@ -20,6 +20,7 @@ import {
   appState as AS,
   clearPastAndFuture,
   futureAppState as FAS,
+  fetchSitesByDomain,
   loading as LD,
   pastAppState as PAS,
   redo,
@@ -31,7 +32,7 @@ import { getAllTemplates } from "@/lib/fetchers";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import AiAssist from "../ai-assist";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 type TProps = {
   showNavigation: boolean;
@@ -64,6 +65,7 @@ const BottomToolBar = (props: TProps) => {
   const templates = useAppSelector(TD);
   const { status } = useSession();
   const searchParams = useSearchParams();
+  const pathname= usePathname()
   return (
     <div className="z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white   py-2 shadow-xl ">
       {isBottomBar ? (
@@ -126,12 +128,20 @@ const BottomToolBar = (props: TProps) => {
             <ImCancelCircle
               size={18}
               onClick={() => {
-                getInstagramData({
-                  appState,
-                  dispatch,
-                  searchParams,
-                });
-                dispatch(clearPastAndFuture());
+                if(pathname.startsWith("/custom")){
+                  if (searchParams.get("subdomain")) {
+                    dispatch(
+                      fetchSitesByDomain({ subdomain: searchParams.get("subdomain") ?? "" }),
+                    );
+                  }
+                }else{
+                  getInstagramData({
+                    appState,
+                    dispatch,
+                    searchParams,
+                  });
+                  dispatch(clearPastAndFuture());
+                }
               }}
             />
             Cancel

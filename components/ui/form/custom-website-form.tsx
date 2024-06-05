@@ -289,20 +289,12 @@ const CustomWebsiteForm = () => {
         },
         colors: colors,
       };
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: finalData,
-          subdomain: getValues().businessName,
-          status:"Done"
-        }),
-      );
       await createNewSite({
         subdomain: getValues().businessName.toLowerCase().split(' ').join(''),
         aiResult: JSON.stringify(finalData),
         type: "Custom",
       });
-      router.push("/custom");
+      router.push("/custom?subdomain=" + getValues().businessName.toLowerCase().split(' ').join(''));
       setLoading(false);
     } catch (error) {
       console.log("error:creatingCustom", error);
