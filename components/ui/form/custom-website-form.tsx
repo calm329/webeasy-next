@@ -254,7 +254,7 @@ const CustomWebsiteForm = () => {
       const res = await fetch("/api/image", {
         method: "POST",
         body: JSON.stringify({
-          prompt: getValues().businessName,
+          prompt: getValues().business,
         }),
       });
       const image = await res.json();
@@ -268,7 +268,7 @@ const CustomWebsiteForm = () => {
         }),
       });
       const logo = await logoRes.json();
-      const colors = await getColors(image);
+      const colors = await getColors(image.imageUrl);
       console.log("imageUrl", image);
       const finalData = {
         ...appState.aiContent,
@@ -294,6 +294,7 @@ const CustomWebsiteForm = () => {
           ...appState,
           aiContent: finalData,
           subdomain: getValues().businessName,
+          status:"Done"
         }),
       );
       await createNewSite({

@@ -126,7 +126,7 @@ export default function Page() {
           </>
         )}
       </div>
-      {saveLoading && <Loader text="" />}
+      {appState.status !== "Done" && <Loader text={appState.status} />}
     </>
   );
 }
