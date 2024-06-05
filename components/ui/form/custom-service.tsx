@@ -30,7 +30,9 @@ import { useSearchParams } from "next/navigation";
 
 const CustomService = (props: TProps) => {
   const { setIsOpen, setShowForm, section, showForm, handleChange } = props;
-  const [loading, setLoading] = useState(false);
+  const [loadingTitle, setLoadingTitle] = useState(false);
+  const [loadingDesc, setLoadingDesc] = useState(false);
+  const [loading,setLoading] = useState(false);
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
   const [type, setType] = useState("");
@@ -159,7 +161,7 @@ const CustomService = (props: TProps) => {
                 type="button"
                 onClick={() => {
                   setSelectedField("name");
-                  setLoading(true);
+                  setLoadingTitle(true);
                   regenerateIndividual({
                     appState,
                     dispatch,
@@ -167,14 +169,14 @@ const CustomService = (props: TProps) => {
                     fieldName: "serviceName." + (data?.id ?? ""),
                     type,
                   }).then((res) => {
-                    setLoading(false);
+                    setLoadingTitle(false);
                     res && setData({...data,name:res.name})
                   });
                 }}
                 className="flex items-center gap-2 "
               >
                 {(showForm.edit || data?.name) ? "Regenerate" : "Generate"}
-                {loading && selectedField === "name" ? (
+                {loadingTitle ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
                   <ImPower className=" text-xs " />
@@ -208,7 +210,7 @@ const CustomService = (props: TProps) => {
                 type="button"
                 onClick={() => {
                   setSelectedField("description");
-                  setLoading(true);
+                  setLoadingDesc(true);
                   regenerateIndividual({
                     appState,
                     dispatch,
@@ -216,14 +218,14 @@ const CustomService = (props: TProps) => {
                     fieldName: "serviceDescription." + (data?.id ?? ""),
                     type,
                   }).then((res) => {
-                    setLoading(false);
+                    setLoadingDesc(false);
                     res && setData({...data,description:res.description})
                   });
                 }}
                 className="flex items-center gap-2 "
               >
                 {(showForm.edit || data?.description) ? "Regenerate" : "Generate"}
-                {loading && selectedField === "description" ? (
+                {loadingDesc ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
                   <ImPower className=" text-xs " />
@@ -254,7 +256,7 @@ const CustomService = (props: TProps) => {
           className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
           disabled={loading}
         >
-          {loading && !selectedField && (
+          {loading && (
             <ImSpinner2 className="animate-spin text-lg text-white" />
           )}
           Save

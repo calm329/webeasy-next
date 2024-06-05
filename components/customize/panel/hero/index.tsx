@@ -57,7 +57,10 @@ const HeroContent = (props: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
   const { section, handleChange, subdomain, setShowForm } = props;
-  const [loading, setLoading] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
+  const [loadingHeading, setLoadingHeading] = useState(false);
+  const [loadingSubHeading, setLoadingSubHeading] = useState(false);
+
   const [selectedField, setSelectedField] = useState("heading");
   const [isLinkInValid, setIsLinkInValid] = useState(false);
   const onLinkInvalid = () => {
@@ -152,7 +155,7 @@ const HeroContent = (props: TProps) => {
                             type="button"
                             onClick={() => {
                               setSelectedField(data);
-                              setLoading(true);
+                              setLoadingImage(true);
                               regenerateIndividual({
                                 appState,
                                 dispatch,
@@ -160,13 +163,13 @@ const HeroContent = (props: TProps) => {
                                 fieldName: data,
                                 type,
                               }).then(() => {
-                                setLoading(false);
+                                setLoadingImage(false);
                               });
                             }}
                             className="flex items-center gap-2 "
                           >
                             Regenerate
-                            {loading && selectedField === data ? (
+                            {loadingImage  ? (
                               <ImSpinner2 className="animate-spin text-lg text-black" />
                             ) : (
                               <ImPower className=" text-xs " />
@@ -223,7 +226,7 @@ const HeroContent = (props: TProps) => {
                             type="button"
                             onClick={() => {
                               setSelectedField(data);
-                              setLoading(true);
+                              setLoadingHeading(true);
                               regenerateIndividual({
                                 appState,
                                 dispatch,
@@ -231,13 +234,13 @@ const HeroContent = (props: TProps) => {
                                 fieldName: data,
                                 type,
                               }).then(() => {
-                                setLoading(false);
+                                setLoadingHeading(false);
                               });
                             }}
                             className="flex items-center gap-2 "
                           >
                             Regenerate
-                            {loading && selectedField === data ? (
+                            {loadingHeading  ? (
                               <ImSpinner2 className="animate-spin text-lg text-black" />
                             ) : (
                               <ImPower className=" text-xs " />
@@ -272,7 +275,7 @@ const HeroContent = (props: TProps) => {
                             type="button"
                             onClick={() => {
                               setSelectedField(data);
-                              setLoading(true);
+                              setLoadingSubHeading(true);
                               regenerateIndividual({
                                 appState,
                                 dispatch,
@@ -280,13 +283,13 @@ const HeroContent = (props: TProps) => {
                                 fieldName: data,
                                 type,
                               }).then(() => {
-                                setLoading(false);
+                                setLoadingSubHeading(false);
                               });
                             }}
                             className="flex items-center gap-2 "
                           >
                             Regenerate
-                            {loading && selectedField === data ? (
+                            {loadingSubHeading  ? (
                               <ImSpinner2 className="animate-spin text-lg text-black" />
                             ) : (
                               <ImPower className=" text-xs " />
