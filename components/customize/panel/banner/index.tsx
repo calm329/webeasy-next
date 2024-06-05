@@ -212,33 +212,6 @@ const BannerContent = (props: TProps) => {
                         <label htmlFor="businessName" className="block">
                           {data}
                         </label>
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedField(data)
-                              setLoading(true);
-                              regenerateIndividual({
-                                appState,
-                                dispatch,
-                                searchParams,
-                                fieldName: data,
-                                type,
-                              }).then(() => {
-                                setLoading(false);
-                              });
-                            }}
-                            className="flex items-center gap-2 "
-                          >
-                            Regenerate
-                            {loading && data === selectedField ? (
-                              <ImSpinner2 className="animate-spin text-lg text-black" />
-                            ) : (
-                              <ImPower className=" text-xs " />
-                            )}
-                          </button>
-                          <RegenerateOptions setType={setType} type={type} />
-                        </div>
                       </div>
 
                       <input

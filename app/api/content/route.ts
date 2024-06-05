@@ -16,9 +16,6 @@ export async function POST(request: NextRequest) {
   // }
   let fields;
   switch (fieldName) {
-    case "businessName":
-      fields = `only generate the ${type??""} data for the given fields  {"banner":{"businessName": "*Name of the business inferred from all the content*"}}`;
-      break;
     case "heading":
       fields = `only generate the ${type??""} data for the given fields "hero": {"heading": "*insert heading here*"}`;
       break;

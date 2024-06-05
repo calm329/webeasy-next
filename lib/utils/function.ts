@@ -22,77 +22,6 @@ type TParams = {
   fieldName?: string;
 };
 
-const updateDefaultValues = (
-  data: TData,
-  setBrandCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
-  setHeroCustomizeFields: Dispatch<SetStateAction<FormField[]>>,
-  heroButtonList: Array<{
-    type: any;
-    value: string;
-    label: string;
-    name: string;
-  }>,
-  bannerButtonList: Array<{
-    type: any;
-    value: string;
-    label: any;
-    name: string;
-  }>,
-) => {
-  setBrandCustomizeFields((prevFields) =>
-    prevFields.map((field) => {
-      if (field.type === "button") {
-        // If the field is cta, update its children
-        return {
-          ...field,
-          children: bannerButtonList.map((item) => ({
-            name: item.name,
-            type: item.type,
-            defaultValue: item.value,
-            label: item.label,
-            validation: { required: true, link: true },
-            link: item.value ?? "#",
-            placeholder: "Enter",
-          })),
-        };
-      } else {
-        // If it's not cta, just return the field as it is
-        return {
-          ...field,
-          defaultValue:
-            data[field.name as keyof typeof data] ?? field.defaultValue,
-        };
-      }
-    }),
-  );
-
-  setHeroCustomizeFields((prevFields) =>
-    prevFields.map((field) => {
-      if (field.type === "button") {
-        // If the field is cta, update its children
-        return {
-          ...field,
-          children: heroButtonList.map((item) => ({
-            name: item.name,
-            type: item.type,
-            defaultValue: item.value,
-            label: item.label,
-            validation: { required: true, link: true },
-            link: item.value ?? "#",
-            placeholder: "Enter",
-          })),
-        };
-      } else {
-        return {
-          ...field,
-          defaultValue:
-            data[field.name as keyof typeof data] ?? field.defaultValue,
-        };
-      }
-    }),
-  );
-};
-
 export const getContent = async (
   mediaCaption?: string,
   fieldName?: string,
@@ -130,7 +59,7 @@ export const getContent = async (
     // Use URLSearchParams to extract the 'subdomain' parameter
     const params = new URLSearchParams(urlObj.search);
     const subdomain = params.get("subdomain");
-    if (subdomain) {
+    if (subdomain && data?.banner?.businessName) {
       console.log("subdomain: " + subdomain);
       const res = await fetch("/api/image", {
         method: "POST",
@@ -141,18 +70,19 @@ export const getContent = async (
       const image = await res.json();
       data["hero"]["image"]["imageUrl"] = image.imageUrl;
     }
-
-    const res = await fetch("/api/image", {
-      method: "POST",
-      body: JSON.stringify({
-        prompt:
-          "generate logo for " +
-          (data.banner.businessName ?? "") +
-          " but don't add living things in it",
-      }),
-    });
-    const image = await res.json();
-    data["banner"]["logo"]["link"] = image.imageUrl;
+    if(data?.banner?.businessName){
+      const res = await fetch("/api/image", {
+        method: "POST",
+        body: JSON.stringify({
+          prompt:
+            "generate logo for " +
+            (data.banner.businessName ?? "") +
+            " but don't add living things in it",
+        }),
+      });
+      const image = await res.json();
+      data["banner"]["logo"]["link"] = image.imageUrl;
+    }
     console.log("data", data);
     return data;
   } catch (error) {
@@ -540,13 +470,35 @@ export const getInstagramData = async (params: TParams) => {
 
         const colors = await getColors(content["hero"]["image"]["imageUrl"]);
         content["colors"] = colors;
+        let businessName;
+        if (customSubDomain) {
+          if (regenerate) {
+            businessName = appState.aiContent.banner.businessName;
+          } else {
+            businessName = customSubDomain;
+          }
+        } else {
+          if (regenerate) {
+            businessName = appState.aiContent.banner.businessName;
+          } else {
+            businessName = getUsernameFromPosts(
+              JSON.stringify(instagramDetails.iPosts),
+            );
+          }
+        }
 
         dispatch(
           updateAppState({
             ...appState,
             subdomain: siteAvailable,
             aiContent: Object.keys(content).length
-              ? content
+              ? {
+                  ...content,
+                  banner: {
+                    ...content.banner,
+                    businessName: businessName,
+                  },
+                }
               : appState.aiContent,
             iPosts: { ...appState.iPosts, list: instagramDetails.iPosts },
             status: "Done",
