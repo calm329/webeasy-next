@@ -1,4 +1,6 @@
 import { isSubdomainAlreadyInDB, updateSubDomain } from "@/lib/actions";
+import { useAppSelector } from "@/lib/store/hooks";
+import { appState as AS } from "@/lib/store/slices/site-slice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
@@ -34,6 +36,7 @@ const PublishForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const appState = useAppSelector(AS)
   const onSubmit = async () => {
     try {
       setLoading(true);
@@ -47,10 +50,8 @@ const PublishForm = () => {
         return;
       } else {
         const id = searchParams?.get("id");
-        if (id) {
-          const response = await updateSubDomain({ subdomain: getValues().subdomain, id });
-          router.push("https://" + response.subdomain + ".webeasy.ai");
-        }
+        const response = await updateSubDomain({ subdomain: getValues().subdomain, id:id?? appState.id });
+        router.push("https://" + response.subdomain + ".webeasy.ai");
       }
     } catch (error) {
       console.log("error:creatingCustom", error);

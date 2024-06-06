@@ -508,6 +508,7 @@ export const getInstagramData = async (params: TParams) => {
     dispatch(
       updateAppState({
         ...appState,
+        id:siteData.id,
         selectedFont: siteData.font,
         subdomain: siteAvailable,
         status: "Done",
@@ -562,10 +563,29 @@ export const getInstagramData = async (params: TParams) => {
             );
           }
         }
+        let id;
+        if (!regenerate) {
+          const response = await createNewSite({
+            subdomain: getUsernameFromPosts(
+              JSON.stringify(instagramDetails.iPosts),
+            ),
+            aiResult: JSON.stringify(content),
+            posts: JSON.stringify({
+              limit: 20,
+              show: true,
+              list: instagramDetails.iPosts,
+            }),
+            accessToken: searchParams.get("access_token") || "",
+            userId: searchParams.get("user_id") || "",
+            type: "Instagram",
+          });
+          id = response.id
+        }
 
         dispatch(
           updateAppState({
             ...appState,
+            id:id||appState.id,
             // subdomain: customSubDomain || siteAvailable,
             aiContent: Object.keys(content).length
               ? {
@@ -581,22 +601,7 @@ export const getInstagramData = async (params: TParams) => {
             status: "Done",
           }),
         );
-        if (!regenerate) {
-          await createNewSite({
-            subdomain: getUsernameFromPosts(
-              JSON.stringify(instagramDetails.iPosts),
-            ),
-            aiResult: JSON.stringify(content),
-            posts: JSON.stringify({
-              limit: 20,
-              show: true,
-              list: instagramDetails.iPosts,
-            }),
-            accessToken: searchParams.get("access_token") || "",
-            userId: searchParams.get("user_id") || "",
-            type: "Instagram",
-          });
-        }
+     
       } else {
         dispatch(
           updateAppState({
