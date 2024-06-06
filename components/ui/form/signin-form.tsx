@@ -8,6 +8,9 @@ import { toast } from "sonner";
 import { z } from "zod";
 import CryptoJS from "crypto-js";
 import { usePathname, useRouter } from "next/navigation";
+import { saveState } from "@/lib/utils/function";
+import { clearPastAndFuture, appState as AS } from '@/lib/store/slices/site-slice';
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -40,6 +43,8 @@ export default function SigninForm(props: TProps) {
   });
   const router = useRouter()
   const pathname = usePathname()
+  const appState = useAppSelector(AS)
+  const dispatch = useAppDispatch();
   const encryptData = (email: string, password: string) => {
     const encryptedEmail = CryptoJS.AES.encrypt(email, "secretKey").toString();
     const encryptedPassword = CryptoJS.AES.encrypt(
@@ -64,6 +69,12 @@ export default function SigninForm(props: TProps) {
     });
     if(!(pathname.startsWith("/auth")||pathname.startsWith("/custom"))){
       router.push("/settings/websites")
+    }
+    
+    if((pathname.startsWith("/auth")||pathname.startsWith("/custom"))) {
+      saveState(appState, dispatch).then(() =>
+        dispatch(clearPastAndFuture()),
+      );
     }
 
     if (status?.error) {
