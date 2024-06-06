@@ -99,6 +99,32 @@ export async function createNewSite({
   }
 }
 
+export async function updateSubDomain({
+  subdomain,
+  id
+}: {
+  subdomain: string;
+  id:string
+}) {
+
+  try {
+    
+    const siteResponse = await prisma.site.update({
+      where:{
+        id
+      },
+      data:{
+        subdomain
+      }
+    });
+    return { subdomain,id:siteResponse.id };
+  } catch (error) {
+    console.log(error);
+
+    return { error: "Failed to create site" };
+  }
+}
+
 export async function deleteSiteBySiteId({
   id
 }: {
