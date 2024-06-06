@@ -22,6 +22,7 @@ type TInitialState = {
 };
 
 const initialSite: AppState = {
+  id:"",
   openedSlide: null,
   focusedField: null,
   selectedFont: "",
@@ -243,6 +244,9 @@ const siteSlice = createSlice({
       state.loading = false;
       console.log("history", action.payload?.posts);
       state.sites.domain.present.view="Desktop"
+      if(action.payload?.id){
+        state.sites.domain.present.id=action.payload?.id
+      }
       state.sites.domain.present.meta = {
         title: action.payload?.title ?? "",
         description: action.payload?.description ?? "",
