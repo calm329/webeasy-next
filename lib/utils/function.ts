@@ -82,7 +82,7 @@ export const getContent = async (
       }
       data = JSON.parse(content);
     }
-    console.log("appStateWhileGenerating:",appState)
+    console.log("appStateWhileGenerating:", appState);
     if (custom) {
       // console.log("subdomain: " + subdomain);
       if (fieldName === "image" && appState?.aiContent.businessType) {
@@ -101,8 +101,7 @@ export const getContent = async (
         });
         const image = await res.json();
         data["hero"]["image"]["imageUrl"] = image.imageUrl;
-      }
-      else if (appState?.aiContent.businessType && !fieldName) {
+      } else if (appState?.aiContent.businessType && !fieldName) {
         const res = await fetch("/api/image", {
           method: "POST",
           body: JSON.stringify({
@@ -133,8 +132,7 @@ export const getContent = async (
       });
       const image = await res.json();
       data["banner"]["logo"]["link"] = image.imageUrl;
-    }
-    else if (data?.banner?.businessName && !fieldName) {
+    } else if (data?.banner?.businessName && !fieldName) {
       const res = await fetch("/api/image", {
         method: "POST",
         body: JSON.stringify({
@@ -199,10 +197,10 @@ type TRParams = {
   type?: string;
 };
 
-export const getAppState= ()=>{
+export const getAppState = () => {
   const state = store.getState();
-  return state.siteSlice.sites.domain.present
-}
+  return state.siteSlice.sites.domain.present;
+};
 
 type UpdateFunction = () => Promise<void>;
 
@@ -253,10 +251,31 @@ export const regenerateIndividual = async (params: TRParams) => {
         getAppState(), // Fetch the latest app state
       );
 
+      if (fieldName?.split(".") && !fieldName?.split(".")[1]) {
+        switch (fieldName?.split(".")[0]) {
+          case "serviceName":
+            return {
+              id: "",
+              name: content.services.list[0].name,
+              image: "",
+              description: "",
+            };
+          case "serviceDescription":
+            return {
+              id: "",
+              name: "",
+              image: "",
+              description: content.services.list[0].description,
+            };
+        }
+      }
+
       const updateState = async (fieldName: string, content: any) => {
         const currentAppState = getAppState(); // Ensure we are using the latest app state
-        return new Promise<void>(resolve => {
-          switch (fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName) {
+        return new Promise<void>((resolve) => {
+          switch (
+            fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName
+          ) {
             case "businessName":
               dispatch(
                 updateAppState({
@@ -268,7 +287,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                       businessName: content.banner.businessName,
                     },
                   },
-                })
+                }),
               );
               break;
             case "logo":
@@ -285,7 +304,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                       },
                     },
                   },
-                })
+                }),
               );
               break;
             case "image":
@@ -306,7 +325,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                       },
                     },
                   },
-                })
+                }),
               );
               break;
             case "heading":
@@ -320,7 +339,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                       heading: content.hero.heading,
                     },
                   },
-                })
+                }),
               );
               break;
             case "subheading":
@@ -334,7 +353,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                       subheading: content.hero.subheading,
                     },
                   },
-                })
+                }),
               );
               break;
             case "serviceName":
@@ -346,19 +365,21 @@ export const regenerateIndividual = async (params: TRParams) => {
                       ...currentAppState.aiContent,
                       services: {
                         ...currentAppState.aiContent.services,
-                        list: currentAppState.aiContent.services.list.map((service) => {
-                          if (service.id === fieldName?.split(".")[1]) {
-                            return {
-                              ...service,
-                              name: content.services.list[0].name,
-                            };
-                          } else {
-                            return service;
-                          }
-                        }),
+                        list: currentAppState.aiContent.services.list.map(
+                          (service) => {
+                            if (service.id === fieldName?.split(".")[1]) {
+                              return {
+                                ...service,
+                                name: content.services.list[0].name,
+                              };
+                            } else {
+                              return service;
+                            }
+                          },
+                        ),
                       },
                     },
-                  })
+                  }),
                 );
               } else {
                 resolve();
@@ -374,19 +395,22 @@ export const regenerateIndividual = async (params: TRParams) => {
                       ...currentAppState.aiContent,
                       services: {
                         ...currentAppState.aiContent.services,
-                        list: currentAppState.aiContent.services.list.map((service) => {
-                          if (service.id === fieldName?.split(".")[1]) {
-                            return {
-                              ...service,
-                              description: content.services.list[0].description,
-                            };
-                          } else {
-                            return service;
-                          }
-                        }),
+                        list: currentAppState.aiContent.services.list.map(
+                          (service) => {
+                            if (service.id === fieldName?.split(".")[1]) {
+                              return {
+                                ...service,
+                                description:
+                                  content.services.list[0].description,
+                              };
+                            } else {
+                              return service;
+                            }
+                          },
+                        ),
                       },
                     },
-                  })
+                  }),
                 );
               } else {
                 resolve();
@@ -437,7 +461,7 @@ export const regenerateText = async (params: TParams) => {
           updateAppState({
             ...appState,
             aiContent: Object.keys(content).length
-              ? {...appState.aiContent,...content}
+              ? { ...appState.aiContent, ...content }
               : appState.aiContent,
             status: "Done",
           }),
@@ -543,7 +567,7 @@ export const getInstagramData = async (params: TParams) => {
     dispatch(
       updateAppState({
         ...appState,
-        id:siteData.id,
+        id: siteData.id,
         selectedFont: siteData.font,
         subdomain: siteAvailable,
         status: "Done",
@@ -582,14 +606,14 @@ export const getInstagramData = async (params: TParams) => {
             status: "Choosing Colors",
           }),
         );
-        if(content["hero"]["image"]["imageUrl"]){
+        if (content["hero"]["image"]["imageUrl"]) {
           const colors = await getColors(content["hero"]["image"]["imageUrl"]);
           content["colors"] = colors;
         }
         let businessName;
         if (custom) {
-            businessName = appState.aiContent.banner.businessName;
-        } else{
+          businessName = appState.aiContent.banner.businessName;
+        } else {
           if (regenerate) {
             businessName = appState.aiContent.banner.businessName;
           } else {
@@ -614,13 +638,13 @@ export const getInstagramData = async (params: TParams) => {
             userId: searchParams.get("user_id") || "",
             type: "Instagram",
           });
-          id = response.id
+          id = response.id;
         }
 
         dispatch(
           updateAppState({
             ...appState,
-            id:id||appState.id,
+            id: id || appState.id,
             // subdomain: customSubDomain || siteAvailable,
             aiContent: Object.keys(content).length
               ? {
@@ -636,7 +660,6 @@ export const getInstagramData = async (params: TParams) => {
             status: "Done",
           }),
         );
-     
       } else {
         dispatch(
           updateAppState({
