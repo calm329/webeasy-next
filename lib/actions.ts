@@ -155,6 +155,33 @@ export async function checkSiteAvailability(
   }
 }
 
+export async function isSubdomainAlreadyInDB(
+  subdomain:string,
+) {
+  const session = await getServerSession(authOptions);
+
+  let user;
+
+  if (session) {
+    user = await prisma.user.findFirst({
+      where: {
+        email: session.user?.email,
+      },
+    });
+  }
+
+  const isSubdomain = await prisma.site.findFirst({
+    where: {subdomain},
+
+  });
+
+  if (isSubdomain) {
+    return isSubdomain;
+  } else {
+    return null;
+  }
+}
+
 export async function updateSite(
   subdomain: string,
   data: { [key: string]: string },
