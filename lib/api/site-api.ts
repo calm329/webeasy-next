@@ -1,5 +1,5 @@
 import { checkSiteAvailability, createNewSite, deleteSiteBySiteId, updateSite } from "../actions";
-import { getSiteData, getSitesByUserId } from "../fetchers";
+import { getSiteData, getSiteDataById, getSitesByUserId } from "../fetchers";
 
 class SiteApiService {
   /**
@@ -39,12 +39,21 @@ class SiteApiService {
 
   /**
    * Get site by SubDomain
-   * @params id
+   * @params subdomain
    * @returns site
    */
   public async getBySubDomain(subdomain?: string) {
     return getSiteData(subdomain);
   }
+
+    /**
+   * Get site by ID
+   * @params id
+   * @returns site
+   */
+    public async getSiteById(id: string) {
+      return getSiteDataById(id);
+    }
 
   /**
    * Get site by userId

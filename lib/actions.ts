@@ -91,7 +91,7 @@ export async function createNewSite({
       `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
     );
 
-    return { subdomain };
+    return { subdomain,id:siteResponse.id };
   } catch (error) {
     console.log(error);
 

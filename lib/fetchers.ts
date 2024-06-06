@@ -14,7 +14,7 @@ export async function getSiteData(subdomain?: string) {
         },
       });
       console.log("site found", site);
-      return site
+      return site;
     },
     [`${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
     {
@@ -22,6 +22,16 @@ export async function getSiteData(subdomain?: string) {
       tags: [`${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
     },
   )();
+}
+
+export async function getSiteDataById(id: string) {
+  const site = await prisma.site.findFirst({
+    where: {
+      id: id,
+    },
+  });
+  console.log("site found", site);
+  return site;
 }
 
 export async function getSitesByUserId() {
@@ -35,20 +45,12 @@ export async function getSitesByUserId() {
       email: session?.user?.email,
     },
   });
-  return await unstable_cache(
-    async () => {
-      return prisma.site.findMany({
-        where: {
-          userId: user?.id,
-        },
-      });
+
+  return prisma.site.findMany({
+    where: {
+      userId: user?.id,
     },
-    [`${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
-    {
-      revalidate: 900,
-      tags: [`${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`],
-    },
-  )();
+  });
 }
 
 export async function getAccessTokenBySiteId(siteId: string) {
@@ -98,8 +100,6 @@ export async function getAllTemplates() {
     const templates = await prisma.template.findMany();
     return templates;
   } catch (error) {
-    
-
     return [];
   }
 }

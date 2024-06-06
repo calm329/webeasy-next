@@ -65,6 +65,11 @@ type TSites = Array<{
   type: string;
 }> | null;
 
+const sortByCreatedAtDescending = (sites: TSites) => {
+  return sites?.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+};
+
+
 export default function WebsitesForm() {
   const [selectedSection, setSelectedSection] =
     useState<TSectionName>("Instagram");
@@ -114,6 +119,17 @@ export default function WebsitesForm() {
       }
     } catch (error) {}
   };
+  useEffect(() => {
+    if (sites) {
+      const filteredSites = sites.filter((site) => site.type === selectedSection);
+      const sortedSites = sortByCreatedAtDescending(filteredSites);
+      const startIndex = (page - 1) * dataPerPage;
+      const endIndex = startIndex + dataPerPage;
+      if(sortedSites){
+        setPaginatedData(sortedSites.slice(startIndex, endIndex));
+      }
+    }
+  }, [page, sites, selectedSection]);
   // if (sites) console.log(JSON.parse(sites[1]?.aiResult)?.hero?.image.imageUrl);
   const totalPages = Math.ceil(
     (sites?.filter((site) => site.type === selectedSection).length || 0) /
@@ -180,7 +196,7 @@ export default function WebsitesForm() {
                         className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
                         onClick={() =>
                           site.type === "Custom"
-                            ? router.push("/custom?subdomain=" + site.subdomain)
+                            ? router.push("/custom?id=" + site.id)
                             : redirectToAuth(site.id)
                         }
                       >

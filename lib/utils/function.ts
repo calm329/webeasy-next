@@ -34,11 +34,11 @@ export const getContent = async (
 
     // Use URLSearchParams to extract the 'subdomain' parameter
     const params = new URLSearchParams(urlObj.search);
-    const subdomain = params.get("subdomain");
+    const custom = params.get("id");
     let data;
     if (fieldName !== "image" && fieldName !== "logo") {
       let response;
-      if (subdomain) {
+      if (custom) {
         response = await fetch("/api/content/custom", {
           method: "POST",
           body: JSON.stringify({
@@ -82,8 +82,8 @@ export const getContent = async (
       data = JSON.parse(content);
     }
     console.log("appStateWhileGenerating:",appState)
-    if (subdomain) {
-      console.log("subdomain: " + subdomain);
+    if (custom) {
+      // console.log("subdomain: " + subdomain);
       if (fieldName === "image" && appState?.aiContent.businessType) {
         data = {
           hero: {
@@ -208,7 +208,7 @@ export const regenerateIndividual = async (params: TRParams) => {
 
     // Use URLSearchParams to extract the 'subdomain' parameter
     const params = new URLSearchParams(urlObj.search);
-    const subdomain = params.get("subdomain");
+    const custom = params.get("id");
     const instagramDetails = await getInstagramDetails(userId, accessToken);
     if (instagramDetails) {
       const content = await getContent(
@@ -260,7 +260,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                   ...appState.aiContent.hero,
                   image: {
                     ...appState.aiContent.hero.image,
-                    imageUrl: subdomain
+                    imageUrl: custom
                       ? content["hero"]["image"]["imageUrl"]
                       : instagramDetails.imageIds[
                           content["hero"]["image"]["imageId"]
@@ -421,7 +421,7 @@ export const regenerateImage = async (params: TParams) => {
 
     // Use URLSearchParams to extract the 'subdomain' parameter
     const params = new URLSearchParams(urlObj.search);
-    const subdomain = params.get("subdomain");
+    const custom = params.get("id");
     const instagramDetails = await getInstagramDetails(userId, accessToken);
     if (instagramDetails) {
       dispatch(
@@ -455,7 +455,7 @@ export const regenerateImage = async (params: TParams) => {
                 ...appState.aiContent.hero,
                 image: {
                   ...content["hero"]["image"],
-                  imageUrl: subdomain
+                  imageUrl: custom
                     ? content["hero"]["image"]["imageUrl"]
                     : instagramDetails.imageIds[
                         content["hero"]["image"]["imageId"]
@@ -477,7 +477,7 @@ export const getInstagramData = async (params: TParams) => {
   const { regenerate, searchParams, dispatch, appState } = params;
   const userId = searchParams.get("user_id") ?? "";
   const accessToken = searchParams.get("access_token") ?? "";
-  const customSubDomain = searchParams.get("subdomain") ?? "";
+  const custom = searchParams.get("id") ?? "";
   dispatch(
     updateAppState({
       ...appState,
@@ -535,7 +535,7 @@ export const getInstagramData = async (params: TParams) => {
       );
       if (content) {
         console.log("content", content);
-        if (!customSubDomain) {
+        if (!custom) {
           content["hero"]["image"]["imageUrl"] =
             instagramDetails.imageIds[content["hero"]["image"]["imageId"]];
         }
@@ -551,13 +551,9 @@ export const getInstagramData = async (params: TParams) => {
           content["colors"] = colors;
         }
         let businessName;
-        if (customSubDomain) {
-          if (regenerate) {
+        if (custom) {
             businessName = appState.aiContent.banner.businessName;
-          } else {
-            businessName = customSubDomain;
-          }
-        } else {
+        } else{
           if (regenerate) {
             businessName = appState.aiContent.banner.businessName;
           } else {
@@ -570,7 +566,7 @@ export const getInstagramData = async (params: TParams) => {
         dispatch(
           updateAppState({
             ...appState,
-            subdomain: customSubDomain || siteAvailable,
+            // subdomain: customSubDomain || siteAvailable,
             aiContent: Object.keys(content).length
               ? {
                   ...appState.aiContent,

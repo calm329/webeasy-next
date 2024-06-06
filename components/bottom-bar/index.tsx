@@ -20,6 +20,7 @@ import {
   appState as AS,
   clearPastAndFuture,
   futureAppState as FAS,
+  fetchSiteById,
   fetchSitesByDomain,
   loading as LD,
   pastAppState as PAS,
@@ -129,10 +130,10 @@ const BottomToolBar = (props: TProps) => {
               size={18}
               onClick={() => {
                 if (pathname.startsWith("/custom")) {
-                  if (searchParams.get("subdomain")) {
+                  if (searchParams.get("id")) {
                     dispatch(
-                      fetchSitesByDomain({
-                        subdomain: searchParams.get("subdomain") ?? "",
+                      fetchSiteById({
+                        id: searchParams.get("id") ?? "",
                       }),
                     );
                   }
