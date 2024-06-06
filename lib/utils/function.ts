@@ -81,10 +81,10 @@ export const getContent = async (
       }
       data = JSON.parse(content);
     }
-
+    console.log("appStateWhileGenerating:",appState)
     if (subdomain) {
       console.log("subdomain: " + subdomain);
-      if (fieldName === "image") {
+      if (fieldName === "image" && appState?.aiContent.businessType) {
         data = {
           hero: {
             image: {
@@ -146,7 +146,7 @@ export const getContent = async (
       const image = await res.json();
       data["banner"]["logo"]["link"] = image.imageUrl;
     }
-    console.log("data", data);
+    console.log("generated-data", data);
     return data;
   } catch (error) {
     console.log("error", error);
@@ -402,7 +402,7 @@ export const regenerateText = async (params: TParams) => {
           updateAppState({
             ...appState,
             aiContent: Object.keys(content).length
-              ? content
+              ? {...appState.aiContent,...content}
               : appState.aiContent,
             status: "Done",
           }),
@@ -546,9 +546,10 @@ export const getInstagramData = async (params: TParams) => {
             status: "Choosing Colors",
           }),
         );
-
-        const colors = await getColors(content["hero"]["image"]["imageUrl"]);
-        content["colors"] = colors;
+        if(content["hero"]["image"]["imageUrl"]){
+          const colors = await getColors(content["hero"]["image"]["imageUrl"]);
+          content["colors"] = colors;
+        }
         let businessName;
         if (customSubDomain) {
           if (regenerate) {

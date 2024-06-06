@@ -61,6 +61,8 @@ const initialSite: AppState = {
       list: [],
       title: "",
     },
+    businessType:"",
+    location:""
   },
   view: "Desktop",
   editable: true,
