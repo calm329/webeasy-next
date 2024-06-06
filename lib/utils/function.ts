@@ -47,6 +47,10 @@ export const getContent = async (
               location: appState?.aiContent.location,
               businessName: appState?.aiContent.banner.businessName,
             },
+            fieldName: fieldName?.split(".")
+              ? fieldName?.split(".")[0]
+              : fieldName ?? "",
+            type: type ?? "",
           }),
         });
       } else {
@@ -97,10 +101,7 @@ export const getContent = async (
         const image = await res.json();
         data["hero"]["image"]["imageUrl"] = image.imageUrl;
       }
-
-      console.log("appState",appState)
-
-      if (appState?.aiContent.businessType) {
+      else if (appState?.aiContent.businessType && !fieldName) {
         const res = await fetch("/api/image", {
           method: "POST",
           body: JSON.stringify({
@@ -132,7 +133,7 @@ export const getContent = async (
       const image = await res.json();
       data["banner"]["logo"]["link"] = image.imageUrl;
     }
-    if (data?.banner?.businessName) {
+    else if (data?.banner?.businessName && !fieldName) {
       const res = await fetch("/api/image", {
         method: "POST",
         body: JSON.stringify({
@@ -383,7 +384,12 @@ export const regenerateText = async (params: TParams) => {
         }),
       );
 
-      const content = await getContent(instagramDetails.mediaCaption,"","",appState);
+      const content = await getContent(
+        instagramDetails.mediaCaption,
+        "",
+        "",
+        appState,
+      );
 
       if (content) {
         console.log("content", content);
@@ -425,7 +431,12 @@ export const regenerateImage = async (params: TParams) => {
         }),
       );
 
-      let content = await getContent(instagramDetails.mediaCaption,"","",appState);
+      let content = await getContent(
+        instagramDetails.mediaCaption,
+        "",
+        "",
+        appState,
+      );
 
       if (content) {
         dispatch(
@@ -516,7 +527,12 @@ export const getInstagramData = async (params: TParams) => {
         }),
       );
 
-      const content = await getContent(instagramDetails.mediaCaption,"","",appState);
+      const content = await getContent(
+        instagramDetails.mediaCaption,
+        "",
+        "",
+        appState,
+      );
       if (content) {
         console.log("content", content);
         if (!customSubDomain) {
@@ -556,7 +572,7 @@ export const getInstagramData = async (params: TParams) => {
             subdomain: customSubDomain || siteAvailable,
             aiContent: Object.keys(content).length
               ? {
-                ...appState.aiContent,
+                  ...appState.aiContent,
                   ...content,
                   banner: {
                     ...content.banner,
