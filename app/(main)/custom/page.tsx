@@ -44,7 +44,7 @@ export default function Page() {
   const handleChange =((name: string, value: string) => {
     handleChangeAppState(dispatch, appState, name, value);
   });
-
+  
   const matches = useMediaQuery("(min-width: 768px)");
   useEffect(() => {
     if (searchParams.get("subdomain")) {
