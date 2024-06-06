@@ -235,13 +235,19 @@ const CustomWebsiteForm = () => {
     try {
       setLoading(true);
       console.log("onSubmit");
-      const isSubdomain = await isSubdomainAlreadyInDB(getValues().subdomain)
-      if(isSubdomain){
-        toast.error("Subdomain already exists. Please Enter a unique sub domain")
+  
+      const startIsSubdomain = performance.now();
+      const isSubdomain = await isSubdomainAlreadyInDB(getValues().subdomain);
+      const endIsSubdomain = performance.now();
+      console.log(`isSubdomainAlreadyInDB took ${endIsSubdomain - startIsSubdomain} ms`);
+  
+      if (isSubdomain) {
+        toast.error("Subdomain already exists. Please Enter a unique sub domain");
         setLoading(false);
         return;
       }
-
+  
+      const startContentFetch = performance.now();
       const response = await fetch("/api/content/custom", {
         method: "POST",
         body: JSON.stringify({
@@ -252,28 +258,38 @@ const CustomWebsiteForm = () => {
           },
         }),
       });
-
+      
+      
+  
       let content = "";
       const reader = response.body?.getReader();
       if (!reader) return;
-
+  
       const decoder = new TextDecoder();
       let done = false;
       while (!done) {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
         const chunkValue = decoder.decode(value);
-
+  
         if (chunkValue && chunkValue !== "###") content += chunkValue;
       }
+      const endContentFetch = performance.now();
+      console.log(`Content fetch took ${endContentFetch - startContentFetch} ms`);
       const data = JSON.parse(content);
+  
+      const startImageFetch = performance.now();
       const res = await fetch("/api/image", {
         method: "POST",
         body: JSON.stringify({
           prompt: getValues().business,
         }),
       });
+      const endImageFetch = performance.now();
+      console.log(`Image fetch took ${endImageFetch - startImageFetch} ms`);
       const image = await res.json();
+  
+      const startLogoFetch = performance.now();
       const logoRes = await fetch("/api/image", {
         method: "POST",
         body: JSON.stringify({
@@ -283,8 +299,15 @@ const CustomWebsiteForm = () => {
             " but don't add living things in it",
         }),
       });
+      const endLogoFetch = performance.now();
+      console.log(`Logo fetch took ${endLogoFetch - startLogoFetch} ms`);
       const logo = await logoRes.json();
+  
+      const startGetColors = performance.now();
       const colors = await getColors(image.imageUrl);
+      const endGetColors = performance.now();
+      console.log(`getColors took ${endGetColors - startGetColors} ms`);
+  
       console.log("imageUrl", image);
       const finalData = {
         ...appState.aiContent,
@@ -307,17 +330,23 @@ const CustomWebsiteForm = () => {
         businessType: getValues().business,
         location: getValues().location,
       };
+  
+      const startCreateSite = performance.now();
       await createNewSite({
         subdomain: getValues().subdomain,
         aiResult: JSON.stringify(finalData),
         type: "Custom",
       });
+      const endCreateSite = performance.now();
+      console.log(`createNewSite took ${endCreateSite - startCreateSite} ms`);
+  
       router.push("/custom?subdomain=" + getValues().subdomain);
       setLoading(false);
     } catch (error) {
       console.log("error:creatingCustom", error);
     }
   };
+  
   return (
     <form
       className="flex w-full items-center justify-center gap-5 max-sm:flex-col"
