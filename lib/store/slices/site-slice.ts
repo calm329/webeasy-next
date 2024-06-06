@@ -96,6 +96,17 @@ const fetchSitesByDomain = createAsyncThunk(
   },
 );
 
+const fetchSiteById = createAsyncThunk(
+  "site/fetchSiteById",
+  async ({ id }: { id: string }, thunkApi) => {
+    try {
+      return thunkApi.fulfillWithValue(await SiteApi.getSiteById(id));
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
 //fetch Sites by user
 const fetchSitesByUser = createAsyncThunk(
   "site/fetchUserSites",
@@ -249,6 +260,31 @@ const siteSlice = createSlice({
     builder.addCase(fetchSitesByDomain.rejected, (state) => {
       state.loading = false;
     });
+
+    builder.addCase(fetchSiteById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchSiteById.fulfilled, (state, action) => {
+      state.loading = false;
+      console.log("history", action.payload?.posts);
+      state.sites.domain.present.view="Desktop"
+      state.sites.domain.present.meta = {
+        title: action.payload?.title ?? "",
+        description: action.payload?.description ?? "",
+      };
+      state.sites.domain.present.subdomain = action.payload?.subdomain ?? "";
+
+      state.sites.domain.present.status = "Done";
+      if (action?.payload?.posts) {
+        state.sites.domain.present.iPosts = JSON.parse(
+          action.payload?.posts ?? "",
+        );
+      }
+      state.sites.domain.present.aiContent = JSON.parse(action.payload?.aiResult??"");
+    });
+    builder.addCase(fetchSiteById.rejected, (state) => {
+      state.loading = false;
+    });
     builder.addCase(fetchSitesByUser.pending, (state) => {
       state.loading = true;
     });
@@ -296,7 +332,7 @@ const siteSlice = createSlice({
 });
 
 //export async thunks
-export { fetchSitesByDomain, updateSite, fetchSitesByUser, deleteSite };
+export { fetchSitesByDomain, updateSite, fetchSitesByUser, deleteSite,fetchSiteById };
 export const { updateAppState, undo, redo, clearPastAndFuture } =
   siteSlice.actions;
 export const appState = (state: RootState) =>

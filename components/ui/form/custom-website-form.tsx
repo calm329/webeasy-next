@@ -200,13 +200,7 @@ const CustomWebsiteForm = () => {
     business: z.string().min(1, "Required"),
     location: z.string().min(1, "Required"),
     businessName: z.string().min(1, "Required"),
-    subdomain: z
-      .string()
-      .min(1, "Required")
-      .regex(
-        /^[a-z0-9]+$/,
-        "Subdomain must contain only lowercase letters, numbers, and no spaces",
-      ),
+
   });
   const appState = useAppSelector(AS);
   const [loading, setLoading] = useState(false);
@@ -217,7 +211,7 @@ const CustomWebsiteForm = () => {
     business: "",
     location: "",
     businessName: "",
-    subdomain: "",
+ 
   };
 
   const {
@@ -236,16 +230,16 @@ const CustomWebsiteForm = () => {
       setLoading(true);
       console.log("onSubmit");
   
-      const startIsSubdomain = performance.now();
-      const isSubdomain = await isSubdomainAlreadyInDB(getValues().subdomain);
-      const endIsSubdomain = performance.now();
-      console.log(`isSubdomainAlreadyInDB took ${endIsSubdomain - startIsSubdomain} ms`);
+      // const startIsSubdomain = performance.now();
+      // // const isSubdomain = await isSubdomainAlreadyInDB(getValues().subdomain);
+      // const endIsSubdomain = performance.now();
+      // console.log(`isSubdomainAlreadyInDB took ${endIsSubdomain - startIsSubdomain} ms`);
   
-      if (isSubdomain) {
-        toast.error("Subdomain already exists. Please Enter a unique sub domain");
-        setLoading(false);
-        return;
-      }
+      // if (isSubdomain) {
+      //   toast.error("Subdomain already exists. Please Enter a unique sub domain");
+      //   setLoading(false);
+      //   return;
+      // }
   
       const startContentFetch = performance.now();
       const response = await fetch("/api/content/custom", {
@@ -332,15 +326,15 @@ const CustomWebsiteForm = () => {
       };
   
       const startCreateSite = performance.now();
-      await createNewSite({
-        subdomain: getValues().subdomain,
+      const responseSite= await createNewSite({
+        subdomain: "",
         aiResult: JSON.stringify(finalData),
         type: "Custom",
       });
       const endCreateSite = performance.now();
       console.log(`createNewSite took ${endCreateSite - startCreateSite} ms`);
   
-      router.push("/custom?subdomain=" + getValues().subdomain);
+      router.push("/custom?id=" + responseSite.id);
       setLoading(false);
     } catch (error) {
       console.log("error:creatingCustom", error);
@@ -417,7 +411,7 @@ const CustomWebsiteForm = () => {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <label
             htmlFor="subdomain"
             className="block text-sm font-medium leading-6 text-gray-900"
@@ -437,7 +431,7 @@ const CustomWebsiteForm = () => {
               </p>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
       <button
         //   onClick={() => handleButtonSubmit(data.name)}

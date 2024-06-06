@@ -20,6 +20,7 @@ import {
   updateAppState,
   loading as LD,
   fetchSitesByDomain,
+  fetchSiteById,
 } from "@/lib/store/slices/site-slice";
 import FontSlideOver from "@/components/ui/slide-over/font-slide";
 import { FontsDrawer } from "@/components/ui/drawer/fonts-drawer";
@@ -47,10 +48,12 @@ export default function Page() {
   
   const matches = useMediaQuery("(min-width: 768px)");
   useEffect(() => {
-    if (searchParams.get("subdomain")) {
+    if (searchParams.get("id")) {
       dispatch(
-        fetchSitesByDomain({ subdomain: searchParams.get("subdomain") ?? "" }),
+        fetchSiteById({ id: searchParams.get("id") ?? "" }),
       );
+    }else{
+      router.push("/website-builder")
     }
   }, [searchParams]);
   useEffect(() => {
