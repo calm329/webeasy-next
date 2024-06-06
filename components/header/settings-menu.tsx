@@ -27,7 +27,7 @@ function classNames(...classes: string[]) {
 }
 
 type TProps = {
-  handleChange?: DebouncedState<(name: string, value: string) => void>;
+  handleChange?: (name: string, value: string) => void;
   appState: AppState;
   templates: TTemplate | null;
   setShowAuthModal: Dispatch<SetStateAction<boolean>>;

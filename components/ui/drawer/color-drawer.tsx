@@ -7,7 +7,7 @@ import CustomizeColor from "../../customize/color";
 type TProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleChange: DebouncedState<(name: string, value: string) => void>;
+  handleChange: (name: string, value: string) => void;
   appState: AppState;
   meta?: TMeta;
 };

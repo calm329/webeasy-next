@@ -72,7 +72,7 @@ function classNames(...classes: any[]) {
 type TProps = {
   showNavigation: boolean;
   isAuth?: boolean;
-  handleChange?: DebouncedState<(name: string, value: string) => void>;
+  handleChange?: (name: string, value: string) => void;
   setIsFontOpen?: Dispatch<SetStateAction<boolean>>;
 };
 export type TTemplate = {

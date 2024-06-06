@@ -9,7 +9,7 @@ import { DebouncedState, useMediaQuery } from "usehooks-ts";
 type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  handleChange: DebouncedState<(name: string, value: string) => void>;
+  handleChange: (name: string, value: string) => void;
   appState: AppState;
 };
 const CustomizeColor = (props: TProps) => {

@@ -28,7 +28,7 @@ import { regenerateIndividual } from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
 type TProps = {
   section: TSection;
-  handleChange: DebouncedState<(name: string, value: string) => void>;
+  handleChange: (name: string, value: string) => void;
   subdomain: string;
   setShowForm: React.Dispatch<
     React.SetStateAction<{
