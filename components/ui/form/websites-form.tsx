@@ -19,6 +19,15 @@ import {
   sitesData as SD,
 } from "@/lib/store/slices/site-slice";
 import { BsTrash3 } from "react-icons/bs";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "../pagination";
 
 type TSectionObject = Array<{
   logo: React.ReactNode;
@@ -53,6 +62,7 @@ type TSites = Array<{
   aiResult: any;
   createdAt: Date;
   updatedAt: Date;
+  type: string;
 }> | null;
 
 export default function WebsitesForm() {
@@ -60,10 +70,25 @@ export default function WebsitesForm() {
     useState<TSectionName>("Instagram");
   const searchParams = useSearchParams();
   const router = useRouter();
-
   const sites = useAppSelector(SD);
   const isLoading = useAppSelector(LD);
   const dispatch = useAppDispatch();
+  const [page, setPage] = useState(1);
+  const dataPerPage = 4;
+  const [paginatedData, setPaginatedData] = useState<TSites>(null);
+
+  useEffect(() => {
+    if (sites) {
+      const startIndex = (page - 1) * dataPerPage;
+      const endIndex = startIndex + dataPerPage;
+      setPaginatedData(
+        sites
+          .filter((site) => site.type === selectedSection)
+          .slice(startIndex, endIndex),
+      );
+    }
+  }, [page, sites, selectedSection]);
+
   const getData = async () => {
     try {
       const siteData = await dispatch(fetchSitesByUser()).unwrap();
@@ -89,8 +114,11 @@ export default function WebsitesForm() {
       }
     } catch (error) {}
   };
-  if (sites) console.log(JSON.parse(sites[1]?.aiResult)?.hero?.image.imageUrl);
-
+  // if (sites) console.log(JSON.parse(sites[1]?.aiResult)?.hero?.image.imageUrl);
+  const totalPages = Math.ceil(
+    (sites?.filter((site) => site.type === selectedSection).length || 0) /
+      dataPerPage,
+  );
   return (
     <div className="">
       <div className="">
@@ -115,7 +143,7 @@ export default function WebsitesForm() {
         </div>
       ) : (
         <div className="flex flex-wrap gap-10 px-5 pt-10">
-          {sites?.map(
+          {paginatedData?.map(
             (site) =>
               site.type === selectedSection && (
                 <div
@@ -172,6 +200,39 @@ export default function WebsitesForm() {
                 </div>
               ),
           )}
+          <Pagination>
+            <PaginationContent>
+              {page > 1 && (
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                  />
+                </PaginationItem>
+              )}
+              {[...Array(totalPages)].map((_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    href="#"
+                    isActive={i + 1 === page}
+                    onClick={() => setPage(i + 1)}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              {page < totalPages && (
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={() =>
+                      setPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                  />
+                </PaginationItem>
+              )}
+            </PaginationContent>
+          </Pagination>
         </div>
       )}
     </div>
