@@ -40,7 +40,7 @@ const SelectedTemplate = (props: TProps) => {
   const pathname = usePathname();
   return (
     <div
-      className={` mx-auto overflow-auto ${appState.view === "Mobile" && "h-[800px] w-[480px] rounded-xl border-8 border-black"} ${appState.view === "Tablet" && "h-[1024px] w-[768px] rounded-xl border-8  border-black"} ${appState.view === "Desktop" && "h-full w-full"}`}
+      className={` mx-auto overflow-auto ${appState.view === "Mobile" && "h-[800px] w-[480px] rounded-xl border-8 border-black no-scrollbar"} ${appState.view === "Tablet" && "h-[1024px] w-[768px] rounded-xl border-8  border-black no-scrollbar"} ${appState.view === "Desktop" && "h-full w-full"}`}
     >
       {selectedTemplate?.name === "Basic template" && (
         <BasicTemplate
