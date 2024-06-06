@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       break;
     default:
       fields = `
-      Make the list of services from businessType ${data.businessType} which is  and list size of services should be from 3 to 6.
+      Make the list of services from businessType ${data.businessType} which is  and list size of services should be from 3 to 6 and services name and description should be unique for all services.
       
       {
         "banner": {
