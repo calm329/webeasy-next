@@ -26,51 +26,113 @@ export const getContent = async (
   mediaCaption?: string,
   fieldName?: string,
   type?: string,
+  appState?: AppState,
 ) => {
   try {
-    const response = await fetch("/api/content", {
-      method: "POST",
-      body: JSON.stringify({
-        mediaCaption,
-        fieldName: fieldName?.split(".")
-          ? fieldName?.split(".")[0]
-          : fieldName ?? "",
-        type: type ?? "",
-      }),
-    });
-
-    let content = "";
-    const reader = response.body?.getReader();
-    if (!reader) return;
-
-    const decoder = new TextDecoder();
-    let done = false;
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
-
-      if (chunkValue && chunkValue !== "###") content += chunkValue;
-    }
-    const data = JSON.parse(content);
     // Create a URL object
     const urlObj = new URL(window.location.href);
 
     // Use URLSearchParams to extract the 'subdomain' parameter
     const params = new URLSearchParams(urlObj.search);
     const subdomain = params.get("subdomain");
-    if (subdomain && data?.banner?.businessName) {
+    let data;
+    if (fieldName !== "image" && fieldName !== "logo") {
+      let response;
+      if (subdomain) {
+        response = await fetch("/api/content/custom", {
+          method: "POST",
+          body: JSON.stringify({
+            data: {
+              businessType: appState?.aiContent.businessType,
+              location: appState?.aiContent.location,
+              businessName: appState?.aiContent.banner.businessName,
+            },
+          }),
+        });
+      } else {
+        response = await fetch("/api/content", {
+          method: "POST",
+          body: JSON.stringify({
+            mediaCaption,
+            fieldName: fieldName?.split(".")
+              ? fieldName?.split(".")[0]
+              : fieldName ?? "",
+            type: type ?? "",
+          }),
+        });
+      }
+
+      let content = "";
+      const reader = response.body?.getReader();
+      if (!reader) return;
+
+      const decoder = new TextDecoder();
+      let done = false;
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+
+        if (chunkValue && chunkValue !== "###") content += chunkValue;
+      }
+      data = JSON.parse(content);
+    }
+
+    if (subdomain) {
       console.log("subdomain: " + subdomain);
+      if (fieldName === "image") {
+        data = {
+          hero: {
+            image: {
+              imageUrl: appState?.aiContent.hero.image.imageUrl ?? "",
+            },
+          },
+        };
+        const res = await fetch("/api/image", {
+          method: "POST",
+          body: JSON.stringify({
+            prompt: appState?.aiContent.businessType ?? "",
+          }),
+        });
+        const image = await res.json();
+        data["hero"]["image"]["imageUrl"] = image.imageUrl;
+      }
+
+      console.log("appState",appState)
+
+      if (appState?.aiContent.businessType) {
+        const res = await fetch("/api/image", {
+          method: "POST",
+          body: JSON.stringify({
+            prompt: appState?.aiContent.businessType ?? "",
+          }),
+        });
+        const image = await res.json();
+        data["hero"]["image"]["imageUrl"] = image.imageUrl;
+      }
+    }
+
+    if (fieldName === "logo") {
+      data = {
+        banner: {
+          logo: {
+            link: appState?.aiContent.banner.logo.link ?? "",
+          },
+        },
+      };
       const res = await fetch("/api/image", {
         method: "POST",
         body: JSON.stringify({
-          prompt: data.banner.businessName ?? "",
+          prompt:
+            "generate logo for " +
+            (appState?.aiContent.banner.businessName ?? "") +
+            " but don't add living things in it",
         }),
       });
       const image = await res.json();
-      data["hero"]["image"]["imageUrl"] = image.imageUrl;
+      data["banner"]["logo"]["link"] = image.imageUrl;
     }
-    if(data?.banner?.businessName){
+    if (data?.banner?.businessName) {
       const res = await fetch("/api/image", {
         method: "POST",
         body: JSON.stringify({
@@ -152,6 +214,7 @@ export const regenerateIndividual = async (params: TRParams) => {
         instagramDetails.mediaCaption,
         fieldName,
         type,
+        appState,
       );
       switch (fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName) {
         case "businessName":
@@ -320,7 +383,7 @@ export const regenerateText = async (params: TParams) => {
         }),
       );
 
-      const content = await getContent(instagramDetails.mediaCaption);
+      const content = await getContent(instagramDetails.mediaCaption,"","",appState);
 
       if (content) {
         console.log("content", content);
@@ -362,7 +425,7 @@ export const regenerateImage = async (params: TParams) => {
         }),
       );
 
-      let content = await getContent(instagramDetails.mediaCaption);
+      let content = await getContent(instagramDetails.mediaCaption,"","",appState);
 
       if (content) {
         dispatch(
@@ -453,7 +516,7 @@ export const getInstagramData = async (params: TParams) => {
         }),
       );
 
-      const content = await getContent(instagramDetails.mediaCaption);
+      const content = await getContent(instagramDetails.mediaCaption,"","",appState);
       if (content) {
         console.log("content", content);
         if (!customSubDomain) {
@@ -490,9 +553,10 @@ export const getInstagramData = async (params: TParams) => {
         dispatch(
           updateAppState({
             ...appState,
-            subdomain: siteAvailable,
+            subdomain: customSubDomain || siteAvailable,
             aiContent: Object.keys(content).length
               ? {
+                ...appState.aiContent,
                   ...content,
                   banner: {
                     ...content.banner,
@@ -824,7 +888,7 @@ export async function saveState(appState: AppState, dispatch: any) {
       font: appState.selectedFont,
       posts: appState.iPosts,
     };
-    console.log("Saved state", data);
+    console.log("Saved state", appState);
     await dispatch(
       updateStateSite({
         subdomain: appState.subdomain,

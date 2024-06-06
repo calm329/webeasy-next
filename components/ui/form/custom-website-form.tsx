@@ -288,6 +288,8 @@ const CustomWebsiteForm = () => {
           },
         },
         colors: colors,
+        businessType: getValues().business,
+        location: getValues().location,
       };
       await createNewSite({
         subdomain: getValues().businessName.toLowerCase().split(' ').join(''),
