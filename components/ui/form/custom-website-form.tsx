@@ -6,9 +6,10 @@ import { z } from "zod";
 import CreatableSelect from "react-select/creatable";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useRouter } from "next/navigation";
-import { createNewSite } from "@/lib/actions";
+import { createNewSite, isSubdomainAlreadyInDB } from "@/lib/actions";
 import { getColors } from "@/lib/utils/function";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
+import { toast } from "sonner";
 
 const options = [
   { value: "Accounting", label: "Accounting" },
@@ -199,6 +200,13 @@ const CustomWebsiteForm = () => {
     business: z.string().min(1, "Required"),
     location: z.string().min(1, "Required"),
     businessName: z.string().min(1, "Required"),
+    subdomain: z
+      .string()
+      .min(1, "Required")
+      .regex(
+        /^[a-z0-9]+$/,
+        "Subdomain must contain only lowercase letters, numbers, and no spaces",
+      ),
   });
   const appState = useAppSelector(AS);
   const [loading, setLoading] = useState(false);
@@ -206,9 +214,10 @@ const CustomWebsiteForm = () => {
   const [query, setQuery] = useState("");
   const dispatch = useAppDispatch();
   const defaultValues = {
-    business: options[0].value,
+    business: "",
     location: "",
     businessName: "",
+    subdomain: "",
   };
 
   const {
@@ -226,6 +235,13 @@ const CustomWebsiteForm = () => {
     try {
       setLoading(true);
       console.log("onSubmit");
+      const isSubdomain = await isSubdomainAlreadyInDB(getValues().subdomain)
+      if(isSubdomain){
+        toast.error("Subdomain already exists. Please Enter a unique sub domain")
+        setLoading(false);
+        return;
+      }
+
       const response = await fetch("/api/content/custom", {
         method: "POST",
         body: JSON.stringify({
@@ -292,11 +308,11 @@ const CustomWebsiteForm = () => {
         location: getValues().location,
       };
       await createNewSite({
-        subdomain: getValues().businessName.toLowerCase().split(' ').join(''),
+        subdomain: getValues().subdomain,
         aiResult: JSON.stringify(finalData),
         type: "Custom",
       });
-      router.push("/custom?subdomain=" + getValues().businessName.toLowerCase().split(' ').join(''));
+      router.push("/custom?subdomain=" + getValues().subdomain);
       setLoading(false);
     } catch (error) {
       console.log("error:creatingCustom", error);
@@ -320,7 +336,7 @@ const CustomWebsiteForm = () => {
             onChange={(val) => {
               // setSelected(val as string);
               if (val) {
-                setValue("business", val?.value);
+                setValue("business", val.value);
               }
             }}
             options={options}
@@ -367,6 +383,28 @@ const CustomWebsiteForm = () => {
             {errors.businessName && (
               <p className="mt-2 text-sm text-red-600" id="businessName-error">
                 {errors.businessName.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="subdomain"
+            className="block text-sm font-medium leading-6 text-gray-900"
+          >
+            Enter Subdomain for your site?
+          </label>
+          <div className="mt-2">
+            <input
+              type="text"
+              {...register("subdomain")}
+              placeholder="What is the name of your business?"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+            {errors.subdomain && (
+              <p className="mt-2 text-sm text-red-600" id="subdomain-error">
+                {errors.subdomain.message}
               </p>
             )}
           </div>
