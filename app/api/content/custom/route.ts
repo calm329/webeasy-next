@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
             "heroImagePrompt": "*Create a prompt for dall-e-3 to create a hero image to represent the business and content from the instagram posts in a simple above the fold style*",
             "imageId": "*The id of the post that best matches the heading and subheading*",
             "alt": "",
+            imageUrl:"123",
             "show": true
           },
           "heading": "*insert heading here*",

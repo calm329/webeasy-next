@@ -84,6 +84,8 @@ export interface AppState {
       primary: string;
       secondary: string;
     };
+    businessType?: string;
+    location?: string;
   };
 
   editable: boolean;
