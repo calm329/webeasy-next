@@ -167,10 +167,10 @@ const CustomService = (props: TProps) => {
                     dispatch,
                     searchParams,
                     fieldName: "serviceName." + (data?.id ?? ""),
-                    type,
+                    type
                   }).then((res) => {
                     setLoadingTitle(false);
-                    res && setData({...data,name:res.name})
+                    res && setData(((preval:any)=>{return{...preval,name:res.name}}))
                   });
                 }}
                 className="flex items-center gap-2 "
@@ -216,10 +216,10 @@ const CustomService = (props: TProps) => {
                     dispatch,
                     searchParams,
                     fieldName: "serviceDescription." + (data?.id ?? ""),
-                    type,
+                    type
                   }).then((res) => {
                     setLoadingDesc(false);
-                    res && setData({...data,description:res.description})
+                    res && setData(((preval:any)=>{return{...preval,description:res.description}}))
                   });
                 }}
                 className="flex items-center gap-2 "
