@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
@@ -7,6 +7,8 @@ import { useMediaQuery } from "usehooks-ts";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useSession } from "next-auth/react";
+import PublishModal from "../../ui/modal/publish-modal";
+import { PublishDrawer } from "@/components/ui/drawer/publish-drawer";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -18,13 +20,20 @@ type TProps = {
 
 export default function PublishMenu(props: TProps) {
   const { setShowAuthModal } = props;
-  const matches = useMediaQuery("(max-width: 500px)");
+  const matches = useMediaQuery("(min-width: 768px)");
   const isMobile = useMediaQuery("(max-width: 900px)");
+
   const appState = useAppSelector(AS);
   const { status } = useSession();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+  const [showPublishModal, setShowPublishModal] = useState(false);
   return (
     <Menu as="div" className={`relative ml-3`}>
+      {matches ? (
+        <PublishModal open={showPublishModal} setOpen={setShowPublishModal} />
+      ) : (
+        <PublishDrawer open={showPublishModal} setOpen={setShowPublishModal} />
+      )}
       <Menu.Button
         className={`inline-flex items-center rounded-md  px-3 py-2 text-sm font-semibold text-black max-sm:bg-transparent max-sm:text-xs max-sm:shadow-none max-sm:hover:bg-transparent`}
         onClick={() =>
@@ -75,7 +84,7 @@ export default function PublishMenu(props: TProps) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-      <Menu.Items
+        <Menu.Items
           className={`absolute left-0 z-10 -mr-1 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${isMobile && "-top-28 left-auto right-0"}`}
         >
           <Menu.Item>
@@ -95,16 +104,19 @@ export default function PublishMenu(props: TProps) {
           <Menu.Item>
             {({ active }) =>
               status === "authenticated" ? (
-                <Link
-                  href={"https://" + appState.subdomain + ".webeasy.ai"}
-                  target="_blank"
+                <button
+                  // href={"https://" + appState.subdomain + ".webeasy.ai"}
+                  // target="_blank"
+                  onClick={() => {
+                    setShowPublishModal(true);
+                  }}
                   className={classNames(
                     active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700",
+                    "block px-4 py-2 text-sm text-gray-700 w-full text-left",
                   )}
                 >
                   Publish Website
-                </Link>
+                </button>
               ) : (
                 <button
                   onClick={() => setShowAuthModal(true)}
@@ -113,7 +125,7 @@ export default function PublishMenu(props: TProps) {
                     "block w-full px-4 py-2 text-left text-sm text-gray-700",
                   )}
                 >
-                  Publish Product
+                  Publish Website
                 </button>
               )
             }
