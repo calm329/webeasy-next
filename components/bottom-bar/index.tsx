@@ -37,7 +37,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 type TProps = {
   showNavigation: boolean;
   isAuth?: boolean;
-  handleChange?: DebouncedState<(name: string, value: string) => void>;
+  handleChange?: (name: string, value: string) => void;
   setSelectedTemplate?: Dispatch<SetStateAction<TTemplateName>>;
   setShowAuthModal: Dispatch<SetStateAction<boolean>>;
   setIsFontOpen: Dispatch<SetStateAction<boolean>>;

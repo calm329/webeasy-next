@@ -22,7 +22,7 @@ type TProps = {
       show: boolean;
     }>
   >;
-  handleChange: DebouncedState<(name: string, value: string) => void>;
+  handleChange: (name: string, value: string) => void;
  
 };
 

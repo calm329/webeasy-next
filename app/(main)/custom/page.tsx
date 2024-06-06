@@ -41,9 +41,9 @@ export default function Page() {
     show: false,
   });
 
-  const handleChange = useDebouncedCallback((name: string, value: string) => {
+  const handleChange =((name: string, value: string) => {
     handleChangeAppState(dispatch, appState, name, value);
-  }, 300);
+  });
 
   const matches = useMediaQuery("(min-width: 768px)");
   useEffect(() => {

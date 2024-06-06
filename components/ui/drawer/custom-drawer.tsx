@@ -11,7 +11,7 @@ type TProps = {
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   section: TSection;
-  handleChange: DebouncedState<(name: string, value: string) => void>;
+  handleChange: (name: string, value: string) => void;
   subdomain: string;
   showForm: {
     form: string;

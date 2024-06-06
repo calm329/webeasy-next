@@ -16,7 +16,7 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  handleChange: DebouncedState<(name: string, value: string) => void>;
+  handleChange: (name: string, value: string) => void;
 };
 import { IoMdArrowBack } from "react-icons/io";
 import {
