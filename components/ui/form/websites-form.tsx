@@ -128,7 +128,7 @@ export default function WebsitesForm() {
               <button
                 key={section.name}
                 className={`group inline-flex items-center border-b-2  px-1 py-4 text-sm font-medium ${selectedSection === section.name ? "border-indigo-500 text-indigo-600" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} w-1/2 justify-center gap-2`}
-                onClick={() => setSelectedSection(section.name)}
+                onClick={() => {setSelectedSection(section.name);setPage(1)}}
               >
                 {section.logo}
                 <span>{section.name}</span>
