@@ -231,6 +231,7 @@ const siteSlice = createSlice({
     builder.addCase(fetchSitesByDomain.fulfilled, (state, action) => {
       state.loading = false;
       console.log("history", action.payload?.posts);
+      state.sites.domain.present.view="Desktop"
       state.sites.domain.present.meta = {
         title: action.payload?.title ?? "",
         description: action.payload?.description ?? "",
