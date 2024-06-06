@@ -13,6 +13,7 @@ import { prompt } from "./common-constant";
 import { appState } from "../store/slices/site-slice";
 import Search from "../../components/ui/search/index";
 import App from "next/app";
+import { store } from "../store";
 
 type TParams = {
   regenerate?: boolean;
@@ -198,176 +199,210 @@ type TRParams = {
   type?: string;
 };
 
+export const getAppState= ()=>{
+  const state = store.getState();
+  return state.siteSlice.sites.domain.present
+}
+
+type UpdateFunction = () => Promise<void>;
+
+class UpdateQueue {
+  private queue: UpdateFunction[] = [];
+  private processing = false;
+
+  enqueue(updateFn: UpdateFunction) {
+    this.queue.push(updateFn);
+    if (!this.processing) {
+      this.processNext();
+    }
+  }
+
+  private async processNext() {
+    if (this.queue.length === 0) {
+      this.processing = false;
+      return;
+    }
+    this.processing = true;
+    const nextUpdate = this.queue.shift();
+    if (nextUpdate) {
+      await nextUpdate();
+    }
+    this.processNext();
+  }
+}
+
+const updateQueue = new UpdateQueue();
+
 export const regenerateIndividual = async (params: TRParams) => {
-  const { fieldName, searchParams, dispatch, appState, type } = params;
+  const { fieldName, searchParams, dispatch, type } = params;
   const userId = searchParams.get("user_id") ?? "";
   const accessToken = searchParams.get("access_token") ?? "";
+
   try {
     // Create a URL object
     const urlObj = new URL(window.location.href);
-
-    // Use URLSearchParams to extract the 'subdomain' parameter
     const params = new URLSearchParams(urlObj.search);
     const custom = params.get("id");
     const instagramDetails = await getInstagramDetails(userId, accessToken);
+
     if (instagramDetails) {
       const content = await getContent(
         instagramDetails.mediaCaption,
         fieldName,
         type,
-        appState,
+        getAppState(), // Fetch the latest app state
       );
-      switch (fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName) {
-        case "businessName":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                banner: {
-                  ...appState.aiContent.banner,
-                  businessName: content.banner.businessName,
-                },
-              },
-            }),
-          );
-          break;
-        case "logo":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                banner: {
-                  ...appState.aiContent.banner,
-                  logo: {
-                    ...appState.aiContent.banner.logo,
-                    link: content.banner.logo.link,
-                  },
-                },
-              },
-            }),
-          );
-          break;
 
-        case "image":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                hero: {
-                  ...appState.aiContent.hero,
-                  image: {
-                    ...appState.aiContent.hero.image,
-                    imageUrl: custom
-                      ? content["hero"]["image"]["imageUrl"]
-                      : instagramDetails.imageIds[
-                          content["hero"]["image"]["imageId"]
-                        ],
+      const updateState = async (fieldName: string, content: any) => {
+        const currentAppState = getAppState(); // Ensure we are using the latest app state
+        return new Promise<void>(resolve => {
+          switch (fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName) {
+            case "businessName":
+              dispatch(
+                updateAppState({
+                  ...currentAppState,
+                  aiContent: {
+                    ...currentAppState.aiContent,
+                    banner: {
+                      ...currentAppState.aiContent.banner,
+                      businessName: content.banner.businessName,
+                    },
                   },
-                },
-              },
-            }),
-          );
-          break;
-        case "heading":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                hero: {
-                  ...appState.aiContent.hero,
-                  heading: content.hero.heading,
-                },
-              },
-            }),
-          );
-          break;
-        case "subheading":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                hero: {
-                  ...appState.aiContent.hero,
-                  subheading: content.hero.subheading,
-                },
-              },
-            }),
-          );
-
-          break;
-        case "serviceName":
-          if (fieldName?.split(".")[1]) {
-            dispatch(
-              updateAppState({
-                ...appState,
-                aiContent: {
-                  ...appState.aiContent,
-                  services: {
-                    ...appState.aiContent.services,
-                    list: appState.aiContent.services.list.map((service) => {
-                      if (service.id === fieldName?.split(".")[1]) {
-                        return {
-                          ...service,
-                          name: content.services.list[0].name,
-                        };
-                      } else {
-                        return service;
-                      }
-                    }),
+                })
+              );
+              break;
+            case "logo":
+              dispatch(
+                updateAppState({
+                  ...currentAppState,
+                  aiContent: {
+                    ...currentAppState.aiContent,
+                    banner: {
+                      ...currentAppState.aiContent.banner,
+                      logo: {
+                        ...currentAppState.aiContent.banner.logo,
+                        link: content.banner.logo.link,
+                      },
+                    },
                   },
-                },
-              }),
-            );
-          } else {
-            return {
-              id: "",
-              name: content.services.list[0].name,
-              image: "",
-              description: "",
-            };
+                })
+              );
+              break;
+            case "image":
+              dispatch(
+                updateAppState({
+                  ...currentAppState,
+                  aiContent: {
+                    ...currentAppState.aiContent,
+                    hero: {
+                      ...currentAppState.aiContent.hero,
+                      image: {
+                        ...currentAppState.aiContent.hero.image,
+                        imageUrl: custom
+                          ? content["hero"]["image"]["imageUrl"]
+                          : instagramDetails.imageIds[
+                              content["hero"]["image"]["imageId"]
+                            ],
+                      },
+                    },
+                  },
+                })
+              );
+              break;
+            case "heading":
+              dispatch(
+                updateAppState({
+                  ...currentAppState,
+                  aiContent: {
+                    ...currentAppState.aiContent,
+                    hero: {
+                      ...currentAppState.aiContent.hero,
+                      heading: content.hero.heading,
+                    },
+                  },
+                })
+              );
+              break;
+            case "subheading":
+              dispatch(
+                updateAppState({
+                  ...currentAppState,
+                  aiContent: {
+                    ...currentAppState.aiContent,
+                    hero: {
+                      ...currentAppState.aiContent.hero,
+                      subheading: content.hero.subheading,
+                    },
+                  },
+                })
+              );
+              break;
+            case "serviceName":
+              if (fieldName?.split(".")[1]) {
+                dispatch(
+                  updateAppState({
+                    ...currentAppState,
+                    aiContent: {
+                      ...currentAppState.aiContent,
+                      services: {
+                        ...currentAppState.aiContent.services,
+                        list: currentAppState.aiContent.services.list.map((service) => {
+                          if (service.id === fieldName?.split(".")[1]) {
+                            return {
+                              ...service,
+                              name: content.services.list[0].name,
+                            };
+                          } else {
+                            return service;
+                          }
+                        }),
+                      },
+                    },
+                  })
+                );
+              } else {
+                resolve();
+                return;
+              }
+              break;
+            case "serviceDescription":
+              if (fieldName?.split(".")[1]) {
+                dispatch(
+                  updateAppState({
+                    ...currentAppState,
+                    aiContent: {
+                      ...currentAppState.aiContent,
+                      services: {
+                        ...currentAppState.aiContent.services,
+                        list: currentAppState.aiContent.services.list.map((service) => {
+                          if (service.id === fieldName?.split(".")[1]) {
+                            return {
+                              ...service,
+                              description: content.services.list[0].description,
+                            };
+                          } else {
+                            return service;
+                          }
+                        }),
+                      },
+                    },
+                  })
+                );
+              } else {
+                resolve();
+                return;
+              }
+              break;
           }
+          resolve();
+        });
+      };
 
-          break;
-        case "serviceDescription":
-          if (fieldName?.split(".")[1]) {
-            dispatch(
-              updateAppState({
-                ...appState,
-                aiContent: {
-                  ...appState.aiContent,
-                  services: {
-                    ...appState.aiContent.services,
-                    list: appState.aiContent.services.list.map((service) => {
-                      if (service.id === fieldName?.split(".")[1]) {
-                        return {
-                          ...service,
-                          description: content.services.list[0].description,
-                        };
-                      } else {
-                        return service;
-                      }
-                    }),
-                  },
-                },
-              }),
-            );
-          } else {
-            return {
-              id: "",
-              name: "",
-              image: "",
-              description: content.services.list[0].description,
-            };
-          }
-          break;
-      }
+      updateQueue.enqueue(() => updateState(fieldName, content));
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const regenerateText = async (params: TParams) => {
