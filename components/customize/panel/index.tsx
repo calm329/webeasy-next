@@ -168,9 +168,7 @@ const CustomizePanel = (props: TProps) => {
         </>
       )}
       <div className="flex flex-1 flex-col justify-between">
-        {isContent ? (
-          <div className="divide-y divide-gray-200 ">{children}</div>
-        ) : null}
+        <div className={`divide-y divide-gray-200 ${!isContent && "hidden"}`}>{children}</div>
       </div>
     </div>
   );
