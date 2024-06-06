@@ -211,7 +211,7 @@ export async function updateSite(
       throw new Error("Site not found");
     }
 
-    if (user && site.userId !== user.id) {
+    if (user && site?.userId && site.userId !== user.id) {
       throw new Error("You are not authorized to update this site");
     }
 
