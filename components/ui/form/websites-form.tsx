@@ -28,6 +28,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../pagination";
+import DeleteModal from "../modal/delete-modal";
+import { DeleteDrawer } from "../drawer/delete-drawer";
+import { useMediaQuery } from "usehooks-ts";
 
 type TSectionObject = Array<{
   logo: React.ReactNode;
@@ -66,9 +69,13 @@ type TSites = Array<{
 }> | null;
 
 const sortByCreatedAtDescending = (sites: TSites) => {
-  return sites?.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  return sites
+    ?.slice()
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
 };
-
 
 export default function WebsitesForm() {
   const [selectedSection, setSelectedSection] =
@@ -81,7 +88,8 @@ export default function WebsitesForm() {
   const [page, setPage] = useState(1);
   const dataPerPage = 4;
   const [paginatedData, setPaginatedData] = useState<TSites>(null);
-
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState("");
   useEffect(() => {
     if (sites) {
       const startIndex = (page - 1) * dataPerPage;
@@ -121,11 +129,13 @@ export default function WebsitesForm() {
   };
   useEffect(() => {
     if (sites) {
-      const filteredSites = sites.filter((site) => site.type === selectedSection);
+      const filteredSites = sites.filter(
+        (site) => site.type === selectedSection,
+      );
       const sortedSites = sortByCreatedAtDescending(filteredSites);
       const startIndex = (page - 1) * dataPerPage;
       const endIndex = startIndex + dataPerPage;
-      if(sortedSites){
+      if (sortedSites) {
         setPaginatedData(sortedSites.slice(startIndex, endIndex));
       }
     }
@@ -135,8 +145,22 @@ export default function WebsitesForm() {
     (sites?.filter((site) => site.type === selectedSection).length || 0) /
       dataPerPage,
   );
+  const matches = useMediaQuery("(min-width: 768px)");
   return (
     <div className="">
+      {matches ? (
+        <DeleteModal
+          id={selectedItemId}
+          setOpen={setIsDeleting}
+          open={isDeleting}
+        />
+      ) : (
+        <DeleteDrawer
+          id={selectedItemId}
+          setOpen={setIsDeleting}
+          open={isDeleting}
+        />
+      )}
       <div className="">
         <div className="border-b border-gray-200 ">
           <nav className=" flex " aria-label="Tabs">
@@ -144,7 +168,10 @@ export default function WebsitesForm() {
               <button
                 key={section.name}
                 className={`group inline-flex items-center border-b-2  px-1 py-4 text-sm font-medium ${selectedSection === section.name ? "border-indigo-500 text-indigo-600" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} w-1/2 justify-center gap-2`}
-                onClick={() => {setSelectedSection(section.name);setPage(1)}}
+                onClick={() => {
+                  setSelectedSection(section.name);
+                  setPage(1);
+                }}
               >
                 {section.logo}
                 <span>{section.name}</span>
@@ -169,7 +196,9 @@ export default function WebsitesForm() {
                   <button
                     className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
                     onClick={() => {
-                      dispatch(deleteSite({ id: site.id }));
+                      setIsDeleting(true);
+                      setSelectedItemId(site.id);
+                      // dispatch(deleteSite({ id: site.id }));
                     }}
                   >
                     <BsTrash3 color="red" />
