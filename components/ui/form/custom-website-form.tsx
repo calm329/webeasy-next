@@ -7,7 +7,7 @@ import CreatableSelect from "react-select/creatable";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useRouter } from "next/navigation";
 import { createNewSite, isSubdomainAlreadyInDB } from "@/lib/actions";
-import { getColors } from "@/lib/utils/function";
+import { generateUniqueHash, getColors } from "@/lib/utils/function";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { toast } from "sonner";
 import { IoSearchSharp } from "react-icons/io5";
@@ -326,7 +326,7 @@ const CustomWebsiteForm = () => {
 
       const startCreateSite = performance.now();
       const responseSite = await createNewSite({
-        subdomain: "",
+        subdomain: await generateUniqueHash(getValues().businessName),
         aiResult: JSON.stringify(finalData),
         type: "Custom",
       });

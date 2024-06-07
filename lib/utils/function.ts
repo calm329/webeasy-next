@@ -982,3 +982,29 @@ export function extractASIN(url:string) {
   // If there's a match, return the first group captured
   return asinMatch ? asinMatch[1] : null;
 }
+
+
+export async function generateUniqueHash(inputString:string) {
+  // Helper function to convert ArrayBuffer to hex string
+  function bufferToHex(buffer:any) {
+      return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+  }
+
+  // Generate a random salt
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const saltHex = bufferToHex(salt);
+
+  // Combine the input string with the salt
+  const saltedInput = inputString + saltHex;
+
+  // Encode the salted input string to a Uint8Array
+  const encoder = new TextEncoder();
+  const data = encoder.encode(saltedInput);
+
+  // Hash the salted input using SHA-256
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashHex = bufferToHex(hashBuffer);
+
+  // Combine the salt and the hash to ensure uniqueness and randomness
+  return `${saltHex}${hashHex}`;
+}
