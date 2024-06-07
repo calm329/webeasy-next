@@ -48,29 +48,24 @@ export async function createNewSite({
   }
 
   let data;
-
-  switch (type) {
-    case "Custom":
-      data = {
-        subdomain,
-        aiResult,
-        userId: user?.id,
-        templateId: defaultTemplate.id,
-        type: type as string,
-      };
-      break;
-    case "Instagram":
-      data = {
-        subdomain,
-        posts,
-        aiResult,
-        userId: user?.id,
-        templateId: defaultTemplate.id,
-        type: type as string,
-      };
-      break;
+  if (type === "Instagram") {
+    data = {
+      subdomain,
+      posts,
+      aiResult,
+      userId: user?.id,
+      templateId: defaultTemplate.id,
+      type: type as string,
+    };
+  } else {
+    data = {
+      subdomain,
+      aiResult,
+      userId: user?.id,
+      templateId: defaultTemplate.id,
+      type: type as string,
+    };
   }
-
   try {
     const siteResponse = await prisma.site.create({
       data,
@@ -91,7 +86,7 @@ export async function createNewSite({
       `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
     );
 
-    return { subdomain,id:siteResponse.id };
+    return { subdomain, id: siteResponse.id };
   } catch (error) {
     console.log(error);
 
@@ -101,23 +96,21 @@ export async function createNewSite({
 
 export async function updateSubDomain({
   subdomain,
-  id
+  id,
 }: {
   subdomain: string;
-  id:string
+  id: string;
 }) {
-
   try {
-    
     const siteResponse = await prisma.site.update({
-      where:{
-        id
+      where: {
+        id,
       },
-      data:{
-        subdomain
-      }
+      data: {
+        subdomain,
+      },
     });
-    return { subdomain,id:siteResponse.id };
+    return { subdomain, id: siteResponse.id };
   } catch (error) {
     console.log(error);
 
@@ -125,17 +118,13 @@ export async function updateSubDomain({
   }
 }
 
-export async function deleteSiteBySiteId({
-  id
-}: {
- id:string
-}) {
+export async function deleteSiteBySiteId({ id }: { id: string }) {
   console.log("deleting site by id: " + id);
   try {
     await prisma.site.delete({
-      where:{
-        id:id
-      }
+      where: {
+        id: id,
+      },
     });
 
     return id;
@@ -145,7 +134,6 @@ export async function deleteSiteBySiteId({
     return { error: "Failed to create site" };
   }
 }
-
 
 export async function checkSiteAvailability(
   data: Partial<{ userId: string; token: string }>,
@@ -181,9 +169,7 @@ export async function checkSiteAvailability(
   }
 }
 
-export async function isSubdomainAlreadyInDB(
-  subdomain:string,
-) {
+export async function isSubdomainAlreadyInDB(subdomain: string) {
   const session = await getServerSession(authOptions);
 
   let user;
@@ -197,8 +183,7 @@ export async function isSubdomainAlreadyInDB(
   }
 
   const isSubdomain = await prisma.site.findFirst({
-    where: {subdomain},
-
+    where: { subdomain },
   });
 
   if (isSubdomain) {
