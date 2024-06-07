@@ -4,9 +4,14 @@ import PageStatus from "@/components/ui/pagestatus";
 import Link from "next/link";
 import LearnMoreButton from "@/components/ui/button/learn-more-button";
 import { useState } from "react";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { updateAmazonSite } from "@/lib/store/slices/amazon-slice";
+import { useRouter } from "next/navigation";
 export default function Example() {
   const [productUrl, setProductUrl] = useState("");
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter()
   return (
     <div className="relative isolate overflow-hidden bg-white">
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 ">
@@ -58,16 +63,18 @@ export default function Example() {
                       })
                       .then((data) => {
                         console.log(data);
+                        dispatch(updateAmazonSite(data.ItemsResult.Items[0]));
+                        router.push("/amazon")
                       })
                       .catch((error) => {
                         console.error(
                           "There was a problem with the fetch operation:",
                           error,
                         );
-                      }).finally(() => {
+                      })
+                      .finally(() => {
                         setLoading(false);
                       });
-                      
                   }
                 }}
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
