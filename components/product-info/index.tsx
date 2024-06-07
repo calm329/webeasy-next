@@ -7,6 +7,7 @@ import {
   loading as LD,
 } from "@/lib/store/slices/amazon-slice";
 import Loader from "../ui/loader/index";
+import { createNewSite } from "@/lib/actions";
 
 const ProductInfo = () => {
   const amazonData = useAppSelector(AD);
@@ -47,8 +48,22 @@ const ProductInfo = () => {
         `Content fetch took ${endContentFetch - startContentFetch} ms`,
       );
       const data = JSON.parse(content);
+      const finalData = {
+        ...data,
+        images:{
+          primary:amazonData?.Images?.Primary,
+          variant:amazonData?.Images?.Variants
+        },
+        price:amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount??"",
+        title:amazonData?.ItemInfo?.Title?.DisplayValue
+      };
       setAiData(data);
-      console.log("response", data);
+      const responseSite = await createNewSite({
+        subdomain: "",
+        aiResult: JSON.stringify(finalData),
+        type: "Amazon",
+      });
+      console.log("response", responseSite);
     } catch (error) {
       console.log("error", error);
     } finally {

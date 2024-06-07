@@ -221,4 +221,4 @@ export type TSite = {
   updatedAt: Date;
 };
 
-export type TSiteType = "Instagram" | "Custom";
+export type TSiteType = "Instagram" | "Custom"|"Amazon";
