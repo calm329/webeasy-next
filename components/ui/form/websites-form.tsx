@@ -204,7 +204,7 @@ export default function WebsitesForm() {
                     <BsTrash3 color="red" />
                   </button>
                   <Image
-                    src={JSON.parse(site?.aiResult)?.hero?.image.imageUrl}
+                    src={site.type === "Amazon"?JSON.parse(site?.aiResult).images.primary.Large?.URL: JSON.parse(site?.aiResult)?.hero?.image.imageUrl}
                     height={200}
                     width={500}
                     className="contain h-80 rounded-t-lg"
@@ -223,11 +223,19 @@ export default function WebsitesForm() {
                     <div className="flex gap-5">
                       <button
                         className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
-                        onClick={() =>
-                          site.type === "Custom"
-                            ? router.push("/custom?id=" + site.id)
-                            : redirectToAuth(site.id)
-                        }
+                        onClick={() => {
+                          switch (site.type) {
+                            case "Custom":
+                              router.push("/custom?id=" + site.id);
+                              break;
+                            case "Instagram":
+                              redirectToAuth(site.id);
+                              break;
+                            case "Amazon":
+                              router.push("/custom?id=" + site.id);
+                              break;
+                          }
+                        }}
                       >
                         <FaEdit />
                         Edit
