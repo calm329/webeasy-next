@@ -92,3 +92,7 @@
   -ms-overflow-style: none; /* For Internet Explorer and Edge */
   scrollbar-width: none; /* For Firefox */
 }
+
+.css-qbdosj-Input, #react-select-2-placeholder ,.css-1dimb5e-singleValue{
+  padding-left:25px ;
+}
