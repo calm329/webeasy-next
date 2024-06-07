@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAmazonSite } from "@/lib/store/slices/amazon-slice";
 import { useRouter } from "next/navigation";
+import { extractASIN } from "@/lib/utils/function";
 export default function Example() {
   const [productUrl, setProductUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ export default function Example() {
                     const url = "/api/amazon";
 
                     const requestData = {
-                      itemIds: [productUrl.split("/")[5]],
+                      itemIds: [extractASIN(productUrl)],
                     };
 
                     fetch(url, {
