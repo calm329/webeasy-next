@@ -20,7 +20,10 @@ const ImageGallery = () => {
       <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
         <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
           <Image
-            src={amazonData?.Images?.Variants[0]?.Large?.URL}
+            src={
+              amazonData?.Images?.Variants[0]?.Large?.URL ??
+              amazonData?.Images?.Primary?.Large?.URL
+            }
             alt="Model wearing plain black basic tee."
             className="h-full w-full object-cover object-center"
             height={200}
@@ -29,7 +32,10 @@ const ImageGallery = () => {
         </div>
         <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
           <Image
-            src={amazonData?.Images?.Variants[1]?.Large?.URL}
+            src={
+              amazonData?.Images?.Variants[1]?.Large?.URL ??
+              amazonData?.Images?.Primary?.Large?.URL
+            }
             alt="Model wearing plain gray basic tee."
             className="h-full w-full object-cover object-center"
             height={200}
@@ -39,7 +45,10 @@ const ImageGallery = () => {
       </div>
       <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
         <Image
-          src={amazonData?.Images?.Variants[2]?.Large?.URL}
+          src={
+            amazonData?.Images?.Variants[2]?.Large?.URL ??
+            amazonData?.Images?.Primary?.Large?.URL
+          }
           alt="Model wearing plain white basic tee."
           className="h-full w-full object-cover object-center"
           height={400}
