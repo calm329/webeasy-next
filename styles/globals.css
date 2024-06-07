@@ -93,11 +93,11 @@
   scrollbar-width: none; /* For Firefox */
 }
 
-.css-qbdosj-Input,.css-166bipr-Input, #react-select-2-placeholder ,.css-1dimb5e-singleValue{
+.css-qbdosj-Input,.css-166bipr-Input, #react-select-2-placeholder ,.css-1dimb5e-singleValue,.css-19bb58m,.css-1cfo1cf{
   padding-left:25px ;
 }
 
-.css-1hb7zxy-IndicatorsContainer{
+.css-1hb7zxy-IndicatorsContainer,.css-1wy0on6{
   display: none !important;
 }
 
