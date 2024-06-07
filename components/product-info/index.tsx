@@ -386,7 +386,7 @@ const ProductInfo = () => {
         {aiData.features.map((feature, i) => (
           <div className={`flex items-center justify-center gap-5 ${i % 2 !== 0 ? 'flex-row-reverse' : ''}`} key={i}>
             <Image
-              src={amazonData?.Images?.Variants[i]?.Large?.URL}
+              src={i === 0?amazonData?.Images?.Primary?.Large?.URL:amazonData?.Images?.Variants[i-1]?.Large?.URL}
               alt=""
               width={200}
               height={200}
