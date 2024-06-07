@@ -4,6 +4,8 @@ import userSlice from "./slices/user-slice";
 import templateSlice from "./slices/template-slice";
 import accessTokenSlice from "./slices/accesstoken-slice";
 import siteSlice from "./slices/site-slice";
+import amazonSlice from "./slices/amazon-slice";
+
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +13,7 @@ export const store = configureStore({
     templateSlice,
     accessTokenSlice,
     siteSlice,
+    amazonSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
