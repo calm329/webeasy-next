@@ -10,6 +10,7 @@ import { createNewSite, isSubdomainAlreadyInDB } from "@/lib/actions";
 import { getColors } from "@/lib/utils/function";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { toast } from "sonner";
+import { IoSearchSharp } from "react-icons/io5";
 
 const options = [
   { value: "Accounting", label: "Accounting" },
@@ -200,7 +201,6 @@ const CustomWebsiteForm = () => {
     business: z.string().min(1, "Required"),
     location: z.string().min(1, "Required"),
     businessName: z.string().min(1, "Required"),
-
   });
   const appState = useAppSelector(AS);
   const [loading, setLoading] = useState(false);
@@ -211,7 +211,6 @@ const CustomWebsiteForm = () => {
     business: "",
     location: "",
     businessName: "",
- 
   };
 
   const {
@@ -229,18 +228,18 @@ const CustomWebsiteForm = () => {
     try {
       setLoading(true);
       console.log("onSubmit");
-  
+
       // const startIsSubdomain = performance.now();
       // // const isSubdomain = await isSubdomainAlreadyInDB(getValues().subdomain);
       // const endIsSubdomain = performance.now();
       // console.log(`isSubdomainAlreadyInDB took ${endIsSubdomain - startIsSubdomain} ms`);
-  
+
       // if (isSubdomain) {
       //   toast.error("Subdomain already exists. Please Enter a unique sub domain");
       //   setLoading(false);
       //   return;
       // }
-  
+
       const startContentFetch = performance.now();
       const response = await fetch("/api/content/custom", {
         method: "POST",
@@ -252,26 +251,26 @@ const CustomWebsiteForm = () => {
           },
         }),
       });
-      
-      
-  
+
       let content = "";
       const reader = response.body?.getReader();
       if (!reader) return;
-  
+
       const decoder = new TextDecoder();
       let done = false;
       while (!done) {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
         const chunkValue = decoder.decode(value);
-  
+
         if (chunkValue && chunkValue !== "###") content += chunkValue;
       }
       const endContentFetch = performance.now();
-      console.log(`Content fetch took ${endContentFetch - startContentFetch} ms`);
+      console.log(
+        `Content fetch took ${endContentFetch - startContentFetch} ms`,
+      );
       const data = JSON.parse(content);
-  
+
       const startImageFetch = performance.now();
       const res = await fetch("/api/image", {
         method: "POST",
@@ -282,7 +281,7 @@ const CustomWebsiteForm = () => {
       const endImageFetch = performance.now();
       console.log(`Image fetch took ${endImageFetch - startImageFetch} ms`);
       const image = await res.json();
-  
+
       const startLogoFetch = performance.now();
       const logoRes = await fetch("/api/image", {
         method: "POST",
@@ -296,12 +295,12 @@ const CustomWebsiteForm = () => {
       const endLogoFetch = performance.now();
       console.log(`Logo fetch took ${endLogoFetch - startLogoFetch} ms`);
       const logo = await logoRes.json();
-  
+
       const startGetColors = performance.now();
       const colors = await getColors(image.imageUrl);
       const endGetColors = performance.now();
       console.log(`getColors took ${endGetColors - startGetColors} ms`);
-  
+
       console.log("imageUrl", image);
       const finalData = {
         ...appState.aiContent,
@@ -324,23 +323,23 @@ const CustomWebsiteForm = () => {
         businessType: getValues().business,
         location: getValues().location,
       };
-  
+
       const startCreateSite = performance.now();
-      const responseSite= await createNewSite({
+      const responseSite = await createNewSite({
         subdomain: "",
         aiResult: JSON.stringify(finalData),
         type: "Custom",
       });
       const endCreateSite = performance.now();
       console.log(`createNewSite took ${endCreateSite - startCreateSite} ms`);
-  
+
       router.push("/custom?id=" + responseSite.id);
       setLoading(false);
     } catch (error) {
       console.log("error:creatingCustom", error);
     }
   };
-  
+
   return (
     <form
       className="flex w-full items-center justify-center gap-5 max-sm:flex-col"
@@ -352,19 +351,24 @@ const CustomWebsiteForm = () => {
             htmlFor="business"
             className="block text-sm font-medium leading-6 text-gray-900"
           >
-            What Type of Business are you building?
+            What type of business are you building?
           </label>
-          <CreatableSelect
-            isClearable
-            onChange={(val) => {
-              // setSelected(val as string);
-              if (val) {
-                setValue("business", val.value);
-              }
-            }}
-            options={options}
-            className="businessType"
-          />
+          <div className="relative">
+            <IoSearchSharp className="absolute top-2.5 left-2 z-1" size={20}/>
+
+            <CreatableSelect
+              isClearable
+              onChange={(val) => {
+                // setSelected(val as string);
+                if (val) {
+                  setValue("business", val.value);
+                }
+              }}
+              placeholder="Coaching, Photography, Landscaping..."
+              options={options}
+              className="businessType"
+            />
+          </div>
         </div>
 
         <div>
