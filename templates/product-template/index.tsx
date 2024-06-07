@@ -21,8 +21,8 @@ const ProductTemplate = () => {
         <ImageGallery />
 
         <ProductInfo />
-
-        <SuggestedProducts />
+{/* 
+        <SuggestedProducts /> */}
       </main>
     </div>
   );

@@ -383,7 +383,7 @@ const ProductInfo = () => {
         </section>
       </div>
 
-      <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+      {/* <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
         <section
           aria-labelledby="reviews-heading"
           className="border-t border-gray-200 pt-10 lg:pt-16"
@@ -679,7 +679,7 @@ const ProductInfo = () => {
             </div>
           </div>
         </section>
-      </div>
+      </div> */}
     </div>
   );
 };
