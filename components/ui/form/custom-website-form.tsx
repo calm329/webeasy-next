@@ -366,7 +366,7 @@ const CustomWebsiteForm = () => {
               }}
               placeholder="Coaching, Photography, Landscaping..."
               options={options}
-              className="businessType"
+              className="businessType w-96 max-sm:w-80"
             />
           </div>
         </div>
