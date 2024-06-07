@@ -1,14 +1,68 @@
 import { useAppSelector } from "@/lib/store/hooks";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { amazonData as AD } from '@/lib/store/slices/amazon-slice';
+import React, { useEffect, useState } from "react";
+import {
+  amazonData as AD,
+  loading as LD,
+} from "@/lib/store/slices/amazon-slice";
+import Loader from "../ui/loader/index";
 
 const ProductInfo = () => {
   const amazonData = useAppSelector(AD);
+  const [aiData, setAiData] = useState<{
+    description: string;
+    features: Array<{ title: string; description: string }>;
+  }>({
+    description: "",
+    features: [],
+  });
+  const [loading, setLoading] = useState(false);
   console.log("amazonData", amazonData);
+  const getAmazonContent = async () => {
+    try {
+      setLoading(true);
+      const startContentFetch = performance.now();
+      const response = await fetch("/api/content/amazon", {
+        method: "POST",
+        body: JSON.stringify({
+          productTitle: amazonData.ItemInfo.Title.DisplayValue,
+        }),
+      });
+      let content = "";
+      const reader = response.body?.getReader();
+      if (!reader) return;
+
+      const decoder = new TextDecoder();
+      let done = false;
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+
+        if (chunkValue && chunkValue !== "###") content += chunkValue;
+      }
+      const endContentFetch = performance.now();
+      console.log(
+        `Content fetch took ${endContentFetch - startContentFetch} ms`,
+      );
+      const data = JSON.parse(content);
+      setAiData(data);
+      console.log("response", data);
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (amazonData?.ItemInfo?.Title?.DisplayValue) {
+      getAmazonContent();
+    }
+  }, [amazonData]);
   return (
     <div className="mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16">
+      {loading && <Loader text="Generating Content" />}
       <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
         <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
           {amazonData.ItemInfo.Title.DisplayValue}
@@ -17,9 +71,13 @@ const ProductInfo = () => {
 
       <div className="mt-4 lg:row-span-3 lg:mt-0">
         <h2 className="sr-only">Product information</h2>
-        <p className="text-3xl tracking-tight text-gray-900">{amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? ""}</p>
-
-        <div className="mt-6">
+        <p className="text-3xl tracking-tight text-gray-900">
+          {amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? ""}
+        </p>
+        <div className="mt-10">
+          <p>{aiData.description}</p>
+        </div>
+        {/* <div className="mt-6">
           <h3 className="sr-only">Reviews</h3>
           <div className="flex items-center">
             <div className="flex items-center">
@@ -92,9 +150,9 @@ const ProductInfo = () => {
               117 reviews
             </Link>
           </div>
-        </div>
+        </div> */}
 
-        <form className="mt-10">
+        {/* <form className="mt-10">
           <div>
             <h3 className="text-sm font-medium text-gray-900">Color</h3>
 
@@ -315,72 +373,30 @@ const ProductInfo = () => {
             </fieldset>
           </div>
 
-          {/* <button
+          <button
             type="submit"
             className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Add to bag
-          </button> */}
-        </form>
+          </button> 
+        </form> */}
       </div>
 
-      <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-        <div>
-          <h3 className="sr-only">Description</h3>
-
-          <div className="space-y-6">
-            <p className="text-base text-gray-900">
-              The Basic Tee 6-Pack allows you to fully express your vibrant
-              personality with three grayscale options. Feeling adventurous? Put
-              on Link heather gray tee. Want to be Link trendsetter? Try our
-              exclusive colorway: &quot;Black&quot;. Need to add an extra pop of
-              color to your outfit? Our white tee has you covered.
-            </p>
+      <div className="flex flex-col gap-10 py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+        {aiData.features.map((feature, i) => (
+          <div className={`flex items-center justify-center gap-5 ${i % 2 !== 0 ? 'flex-row-reverse' : ''}`} key={i}>
+            <Image
+              src={amazonData?.Images?.Variants[i]?.Large?.URL}
+              alt=""
+              width={200}
+              height={200}
+            />
+            <div className="w-1/2">
+              <h2 className="text-xl font-semibold">{feature.title}</h2>
+              <p className="text-sm text-gray-500">{feature.description}</p>
+            </div>
           </div>
-        </div>
-
-        <div className="mt-10">
-          <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
-
-          <div className="mt-4">
-            <ul className="list-disc space-y-2 pl-4 text-sm">
-              <li className="text-gray-400">
-                <span className="text-gray-600">Hand cut and sewn locally</span>
-              </li>
-              <li className="text-gray-400">
-                <span className="text-gray-600">
-                  Dyed with our proprietary colors
-                </span>
-              </li>
-              <li className="text-gray-400">
-                <span className="text-gray-600">
-                  Pre-washed &amp; pre-shrunk
-                </span>
-              </li>
-              <li className="text-gray-400">
-                <span className="text-gray-600">Ultra-soft 100% cotton</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <section aria-labelledby="shipping-heading" className="mt-10">
-          <h2
-            id="shipping-heading"
-            className="text-sm font-medium text-gray-900"
-          >
-            Details
-          </h2>
-
-          <div className="mt-4 space-y-6">
-            <p className="text-sm text-gray-600">
-              The 6-Pack includes two black, two white, and two heather gray
-              Basic Tees. Sign up for our subscription service and be the first
-              to get new, exciting colors, like our upcoming &quot;Charcoal
-              Gray&quot; limited release.
-            </p>
-          </div>
-        </section>
+        ))}
       </div>
 
       {/* <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
