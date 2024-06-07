@@ -93,6 +93,15 @@
   scrollbar-width: none; /* For Firefox */
 }
 
-.css-qbdosj-Input, #react-select-2-placeholder ,.css-1dimb5e-singleValue{
+.css-qbdosj-Input,.css-166bipr-Input, #react-select-2-placeholder ,.css-1dimb5e-singleValue{
   padding-left:25px ;
+}
+
+.css-1hb7zxy-IndicatorsContainer{
+  display: none !important;
+}
+
+#react-select-2-input::after{
+  border: 0px !important;
+  outline: none !important;
 }
