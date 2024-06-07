@@ -5,15 +5,35 @@ import ProductInfo from "@/components/product-info";
 import SuggestedProducts from "@/components/suggested-products";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductCategory from "../../components/product-category/index";
-import { useAppSelector } from "@/lib/store/hooks";
-import { amazonData as AD } from "@/lib/store/slices/amazon-slice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { amazonData as AD, updateAmazonSite } from '@/lib/store/slices/amazon-slice';
+import { useSearchParams } from "next/navigation";
+import { getSiteDataById } from "@/lib/fetchers";
+import Loader from "@/components/ui/loader";
 
 const ProductTemplate = () => {
   const amazonData = useAppSelector(AD)
+  const searchParams = useSearchParams()
+  const dispatch = useAppDispatch()
+  const [loading,setLoading] = useState(false)
+  useEffect(()=>{
+    if(searchParams.get('site_id')){
+      setLoading(true)
+      getSiteDataById(searchParams.get('site_id') as string).then((data)=>
+      {
+        // const updatedData = 
+        dispatch(
+          updateAmazonSite(JSON.parse(data?.aiResult??""))
+        )
+        setLoading(false)
+      })
+    }
+  },[searchParams])
   return (
     <div className="bg-white">
+      {loading && <Loader text="Loading"/>}
       <ProductCategory />
       <main className="pt-10 sm:pt-16">
         {/* <ProductBreadCrumbs /> */}
