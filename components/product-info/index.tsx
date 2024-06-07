@@ -11,86 +11,24 @@ import { createNewSite } from "@/lib/actions";
 
 const ProductInfo = () => {
   const amazonData = useAppSelector(AD);
-  const [aiData, setAiData] = useState<{
-    description: string;
-    features: Array<{ title: string; description: string }>;
-  }>({
-    description: "",
-    features: [],
-  });
   const [loading, setLoading] = useState(false);
   console.log("amazonData", amazonData);
-  const getAmazonContent = async () => {
-    try {
-      setLoading(true);
-      const startContentFetch = performance.now();
-      const response = await fetch("/api/content/amazon", {
-        method: "POST",
-        body: JSON.stringify({
-          productTitle: amazonData.ItemInfo.Title.DisplayValue,
-        }),
-      });
-      let content = "";
-      const reader = response.body?.getReader();
-      if (!reader) return;
-
-      const decoder = new TextDecoder();
-      let done = false;
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
-
-        if (chunkValue && chunkValue !== "###") content += chunkValue;
-      }
-      const endContentFetch = performance.now();
-      console.log(
-        `Content fetch took ${endContentFetch - startContentFetch} ms`,
-      );
-      const data = JSON.parse(content);
-      const finalData = {
-        ...data,
-        images:{
-          primary:amazonData?.Images?.Primary,
-          variant:amazonData?.Images?.Variants
-        },
-        price:amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount??"",
-        title:amazonData?.ItemInfo?.Title?.DisplayValue
-      };
-      setAiData(data);
-      const responseSite = await createNewSite({
-        subdomain: "",
-        aiResult: JSON.stringify(finalData),
-        type: "Amazon",
-      });
-      console.log("response", responseSite);
-    } catch (error) {
-      console.log("error", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    if (amazonData?.ItemInfo?.Title?.DisplayValue) {
-      getAmazonContent();
-    }
-  }, [amazonData]);
   return (
     <div className="mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16">
       {loading && <Loader text="Generating Content" />}
       <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
         <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-          {amazonData.ItemInfo.Title.DisplayValue}
+          {amazonData.title}
         </h1>
       </div>
 
       <div className="mt-4 lg:row-span-3 lg:mt-0">
         <h2 className="sr-only">Product information</h2>
         <p className="text-3xl tracking-tight text-gray-900">
-          {amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? ""}
+          {amazonData.price ?? ""}
         </p>
         <div className="mt-10">
-          <p>{aiData.description}</p>
+          <p>{amazonData.description}</p>
         </div>
         {/* <div className="mt-6">
           <h3 className="sr-only">Reviews</h3>
@@ -398,10 +336,10 @@ const ProductInfo = () => {
       </div>
 
       <div className="flex flex-col gap-10 py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-        {aiData.features.map((feature, i) => (
+        {amazonData.features.map((feature:any, i:any) => (
           <div className={`flex items-center justify-center gap-5 ${i % 2 !== 0 ? 'flex-row-reverse' : ''}`} key={i}>
             <Image
-              src={i === 0?amazonData?.Images?.Primary?.Large?.URL:amazonData?.Images?.Variants[i-1]?.Large?.URL??amazonData?.Images?.Primary?.Large?.URL}
+              src={i === 0?amazonData?.images?.primary?.Large?.URL:amazonData?.images?.variant[i-1]?.Large?.URL??amazonData?.images?.primary?.Large?.URL}
               alt=""
               width={200}
               height={200}

@@ -7,12 +7,64 @@ import { useState } from "react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAmazonSite } from "@/lib/store/slices/amazon-slice";
 import { useRouter } from "next/navigation";
-import { extractASIN } from "@/lib/utils/function";
+import { extractASIN, generateUniqueHash } from "@/lib/utils/function";
+import { createNewSite } from "@/lib/actions";
+
 export default function Example() {
   const [productUrl, setProductUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
-  const router = useRouter()
+  const router = useRouter();
+
+  const createNewAmazonSite = async (amazonData: any) => {
+    try {
+      const startContentFetch = performance.now();
+      const response = await fetch("/api/content/amazon", {
+        method: "POST",
+        body: JSON.stringify({
+          productTitle: amazonData.ItemInfo.Title.DisplayValue,
+        }),
+      });
+      let content = "";
+      const reader = response.body?.getReader();
+      if (!reader) return;
+
+      const decoder = new TextDecoder();
+      let done = false;
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+
+        if (chunkValue && chunkValue !== "###") content += chunkValue;
+      }
+      const endContentFetch = performance.now();
+      console.log(
+        `Content fetch took ${endContentFetch - startContentFetch} ms`,
+      );
+      const data = JSON.parse(content);
+      const finalData = {
+        ...data,
+        images: {
+          primary: amazonData?.Images?.Primary,
+          variant: amazonData?.Images?.Variants,
+        },
+        price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+        title: amazonData?.ItemInfo?.Title?.DisplayValue,
+      };
+      // setAiData(data);
+      const responseSite = await createNewSite({
+        subdomain: await generateUniqueHash("subdomain"),
+        aiResult: JSON.stringify(finalData),
+        type: "Amazon",
+      });
+
+      dispatch(updateAmazonSite(finalData));
+      router.push("/amazon?site_id=" + responseSite.id);
+    } catch (error) {
+      console.log("errorAmazonGeneration", error);
+    }
+  };
   return (
     <div className="relative isolate overflow-hidden bg-white">
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 ">
@@ -64,8 +116,7 @@ export default function Example() {
                       })
                       .then((data) => {
                         console.log(data);
-                        dispatch(updateAmazonSite(data.ItemsResult.Items[0]));
-                        router.push("/amazon")
+                        createNewAmazonSite(data.ItemsResult.Items[0]);
                       })
                       .catch((error) => {
                         console.error(
