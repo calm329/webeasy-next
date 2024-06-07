@@ -975,3 +975,10 @@ export async function saveState(appState: AppState, dispatch: any) {
     toast.success("Data saved successfully");
   } catch (error) {}
 }
+
+export function extractASIN(url:string) {
+  // Match the ASIN pattern in the URL
+  const asinMatch = url.match(/\/([A-Z0-9]{10})(?:[/?]|$)/);
+  // If there's a match, return the first group captured
+  return asinMatch ? asinMatch[1] : null;
+}

@@ -12,7 +12,7 @@ interface RequestPayload {
 export async function POST(request: NextRequest) {
   const { itemIds, resources }: RequestPayload = await request.json();
 
-  if (!itemIds ) {
+  if (itemIds.length === 0 ) {
     return NextResponse.json({ error: 'ItemIds and Resources are required' }, { status: 400 });
   }
 
