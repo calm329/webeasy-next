@@ -12,7 +12,7 @@ const ImageGallery = () => {
         <Image
           src={amazonData?.images?.primary?.Large?.URL}
           alt="Two each of gray, white, and black shirts laying flat."
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full object-contain object-center"
           height={400}
           width={400}
         />
@@ -25,7 +25,7 @@ const ImageGallery = () => {
               amazonData?.images?.primary?.Large?.URL
             }
             alt="Model wearing plain black basic tee."
-            className="h-full w-full object-cover object-center"
+            className="h-full w-full object-contain object-center"
             height={200}
             width={200}
           />
@@ -37,7 +37,7 @@ const ImageGallery = () => {
               amazonData?.images?.primary?.Large?.URL
             }
             alt="Model wearing plain gray basic tee."
-            className="h-full w-full object-cover object-center"
+            className="h-full w-full object-contain object-center"
             height={200}
             width={200}
           />
@@ -50,7 +50,7 @@ const ImageGallery = () => {
             amazonData?.images?.primary?.Large?.URL
           }
           alt="Model wearing plain white basic tee."
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full object-contain object-center"
           height={400}
           width={400}
         />
