@@ -203,13 +203,15 @@ export default function WebsitesForm() {
                   >
                     <BsTrash3 color="red" />
                   </button>
+                  <div className="min-h-80 rounded-t-lg flex justify-center items-center">
                   <Image
                     src={site.type === "Amazon"?JSON.parse(site?.aiResult).images.primary.Large?.URL: JSON.parse(site?.aiResult)?.hero?.image.imageUrl}
                     height={200}
                     width={500}
-                    className="contain h-80 rounded-t-lg"
+                    className="contain "
                     alt=""
                   />
+                  </div>
                   <div className="flex flex-col gap-5 p-5">
                     <div className="flex flex-col gap-2 ">
                       <h2 className="line-clamp-1 text-xl font-bold">
