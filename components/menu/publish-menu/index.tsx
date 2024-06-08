@@ -9,6 +9,7 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useSession } from "next-auth/react";
 import PublishModal from "../../ui/modal/publish-modal";
 import { PublishDrawer } from "@/components/ui/drawer/publish-drawer";
+import { usePathname } from "next/navigation";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -19,6 +20,7 @@ type TProps = {
 };
 
 export default function PublishMenu(props: TProps) {
+  const pathname = usePathname()
   const { setShowAuthModal } = props;
   const matches = useMediaQuery("(min-width: 768px)");
   const isMobile = useMediaQuery("(max-width: 900px)");
@@ -90,7 +92,7 @@ export default function PublishMenu(props: TProps) {
           <Menu.Item>
             {({ active }) => (
               <Link
-                href={"/preview"}
+                href={pathname.startsWith("/amazon")?"/preview/amazon":"/preview"}
                 target="_blank"
                 className={classNames(
                   active ? "bg-gray-100" : "",
