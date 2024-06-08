@@ -89,7 +89,7 @@ export default function Example() {
               />
               <button
                 type="button"
-                className={`mx-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 items-center focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
+                className={`mx-auto  flex items-center gap-2 rounded-md px-3 py-2  text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
                 disabled={loading}
                 onClick={() => {
                   if (productUrl) {
@@ -116,7 +116,7 @@ export default function Example() {
                         }
                         return response.json();
                       })
-                      .then(async(data) => {
+                      .then(async (data) => {
                         console.log(data);
                         await createNewAmazonSite(data.ItemsResult.Items[0]);
                       })
@@ -135,7 +135,7 @@ export default function Example() {
                 {loading && (
                   <ImSpinner2 className="animate-spin text-lg text-white" />
                 )}
-                Create
+                {loading ? "Creating.." : "Create"}
               </button>
             </div>
 
