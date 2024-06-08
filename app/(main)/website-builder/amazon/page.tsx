@@ -9,6 +9,7 @@ import { updateAmazonSite } from "@/lib/store/slices/amazon-slice";
 import { useRouter } from "next/navigation";
 import { extractASIN, generateUniqueHash } from "@/lib/utils/function";
 import { createNewSite } from "@/lib/actions";
+import { ImSpinner2 } from "react-icons/im";
 
 export default function Example() {
   const [productUrl, setProductUrl] = useState("");
@@ -87,8 +88,9 @@ export default function Example() {
                 onChange={(e) => setProductUrl(e.target.value)}
               />
               <button
-                // href={`/amazon/producturl`}
                 type="button"
+                className={`mx-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 items-center focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
+                disabled={loading}
                 onClick={() => {
                   if (productUrl) {
                     setLoading(true);
@@ -114,9 +116,9 @@ export default function Example() {
                         }
                         return response.json();
                       })
-                      .then((data) => {
+                      .then(async(data) => {
                         console.log(data);
-                        createNewAmazonSite(data.ItemsResult.Items[0]);
+                        await createNewAmazonSite(data.ItemsResult.Items[0]);
                       })
                       .catch((error) => {
                         console.error(
@@ -129,8 +131,10 @@ export default function Example() {
                       });
                   }
                 }}
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
+                {loading && (
+                  <ImSpinner2 className="animate-spin text-lg text-white" />
+                )}
                 Create
               </button>
             </div>
