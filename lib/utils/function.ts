@@ -37,52 +37,52 @@ export const getContent = async (
     const params = new URLSearchParams(urlObj.search);
     const custom = params.get("id");
     let data;
-    if (fieldName !== "image" && fieldName !== "logo") {
-      let response;
-      if (custom) {
-        response = await fetch("/api/content/custom", {
-          method: "POST",
-          body: JSON.stringify({
-            data: {
-              businessType: appState?.aiContent.businessType,
-              location: appState?.aiContent.location,
-              businessName: appState?.aiContent.banner.businessName,
-            },
-            fieldName: fieldName?.split(".")
-              ? fieldName?.split(".")[0]
-              : fieldName ?? "",
-            type: type ?? "",
-          }),
-        });
-      } else {
-        response = await fetch("/api/content", {
-          method: "POST",
-          body: JSON.stringify({
-            mediaCaption,
-            fieldName: fieldName?.split(".")
-              ? fieldName?.split(".")[0]
-              : fieldName ?? "",
-            type: type ?? "",
-          }),
-        });
-      }
 
-      let content = "";
-      const reader = response.body?.getReader();
-      if (!reader) return;
-
-      const decoder = new TextDecoder();
-      let done = false;
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
-
-        if (chunkValue && chunkValue !== "###") content += chunkValue;
-      }
-      data = JSON.parse(content);
+    let response;
+    if (custom && fieldName !== "image" && fieldName !== "logo") {
+      response = await fetch("/api/content/custom", {
+        method: "POST",
+        body: JSON.stringify({
+          data: {
+            businessType: appState?.aiContent.businessType,
+            location: appState?.aiContent.location,
+            businessName: appState?.aiContent.banner.businessName,
+          },
+          fieldName: fieldName?.split(".")
+            ? fieldName?.split(".")[0]
+            : fieldName ?? "",
+          type: type ?? "",
+        }),
+      });
+    } else {
+      response = await fetch("/api/content", {
+        method: "POST",
+        body: JSON.stringify({
+          mediaCaption,
+          fieldName: fieldName?.split(".")
+            ? fieldName?.split(".")[0]
+            : fieldName ?? "",
+          type: type ?? "",
+        }),
+      });
     }
-    console.log("appStateWhileGenerating:", appState);
+
+    let content = "";
+    const reader = response.body?.getReader();
+    if (!reader) return;
+
+    const decoder = new TextDecoder();
+    let done = false;
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+
+      if (chunkValue && chunkValue !== "###") content += chunkValue;
+    }
+    data = JSON.parse(content);
+
+    console.log("appStateWhileGenerating:", appState,data);
     if (custom) {
       // console.log("subdomain: " + subdomain);
       if (fieldName === "image" && appState?.aiContent.businessType) {
@@ -250,6 +250,7 @@ export const regenerateIndividual = async (params: TRParams) => {
         type,
         getAppState(), // Fetch the latest app state
       );
+      console.log("content: " + JSON.stringify(content));
 
       if (fieldName?.split(".") && !fieldName?.split(".")[1]) {
         switch (fieldName?.split(".")[0]) {
@@ -938,132 +939,131 @@ export const handleChangeAppState = (
           }),
         );
         break;
-        case "primaryImage":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                images:{
-                  ...appState.aiContent.images,
-                  primary:{
-                   ...appState?.aiContent?.images?.primary,
-                    Large:{
-                     ...appState?.aiContent?.images?.primary.Large,
-                      URL:value
-                    }
-                  }
-                },
-              },
-            }),
-          );
-          break;
-          case "image1":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                images:{
-                  ...appState.aiContent.images,
-                  variant:appState.aiContent.images?.variant.map((image,i)=>{
-                    if(i===0){
-                      return {
-                       ...image,
-                        Large:{
-                         ...image.Large,
-                          URL:value
-                        }
-                      }
-                    }else{
-                      return image
-                    }
-                  })
-                },
-              },
-            }),
-          );
-          
-          break;
-          case "image2":
-            dispatch(
-              updateAppState({
-                ...appState,
-                aiContent: {
-                  ...appState.aiContent,
-                  images:{
-                    ...appState.aiContent.images,
-                    variant:appState.aiContent.images?.variant.map((image,i)=>{
-                      if(i===1){
-                        return {
-                         ...image,
-                          Large:{
-                           ...image.Large,
-                            URL:value
-                          }
-                        }
-                      }else{
-                        return image
-                      }
-                    })
+      case "primaryImage":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              images: {
+                ...appState.aiContent.images,
+                primary: {
+                  ...appState?.aiContent?.images?.primary,
+                  Large: {
+                    ...appState?.aiContent?.images?.primary.Large,
+                    URL: value,
                   },
                 },
-              }),
-            );
-            break;
-            case "image3":
-              dispatch(
-                updateAppState({
-                  ...appState,
-                  aiContent: {
-                    ...appState.aiContent,
-                    images:{
-                      ...appState.aiContent.images,
-                      variant:appState.aiContent.images?.variant.map((image,i)=>{
-                        if(i===2){
-                          return {
-                           ...image,
-                            Large:{
-                             ...image.Large,
-                              URL:value
-                            }
-                          }
-                        }else{
-                          return image
-                        }
-                      })
-                    },
-                  },
-                }),
-              );
-              break;
-              case "image4":
-                dispatch(
-                  updateAppState({
-                    ...appState,
-                    aiContent: {
-                      ...appState.aiContent,
-                      images:{
-                        ...appState.aiContent.images,
-                        variant:appState.aiContent.images?.variant.map((image,i)=>{
-                          if(i===3){
-                            return {
-                             ...image,
-                              Large:{
-                               ...image.Large,
-                                URL:value
-                              }
-                            }
-                          }else{
-                            return image
-                          }
-                        })
+              },
+            },
+          }),
+        );
+        break;
+      case "image1":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              images: {
+                ...appState.aiContent.images,
+                variant: appState.aiContent.images?.variant.map((image, i) => {
+                  if (i === 0) {
+                    return {
+                      ...image,
+                      Large: {
+                        ...image.Large,
+                        URL: value,
                       },
-                    },
-                  }),
+                    };
+                  } else {
+                    return image;
+                  }
+                }),
+              },
+            },
+          }),
+        );
 
-                );
-                break;
+        break;
+      case "image2":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              images: {
+                ...appState.aiContent.images,
+                variant: appState.aiContent.images?.variant.map((image, i) => {
+                  if (i === 1) {
+                    return {
+                      ...image,
+                      Large: {
+                        ...image.Large,
+                        URL: value,
+                      },
+                    };
+                  } else {
+                    return image;
+                  }
+                }),
+              },
+            },
+          }),
+        );
+        break;
+      case "image3":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              images: {
+                ...appState.aiContent.images,
+                variant: appState.aiContent.images?.variant.map((image, i) => {
+                  if (i === 2) {
+                    return {
+                      ...image,
+                      Large: {
+                        ...image.Large,
+                        URL: value,
+                      },
+                    };
+                  } else {
+                    return image;
+                  }
+                }),
+              },
+            },
+          }),
+        );
+        break;
+      case "image4":
+        dispatch(
+          updateAppState({
+            ...appState,
+            aiContent: {
+              ...appState.aiContent,
+              images: {
+                ...appState.aiContent.images,
+                variant: appState.aiContent.images?.variant.map((image, i) => {
+                  if (i === 3) {
+                    return {
+                      ...image,
+                      Large: {
+                        ...image.Large,
+                        URL: value,
+                      },
+                    };
+                  } else {
+                    return image;
+                  }
+                }),
+              },
+            },
+          }),
+        );
+        break;
       default:
         break;
     }
@@ -1102,18 +1102,19 @@ export async function saveState(appState: AppState, dispatch: any) {
   } catch (error) {}
 }
 
-export function extractASIN(url:string) {
+export function extractASIN(url: string) {
   // Match the ASIN pattern in the URL
   const asinMatch = url.match(/\/([A-Z0-9]{10})(?:[/?]|$)/);
   // If there's a match, return the first group captured
   return asinMatch ? asinMatch[1] : null;
 }
 
-
-export async function generateUniqueHash(inputString:string) {
+export async function generateUniqueHash(inputString: string) {
   // Helper function to convert ArrayBuffer to hex string
-  function bufferToHex(buffer:any) {
-      return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+  function bufferToHex(buffer: any) {
+    return Array.prototype.map
+      .call(new Uint8Array(buffer), (x) => ("00" + x.toString(16)).slice(-2))
+      .join("");
   }
 
   // Generate a random salt
@@ -1128,7 +1129,7 @@ export async function generateUniqueHash(inputString:string) {
   const data = encoder.encode(saltedInput);
 
   // Hash the salted input using SHA-256
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
   const hashHex = bufferToHex(hashBuffer);
 
   // Combine the salt and the hash to ensure uniqueness and randomness
