@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 type TProps = {
   defaultValue?: string | null;
-  name: "image" | "logo";
+  name: string;
   label?: string;
   onChange?: (value: string) => void;
 };

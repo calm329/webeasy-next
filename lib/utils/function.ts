@@ -938,6 +938,132 @@ export const handleChangeAppState = (
           }),
         );
         break;
+        case "primaryImage":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                images:{
+                  ...appState.aiContent.images,
+                  primary:{
+                   ...appState?.aiContent?.images?.primary,
+                    Large:{
+                     ...appState?.aiContent?.images?.primary.Large,
+                      URL:value
+                    }
+                  }
+                },
+              },
+            }),
+          );
+          break;
+          case "image1":
+          dispatch(
+            updateAppState({
+              ...appState,
+              aiContent: {
+                ...appState.aiContent,
+                images:{
+                  ...appState.aiContent.images,
+                  variant:appState.aiContent.images?.variant.map((image,i)=>{
+                    if(i===0){
+                      return {
+                       ...image,
+                        Large:{
+                         ...image.Large,
+                          URL:value
+                        }
+                      }
+                    }else{
+                      return image
+                    }
+                  })
+                },
+              },
+            }),
+          );
+          
+          break;
+          case "image2":
+            dispatch(
+              updateAppState({
+                ...appState,
+                aiContent: {
+                  ...appState.aiContent,
+                  images:{
+                    ...appState.aiContent.images,
+                    variant:appState.aiContent.images?.variant.map((image,i)=>{
+                      if(i===1){
+                        return {
+                         ...image,
+                          Large:{
+                           ...image.Large,
+                            URL:value
+                          }
+                        }
+                      }else{
+                        return image
+                      }
+                    })
+                  },
+                },
+              }),
+            );
+            break;
+            case "image3":
+              dispatch(
+                updateAppState({
+                  ...appState,
+                  aiContent: {
+                    ...appState.aiContent,
+                    images:{
+                      ...appState.aiContent.images,
+                      variant:appState.aiContent.images?.variant.map((image,i)=>{
+                        if(i===2){
+                          return {
+                           ...image,
+                            Large:{
+                             ...image.Large,
+                              URL:value
+                            }
+                          }
+                        }else{
+                          return image
+                        }
+                      })
+                    },
+                  },
+                }),
+              );
+              break;
+              case "image4":
+                dispatch(
+                  updateAppState({
+                    ...appState,
+                    aiContent: {
+                      ...appState.aiContent,
+                      images:{
+                        ...appState.aiContent.images,
+                        variant:appState.aiContent.images?.variant.map((image,i)=>{
+                          if(i===3){
+                            return {
+                             ...image,
+                              Large:{
+                               ...image.Large,
+                                URL:value
+                              }
+                            }
+                          }else{
+                            return image
+                          }
+                        })
+                      },
+                    },
+                  }),
+
+                );
+                break;
       default:
         break;
     }
