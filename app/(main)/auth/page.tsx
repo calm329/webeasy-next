@@ -109,7 +109,7 @@ export default function Page() {
   }, [appState.selectedFont]);
   return (
     <>
-      {appState.status === "Done" ? (
+      {appState.status === "Done"&&appState?.aiContent?.banner ? (
         <>
           <SiteHeader
             showNavigation={false}

@@ -6,7 +6,7 @@ import { fetchAccessToken } from "@/lib/store/slices/accesstoken-slice";
 import { getUsernameFromPosts } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaInstagram } from "react-icons/fa";
 import { FaAmazon, FaEdit } from "react-icons/fa";
@@ -90,6 +90,7 @@ export default function WebsitesForm() {
   const [paginatedData, setPaginatedData] = useState<TSites>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState("");
+  const pathname = usePathname()
   useEffect(() => {
     if (sites) {
       const startIndex = (page - 1) * dataPerPage;
@@ -140,7 +141,7 @@ export default function WebsitesForm() {
       }
     }
   }, [page, sites, selectedSection]);
-  // if (sites) console.log(JSON.parse(sites[1]?.aiResult)?.hero?.image.imageUrl);
+  
   const totalPages = Math.ceil(
     (sites?.filter((site) => site.type === selectedSection).length || 0) /
       dataPerPage,
@@ -243,10 +244,11 @@ export default function WebsitesForm() {
                         Edit
                       </button>
                       <Link
-                        href={`https://${site.subdomain}.webeasy.ai`}
+                        href={site.type === "Amazon"?"/preview/amazon?preview_site="+site.id:"/preview?preview_site="+site.id}
                         target="_blank"
                         className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
                       >
+                        
                         <FaExternalLinkAlt />
                         Preview
                       </Link>

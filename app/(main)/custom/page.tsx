@@ -67,8 +67,10 @@ export default function Page() {
         });
     }
   }, [appState.selectedFont]);
-  
+  console.log("saveLoading",saveLoading, appState.status)
   return (
+    <>
+    {(!saveLoading ?? appState.status === "Done") && appState?.aiContent?.banner ?
     <>
       <SiteHeader
         showNavigation={false}
@@ -129,7 +131,8 @@ export default function Page() {
           </>
         )}
       </div>
-      {(saveLoading || appState.status !== "Done") && <Loader text={appState.status === "Done"?"Loading":appState.status} />}
+      </>
+      : <Loader text={appState.status === "Done"?"Loading":appState.status} />}
     </>
   );
 }

@@ -60,7 +60,7 @@ export default function Example() {
         type: "Amazon",
       });
 
-      dispatch(updateAmazonSite(finalData));
+      // dispatch(updateAmazonSite(finalData));
       router.push("/amazon?site_id=" + responseSite.id);
     } catch (error) {
       console.log("errorAmazonGeneration", error);

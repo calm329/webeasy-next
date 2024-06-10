@@ -25,6 +25,7 @@ export async function getSiteData(subdomain?: string) {
 }
 
 export async function getSiteDataById(id: string) {
+  console.log('hi')
   const site = await prisma.site.findFirst({
     where: {
       id: id,

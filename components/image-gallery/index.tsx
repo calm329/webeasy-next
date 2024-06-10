@@ -1,28 +1,28 @@
 import { useAppSelector } from "@/lib/store/hooks";
-import { amazonData as AD } from "@/lib/store/slices/amazon-slice";
 import Image from "next/image";
 import React from "react";
+import { appState as AS } from '@/lib/store/slices/site-slice';
 
 const ImageGallery = () => {
-  const amazonData = useAppSelector(AD);
-  console.log("amazonData", amazonData);
+  const appState = useAppSelector(AS);
+  console.log("amazonData", appState);
   return (
-    <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+    <div className={`${appState.view==="Mobile"?"flex flex-col":"sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8"} mx-auto  max-w-2xl `}>
       <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
         <Image
-          src={amazonData?.images?.primary?.Large?.URL}
+          src={appState?.aiContent?.images?.primary?.Large?.URL??""}
           alt="Two each of gray, white, and black shirts laying flat."
           className="h-full w-full object-contain object-center"
           height={400}
           width={400}
         />
       </div>
-      <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-        <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+      <div className={appState.view==="Mobile"?"flex ":"hidden lg:grid lg:grid-cols-1 lg:gap-y-8"}>
+        <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg flex-1">
           <Image
             src={
-              amazonData?.images?.variant[0]?.Large?.URL ??
-              amazonData?.images?.primary?.Large?.URL
+              appState.aiContent?.images?.variant[0]?.Large?.URL ??
+              appState.aiContent?.images?.primary?.Large?.URL??""
             }
             alt="Model wearing plain black basic tee."
             className="h-full w-full object-contain object-center"
@@ -30,11 +30,11 @@ const ImageGallery = () => {
             width={200}
           />
         </div>
-        <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+        <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg flex-1">
           <Image
             src={
-              amazonData?.images?.variant[1]?.Large?.URL ??
-              amazonData?.images?.primary?.Large?.URL
+              appState.aiContent?.images?.variant[1]?.Large?.URL ??
+              appState.aiContent?.images?.primary?.Large?.URL??""
             }
             alt="Model wearing plain gray basic tee."
             className="h-full w-full object-contain object-center"
@@ -46,8 +46,8 @@ const ImageGallery = () => {
       <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
         <Image
           src={
-            amazonData?.images?.variant[2]?.Large?.URL ??
-            amazonData?.images?.primary?.Large?.URL
+            appState.aiContent?.images?.variant[2]?.Large?.URL ??
+            appState.aiContent?.images?.primary?.Large?.URL??""
           }
           alt="Model wearing plain white basic tee."
           className="h-full w-full object-contain object-center"

@@ -1,8 +1,12 @@
 "use client";
 import BasicTemplate from "@/templates/basic-template";
-import React from "react";
-import { appState as AS } from "@/lib/store/slices/site-slice";
-import { useAppSelector } from "@/lib/store/hooks";
+import React, { useEffect } from "react";
+import {
+  appState as AS,
+  fetchSiteById,
+  loading as LD,
+} from "@/lib/store/slices/site-slice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
   TemplatesData as TD,
   selectedTemplate as ST,
@@ -10,6 +14,8 @@ import {
 import BlueBasedTemplate from "@/templates/blue-based-template";
 import PostBasedTemplate from "@/templates/post-based-template";
 import General from "@/templates/general-template";
+import { useSearchParams } from "next/navigation";
+import Loader from "@/components/ui/loader";
 
 type TProps = {
   params: { template: string };
@@ -19,9 +25,20 @@ const Preview = (props: TProps) => {
   const appState = useAppSelector(AS);
   const templates = useAppSelector(TD);
   const selectedTemplate = useAppSelector(ST);
-
-  console.log("selectedTemplate",selectedTemplate)
-
+  const searchParams = useSearchParams();
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector(LD);
+  console.log("hi");
+  useEffect(() => {
+    if (searchParams.get("preview_site")) {
+      dispatch(fetchSiteById({ id: searchParams.get("preview_site") ?? "" }));
+    }
+    console.log("selectedTemplate", appState);
+  }, [searchParams, dispatch]);
+  
+  if (loading) {
+    return <Loader text="loading" />;
+  }
   switch (selectedTemplate?.name) {
     case "Basic template":
       return (
