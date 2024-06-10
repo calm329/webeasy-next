@@ -276,6 +276,9 @@ const siteSlice = createSlice({
         title: action.payload?.title ?? "",
         description: action.payload?.description ?? "",
       };
+      if(action.payload?.id){
+        state.sites.domain.present.id=action.payload?.id
+      }
       state.sites.domain.present.subdomain = action.payload?.subdomain ?? "";
 
       state.sites.domain.present.status = "Done";
