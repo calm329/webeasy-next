@@ -9,7 +9,7 @@ const openai = new OpenAI({
 });
 
 export async function POST(request: NextRequest) {
-  const { fieldName, data } = await request.json();
+  const { fieldName, data, type } = await request.json();
   console.log("prompt", data);
   if (!data) {
     return NextResponse.json({ error: "Missing data" }, { status: 400 });
@@ -27,6 +27,18 @@ export async function POST(request: NextRequest) {
     case "subheading":
       fields =
         'only generate the data for the given fields "hero": {"subheading": "*insert subheading here*"}';
+      break;
+    case "serviceName":
+      fields = `only generate the ${type ?? ""} data for the given fields "services": {"list": [
+          {
+            "name": "*first service or feature*",
+          }]}`;
+      break;
+    case "serviceDescription":
+      fields = `only generate the ${type ?? ""} data for the given fields "services": {"list": [
+            {
+              "description": "*description*",
+            }]}`;
       break;
     default:
       fields = `
