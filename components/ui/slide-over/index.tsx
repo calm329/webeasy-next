@@ -72,6 +72,7 @@ function SlideOver(props: TProps) {
               <ServiceContent setShowForm={setShowForm} />
             )}
             {section === "Posts" && <PostsContent />}
+            {section === "Gallery" && <>HI</>}
           </CustomizePanel>
         </div>
       </div>

@@ -5,7 +5,7 @@ import ProductInfo from "@/components/product-info";
 import SuggestedProducts from "@/components/suggested-products";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ProductCategory from "../../components/product-category/index";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
@@ -19,8 +19,29 @@ import {
   appState as AS,
   fetchSiteById,
   loading as LD,
+  updateAppState,
 } from "@/lib/store/slices/site-slice";
-const ProductTemplate = () => {
+import { TSection } from "@/types";
+
+type TProps = {
+  setSection: Dispatch<SetStateAction<TSection>>;
+  setIsSideBarOpen: Dispatch<SetStateAction<boolean>>;
+  showForm: {
+    form: string;
+    edit: string;
+    show: boolean;
+  };
+  setShowForm: React.Dispatch<
+    React.SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+};
+
+const ProductTemplate = (props:TProps) => {
+  const {setSection,setIsSideBarOpen,setShowForm,showForm} = props;
   const appState = useAppSelector(AS);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
@@ -42,7 +63,20 @@ const ProductTemplate = () => {
         {appState && (
           <>
             <div
-              className={`${appState.view === "Mobile" ? "flex flex-col" : "sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8"} mx-auto  max-w-2xl `}
+              className={`${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${appState.view === "Mobile" ? "flex flex-col" : "sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8"} mx-auto  max-w-2xl `}
+              onClick={()=>{
+                if (setIsSideBarOpen && setSection) {
+                  console.log("hideSideBar")
+                  setIsSideBarOpen(true);
+                  setSection("Gallery");
+                  dispatch(
+                    updateAppState({
+                     ...appState,
+                      openedSlide: "Customize",
+                    }),
+                  );
+                }
+              }}
             >
               <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
                 <Image
@@ -103,26 +137,50 @@ const ProductTemplate = () => {
             </div>
 
             <div
-              className={
-                appState.view === "Mobile"
+              className={` 
+                ${appState.view === "Mobile"
                   ? "flex flex-col px-5"
-                  : "mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16"
+                  : "mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16"}`
               }
+             
             >
               {loading && <Loader text="Generating Content" />}
               <div
-                className={
-                  appState?.view === "Mobile"
+                className={`${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"}  
+                  ${appState?.view === "Mobile"
                     ? ""
-                    : "lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"
+                    : "lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"}`
                 }
+                onClick={()=>{
+                  if (setIsSideBarOpen && setSection) {
+                    setIsSideBarOpen(true);
+                    setSection("Title");
+                    dispatch(
+                      updateAppState({
+                       ...appState,
+                        openedSlide: "Customize",
+                      }),
+                    );
+                  }
+                }}
               >
                 <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
                   {appState.aiContent?.title ?? ""}
                 </h1>
               </div>
 
-              <div className="mt-4 lg:row-span-3 lg:mt-0">
+              <div className={`mt-4 lg:row-span-3 lg:mt-0 ${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"} `} onClick={()=>{
+                if (setIsSideBarOpen && setSection) {
+                  setIsSideBarOpen(true);
+                  setSection("Description");
+                  dispatch(
+                    updateAppState({
+                     ...appState,
+                      openedSlide: "Customize",
+                    }),
+                  );
+                }
+              }}>
                 <h2 className="sr-only">Product information</h2>
                 <p className="text-3xl tracking-tight text-gray-900">
                   {appState.aiContent?.price ?? ""}
@@ -133,11 +191,23 @@ const ProductTemplate = () => {
               </div>
 
               <div
-                className={
-                  appState?.view === "Mobile"
+                className={`${appState.editable && "rounded border-2 border-transparent border-white hover:border-indigo-500"}
+                  ${appState?.view === "Mobile"
                     ? "flex flex-col gap-10 py-10"
-                    : "flex flex-col gap-10 py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6"
+                    : "flex flex-col gap-10 py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6"}`
                 }
+                onClick={()=>{
+                  if (setIsSideBarOpen && setSection) {
+                    setIsSideBarOpen(true);
+                    setSection("Features");
+                    dispatch(
+                      updateAppState({
+                       ...appState,
+                        openedSlide: "Customize",
+                      }),
+                    );
+                  }
+                }}
               >
                 {appState.aiContent?.features?.map((feature: any, i: any) => (
                   <div
