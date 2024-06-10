@@ -1,37 +1,30 @@
-import { useAppSelector } from "@/lib/store/hooks";
 import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import Loader from "../ui/loader/index";
-import { createNewSite } from "@/lib/actions";
-import { appState as AS } from "@/lib/store/slices/site-slice";
+import React from "react";
 
-const ProductInfo = () => {
-  const appState = useAppSelector(AS);
-  const [loading, setLoading] = useState(false);
-  // console.log("amazonData", amazonData);
+type TProps = {
+  data:any
+}
+
+const ProductInfo = (props:TProps) => {
+  const {data}= props
   return (
     <div
-      className={
-        appState.view === "Mobile"
-          ? "flex flex-col px-5"
-          : "mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16"
+      className={"mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16"
       }
     >
-      {loading && <Loader text="Generating Content" />}
-      <div className={appState?.view === "Mobile"?"":"lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"}>
+      <div className={"lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"}>
         <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-          {appState.aiContent?.title ?? ""}
+          {data?.title ?? ""}
         </h1>
       </div>
 
       <div className="mt-4 lg:row-span-3 lg:mt-0">
         <h2 className="sr-only">Product information</h2>
         <p className="text-3xl tracking-tight text-gray-900">
-          {appState.aiContent?.price ?? ""}
+          {data?.price ?? ""}
         </p>
         <div className="mt-10">
-          <p>{appState.aiContent?.description ?? ""}</p>
+          <p>{data?.description ?? ""}</p>
         </div>
         {/* <div className="mt-6">
           <h3 className="sr-only">Reviews</h3>
@@ -338,8 +331,8 @@ const ProductInfo = () => {
         </form> */}
       </div>
 
-      <div className={appState?.view === "Mobile"?"flex flex-col gap-10 py-10":"flex flex-col gap-10 py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6"}>
-        {appState.aiContent?.features?.map((feature: any, i: any) => (
+      <div className={"flex flex-col gap-10 py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6"}>
+        {data?.features?.map((feature: any, i: any) => (
           <div
             className={`flex items-center justify-center gap-5 ${i % 2 !== 0 ? "flex-row-reverse" : ""}`}
             key={i}
@@ -347,9 +340,9 @@ const ProductInfo = () => {
             <Image
               src={
                 i === 0
-                  ? appState.aiContent?.images?.primary?.Large?.URL ?? ""
-                  : appState.aiContent?.images?.variant[i - 1]?.Large?.URL ??
-                    appState.aiContent?.images?.primary?.Large?.URL ??
+                  ? data?.images?.primary?.Large?.URL ?? ""
+                  : data?.images?.variant[i - 1]?.Large?.URL ??
+                    data?.images?.primary?.Large?.URL ??
                     ""
               }
               alt=""

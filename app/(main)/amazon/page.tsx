@@ -1,6 +1,6 @@
 "use client";
 import SiteHeader from "@/components/header";
-import ProductTemplate from "@/templates/product-template";
+import ProductTemplate from "@/templates/product-template/product-template-csr";
 import React, { useState } from "react";
 // import { Header } from '../../../components/header/blue-based-header';
 
