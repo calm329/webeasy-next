@@ -7,6 +7,8 @@ import BannerContent from "@/components/customize/panel/banner";
 import ServiceContent from "@/components/customize/panel/service";
 import PostsContent from "@/components/customize/panel/posts";
 import GalleryContent from "@/components/customize/panel/gallery";
+import TitleContent from "@/components/customize/panel/title";
+import DescriptionContent from "@/components/customize/panel/description";
 
 type TProps = {
   open: boolean;
@@ -73,10 +75,16 @@ function SlideOver(props: TProps) {
               <ServiceContent setShowForm={setShowForm} />
             )}
             {section === "Posts" && <PostsContent />}
-            {section === "Gallery" && <GalleryContent        section={section}
+            {section === "Gallery" && (
+              <GalleryContent
+                section={section}
                 handleChange={handleChange}
                 subdomain={subdomain}
-                setShowForm={setShowForm}/>}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "Title" && <TitleContent />}
+            {section === "Description" && <DescriptionContent />}
           </CustomizePanel>
         </div>
       </div>
