@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useSearchParams } from "next/navigation";
 import { getSiteDataById } from "@/lib/fetchers";
 import Loader from "@/components/ui/loader";
-import ProductTemplate from '@/templates/product-template';
+import ProductTemplate from '@/templates/product-template/product-template-csr';
 import { fetchSiteById, appState as AS, loading as LD } from '@/lib/store/slices/site-slice';
 
 const PreviewAmazon = () => {

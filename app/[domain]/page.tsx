@@ -1,5 +1,6 @@
 import BasicTemplate from "@/templates/basic-template";
 import { getSiteData } from "@/lib/fetchers";
+import ProductTemplate from "@/templates/product-template/";
 // import { makeStore } from "@/lib/store";
 
 type TProps = {
@@ -9,9 +10,9 @@ type TProps = {
 export default async function SiteHomePage(props: TProps) {
   const { params } = props;
   const domain = decodeURIComponent(params.domain);
-  console.log("domain",domain)
+  console.log("domain", domain);
   const data = await getSiteData(domain);
-  console.log("data",data);
+  console.log("data", data);
   if (!data) {
     return (
       <div>
@@ -23,15 +24,19 @@ export default async function SiteHomePage(props: TProps) {
 
   let posts = JSON.parse(data.posts || "[]");
   let aiResult = JSON.parse(data.aiResult || "{}");
-  return (
-    <div>
-      <BasicTemplate
-        banner={aiResult["banner"]}
-        hero={aiResult["hero"]}
-        colors={aiResult["colors"]}
-        services={aiResult["services"]["list"]}
-        posts={posts}
-      />
-    </div>
-  );
+  if (data.type === "Amazon") {
+    return <ProductTemplate data={aiResult} />;
+  } else {
+    return (
+      <div>
+        <BasicTemplate
+          banner={aiResult["banner"]}
+          hero={aiResult["hero"]}
+          colors={aiResult["colors"]}
+          services={aiResult["services"]["list"]}
+          posts={posts}
+        />
+      </div>
+    );
+  }
 }
