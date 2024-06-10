@@ -15,29 +15,25 @@ import {
 import { useSearchParams } from "next/navigation";
 import { getSiteDataById } from "@/lib/fetchers";
 import Loader from "@/components/ui/loader";
-
+import { appState as AS, fetchSiteById, loading as LD } from '@/lib/store/slices/site-slice';
 const ProductTemplate = () => {
-  const amazonData = useAppSelector(AD);
+  const appState = useAppSelector(AS);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(false);
+  const loading = useAppSelector(LD);
   useEffect(() => {
     if (searchParams.get("site_id")) {
-      setLoading(true);
-      getSiteDataById(searchParams.get("site_id") as string).then((data) => {
-        // const updatedData =
-        dispatch(updateAmazonSite(JSON.parse(data?.aiResult ?? "")));
-        setLoading(false);
-      });
+      // setLoading(true);
+      dispatch(fetchSiteById({id:searchParams.get("site_id")??""}))
     }
   }, [searchParams]);
   return (
-    <div className="bg-white">
+    <div className={` mx-auto overflow-auto ${appState.view === "Mobile" && "h-[800px] w-[480px] rounded-xl border-8 border-black no-scrollbar"} ${appState.view === "Tablet" && "h-[1024px] w-[768px] rounded-xl border-8  border-black no-scrollbar"} ${appState.view === "Desktop" && "h-full w-full"}`}>
       {loading && <Loader text="Loading" />}
       <ProductCategory />
-      <main className="pt-10 sm:pt-16">
+      <main className="">
         {/* <ProductBreadCrumbs /> */}
-        {amazonData && (
+        {appState && (
           <>
             <ImageGallery />
 

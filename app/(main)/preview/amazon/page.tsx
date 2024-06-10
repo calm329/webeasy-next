@@ -1,28 +1,30 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { amazonData as AD, updateAmazonSite } from '@/lib/store/slices/amazon-slice';
 import { useSearchParams } from "next/navigation";
 import { getSiteDataById } from "@/lib/fetchers";
 import Loader from "@/components/ui/loader";
 import ProductTemplate from '@/templates/product-template';
+import { fetchSiteById, appState as AS, loading as LD } from '@/lib/store/slices/site-slice';
 
 const PreviewAmazon = () => {
-  const amazonData = useAppSelector(AD)
+  const appState = useAppSelector(AS)
   const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
-  const [loading,setLoading] = useState(false)
+  const loading = useAppSelector(LD)
   useEffect(()=>{
-    if(searchParams.get('site_id')){
-      setLoading(true)
-      getSiteDataById(searchParams.get('site_id') as string).then((data)=>
-      {
-        // const updatedData = 
-        dispatch(
-          updateAmazonSite(JSON.parse(data?.aiResult??""))
-        )
-        setLoading(false)
-      })
+    if(searchParams.get('preview_site')){
+      // setLoading(true)
+      dispatch(fetchSiteById({id: searchParams.get('preview_site')??""}))
+      // getSiteDataById(searchParams.get('preview_site') as string).then((data)=>
+      // {
+        
+      //   // const updatedData = 
+      //   dispatch(
+      //     updateAmazonSite(JSON.parse(data?.aiResult??""))
+      //   )
+      //   setLoading(false)
+      // })
     }
   },[searchParams])
   return (

@@ -68,7 +68,7 @@ export type TTemplateName =
   | "General template";
 
 export interface AppState {
-  id:string,
+  id: string;
   openedSlide: "Customize" | "Font" | null;
   selectedFont: string;
   focusedField: TFields | null;
@@ -78,13 +78,24 @@ export interface AppState {
   iPosts: TPosts;
   aiContent: {
     banner: TBanner;
-
     hero: THero;
     services: TServices;
     colors: {
       primary: string;
       secondary: string;
     };
+    features?: [{ title: string; description: string }];
+    description?: string;
+    images?: {
+      primary: { Large: { Height: number; URL: string; Width: number } };
+      variant: Array<{
+        Large: { Height: number; URL: string; Width: number };
+        Medium: { Height: number; URL: string; Width: number };
+        Small: { Height: number; URL: string; Width: number };
+      }>;
+    };
+    price?: string;
+    title?: string;
     businessType?: string;
     location?: string;
   };
@@ -221,4 +232,4 @@ export type TSite = {
   updatedAt: Date;
 };
 
-export type TSiteType = "Instagram" | "Custom"|"Amazon";
+export type TSiteType = "Instagram" | "Custom" | "Amazon";

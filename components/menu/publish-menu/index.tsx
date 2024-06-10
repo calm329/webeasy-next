@@ -92,7 +92,7 @@ export default function PublishMenu(props: TProps) {
           <Menu.Item>
             {({ active }) => (
               <Link
-                href={pathname.startsWith("/amazon")?"/preview/amazon":"/preview"}
+                href={pathname.startsWith("/amazon")?"/preview/amazon?preview_site="+appState.id:"/preview?preview_site="+appState.id}
                 target="_blank"
                 className={classNames(
                   active ? "bg-gray-100" : "",
