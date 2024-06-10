@@ -71,7 +71,7 @@ export default function SigninForm(props: TProps) {
       router.push("/settings/websites")
     }
     
-    if((pathname.startsWith("/auth")||pathname.startsWith("/custom"))) {
+    if((pathname.startsWith("/auth")||pathname.startsWith("/custom")||pathname.startsWith("/amazon"))) {
       saveState(appState, dispatch).then(() =>
         dispatch(clearPastAndFuture()),
       );
