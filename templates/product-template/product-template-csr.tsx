@@ -24,14 +24,14 @@ import {
 import { TSection } from "@/types";
 
 type TProps = {
-  setSection: Dispatch<SetStateAction<TSection>>;
-  setIsSideBarOpen: Dispatch<SetStateAction<boolean>>;
-  showForm: {
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  setIsSideBarOpen?: Dispatch<SetStateAction<boolean>>;
+  showForm?: {
     form: string;
     edit: string;
     show: boolean;
   };
-  setShowForm: React.Dispatch<
+  setShowForm?: React.Dispatch<
     React.SetStateAction<{
       form: string;
       edit: string;
