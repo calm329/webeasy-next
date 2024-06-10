@@ -39,58 +39,61 @@ const Preview = (props: TProps) => {
   if (loading) {
     return <Loader text="loading" />;
   }
-  switch (selectedTemplate?.name) {
-    case "Basic template":
-      return (
-        <BasicTemplate
-          banner={appState.aiContent["banner"]}
-          hero={appState.aiContent["hero"]}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
-          posts={appState.iPosts}
-        />
-      );
-    case "Blue-Based template":
-      return (
-        <BlueBasedTemplate
-          banner={appState.aiContent["banner"]}
-          hero={appState.aiContent["hero"]}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
-          posts={appState.iPosts}
-        />
-      );
-    case "Post-Based template":
-      return (
-        <PostBasedTemplate
-          banner={appState.aiContent["banner"]}
-          hero={appState.aiContent["hero"]}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
-          posts={appState.iPosts}
-        />
-      );
-    case "General template":
-      return (
-        <General
-          banner={appState.aiContent["banner"]}
-          hero={appState.aiContent["hero"]}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
-          posts={appState.iPosts}
-        />
-      );
-    default:
-      return (
-        <BasicTemplate
-          banner={appState.aiContent["banner"]}
-          hero={appState.aiContent["hero"]}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
-          posts={appState.iPosts}
-        />
-      );
+  if(appState?.aiContent?.banner){
+    switch (selectedTemplate?.name) {
+      case "Basic template":
+        return (
+          <BasicTemplate
+            banner={appState.aiContent["banner"]}
+            hero={appState.aiContent["hero"]}
+            colors={appState.aiContent["colors"]}
+            services={appState.aiContent["services"]["list"]}
+            posts={appState.iPosts}
+          />
+        );
+      case "Blue-Based template":
+        return (
+          <BlueBasedTemplate
+            banner={appState.aiContent["banner"]}
+            hero={appState.aiContent["hero"]}
+            colors={appState.aiContent["colors"]}
+            services={appState.aiContent["services"]["list"]}
+            posts={appState.iPosts}
+          />
+        );
+      case "Post-Based template":
+        return (
+          <PostBasedTemplate
+            banner={appState.aiContent["banner"]}
+            hero={appState.aiContent["hero"]}
+            colors={appState.aiContent["colors"]}
+            services={appState.aiContent["services"]["list"]}
+            posts={appState.iPosts}
+          />
+        );
+      case "General template":
+        return (
+          <General
+            banner={appState.aiContent["banner"]}
+            hero={appState.aiContent["hero"]}
+            colors={appState.aiContent["colors"]}
+            services={appState.aiContent["services"]["list"]}
+            posts={appState.iPosts}
+          />
+        );
+      default:
+        return (
+          <BasicTemplate
+            banner={appState.aiContent["banner"]}
+            hero={appState.aiContent["hero"]}
+            colors={appState.aiContent["colors"]}
+            services={appState.aiContent["services"]["list"]}
+            posts={appState.iPosts}
+          />
+        );
+    }
   }
+
 };
 
 export default Preview;

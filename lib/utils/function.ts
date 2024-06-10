@@ -567,7 +567,7 @@ export const getInstagramData = async (params: TParams) => {
     dispatch(
       updateAppState({
         ...appState,
-        id: siteData.id,
+        id: siteData?.id,
         selectedFont: siteData.font,
         subdomain: siteAvailable,
         status: "Done",
@@ -638,7 +638,7 @@ export const getInstagramData = async (params: TParams) => {
             userId: searchParams.get("user_id") || "",
             type: "Instagram",
           });
-          id = response.id;
+          id = response?.id;
         }
 
         dispatch(
