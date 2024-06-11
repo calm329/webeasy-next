@@ -364,7 +364,7 @@ const CustomWebsiteForm = () => {
                   setValue("business", val.value);
                 }
               }}
-              placeholder="Coaching, Photography, Landscaping..."
+              placeholder="Coaching, Photography, etc..."
               options={options}
               className="businessType w-96 max-sm:w-80"
             />
