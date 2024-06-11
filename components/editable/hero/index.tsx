@@ -40,6 +40,11 @@ const EditableHero = (props: TProps) => {
           setSection("Hero");
           setIsOpen(true);
           dispatch(updateAppState({...appState,openedSlide:"Customize"}))
+          setShowForm({
+            show: false,
+            edit:"",
+            form:"",
+          })
         }
       }}
     >
