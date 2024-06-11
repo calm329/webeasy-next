@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAmazonSite } from "@/lib/store/slices/amazon-slice";
 import { useRouter } from "next/navigation";
-import { extractASIN, generateUniqueHash } from "@/lib/utils/function";
+import { extractASIN, generateUniqueHash, getColors } from "@/lib/utils/function";
 import { createNewSite } from "@/lib/actions";
 import { ImSpinner2 } from "react-icons/im";
 
@@ -44,6 +44,8 @@ export default function Example() {
         `Content fetch took ${endContentFetch - startContentFetch} ms`,
       );
       const data = JSON.parse(content);
+      const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL)
+      
       const finalData = {
         ...data,
         images: {
@@ -68,7 +70,9 @@ export default function Example() {
             };
           }
         }),
+        colors
       };
+
       // setAiData(data);
       const responseSite = await createNewSite({
         subdomain: await generateUniqueHash("subdomain"),
