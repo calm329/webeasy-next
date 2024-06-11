@@ -16,6 +16,8 @@ import SelectTemplateDrawer from "../ui/drawer/select-template-drawer";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAppState } from "@/lib/store/slices/site-slice";
 import {
+  getAmazonData,
+  getColors,
   getInstagramData,
   regenerateImage,
   regenerateText,
@@ -218,14 +220,51 @@ export default function SettingMenu(props: TProps) {
                 <Menu.Item>
                   {({ active }) => (
                     <button
-                      // onClick={() =>
-                      //   getInstagramData({
-                      //     appState,
-                      //     dispatch,
-                      //     searchParams,
-                      //     regenerate: true,
-                      //   })
-                      // }
+                      onClick={async () => {
+                        dispatch(
+                          updateAppState({ ...appState, status: "Loading..." }),
+                        );
+                        const data = await getAmazonData(appState);
+                        const colors = await getColors(
+                          appState.aiContent.images?.primary?.Large?.URL ?? "",
+                        );
+                        console.log("data", data);
+                        dispatch(
+                          updateAppState({
+                            ...appState,
+                            aiContent: {
+                              ...appState.aiContent,
+                              features: data.features.map(
+                                (feature: any, i: any) => {
+                                  if (i === 0) {
+                                    return {
+                                      ...feature,
+                                      image:
+                                        appState.aiContent.images?.primary
+                                          ?.Large?.URL ?? "",
+                                    };
+                                  } else if (i === 1 || i === 2 || i === 3) {
+                                    return {
+                                      ...feature,
+                                      image:
+                                        appState.aiContent.images?.variant[
+                                          i - 1
+                                        ]?.Large?.URL ??
+                                        appState.aiContent.images?.primary
+                                          ?.Large?.URL ??
+                                        "",
+                                    };
+                                  }
+                                },
+                              ),
+                              colors: colors,
+                              description: data.description,
+                            },
+
+                            status: "Done",
+                          }),
+                        );
+                      }}
                       className={classNames(
                         active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                         "block w-full cursor-pointer px-4 py-2 text-left text-sm",

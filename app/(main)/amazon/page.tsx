@@ -33,7 +33,7 @@ const Amazon = () => {
   console.log("hide", appState.openedSlide === "Customize" && isSideBarOpen);
   return (
     <>
-     {loading  && <Loader text="Loading" />}
+     {(loading ||appState.status !== "Done")  && <Loader text="Loading" />}
       <SiteHeader
         showNavigation={false}
         setIsFontOpen={setIsFontOpen}
