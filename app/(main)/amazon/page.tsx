@@ -3,7 +3,6 @@ import SiteHeader from "@/components/header";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import ProductTemplate from "@/templates/product-template/product-template-csr";
 import React, { Dispatch, SetStateAction, useState } from "react";
-// import { Header } from '../../../components/header/blue-based-header';
 import { appState as AS } from "@/lib/store/slices/site-slice";
 import SlideOver from "@/components/ui/slide-over";
 import FontSlideOver from "@/components/ui/slide-over/font-slide";
@@ -37,6 +36,7 @@ const Amazon = () => {
         showNavigation={false}
         setIsFontOpen={setIsFontOpen}
         isAuth={true}
+        handleChange={handleChange}
       />
       <div className="relative flex size-full ">
         <ProductTemplate

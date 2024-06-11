@@ -7,6 +7,10 @@ import HeroContent from "@/components/customize/panel/hero";
 import BannerContent from "@/components/customize/panel/banner";
 import ServiceContent from "@/components/customize/panel/service";
 import PostsContent from "@/components/customize/panel/posts";
+import GalleryContent from "@/components/customize/panel/gallery";
+import TitleContent from "@/components/customize/panel/title";
+import DescriptionContent from "@/components/customize/panel/description";
+import FeaturesContent from "@/components/customize/panel/features";
 type TProps = {
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,7 +52,6 @@ export function CustomDrawer(props: TProps) {
             showForm={showForm}
             setShowForm={setShowForm}
             handleChange={handleChange}
-           
           >
             {section === "Hero" && (
               <HeroContent
@@ -56,7 +59,6 @@ export function CustomDrawer(props: TProps) {
                 handleChange={handleChange}
                 subdomain={subdomain}
                 setShowForm={setShowForm}
-               
               />
             )}
             {section === "Banner" && (
@@ -65,15 +67,23 @@ export function CustomDrawer(props: TProps) {
                 handleChange={handleChange}
                 subdomain={subdomain}
                 setShowForm={setShowForm}
-               
               />
             )}
             {section === "Services" && (
               <ServiceContent setShowForm={setShowForm} />
             )}
-             {section === "Posts" && (
-              <PostsContent />
+            {section === "Posts" && <PostsContent />}
+            {section === "Gallery" && (
+              <GalleryContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
             )}
+            {section === "Title" && <TitleContent />}
+            {section === "Description" && <DescriptionContent />}
+            {section === "Features" && <FeaturesContent />}
           </CustomizePanel>
         </div>
       </DrawerContent>
