@@ -82,7 +82,7 @@ export const getContent = async (
     }
     data = JSON.parse(content);
 
-    console.log("appStateWhileGenerating:", appState,data);
+    console.log("appStateWhileGenerating:", appState, data);
     if (custom) {
       // console.log("subdomain: " + subdomain);
       if (fieldName === "image" && appState?.aiContent.businessType) {
@@ -767,6 +767,28 @@ export const handleChangeAppState = (
               }
             }),
           },
+        },
+      }),
+    );
+  } else if ((value as any)["section"] === "Features") {
+    console.log("i came here", name, value);
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          features: appState.aiContent.features?.map((feature) => {
+            if (feature.id === name) {
+              return {
+                id: feature.id,
+                image: feature.image,
+                description: (value as any)["description"],
+                title: (value as any)["name"],
+              };
+            } else {
+              return feature;
+            }
+          }),
         },
       }),
     );

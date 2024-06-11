@@ -45,7 +45,7 @@ const ProductTemplate = (props: TProps) => {
   const appState = useAppSelector(AS);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(LD);
+
   useEffect(() => {
     if (searchParams.get("site_id")) {
       // setLoading(true);
@@ -68,10 +68,9 @@ const ProductTemplate = (props: TProps) => {
     <div
       className={` mx-auto overflow-auto ${appState.view === "Mobile" && "no-scrollbar h-[800px] w-[480px] rounded-xl border-8 border-black"} ${appState.view === "Tablet" && "no-scrollbar h-[1024px] w-[768px] rounded-xl  border-8 border-black"} ${appState.view === "Desktop" && "h-full w-full"}`}
       style={{
-        fontFamily:appState.selectedFont
+        fontFamily: appState.selectedFont,
       }}
     >
-      {loading && <Loader text="Loading" />}
       <ProductCategory />
       <main className="">
         {/* <ProductBreadCrumbs /> */}
@@ -159,7 +158,7 @@ const ProductTemplate = (props: TProps) => {
                     : "mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16"
                 }`}
             >
-              {loading && <Loader text="Generating Content" />}
+             
               <div
                 className={`${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"}  
                   ${
@@ -237,8 +236,16 @@ const ProductTemplate = (props: TProps) => {
               >
                 {appState.aiContent?.features?.map((feature: any, i: any) => (
                   <div
-                    className={`flex items-center justify-center gap-5 ${i % 2 !== 0 ? "flex-row-reverse" : ""}`}
+                    className={`flex items-center justify-center gap-5 ${i % 2 !== 0 ? "flex-row-reverse" : ""} ${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                     key={feature.id}
+                    onClick={(e) => {
+                      setShowForm &&
+                        setShowForm({
+                          edit: feature.id,
+                          form: "Feature",
+                          show: true,
+                        });
+                    }}
                   >
                     <Image
                       src={feature.image}

@@ -27,7 +27,18 @@ const getItemStyle = (
 
 const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
 
-const FeaturesContent = () => {
+type TProps = {
+  setShowForm: Dispatch<
+    SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+}
+
+const FeaturesContent = (props:TProps) => {
+  const { setShowForm } = props;
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
   const reorder = (list: any, startIndex: number, endIndex: number): any => {
@@ -127,11 +138,11 @@ const FeaturesContent = () => {
                                 color="blue"
                                 size={20}
                                 onClick={() => {
-                                  // setShowForm({
-                                  //   edit: item.id,
-                                  //   show: true,
-                                  //   form: "Post",
-                                  // });
+                                  setShowForm({
+                                    edit: item.id,
+                                    show: true,
+                                    form: "Feature",
+                                  });
                                 }}
                               />
                               <MdDeleteForever
@@ -153,11 +164,11 @@ const FeaturesContent = () => {
                 <button
                   className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                   onClick={() => {
-                    // setShowForm({
-                    //   edit: "",
-                    //   show: true,
-                    //   form: "Post",
-                    // });
+                    setShowForm({
+                      edit: "",
+                      show: true,
+                      form: "Feature",
+                    });
                   }}
                 >
                   Add Feature
