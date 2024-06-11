@@ -40,8 +40,8 @@ type TProps = {
   >;
 };
 
-const ProductTemplate = (props:TProps) => {
-  const {setSection,setIsSideBarOpen,setShowForm,showForm} = props;
+const ProductTemplate = (props: TProps) => {
+  const { setSection, setIsSideBarOpen, setShowForm, showForm } = props;
   const appState = useAppSelector(AS);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
@@ -64,14 +64,14 @@ const ProductTemplate = (props:TProps) => {
           <>
             <div
               className={`${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${appState.view === "Mobile" ? "flex flex-col" : "sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8"} mx-auto  max-w-2xl `}
-              onClick={()=>{
+              onClick={() => {
                 if (setIsSideBarOpen && setSection) {
-                  console.log("hideSideBar")
+                  console.log("hideSideBar");
                   setIsSideBarOpen(true);
                   setSection("Gallery");
                   dispatch(
                     updateAppState({
-                     ...appState,
+                      ...appState,
                       openedSlide: "Customize",
                     }),
                   );
@@ -138,26 +138,27 @@ const ProductTemplate = (props:TProps) => {
 
             <div
               className={` 
-                ${appState.view === "Mobile"
-                  ? "flex flex-col px-5"
-                  : "mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16"}`
-              }
-             
+                ${
+                  appState.view === "Mobile"
+                    ? "flex flex-col px-5"
+                    : "mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16"
+                }`}
             >
               {loading && <Loader text="Generating Content" />}
               <div
                 className={`${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"}  
-                  ${appState?.view === "Mobile"
-                    ? ""
-                    : "lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"}`
-                }
-                onClick={()=>{
+                  ${
+                    appState?.view === "Mobile"
+                      ? ""
+                      : "lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"
+                  }`}
+                onClick={() => {
                   if (setIsSideBarOpen && setSection) {
                     setIsSideBarOpen(true);
                     setSection("Title");
                     dispatch(
                       updateAppState({
-                       ...appState,
+                        ...appState,
                         openedSlide: "Customize",
                       }),
                     );
@@ -169,18 +170,21 @@ const ProductTemplate = (props:TProps) => {
                 </h1>
               </div>
 
-              <div className={`mt-4 lg:row-span-3 lg:mt-0 ${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"} `} onClick={()=>{
-                if (setIsSideBarOpen && setSection) {
-                  setIsSideBarOpen(true);
-                  setSection("Description");
-                  dispatch(
-                    updateAppState({
-                     ...appState,
-                      openedSlide: "Customize",
-                    }),
-                  );
-                }
-              }}>
+              <div
+                className={`mt-4 lg:row-span-3 lg:mt-0 ${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
+                onClick={() => {
+                  if (setIsSideBarOpen && setSection) {
+                    setIsSideBarOpen(true);
+                    setSection("Description");
+                    dispatch(
+                      updateAppState({
+                        ...appState,
+                        openedSlide: "Customize",
+                      }),
+                    );
+                  }
+                }}
+              >
                 <h2 className="sr-only">Product information</h2>
                 <p className="text-3xl tracking-tight text-gray-900">
                   {appState.aiContent?.price ?? ""}
@@ -192,17 +196,18 @@ const ProductTemplate = (props:TProps) => {
 
               <div
                 className={`${appState.editable && "rounded border-2 border-transparent border-white hover:border-indigo-500"}
-                  ${appState?.view === "Mobile"
-                    ? "flex flex-col gap-10 py-10"
-                    : "flex flex-col gap-10 py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6"}`
-                }
-                onClick={()=>{
+                  ${
+                    appState?.view === "Mobile"
+                      ? "flex flex-col gap-10 py-10"
+                      : "flex flex-col gap-10 py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6"
+                  }`}
+                onClick={() => {
                   if (setIsSideBarOpen && setSection) {
                     setIsSideBarOpen(true);
                     setSection("Features");
                     dispatch(
                       updateAppState({
-                       ...appState,
+                        ...appState,
                         openedSlide: "Customize",
                       }),
                     );
@@ -212,18 +217,10 @@ const ProductTemplate = (props:TProps) => {
                 {appState.aiContent?.features?.map((feature: any, i: any) => (
                   <div
                     className={`flex items-center justify-center gap-5 ${i % 2 !== 0 ? "flex-row-reverse" : ""}`}
-                    key={i}
+                    key={feature.id}
                   >
                     <Image
-                      src={
-                        i === 0
-                          ? appState.aiContent?.images?.primary?.Large?.URL ??
-                            ""
-                          : appState.aiContent?.images?.variant[i - 1]?.Large
-                              ?.URL ??
-                            appState.aiContent?.images?.primary?.Large?.URL ??
-                            ""
-                      }
+                      src={feature.image}
                       alt=""
                       width={200}
                       height={200}

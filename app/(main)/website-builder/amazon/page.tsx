@@ -52,6 +52,22 @@ export default function Example() {
         },
         price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
         title: amazonData?.ItemInfo?.Title?.DisplayValue,
+        features: data.features.map((feature: any, i: any) => {
+          if (i === 0) {
+            return {
+              ...feature,
+              image: amazonData?.Images?.Primary?.Large?.URL ?? "",
+            };
+          } else if (i === 1 || i === 2 || i === 3) {
+            return {
+              ...feature,
+              image:
+                amazonData?.Images?.Variants[i - 1]?.Large?.URL ??
+                amazonData?.Images?.Primary?.Large?.URL ??
+                "",
+            };
+          }
+        }),
       };
       // setAiData(data);
       const responseSite = await createNewSite({

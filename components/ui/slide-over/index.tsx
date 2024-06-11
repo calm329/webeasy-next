@@ -9,6 +9,7 @@ import PostsContent from "@/components/customize/panel/posts";
 import GalleryContent from "@/components/customize/panel/gallery";
 import TitleContent from "@/components/customize/panel/title";
 import DescriptionContent from "@/components/customize/panel/description";
+import FeaturesContent from "@/components/customize/panel/features";
 
 type TProps = {
   open: boolean;
@@ -85,6 +86,8 @@ function SlideOver(props: TProps) {
             )}
             {section === "Title" && <TitleContent />}
             {section === "Description" && <DescriptionContent />}
+            {section === "Features" && <FeaturesContent />}
+
           </CustomizePanel>
         </div>
       </div>
