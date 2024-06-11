@@ -221,7 +221,7 @@ const ProductTemplate = (props: TProps) => {
                 }}
               >
                 <h2 className="sr-only">Product information</h2>
-                <p className="text-3xl tracking-tight text-gray-900">
+                <p className="text-3xl tracking-tight ">
                   {appState.aiContent?.price ?? ""}
                 </p>
                 <div className="mt-10">
