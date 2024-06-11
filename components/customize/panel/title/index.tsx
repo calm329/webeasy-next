@@ -6,7 +6,7 @@ const TitleContent = () => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
   return (
-    <div className="max-h-[calc(-194px + 80vh)] h-fit  overflow-y-auto py-5 transition-all ease-in-out">
+    <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
         <div className="flex flex-col border-t pt-5">
           <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
@@ -42,8 +42,7 @@ const TitleContent = () => {
       </div> */}
           </div>
 
-          <input
-            type="text"
+          <textarea
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             id={"title"}
             placeholder={"Enter heading..."}
