@@ -52,9 +52,24 @@ const ProductTemplate = (props: TProps) => {
       dispatch(fetchSiteById({ id: searchParams.get("site_id") ?? "" }));
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    const WebFontLoader = require("webfontloader");
+    if (appState.selectedFont) {
+      window &&
+        WebFontLoader.load({
+          google: {
+            families: [appState.selectedFont],
+          },
+        });
+    }
+  }, [appState.selectedFont]);
   return (
     <div
       className={` mx-auto overflow-auto ${appState.view === "Mobile" && "no-scrollbar h-[800px] w-[480px] rounded-xl border-8 border-black"} ${appState.view === "Tablet" && "no-scrollbar h-[1024px] w-[768px] rounded-xl  border-8 border-black"} ${appState.view === "Desktop" && "h-full w-full"}`}
+      style={{
+        fontFamily:appState.selectedFont
+      }}
     >
       {loading && <Loader text="Loading" />}
       <ProductCategory />
