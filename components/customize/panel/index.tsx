@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import CustomButton from "@/components/ui/form/custom-button";
 import { DebouncedState } from "use-debounce";
 import CustomService from "@/components/ui/form/custom-service";
+import CustomFeature from "@/components/ui/form/custom-feature";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -23,7 +24,6 @@ type TProps = {
     }>
   >;
   handleChange: (name: string, value: string) => void;
- 
 };
 
 const CustomizePanel = (props: TProps) => {
@@ -37,7 +37,7 @@ const CustomizePanel = (props: TProps) => {
     handleChange,
   } = props;
   const [isContent, setIsContent] = useState(true);
-  console.log("showForm.form",showForm.form)
+  console.log("showForm.form", showForm.form);
   return showForm.show ? (
     <>
       {showForm.form === "Button" && (
@@ -52,11 +52,20 @@ const CustomizePanel = (props: TProps) => {
 
       {showForm.form === "Service" && (
         <CustomService
-        handleChange={handleChange}
-        section={section}
-        setIsOpen={setIsOpen}
-        setShowForm={setShowForm}
-        showForm={showForm}
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+      {showForm.form === "Feature" && (
+        <CustomFeature
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
         />
       )}
     </>
@@ -168,7 +177,9 @@ const CustomizePanel = (props: TProps) => {
         </>
       )}
       <div className="flex flex-1 flex-col justify-between">
-        <div className={`divide-y divide-gray-200 ${!isContent && "hidden"}`}>{children}</div>
+        <div className={`divide-y divide-gray-200 ${!isContent && "hidden"}`}>
+          {children}
+        </div>
       </div>
     </div>
   );

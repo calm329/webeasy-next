@@ -83,7 +83,7 @@ export function CustomDrawer(props: TProps) {
             )}
             {section === "Title" && <TitleContent />}
             {section === "Description" && <DescriptionContent />}
-            {section === "Features" && <FeaturesContent />}
+            {section === "Features" && <FeaturesContent setShowForm={setShowForm}/>}
           </CustomizePanel>
         </div>
       </DrawerContent>
