@@ -9,7 +9,7 @@ const openai = new OpenAI({
 });
 
 export async function POST(request: NextRequest) {
-  const { mediaCaption, fieldName, type } = await request.json();
+  const { mediaCaption, fieldName, type,services } = await request.json();
   console.log("prompt", fieldName);
   // if (!mediaCaption) {
   //   return NextResponse.json({ error: "Missing data" }, { status: 400 });
@@ -17,22 +17,22 @@ export async function POST(request: NextRequest) {
   let fields;
   switch (fieldName) {
     case "heading":
-      fields = `only generate the ${type??""} data for the given fields "hero": {"heading": "*insert heading here*"}`;
+      fields = `only generate the ${type??""} data for given fields "hero": {"heading": "*insert heading here*"}`;
       break;
     case "subheading":
-      fields = `only generate the ${type??""} data for the given fields "hero": {"subheading": "*insert subheading here*"}`;
+      fields = `only generate the ${type??""} data for given fields "hero": {"subheading": "*insert subheading here*"}`;
       break;
     case "serviceName":
-      fields = `only generate the ${type??""} data for the given fields "services": {"list": [
+      fields = `only generate the ${type??""} data for given fields "services": {"list": [
         {
           "name": "*first service or feature*",
-        }]}`;
+        }]}  and it should not be similar to any name from this data ${JSON.stringify(services)}`;
       break;
     case "serviceDescription":
-      fields = `only generate the ${type??""} data for the given fields "services": {"list": [
+      fields = `only generate the ${type??""} data for given fields "services": {"list": [
           {
             "description": "*description*",
-          }]}`;
+          }]} and it should not be similar to any description from this data ${JSON.stringify(services)} `;
       break;
     default:
       fields = `

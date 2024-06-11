@@ -9,37 +9,33 @@ const openai = new OpenAI({
 });
 
 export async function POST(request: NextRequest) {
-  const { fieldName, data, type } = await request.json();
+  const { fieldName, data, type,services } = await request.json();
   console.log("prompt", data);
   if (!data) {
     return NextResponse.json({ error: "Missing data" }, { status: 400 });
   }
   let fields;
   switch (fieldName) {
-    case "businessName":
-      fields =
-        'only generate the data for the given fields {"banner":{"businessName": "*Name of the business inferred from all the content*"}}';
-      break;
     case "heading":
       fields =
-        'only generate the data for the given fields "hero": {"heading": "*insert heading here*"}';
+        `only generate the  ${type??""} data for the given fields "hero": {"heading": "*insert heading here*"}`;
       break;
     case "subheading":
       fields =
-        'only generate the data for the given fields "hero": {"subheading": "*insert subheading here*"}';
+        `only generate the  ${type??""} data for the given fields "hero": {"subheading": "*insert subheading here*"}`;
       break;
-    case "serviceName":
-      fields = `only generate the ${type ?? ""} data for the given fields "services": {"list": [
+      case "serviceName":
+        fields = `only generate the ${type??""} data for given fields "services": {"list": [
           {
             "name": "*first service or feature*",
-          }]}`;
-      break;
-    case "serviceDescription":
-      fields = `only generate the ${type ?? ""} data for the given fields "services": {"list": [
+          }]}  and it should not be similar to any name from this data ${JSON.stringify(services)}`;
+        break;
+      case "serviceDescription":
+        fields = `only generate the ${type??""} data for given fields "services": {"list": [
             {
               "description": "*description*",
-            }]}`;
-      break;
+            }]} and it should not be similar to any description from this data ${JSON.stringify(services)} `;
+        break;
     default:
       fields = `
       Make the list of services from businessType ${data.businessType} which is  and list size of services should be from 3 to 6 and services name and description should be unique for all services.

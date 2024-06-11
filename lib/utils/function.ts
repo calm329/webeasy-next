@@ -52,6 +52,7 @@ export const getContent = async (
             ? fieldName?.split(".")[0]
             : fieldName ?? "",
           type: type ?? "",
+          services:appState?.aiContent.services
         }),
       });
     } else {
@@ -63,6 +64,7 @@ export const getContent = async (
             ? fieldName?.split(".")[0]
             : fieldName ?? "",
           type: type ?? "",
+          services:appState?.aiContent.services
         }),
       });
     }
