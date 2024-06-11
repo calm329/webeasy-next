@@ -20,7 +20,7 @@ import {
   regenerateImage,
   regenerateText,
 } from "@/lib/utils/function";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -45,6 +45,7 @@ export default function SettingMenu(props: TProps) {
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   return (
     <>
       {isMobile ? (
@@ -162,21 +163,23 @@ export default function SettingMenu(props: TProps) {
                   </button>
                 )}
               </Menu.Item> */}
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
-                    )}
-                    onClick={() => {
-                      setIsTemplateOpen(true);
-                    }}
-                  >
-                    Switch Template
-                  </button>
-                )}
-              </Menu.Item>
+              {!pathname.startsWith("/amazon") && (
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={classNames(
+                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                        "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                      )}
+                      onClick={() => {
+                        setIsTemplateOpen(true);
+                      }}
+                    >
+                      Switch Template
+                    </button>
+                  )}
+                </Menu.Item>
+              )}
               <Menu.Item>
                 {({ active }) => (
                   <button
@@ -211,65 +214,95 @@ export default function SettingMenu(props: TProps) {
                   </button>
                 )}
               </Menu.Item>
-
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={() => {
-                      regenerateText({
-                        appState,
-                        dispatch,
-                        searchParams,
-                      });
-                    }}
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+              {pathname.startsWith("/amazon") ? (
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      // onClick={() =>
+                      //   getInstagramData({
+                      //     appState,
+                      //     dispatch,
+                      //     searchParams,
+                      //     regenerate: true,
+                      //   })
+                      // }
+                      className={classNames(
+                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                        "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                      )}
+                    >
+                      Regenerate Content
+                    </button>
+                  )}
+                </Menu.Item>
+              ) : (
+                <>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        onClick={() => {
+                          regenerateText({
+                            appState,
+                            dispatch,
+                            searchParams,
+                          });
+                        }}
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                        )}
+                      >
+                        Regenerate Text
+                      </button>
                     )}
-                  >
-                    Regenerate Text
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={() => {
-                      regenerateImage({
-                        appState,
-                        dispatch,
-                        searchParams,
-                      });
-                    }}
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        onClick={() => {
+                          regenerateImage({
+                            appState,
+                            dispatch,
+                            searchParams,
+                          });
+                        }}
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                        )}
+                      >
+                        Regenerate Images
+                      </button>
                     )}
-                  >
-                    Regenerate Images
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    onClick={() =>
-                      getInstagramData({
-                        appState,
-                        dispatch,
-                        searchParams,
-                        regenerate: true
-                      })
-                    }
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        onClick={() =>
+                          getInstagramData({
+                            appState,
+                            dispatch,
+                            searchParams,
+                            regenerate: true,
+                          })
+                        }
+                        className={classNames(
+                          active
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-700",
+                          "block w-full cursor-pointer px-4 py-2 text-left text-sm",
+                        )}
+                      >
+                        Regenerate All
+                      </button>
                     )}
-                  >
-                    Regenerate All
-                  </button>
-                )}
-              </Menu.Item>
+                  </Menu.Item>
+                </>
+              )}
             </div>
           </Menu.Items>
         </Transition>
