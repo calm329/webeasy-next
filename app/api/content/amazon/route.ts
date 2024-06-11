@@ -32,6 +32,8 @@ export async function POST(request: NextRequest) {
                 {
                     "features":[
                         {
+                            "image":"",
+                            "id":"**unique id**",
                             "title":"**Title for the feature**",   
                             "description":"**Description for the feature**",       
                         }

@@ -84,7 +84,7 @@ export interface AppState {
       primary: string;
       secondary: string;
     };
-    features?: [{ title: string; description: string }];
+    features?: [{ id:string,image:string,title: string; description: string }];
     description?: string;
     images?: {
       primary: { Large: { Height: number; URL: string; Width: number } };
