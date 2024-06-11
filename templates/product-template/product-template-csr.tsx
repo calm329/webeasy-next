@@ -97,7 +97,7 @@ const ProductTemplate = (props: TProps) => {
                 }
               }}
             >
-              <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+              <div className={appState.view === "Mobile"?"hidden":""+"aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block"}>
                 <Image
                   src={appState?.aiContent?.images?.primary?.Large?.URL ?? ""}
                   alt="Two each of gray, white, and black shirts laying flat."
@@ -109,7 +109,7 @@ const ProductTemplate = (props: TProps) => {
               <div
                 className={
                   appState.view === "Mobile"
-                    ? "flex "
+                    ? "hidden"
                     : "hidden lg:grid lg:grid-cols-1 lg:gap-y-8"
                 }
               >
