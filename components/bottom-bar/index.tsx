@@ -137,6 +137,14 @@ const BottomToolBar = (props: TProps) => {
                       }),
                     );
                   }
+                }else if (pathname.startsWith("/amazon")) {
+                  if (searchParams.get("site_id")) {
+                    dispatch(
+                      fetchSiteById({
+                        id: searchParams.get("site_id") ?? "",
+                      }),
+                    );
+                  }
                 } else {
                   getInstagramData({
                     appState,

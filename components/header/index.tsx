@@ -47,6 +47,7 @@ import {
   appState as AS,
   clearPastAndFuture,
   futureAppState as FAS,
+  fetchSiteById,
   loading as LD,
   pastAppState as PAS,
   redo,
@@ -198,11 +199,29 @@ export default function SiteHeader(props: TProps) {
                 <ImCancelCircle
                   size={18}
                   onClick={() => {
-                    getInstagramData({
-                      appState,
-                      dispatch,
-                      searchParams,
-                    });
+                    if (pathname.startsWith("/custom")) {
+                      if (searchParams.get("id")) {
+                        dispatch(
+                          fetchSiteById({
+                            id: searchParams.get("id") ?? "",
+                          }),
+                        );
+                      }
+                    }else if (pathname.startsWith("/amazon")) {
+                      if (searchParams.get("site_id")) {
+                        dispatch(
+                          fetchSiteById({
+                            id: searchParams.get("site_id") ?? "",
+                          }),
+                        );
+                      }
+                    } else {
+                      getInstagramData({
+                        appState,
+                        dispatch,
+                        searchParams,
+                      });
+                    }
                     dispatch(clearPastAndFuture());
                   }}
                 />
