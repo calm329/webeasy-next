@@ -251,7 +251,7 @@ const ProductTemplate = (props: TProps) => {
               >
                 {appState.aiContent?.features?.map((feature: any, i: any) => (
                   <div
-                    className={`flex items-center justify-center gap-5 ${i % 2 !== 0 ? "flex-row-reverse" : ""} ${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    className={`flex items-center justify-center gap-5 max-sm:flex-col ${i % 2 !== 0 ? "flex-row-reverse" : ""} ${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                     key={feature.id}
                     onClick={(e) => {
                       setShowForm &&
@@ -268,7 +268,7 @@ const ProductTemplate = (props: TProps) => {
                       width={200}
                       height={200}
                     />
-                    <div className="w-1/2">
+                    <div className="w-1/2 max-sm:w-full">
                       <h2
                         className="text-xl font-semibold"
                         style={{
