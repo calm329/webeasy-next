@@ -56,7 +56,7 @@ const CustomFeature = (props: TProps) => {
                   id: item.id,
                   image: item.image,
                   description: data.description,
-                  name: data.title,
+                  title: data.title,
                 };
               } else {
                 return item;
@@ -181,23 +181,23 @@ const CustomFeature = (props: TProps) => {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  setSelectedField("name");
-                  setLoadingTitle(true);
-                  regenerateIndividual({
-                    appState,
-                    dispatch,
-                    searchParams,
-                    fieldName: "featureName." + (data?.id ?? ""),
-                    type,
-                  }).then((res) => {
-                    setLoadingTitle(false);
-                    res &&
-                      setData((preval: any) => {
-                        return { ...preval, name: res.name };
-                      });
-                  });
-                }}
+                // onClick={() => {
+                //   setSelectedField("name");
+                //   setLoadingTitle(true);
+                //   regenerateIndividual({
+                //     appState,
+                //     dispatch,
+                //     searchParams,
+                //     fieldName: "featureTitle." + (data?.id ?? ""),
+                //     type,
+                //   }).then((res) => {
+                //     setLoadingTitle(false);
+                //     res &&
+                //       setData((preval: any) => {
+                //         return { ...preval, name: res.name };
+                //       });
+                //   });
+                // }}
                 className="flex items-center gap-2 "
               >
                 {showForm.edit || data?.title ? "Regenerate" : "Generate"}
@@ -216,10 +216,10 @@ const CustomFeature = (props: TProps) => {
             id={"name"}
             value={data?.title ?? ""}
             onChange={(e) => {
-              setData({ ...data, name: e.target.value });
+              setData({ ...data, title: e.target.value });
               if (showForm.edit) {
                 handleChange(data?.id, {
-                  ...{ ...data, name: e.target.value },
+                  ...{ ...data, title: e.target.value },
                   section,
                 });
               }
