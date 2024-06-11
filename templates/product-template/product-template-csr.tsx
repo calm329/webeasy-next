@@ -79,10 +79,15 @@ const ProductTemplate = (props: TProps) => {
             <div
               className={`${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${appState.view === "Mobile" ? "flex flex-col" : "sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8"} mx-auto  max-w-2xl `}
               onClick={() => {
-                if (setIsSideBarOpen && setSection) {
+                if (setIsSideBarOpen && setSection && setShowForm) {
                   console.log("hideSideBar");
                   setIsSideBarOpen(true);
                   setSection("Gallery");
+                  setShowForm({
+                    show: false,
+                    edit:"",
+                    form:"",
+                  })
                   dispatch(
                     updateAppState({
                       ...appState,
@@ -167,9 +172,14 @@ const ProductTemplate = (props: TProps) => {
                       : "lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"
                   }`}
                 onClick={() => {
-                  if (setIsSideBarOpen && setSection) {
+                  if (setIsSideBarOpen && setSection&&setShowForm) {
                     setIsSideBarOpen(true);
                     setSection("Title");
+                    setShowForm({
+                      show: false,
+                      edit:"",
+                      form:"",
+                    })
                     dispatch(
                       updateAppState({
                         ...appState,
@@ -190,9 +200,14 @@ const ProductTemplate = (props: TProps) => {
               <div
                 className={`mt-4 lg:row-span-3 lg:mt-0 ${appState.editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
                 onClick={() => {
-                  if (setIsSideBarOpen && setSection) {
+                  if (setIsSideBarOpen && setSection &&setShowForm) {
                     setIsSideBarOpen(true);
                     setSection("Description");
+                    setShowForm({
+                      show: false,
+                      edit:"",
+                      form:"",
+                    })
                     dispatch(
                       updateAppState({
                         ...appState,

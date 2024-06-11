@@ -93,7 +93,6 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                         openedSlide: "Customize",
                       }),
                     );
-           
                   }
                 }}
               >

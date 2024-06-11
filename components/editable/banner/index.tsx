@@ -35,6 +35,11 @@ const EditableBanner = (props: TProps) => {
         if (editable && setIsOpen && setSection) {
           setSection("Banner");
           setIsOpen(true);
+          setShowForm({
+            show: false,
+            edit:"",
+            form:"",
+          })
           dispatch(updateAppState({...appState,openedSlide:"Customize"}))
         }
       }}
