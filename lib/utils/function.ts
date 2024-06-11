@@ -1255,11 +1255,12 @@ export async function getAmazonData(
     const response = await fetch("/api/content/amazon", {
       method: "POST",
       body: JSON.stringify({
-        productTitle: appState.aiContent.title,
+        productTitle: appState?.aiContent?.title,
         fieldName: fieldName?.split(".")
           ? fieldName?.split(".")[0]
           : fieldName ?? "",
         type: type ?? "",
+        features:appState?.aiContent?.features
       }),
     });
     let content = "";

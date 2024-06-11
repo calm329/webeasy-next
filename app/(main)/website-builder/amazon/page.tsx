@@ -24,6 +24,7 @@ export default function Example() {
         method: "POST",
         body: JSON.stringify({
           productTitle: amazonData.ItemInfo.Title.DisplayValue,
+          
         }),
       });
       let content = "";

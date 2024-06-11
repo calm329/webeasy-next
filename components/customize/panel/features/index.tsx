@@ -160,7 +160,8 @@ const FeaturesContent = (props:TProps) => {
                 )}
               </Droppable>
             </DragDropContext>
-           
+            {appState.aiContent?.features &&
+              appState.aiContent?.features?.length !== 9 && (
                 <button
                   className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                   onClick={() => {
@@ -173,7 +174,7 @@ const FeaturesContent = (props:TProps) => {
                 >
                   Add Feature
                   <IoMdAdd size={20} />
-                </button>
+                </button>)}
             
           </div>
 
