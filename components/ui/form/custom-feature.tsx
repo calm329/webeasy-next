@@ -28,6 +28,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import RegenerateOptions from "@/components/regenerate-options";
 import { useSearchParams } from "next/navigation";
 import { features } from "process";
+import Uploader from "./uploader";
 
 const CustomFeature = (props: TProps) => {
   const { setIsOpen, setShowForm, section, showForm, handleChange } = props;
@@ -149,6 +150,31 @@ const CustomFeature = (props: TProps) => {
         </div>
       </div>
       <form className="flex flex-col gap-5 p-5">
+      <div className="flex flex-col gap-5">
+          <div className="flex justify-between ">
+            <h3 className="block text-sm font-medium leading-6 text-gray-900">
+              Image
+            </h3>
+          </div>
+          <div>
+            <Uploader
+              defaultValue={data?.image??""}
+              name={"image"}
+              label={""}
+              onChange={(value) => {
+                setData({ ...data, image: value });
+                if (showForm.edit) {
+                  handleChange(data?.id, {
+                    ...{ ...data, image: value },
+                    section,
+                  });
+                }
+                // handleChange("primaryImage", value);
+                // field.onChange(value);
+              }}
+            />
+          </div>
+        </div>
         <div className="flex flex-col ">
           <div className="flex justify-between text-sm font-medium leading-6 text-gray-900">
             <label htmlFor="name">Title</label>

@@ -781,9 +781,9 @@ export const handleChangeAppState = (
             if (feature.id === name) {
               return {
                 id: feature.id,
-                image: feature.image,
+                image:(value as any)["image"],
                 description: (value as any)["description"],
-                title: (value as any)["name"],
+                title: (value as any)["title"],
               };
             } else {
               return feature;
