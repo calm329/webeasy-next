@@ -181,23 +181,23 @@ const CustomFeature = (props: TProps) => {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                // onClick={() => {
-                //   setSelectedField("name");
-                //   setLoadingTitle(true);
-                //   regenerateIndividual({
-                //     appState,
-                //     dispatch,
-                //     searchParams,
-                //     fieldName: "featureTitle." + (data?.id ?? ""),
-                //     type,
-                //   }).then((res) => {
-                //     setLoadingTitle(false);
-                //     res &&
-                //       setData((preval: any) => {
-                //         return { ...preval, name: res.name };
-                //       });
-                //   });
-                // }}
+                onClick={() => {
+                  setSelectedField("title");
+                  setLoadingTitle(true);
+                  regenerateIndividual({
+                    appState,
+                    dispatch,
+                    searchParams,
+                    fieldName: "featureTitle." + (data?.id ?? ""),
+                    type,
+                  }).then((res) => {
+                    setLoadingTitle(false);
+                    res &&
+                      setData((preval: any) => {
+                        return { ...preval, title: res.title };
+                      });
+                  });
+                }}
                 className="flex items-center gap-2 "
               >
                 {showForm.edit || data?.title ? "Regenerate" : "Generate"}

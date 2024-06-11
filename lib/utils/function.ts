@@ -235,7 +235,7 @@ export const regenerateIndividual = async (params: TRParams) => {
   const { fieldName, searchParams, dispatch, type } = params;
   const userId = searchParams.get("user_id") ?? "";
   const accessToken = searchParams.get("access_token") ?? "";
-
+  const amazon = searchParams.get("site_id") ?? "";
   try {
     // Create a URL object
     const urlObj = new URL(window.location.href);
@@ -244,12 +244,18 @@ export const regenerateIndividual = async (params: TRParams) => {
     const instagramDetails = await getInstagramDetails(userId, accessToken);
 
     if (instagramDetails) {
-      const content = await getContent(
-        instagramDetails.mediaCaption,
-        fieldName,
-        type,
-        getAppState(), // Fetch the latest app state
-      );
+      let content;
+      if (amazon) {
+        content = await getAmazonData(getAppState(), fieldName, type);
+      } else {
+        content = await getContent(
+          instagramDetails.mediaCaption,
+          fieldName,
+          type,
+          getAppState(), // Fetch the latest app state
+        );
+      }
+
       console.log("content: " + JSON.stringify(content));
 
       if (fieldName?.split(".") && !fieldName?.split(".")[1]) {
@@ -268,6 +274,21 @@ export const regenerateIndividual = async (params: TRParams) => {
               image: "",
               description: content.services.list[0].description,
             };
+
+          case "featureTitle":
+            return {
+              id: "",
+              title: content.features[0].title,
+              image: "",
+              description: "",
+            };
+          case "featureDescription":
+            return {
+              id: "",
+              title: "",
+              image: "",
+              description: content.features[0].description,
+            };
         }
       }
 
@@ -277,6 +298,17 @@ export const regenerateIndividual = async (params: TRParams) => {
           switch (
             fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName
           ) {
+            case "amazonDescription":
+              dispatch(
+                updateAppState({
+                  ...currentAppState,
+                  aiContent: {
+                    ...currentAppState.aiContent,
+                    description: content.description,
+                  },
+                }),
+              );
+              break;
             case "businessName":
               dispatch(
                 updateAppState({
@@ -410,6 +442,60 @@ export const regenerateIndividual = async (params: TRParams) => {
                           },
                         ),
                       },
+                    },
+                  }),
+                );
+              } else {
+                resolve();
+                return;
+              }
+              break;
+            case "featureTitle":
+              if (fieldName?.split(".")[1]) {
+                dispatch(
+                  updateAppState({
+                    ...currentAppState,
+                    aiContent: {
+                      ...currentAppState.aiContent,
+                      features: currentAppState.aiContent.features?.map(
+                        (feature) => {
+                          if (feature.id === fieldName?.split(".")[1]) {
+                            return {
+                              ...feature,
+                              title: content.features[0].title,
+                            };
+                          } else {
+                            return feature;
+                          }
+                        },
+                      ),
+                    },
+                  }),
+                );
+              } else {
+                resolve();
+                return;
+              }
+              break;
+            case "featureDescription":
+              if (fieldName?.split(".")[1]) {
+                dispatch(
+                  updateAppState({
+                    ...currentAppState,
+                    aiContent: {
+                      ...currentAppState.aiContent,
+                      features: currentAppState.aiContent.features?.map(
+                        (feature) => {
+                          if (feature.id === fieldName?.split(".")[1]) {
+                            return {
+                              ...feature,
+                              description: content.features[0].description,
+                            };
+                          } else {
+                            return feature;
+                          }
+                        },
+                      ),
                     },
                   }),
                 );
@@ -1158,12 +1244,20 @@ export async function generateUniqueHash(inputString: string) {
   return `${saltHex}${hashHex}`;
 }
 
-export async function getAmazonData(appState:AppState) {
+export async function getAmazonData(
+  appState: AppState,
+  fieldName?: string,
+  type?: string,
+) {
   try {
     const response = await fetch("/api/content/amazon", {
       method: "POST",
       body: JSON.stringify({
         productTitle: appState.aiContent.title,
+        fieldName: fieldName?.split(".")
+          ? fieldName?.split(".")[0]
+          : fieldName ?? "",
+        type: type ?? "",
       }),
     });
     let content = "";

@@ -1,6 +1,8 @@
 import RegenerateOptions from "@/components/regenerate-options";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
+import { regenerateIndividual } from "@/lib/utils/function";
+import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { ImPower, ImSpinner2 } from "react-icons/im";
 
@@ -8,6 +10,8 @@ const DescriptionContent = () => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
   const [type, setType] = useState("");
+  const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
   return (
     <div className="max-h-[calc(-194px + 80vh)] h-fit  overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
@@ -46,23 +50,22 @@ const DescriptionContent = () => {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                // onClick={() => {
-                //   setSelectedField(data);
-                //   setLoadingSubHeading(true);
-                //   regenerateIndividual({
-                //     appState,
-                //     dispatch,
-                //     searchParams,
-                //     fieldName: data,
-                //     type,
-                //   }).then(() => {
-                //     setLoadingSubHeading(false);
-                //   });
-                // }}
+                onClick={() => {
+                  setLoading(true);
+                  regenerateIndividual({
+                    appState,
+                    dispatch,
+                    searchParams,
+                    fieldName: "amazonDescription",
+                    type,
+                  }).then(() => {
+                    setLoading(false);
+                  });
+                }}
                 className="flex items-center gap-2 "
               >
                 Regenerate
-                {false ? (
+                {loading ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
                   <ImPower className=" text-xs " />
@@ -76,16 +79,16 @@ const DescriptionContent = () => {
             id={"description"}
             placeholder={"Enter Sub-heading"}
             onChange={(e) => {
-                dispatch(
-                  updateAppState({
-                    ...appState,
-                    aiContent: {
-                      ...appState.aiContent,
-                      description: e.target.value,
-                    },
-                  }),
-                );
-              }}
+              dispatch(
+                updateAppState({
+                  ...appState,
+                  aiContent: {
+                    ...appState.aiContent,
+                    description: e.target.value,
+                  },
+                }),
+              );
+            }}
             // ref={textareaRef}
             value={appState.aiContent.description}
           />
