@@ -781,7 +781,7 @@ export const handleChangeAppState = (
             if (feature.id === name) {
               return {
                 id: feature.id,
-                image:(value as any)["image"],
+                image: (value as any)["image"],
                 description: (value as any)["description"],
                 title: (value as any)["title"],
               };
@@ -1156,4 +1156,30 @@ export async function generateUniqueHash(inputString: string) {
 
   // Combine the salt and the hash to ensure uniqueness and randomness
   return `${saltHex}${hashHex}`;
+}
+
+export async function getAmazonData(appState:AppState) {
+  try {
+    const response = await fetch("/api/content/amazon", {
+      method: "POST",
+      body: JSON.stringify({
+        productTitle: appState.aiContent.title,
+      }),
+    });
+    let content = "";
+    const reader = response.body?.getReader();
+    if (!reader) return;
+
+    const decoder = new TextDecoder();
+    let done = false;
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+
+      if (chunkValue && chunkValue !== "###") content += chunkValue;
+    }
+    const data = JSON.parse(content);
+    return data;
+  } catch (error) {}
 }
