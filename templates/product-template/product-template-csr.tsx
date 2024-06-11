@@ -164,8 +164,11 @@ const ProductTemplate = (props: TProps) => {
                     );
                   }
                 }}
+                style={{
+                  color: appState?.aiContent?.colors?.primary,
+                }}
               >
-                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                <h1 className="text-2xl font-bold tracking-tight  sm:text-3xl">
                   {appState.aiContent?.title ?? ""}
                 </h1>
               </div>
@@ -183,6 +186,9 @@ const ProductTemplate = (props: TProps) => {
                       }),
                     );
                   }
+                }}
+                style={{
+                  color: appState?.aiContent?.colors?.secondary,
                 }}
               >
                 <h2 className="sr-only">Product information</h2>
@@ -226,8 +232,20 @@ const ProductTemplate = (props: TProps) => {
                       height={200}
                     />
                     <div className="w-1/2">
-                      <h2 className="text-xl font-semibold">{feature.title}</h2>
-                      <p className="text-sm text-gray-500">
+                      <h2
+                        className="text-xl font-semibold"
+                        style={{
+                          color: appState?.aiContent?.colors?.primary,
+                        }}
+                      >
+                        {feature.title}
+                      </h2>
+                      <p
+                        className="text-sm text-gray-500"
+                        style={{
+                          color: appState?.aiContent?.colors?.secondary,
+                        }}
+                      >
                         {feature.description}
                       </p>
                     </div>
