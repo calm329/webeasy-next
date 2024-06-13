@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useId, useState } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 
 import { Container } from "@/components/container";
-import { TPosts } from "@/types";
+import { TColors, TFields, TPosts, TSection } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
 
 function ImageClipPaths({
   id,
@@ -30,16 +32,28 @@ function ImageClipPaths({
 
 type TProps = {
   posts: TPosts;
-  colors: {
-    primary: string;
-    secondary: string;
+  colors: TColors;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  editable?: boolean;
+  setFocusedField?: Dispatch<SetStateAction<TFields>>;
+  showForm?:{
+    form:string,
+    edit:string,
+    show: boolean,
   };
+  setShowForm?:React.Dispatch<React.SetStateAction<{
+    form:string,
+    edit:string,
+    show: boolean,
+  }>>;
 };
 
-export function Speakers(props: TProps) {
-  const { posts, colors } = props;
+export function Posts(props: TProps) {
+  const { posts, colors ,editable,setFocusedField,setIsOpen,setSection,setShowForm,showForm} = props;
   let id = useId();
-
+  const dispatch = useAppDispatch();
+  const appState = useAppSelector(AS);
   return (
     <section
       id="speakers"
@@ -47,23 +61,29 @@ export function Speakers(props: TProps) {
       className="py-20 sm:py-32"
     >
       <ImageClipPaths id={id} />
-      <Container>
-        {/* <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2
-            id="speakers-title"
-            className="font-display text-4xl font-medium tracking-tighter text-blue-600 sm:text-5xl"
-          >
-            Posts
-          </h2>
-          <p className="font-display mt-4 text-2xl tracking-tight text-blue-900">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil
-            blanditiis quam quia suscipit.
-          </p>
-        </div> */}
+      <Container className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`} onClick={()=>{
+        if (setIsOpen && setSection && setShowForm) {
+          setIsOpen(true);
+          setSection("Posts");
+          setShowForm({
+            form:"",
+            edit:"",
+            show:false,
+          })
+          dispatch(
+            updateAppState({
+              ...appState,
+              openedSlide: "Customize",
+            }),
+          );
+ 
+        }
+      }}>
         <div className="mt-14 grid grid-cols-1 items-start gap-x-8 gap-y-8 sm:mt-16 sm:gap-y-16 lg:mt-24 lg:grid-cols-4">
           <div className="lg:col-span-3">
             <div className="ui-not-focus-visible:outline-none grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 sm:gap-y-16 md:grid-cols-3">
-              {posts.list.map((data, i) => (
+              {appState?.iPosts?.show &&posts.list.map((data, i) => (
+                posts.limit > i &&
                 <div key={data.id}>
                   <div className="rounded-4xl group relative h-[17.5rem] transform overflow-hidden">
                     <div

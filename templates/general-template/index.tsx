@@ -75,6 +75,16 @@ type TProps = {
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
+  showForm?:{
+    form:string,
+    edit:string,
+    show: boolean,
+  };
+  setShowForm?:React.Dispatch<React.SetStateAction<{
+    form:string,
+    edit:string,
+    show: boolean,
+  }>>;
 };
 
 export default function General(props: TProps) {
@@ -88,6 +98,8 @@ export default function General(props: TProps) {
     setSection,
     editable,
     setFocusedField,
+    showForm,
+    setShowForm
   } = props;
   return (
     <>
