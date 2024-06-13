@@ -7,6 +7,8 @@ import { Container } from "@/components/container/nested-container";
 import { Header } from "@/components/header/general-header";
 import { Dispatch, SetStateAction } from "react";
 import { TBanner, TColors, TFields, THero, TPosts, TSection } from "@/types";
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 
 function Service({
   service,
@@ -103,6 +105,8 @@ export default function General(props: TProps) {
     showForm,
     setShowForm,
   } = props;
+  const appState = useAppSelector(AS);
+  const dispatch = useAppDispatch();
   return (
     <>
       <div className=" inset-0 flex justify-center sm:px-8">
@@ -121,38 +125,94 @@ export default function General(props: TProps) {
           showForm={showForm}
         />
         <main className="mt-24 flex-auto">
-          <Container className=" flex w-full">
+          <Container
+            className={` flex w-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+          >
             <div className="flex gap-10  max-lg:flex-col">
               <div className="">
                 <h1
-                  className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl"
+                  className={`text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                   style={{ color: colors.primary }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (editable && setIsOpen && setSection && setShowForm) {
+                      setSection("Hero");
+                      setIsOpen(true);
+                      setShowForm({
+                        form: "",
+                        edit: "",
+                        show: false,
+                      });
+                      dispatch(
+                        updateAppState({
+                          ...appState,
+                          focusedField: "heading",
+                          openedSlide: "Customize",
+                        }),
+                      );
+                    }
+                  }}
                 >
                   {hero.heading}
                 </h1>
-                <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+                <p
+                  className={`mt-6 text-base text-zinc-600 dark:text-zinc-400 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (editable && setIsOpen && setSection && setShowForm) {
+                      setSection("Hero");
+                      setIsOpen(true);
+                      setShowForm({
+                        form: "",
+                        edit: "",
+                        show: false,
+                      });
+                      dispatch(
+                        updateAppState({
+                          ...appState,
+                          focusedField: "subheading",
+                          openedSlide: "Customize",
+                        }),
+                      );
+                    }
+                  }}
+                >
                   {hero.subheading}
                 </p>
-                {hero.button.list.map((data, i) => (
-                  <div key={i}>
-                    <Button
-                      href={data.value ?? "#"}
-                      text={data.label}
-                      bgColor={colors.secondary}
-                      className="mt-10  "
-                    />
+                {hero.button.show && (
+                  <div
+                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    onClick={() => {
+                      if (editable && setIsOpen && setSection) {
+                        setSection("Hero");
+                        setIsOpen(true);
+                      }
+                    }}
+                  >
+                    {hero.button.list.map((data, i) => (
+                      <div key={i}>
+                        <Button
+                          href={data.value ?? "#"}
+                          text={data.label}
+                          bgColor={colors.secondary}
+                          className="mt-10  "
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-              <div>
-                <Image
-                  src={hero.image.imageUrl}
-                  alt=""
-                  height={400}
-                  width={300}
-                  className="mt-5 rounded-lg object-contain drop-shadow max-lg:mx-auto"
-                />
-              </div>
+              {hero.image.show && (
+                <div>
+                  <Image
+                    src={hero.image.imageUrl}
+                    alt=""
+                    height={400}
+                    width={300}
+                    className={`mt-5 rounded-lg object-contain drop-shadow max-lg:mx-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                  />
+                </div>
+              )}
             </div>
           </Container>
           <Container>
