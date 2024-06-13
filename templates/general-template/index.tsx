@@ -75,16 +75,18 @@ type TProps = {
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
-  showForm?:{
-    form:string,
-    edit:string,
-    show: boolean,
+  showForm?: {
+    form: string;
+    edit: string;
+    show: boolean;
   };
-  setShowForm?:React.Dispatch<React.SetStateAction<{
-    form:string,
-    edit:string,
-    show: boolean,
-  }>>;
+  setShowForm?: React.Dispatch<
+    React.SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
 };
 
 export default function General(props: TProps) {
@@ -99,7 +101,7 @@ export default function General(props: TProps) {
     editable,
     setFocusedField,
     showForm,
-    setShowForm
+    setShowForm,
   } = props;
   return (
     <>
@@ -109,8 +111,16 @@ export default function General(props: TProps) {
         </div>
       </div>
       <div className="relative flex w-full flex-col">
-        <Header banner={banner} colors={colors} />
-        <main className="flex-auto mt-24">
+        <Header
+          banner={banner}
+          colors={colors}
+          editable={editable}
+          setIsOpen={setIsOpen}
+          setSection={setSection}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+        <main className="mt-24 flex-auto">
           <Container className=" flex w-full">
             <div className="flex gap-10  max-lg:flex-col">
               <div className="">
