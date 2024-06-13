@@ -4,21 +4,32 @@ import clsx from "clsx";
 
 import { Container } from "../container/nested-container";
 import { Button } from "../ui/button/template-button";
-import { TBanner } from "@/types";
+import { TBanner, TColors, TSection } from "@/types";
+import { Dispatch, SetStateAction } from "react";
 type TProps = {
   banner: TBanner;
-  colors: {
-    primary: string;
-    secondary: string;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  editable?: boolean;
+  showForm?:{
+    form:string,
+    edit:string,
+    show: boolean,
   };
+  setShowForm?:React.Dispatch<React.SetStateAction<{
+    form:string,
+    edit:string,
+    show: boolean,
+  }>>;
+  colors:TColors
 };
 
 export function Header(props: TProps) {
-  const { banner, colors } = props;
+  const { banner, colors,editable,setIsOpen,setSection,setShowForm,showForm} = props;
   return (
     <>
       <header
-        className="pointer-events-none relative flex flex-none flex-col"
+        className={`pointer-events-none relative flex flex-none flex-col `}
         style={{
           height: "var(--header-height)",
           marginBottom: "var(--header-mb)",
@@ -33,11 +44,12 @@ export function Header(props: TProps) {
           }}
         >
           <Container
-            className="top-[var(--header-top,theme(spacing.6))] w-full"
+            className={`top-[var(--header-top,theme(spacing.6))] w-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             style={{
               position:
                 "var(--header-inner-position)" as React.CSSProperties["position"],
             }}
+
           >
             <div className="relative flex gap-4">
               <div className="flex flex-1 justify-end md:justify-center">

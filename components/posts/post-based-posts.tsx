@@ -1,6 +1,9 @@
 import { Container } from "@/components/container";
-import { TPosts } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
+import { TColors, TPosts, TSection } from "@/types";
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
 
 function QuoteIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   return (
@@ -12,59 +15,101 @@ function QuoteIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 
 type TProps = {
   posts: TPosts;
+
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  editable?: boolean;
+  showForm?: {
+    form: string;
+    edit: string;
+    show: boolean;
+  };
+  setShowForm?: React.Dispatch<
+    React.SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  // colors: TColors;
 };
 
-export function Testimonials(props: TProps) {
-  const { posts } = props;
+export function Posts(props: TProps) {
+  const { posts, editable, setIsOpen, setSection, setShowForm, showForm } =
+    props;
+  const dispatch = useAppDispatch();
+  const appState = useAppSelector(AS);
   return (
     <section
       id="testimonials"
       aria-label="What our customers are saying"
       className="bg-slate-50 py-20 sm:py-32"
     >
-      <Container>
+      <Container
+        className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+        onClick={() => {
+          if (setIsOpen && setSection && setShowForm) {
+            setIsOpen(true);
+            setSection("Posts");
+            setShowForm({
+              form: "",
+              edit: "",
+              show: false,
+            });
+            dispatch(
+              updateAppState({
+                ...appState,
+                openedSlide: "Customize",
+              }),
+            );
+          }
+        }}
+      >
         <div className="mx-auto max-w-2xl md:text-center">
           <h2 className="font-display text-3xl tracking-tight text-slate-900 sm:text-4xl">
             Posts
           </h2>
         </div>
-        <ul
-          role="list"
-          className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3"
-        >
-          {posts.list.map((data, i) => (
-            <li key={i}>
-              <ul role="list" className="flex flex-col gap-y-6 sm:gap-y-8">
-                <li key={i}>
-                  <figure className="relative rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10">
-                    <QuoteIcon className="absolute left-6 top-6 fill-slate-100" />
-                    <blockquote className="relative">
-                      <p className="text-lg tracking-tight text-slate-900">
-                        {data.caption}
-                      </p>
-                    </blockquote>
-                    <figcaption className="relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
-                      <div>
-                        <div className="font-display text-base text-slate-900">
-                          {data.username}
+        {posts.show && (
+          <ul
+            role="list"
+            className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3"
+          >
+            {posts.list.map((data, i) => (
+              posts.limit >i &&
+              <li key={i}>
+                <ul role="list" className="flex flex-col gap-y-6 sm:gap-y-8">
+                  <li key={i}>
+                    <figure className="relative rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10">
+                      <QuoteIcon className="absolute left-6 top-6 fill-slate-100" />
+                      <blockquote className="relative">
+                        <p className="text-lg tracking-tight text-slate-900">
+                          {data.caption}
+                        </p>
+                      </blockquote>
+                      <figcaption className="relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
+                        <div>
+                          <div className="font-display text-base text-slate-900">
+                            {data.username}
+                          </div>
                         </div>
-                      </div>
-                      <div className="overflow-hidden rounded-full bg-slate-50">
-                        <Image
-                          className="h-14 w-14 object-cover"
-                          src={data.media_url}
-                          alt=""
-                          width={56}
-                          height={56}
-                        />
-                      </div>
-                    </figcaption>
-                  </figure>
-                </li>
-              </ul>
-            </li>
-          ))}
-        </ul>
+                        <div className="overflow-hidden rounded-full bg-slate-50">
+                          <Image
+                            className="h-14 w-14 object-cover"
+                            src={data.media_url}
+                            alt=""
+                            width={56}
+                            height={56}
+                          />
+                        </div>
+                      </figcaption>
+                    </figure>
+                  </li>
+                </ul>
+              </li>
+            ))}
+          </ul>
+        )}
       </Container>
     </section>
   );
