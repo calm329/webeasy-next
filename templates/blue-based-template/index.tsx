@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
-import { Speakers } from "../../components/posts/blue-based-posts";
-import { Schedule } from "../../components/services/blue-based-services";
+import { Posts } from "../../components/posts/blue-based-posts";
+import { Services } from "../../components/services/blue-based-services";
 import { TBanner, TColors, TFields, THero, TPosts, TSection } from "@/types";
 import { Header } from "@/components/header/blue-based-header";
 import { Hero } from "@/components/hero/blue-based-hero";
@@ -15,6 +15,16 @@ type TProps = {
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
+  showForm?:{
+    form:string,
+    edit:string,
+    show: boolean,
+  };
+  setShowForm?:React.Dispatch<React.SetStateAction<{
+    form:string,
+    edit:string,
+    show: boolean,
+  }>>;
 };
 
 const BlueBasedTemplate = (props: TProps) => {
@@ -28,14 +38,52 @@ const BlueBasedTemplate = (props: TProps) => {
     setSection,
     editable,
     setFocusedField,
+    showForm,
+    setShowForm,
   } = props;
 
   return (
     <>
-      <Header banner={banner} colors={colors} />
-      <Hero hero={hero} colors={colors} />
-      <Schedule services={services} colors={colors} />
-      <Speakers posts={posts} colors={colors} />
+      <Header
+        banner={banner}
+        colors={colors}
+        editable={editable}
+        setFocusedField={setFocusedField}
+        setIsOpen={setIsOpen}
+        setSection={setSection}
+        showForm={showForm}
+        setShowForm={setShowForm}
+      />
+      <Hero
+        hero={hero}
+        colors={colors}
+        editable={editable}
+        setFocusedField={setFocusedField}
+        setIsOpen={setIsOpen}
+        setSection={setSection}
+        showForm={showForm}
+        setShowForm={setShowForm}
+      />
+      <Services
+        services={services}
+        colors={colors}
+        editable={editable}
+        setFocusedField={setFocusedField}
+        setIsOpen={setIsOpen}
+        setSection={setSection}
+        showForm={showForm}
+        setShowForm={setShowForm}
+      />
+      <Posts
+        posts={posts}
+        colors={colors}
+        editable={editable}
+        setFocusedField={setFocusedField}
+        setIsOpen={setIsOpen}
+        setSection={setSection}
+        showForm={showForm}
+        setShowForm={setShowForm}
+      />
     </>
   );
 };

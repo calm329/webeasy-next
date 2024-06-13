@@ -76,6 +76,8 @@ const SelectedTemplate = (props: TProps) => {
               : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
+          showForm={showForm}
+          setShowForm={setShowForm}
         />
       )}
       {selectedTemplate?.name === "Post-Based template" && (
@@ -93,6 +95,8 @@ const SelectedTemplate = (props: TProps) => {
               : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
+          showForm={showForm}
+          setShowForm={setShowForm}
         />
       )}
       {selectedTemplate?.name === "General template" && (
@@ -110,6 +114,8 @@ const SelectedTemplate = (props: TProps) => {
               : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
+          showForm={showForm}
+          setShowForm={setShowForm}
         />
       )}
     </div>

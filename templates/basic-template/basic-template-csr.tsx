@@ -129,7 +129,11 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               openedSlide: "Customize",
             }),
           );
- 
+          setShowForm({
+            form:"",
+            edit:"",
+            show:false,
+          })
         }
       }}>
         <h2 className="sr-only">Posts</h2>
