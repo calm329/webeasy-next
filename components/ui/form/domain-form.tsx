@@ -36,13 +36,14 @@ export default function DomainForm() {
 
   useEffect(() => {
     if (sites) {
+      const filteredSites = sites.filter(site => site.subdomain.length <= 20);
       const startIndex = (page - 1) * dataPerPage;
       const endIndex = startIndex + dataPerPage;
-      setPaginatedData(sites.slice(startIndex, endIndex));
+      setPaginatedData(filteredSites.slice(startIndex, endIndex));
     }
   }, [page, sites]);
 
-  const totalPages = Math.ceil((sites?.length || 0) / dataPerPage);
+  const totalPages = Math.ceil((paginatedData?.length || 0) / dataPerPage);
 
   const getData = async () => {
     try {
@@ -79,6 +80,7 @@ export default function DomainForm() {
         ) : (
           <>
             {paginatedData?.map((site) => (
+              
               <div
                 className="flex items-center justify-between  pt-6 sm:flex"
                 key={site.id}
@@ -89,9 +91,7 @@ export default function DomainForm() {
                     target="_blank"
                     className="group flex gap-x-3 rounded-md py-2 pl-2 pr-3 text-sm font-semibold leading-6"
                   >
-                    {site.subdomain.length > 10
-                      ? `${site.subdomain.substring(0, 10)}...webeasy.ai`
-                      : `${site.subdomain}.webeasy.ai`}
+                    {`${site.subdomain}.webeasy.ai`}
                     <FaExternalLinkAlt
                       className="-ml-0.5 mr-1.5 h-4 w-4 text-indigo-600"
                       aria-hidden="true"

@@ -17,7 +17,7 @@ const PublishForm = () => {
       .regex(
         /^[a-z0-9]+$/,
         "Subdomain must contain only lowercase letters, numbers, and no spaces",
-      ),
+      ).max(15),
   });
   const defaultValues = {
     subdomain: "",
