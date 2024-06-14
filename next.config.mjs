@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
@@ -9,6 +10,13 @@ const nextConfig = {
         protocol: "https",
         hostname: "*.cdninstagram.com",
       },
+    ],
+    domains: [
+      "xhq5zxhb2o7dgubv.public.blob.vercel-storage.com",
+      "tailwindui.com",
+      "images.unsplash.com",
+      'oaidalleapiprodscus.blob.core.windows.net',
+      'm.media-amazon.com'
     ],
   },
 };

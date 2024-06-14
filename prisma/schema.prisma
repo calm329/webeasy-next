@@ -94,11 +94,15 @@ model Authenticator {
 model Site {
   id         String   @id @default(cuid())
   subdomain  String   @unique
+  title      String   @default("")
+  description String   @default("")
+  type       String    @default("")
   userId     String?
   templateId String
   logo       String?
-  posts      String
+  posts      String?
   aiResult   String
+  font       String    @default("")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

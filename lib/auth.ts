@@ -4,7 +4,13 @@ import { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import prisma from "./prisma";
 
+const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
+
 export const authOptions: AuthOptions = {
+  pages: {
+    signIn: "/",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     Credentials({
       id: "email",
@@ -50,6 +56,25 @@ export const authOptions: AuthOptions = {
   callbacks: {},
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
+  },
+  cookies: {
+    sessionToken: {
+      name: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: VERCEL_DEPLOYMENT,
+      },
+    },
+    csrfToken: {
+      name: `${VERCEL_DEPLOYMENT ? "__Host-" : ""}next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: VERCEL_DEPLOYMENT,
+      },
+    },
   },
 };

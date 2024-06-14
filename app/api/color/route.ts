@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4-turbo",
+      model: "gpt-4o",
       response_format: { type: "json_object" },
       messages: [
         {
@@ -43,7 +43,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ colors: response.choices[0].message.content });
   } catch (error) {
-    console.log(error);
 
     return NextResponse.json({
       colors: JSON.stringify({
