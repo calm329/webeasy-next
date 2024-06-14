@@ -234,6 +234,10 @@ export default function WebsitesForm() {
                           if(templates){
                             dispatch(setSelectedTemplate(templates[0]))
                           }
+                          dispatch(updateAppState({
+                            ...appState,
+                            view:"Desktop"
+                          }))
                           switch (site.type) {
                             case "Custom":
                               router.push("/custom?id=" + site.id);
