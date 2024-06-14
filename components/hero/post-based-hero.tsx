@@ -39,7 +39,7 @@ export function Hero(props: TProps) {
   const appState = useAppSelector(AS);
   return (
     <Container
-      className={`flex gap-5 pb-16 pt-20 text-center max-lg:flex-col lg:pt-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`flex gap-5 pb-16 pt-20 text-center max-lg:flex-col lg:pt-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${appState.view==="Mobile"||"Tablet"?"flex-col-reverse justify-center items-center":""}`}
       onClick={() => {
         if (editable && setIsOpen && setSection && setShowForm) {
           setSection("Hero");

@@ -73,7 +73,7 @@ export function Posts(props: TProps) {
         {posts.show && (
           <ul
             role="list"
-            className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3 "
+            className={`mx-auto mt-16 grid max-w-2xl gap-6 sm:gap-8 lg:mt-20 lg:max-w-none  ${appState.view==="Mobile"&&"grid-cols-1"} ${appState.view==="Tablet"&&"grid-cols-2"} ${appState.view==="Desktop"&&"grid-cols-1 lg:grid-cols-3"}`}
           >
             {posts.list.map((data, i) => (
               posts.limit >i &&
