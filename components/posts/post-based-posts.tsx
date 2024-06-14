@@ -73,14 +73,14 @@ export function Posts(props: TProps) {
         {posts.show && (
           <ul
             role="list"
-            className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3"
+            className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3 "
           >
             {posts.list.map((data, i) => (
               posts.limit >i &&
-              <li key={i}>
-                <ul role="list" className="flex flex-col gap-y-6 sm:gap-y-8">
+              <li key={i} className="">
+                <ul role="list" className="flex gap-y-6 sm:gap-y-8 h-full">
                   <li key={i}>
-                    <figure className="relative rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10">
+                    <figure className="relative rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10 h-full">
                       <QuoteIcon className="absolute left-6 top-6 fill-slate-100" />
                       <blockquote className="relative">
                         <p className="text-lg tracking-tight text-slate-900">
