@@ -196,7 +196,7 @@ export default function WebsitesForm() {
               site.type === selectedSection && (
                 <div
                   key={site.id}
-                  className=" relative flex max-w-80 flex-col items-center justify-center rounded-lg border   shadow"
+                  className=" relative flex max-w-80 flex-col items-center justify-between rounded-lg border   shadow"
                 >
                   <button
                     className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
