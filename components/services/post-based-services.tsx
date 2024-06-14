@@ -58,7 +58,18 @@ export function Services(props: TProps) {
         {appState.aiContent.services.show && (
           <div className="-mx-4 mt-20 flex flex-col gap-y-10 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:hidden">
             {services.map((data) => (
-              <div key={data.name}>
+              <div
+                key={data.name}
+                className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                onClick={(e) => {
+                  setShowForm &&
+                    setShowForm({
+                      edit: data.id,
+                      form: "Service",
+                      show: true,
+                    });
+                }}
+              >
                 <div className={``}>
                   <div
                     className={clsx(

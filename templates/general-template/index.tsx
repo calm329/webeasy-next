@@ -10,62 +10,9 @@ import { TBanner, TColors, TFields, THero, TPosts, TSection } from "@/types";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 
-function Service({
-  service,
-}: {
-  service: { name: string; description: string; image: string };
-}) {
-  return (
-    <Card className="max-w-96">
-      <Card.Title>{service.name}</Card.Title>
-      <Card.Description>{service.description}</Card.Description>
-    </Card>
-  );
-}
-
 type TPostProps = {
   posts: TPosts;
 };
-
-function Photos(props: TPostProps) {
-  const { posts } = props;
-  let rotations = [
-    "rotate-2",
-    "-rotate-2",
-    "rotate-2",
-    "rotate-2",
-    "-rotate-2",
-  ];
-
-  return (
-    <>
-      <div className="mt-16 sm:mt-20">
-        <div className="-my-4 flex flex-wrap justify-center gap-10 overflow-hidden py-4 ">
-          {posts.list.map((data, i) => (
-            <div className="flex w-72 flex-col" key={data.id}>
-              <div
-                className={clsx(
-                  "relative aspect-[9/10] overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 sm:rounded-2xl",
-                  rotations[i % rotations.length],
-                )}
-              >
-                <Image
-                  src={data.media_url}
-                  alt=""
-                  className=" inset-0 h-full w-full object-cover"
-                  height={300}
-                  width={300}
-                />
-              </div>
-              <h2>{data.username}</h2>
-              <p>{data.caption}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </>
-  );
-}
 
 type TProps = {
   hero: THero;
@@ -124,11 +71,25 @@ export default function General(props: TProps) {
           setShowForm={setShowForm}
           showForm={showForm}
         />
-        <main className="mt-24 flex-auto">
-          <Container
-            className={` flex w-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-          >
-            <div className="flex gap-10  max-lg:flex-col">
+        <main className="mt-24 flex flex-col gap-10">
+          <Container className={` flex w-full`}>
+            <div
+              className={`flex gap-10 justify-center max-lg:flex-col ${editable && "mb-20 rounded border-2 border-transparent hover:border-indigo-500"}`}
+              onClick={() => {
+                if (editable && setIsOpen && setSection && setShowForm) {
+                  setSection("Hero");
+                  setIsOpen(true);
+                  dispatch(
+                    updateAppState({ ...appState, openedSlide: "Customize" }),
+                  );
+                  setShowForm({
+                    show: false,
+                    edit: "",
+                    form: "",
+                  });
+                }
+              }}
+            >
               <div className="">
                 <h1
                   className={`text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -179,28 +140,30 @@ export default function General(props: TProps) {
                 >
                   {hero.subheading}
                 </p>
-                {hero.button.show && (
-                  <div
-                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                    onClick={() => {
-                      if (editable && setIsOpen && setSection) {
-                        setSection("Hero");
-                        setIsOpen(true);
-                      }
-                    }}
-                  >
-                    {hero.button.list.map((data, i) => (
-                      <div key={i}>
-                        <Button
-                          href={data.value ?? "#"}
-                          text={data.label}
-                          bgColor={colors.secondary}
-                          className="mt-10  "
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <div>
+                  {hero.button.show && (
+                    <div
+                      className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                      onClick={() => {
+                        if (editable && setIsOpen && setSection) {
+                          setSection("Hero");
+                          setIsOpen(true);
+                        }
+                      }}
+                    >
+                      {hero.button.list.map((data, i) => (
+                        <div key={i}>
+                          <Button
+                            href={data.value ?? "#"}
+                            text={data.label}
+                            bgColor={colors.secondary}
+                            className="mt-10  "
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
               {hero.image.show && (
                 <div>
@@ -226,16 +189,91 @@ export default function General(props: TProps) {
               )}
             </div>
           </Container>
-          <Container>
-            <Photos posts={posts} />
-          </Container>
           <Container className="my-24 md:mt-28">
-            <div className="mx-auto  gap-y-20 lg:max-w-none lg:grid-cols-2">
-              <div className="flex  flex-wrap gap-10">
-                {services.map((data) => (
-                  <Service key={data.name} service={data} />
+            <div
+              className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} mx-auto  gap-y-20 lg:max-w-none lg:grid-cols-2`}
+              onClick={() => {
+                if (setIsOpen && setSection) {
+                  setIsOpen(true);
+                  setSection("Services");
+                  dispatch(
+                    updateAppState({
+                      ...appState,
+                      openedSlide: "Customize",
+                    }),
+                  );
+                }
+              }}
+            >
+              {appState.aiContent.services.show && (
+                <div className="flex  flex-wrap justify-center gap-10">
+                  {services.map((data) => (
+                    <Card
+                      className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} max-w-96`}
+                      onClick={() => {
+                        // e.stopPropagation()
+                        setShowForm &&
+                          setShowForm({
+                            edit: data.id,
+                            form: "Service",
+                            show: true,
+                          });
+                      }}
+                      key={data.id}
+                    >
+                      <Card.Title>{data.name}</Card.Title>
+                      <Card.Description>{data.description}</Card.Description>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Container>
+          <Container>
+            <div
+              className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} "mt-16 sm:mt-20 my-20"`}
+              onClick={()=>{
+                if (setIsOpen && setSection && setShowForm) {
+                  setIsOpen(true);
+                  setSection("Posts");
+                  dispatch(
+                    updateAppState({
+                      ...appState,
+                      openedSlide: "Customize",
+                    }),
+                  );
+                  setShowForm({
+                    form:"",
+                    edit:"",
+                    show:false,
+                  })
+                }
+              }}
+            >
+                  { appState?.iPosts?.show && 
+              <div className="my flex flex-wrap justify-center gap-10 overflow-hidden py-4 ">
+                {posts.list.map((data, i) => (
+                  posts.limit > i &&
+                  <div className={`flex w-96 flex-col `} key={data.id}>
+                    <div
+                      className={clsx(
+                        "relative aspect-[9/10] overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 sm:rounded-2xl",
+                        // rotations[i % rotations.length],
+                      )}
+                    >
+                      <Image
+                        src={data.media_url}
+                        alt=""
+                        className=" inset-0 h-full w-full object-cover"
+                        height={300}
+                        width={300}
+                      />
+                    </div>
+                    <h2>{data.username}</h2>
+                    <p>{data.caption}</p>
+                  </div>
                 ))}
-              </div>
+              </div>}
             </div>
           </Container>
         </main>
