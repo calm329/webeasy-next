@@ -11,10 +11,11 @@ import React, { SetStateAction } from "react";
 
 type TProps = {
   setOpen: React.Dispatch<SetStateAction<boolean>>;
+  redirectUrl?: string;
 };
 
 const LeaveContent = (props: TProps) => {
-  const { setOpen } = props;
+  const { setOpen,redirectUrl } = props;
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
 
@@ -41,7 +42,7 @@ const LeaveContent = (props: TProps) => {
           onClick={() => {
             setOpen(false);
             dispatch(clearPastAndFuture());
-            router.push("/");
+            router.push(redirectUrl??"/");
           }}
         >
             Yes, leave now

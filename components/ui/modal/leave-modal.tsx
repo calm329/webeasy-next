@@ -7,9 +7,10 @@ import { IoClose } from "react-icons/io5";
 type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  redirectUrl?:string
 };
 export default function LeaveModal(props: TProps) {
-  const { open, setOpen } = props;
+  const { open, setOpen,redirectUrl } = props;
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" open={open} className="relative z-10" onClose={setOpen}>
@@ -41,7 +42,7 @@ export default function LeaveModal(props: TProps) {
                   <button onClick={() => setOpen(false)} className="ml-auto ">
                     <IoClose size={20} />
                   </button>
-                  <LeaveContent setOpen={setOpen} />
+                  <LeaveContent setOpen={setOpen} redirectUrl={redirectUrl}/>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
