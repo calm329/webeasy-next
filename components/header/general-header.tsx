@@ -44,25 +44,13 @@ export function Header(props: TProps) {
     <>
       <header
         className={`pointer-events-none relative flex flex-none flex-col `}
-        style={{
-          height: "var(--header-height)",
-          marginBottom: "var(--header-mb)",
-        }}
       >
-        <div className="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]" />
         <div
-          className="top-0  h-16 pt-6"
-          style={{
-            position:
-              "var(--header-position)" as React.CSSProperties["position"],
-          }}
+          className="top-0  pt-6"
         >
-          <Container
+          <div
             className={`top-[var(--header-top,theme(spacing.6))] w-full `}
-            style={{
-              position:
-                "var(--header-inner-position)" as React.CSSProperties["position"],
-            }}
+           
             onClick={() => {
               if (editable && setIsOpen && setSection && setShowForm) {
                 setSection("Banner");
@@ -147,7 +135,7 @@ export function Header(props: TProps) {
                 </nav>
               </div>
             </div>
-          </Container>
+          </div>
         </div>
       </header>
 
