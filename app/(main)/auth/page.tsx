@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
 import SelectedTemplate from "@/components/selected-template";
-import { getInstagramData, handleChangeAppState} from "@/lib/utils/function";
+import { getInstagramData, handleChangeAppState } from "@/lib/utils/function";
 import EditWebsiteHeader from "@/components/header/edit-website-header";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
@@ -22,10 +22,12 @@ import {
 } from "@/lib/store/slices/site-slice";
 import FontSlideOver from "@/components/ui/slide-over/font-slide";
 import { FontsDrawer } from "@/components/ui/drawer/fonts-drawer";
+import { ProgressLoader } from "@/components/progress-loader";
+import { appState } from '../../../lib/store/slices/site-slice';
 
 export default function Page() {
   const router = useRouter();
-  const { data: session,status } = useSession();
+  const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   // const [appState, setAppState] = useState<AppState>(initialState);
   const appState = useAppSelector(AS);
@@ -41,9 +43,9 @@ export default function Page() {
     show: false,
   });
 
-  const handleChange = ((name: string, value: string) => {
+  const handleChange = (name: string, value: string) => {
     handleChangeAppState(dispatch, appState, name, value);
-  });
+  };
 
   useEffect(() => {
     const getInstaCredentials = async () => {
@@ -99,91 +101,78 @@ export default function Page() {
 
   useEffect(() => {
     const WebFontLoader = require("webfontloader");
-    if(appState.selectedFont){
-      window && WebFontLoader.load({
-        google: {
-          families: [appState.selectedFont],
-        },
-      });
+    if (appState.selectedFont) {
+      window &&
+        WebFontLoader.load({
+          google: {
+            families: [appState.selectedFont],
+          },
+        });
     }
   }, [appState.selectedFont]);
   return (
     <>
-      {!saveLoading &&appState.status === "Done"&&appState?.aiContent?.banner ? (
-        <>
-          <SiteHeader
-            showNavigation={false}
-            isAuth={true}
-            handleChange={handleChange}
-            setIsFontOpen={setIsFontOpen}
+    {appState.regenerate.regenerating &&<ProgressLoader/>}
+      <SiteHeader
+        showNavigation={false}
+        isAuth={true}
+        handleChange={handleChange}
+        setIsFontOpen={setIsFontOpen}
+      />
+      <EditWebsiteHeader />
+
+      <div className="relative flex size-full ">
+        <div style={{ fontFamily: appState.selectedFont }} className="w-full">
+          <SelectedTemplate
+            appState={appState}
+            setFocusedField={setFocusedField}
+            setIsSideBarOpen={setIsSideBarOpen}
+            setSection={setSection}
+            showForm={showForm}
+            setShowForm={setShowForm}
           />
-          <EditWebsiteHeader />
-
-          <div className="relative flex size-full ">
-            <div
-              style={{ fontFamily: appState.selectedFont }}
-              className="w-full"
-            >
-              <SelectedTemplate
-                appState={appState}
-                setFocusedField={setFocusedField}
-                setIsSideBarOpen={setIsSideBarOpen}
-                setSection={setSection}
-                showForm={showForm}
-                setShowForm={setShowForm}
-              />
-            </div>
-            {appState.editable && (
+        </div>
+        {appState.editable && (
+          <>
+            {matches ? (
               <>
-                {matches ? (
-                  <>
-                    <SlideOver
-                      open={
-                        appState.openedSlide === "Customize" && isSideBarOpen
-                      }
-                      setIsOpen={setIsSideBarOpen}
-                      section={section}
-                      handleChange={handleChange}
-                      subdomain={
-                        getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
-                        ""
-                      }
-                      showForm={showForm}
-                      setShowForm={setShowForm}
-                    />
+                <SlideOver
+                  open={appState.openedSlide === "Customize" && isSideBarOpen}
+                  setIsOpen={setIsSideBarOpen}
+                  section={section}
+                  handleChange={handleChange}
+                  subdomain={
+                    getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
+                  }
+                  showForm={showForm}
+                  setShowForm={setShowForm}
+                />
 
-                    <FontSlideOver
-                      open={appState.openedSlide === "Font" && isFontOpen}
-                      setIsOpen={setIsFontOpen}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <CustomDrawer
-                      open={isSideBarOpen}
-                      setIsOpen={setIsSideBarOpen}
-                      section={section}
-                      handleChange={handleChange}
-                      subdomain={
-                        getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
-                        ""
-                      }
-                      showForm={showForm}
-                      setShowForm={setShowForm}
-                    />
-                    <FontsDrawer open={isFontOpen} setIsOpen={setIsFontOpen} />
-                  </>
-                )}
+                <FontSlideOver
+                  open={appState.openedSlide === "Font" && isFontOpen}
+                  setIsOpen={setIsFontOpen}
+                />
+              </>
+            ) : (
+              <>
+                <CustomDrawer
+                  open={isSideBarOpen}
+                  setIsOpen={setIsSideBarOpen}
+                  section={section}
+                  handleChange={handleChange}
+                  subdomain={
+                    getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
+                  }
+                  showForm={showForm}
+                  setShowForm={setShowForm}
+                />
+                <FontsDrawer open={isFontOpen} setIsOpen={setIsFontOpen} />
               </>
             )}
-          </div>
-          {saveLoading && <Loader text="Saving Data" />}
-        </>
-      ) : (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Loader text={appState.status} />
-        </div>
-      )}
+          </>
+        )}
+      </div>
+      {saveLoading && <Loader text="Saving Data" />}
     </>
   );
 }

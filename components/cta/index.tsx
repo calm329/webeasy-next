@@ -1,4 +1,5 @@
 import Link from "next/link";
+import TypewriterEffect from "../typewriter-effect";
 
 type TProps = {
   text: string;
@@ -18,7 +19,7 @@ export default function CTA(props: TProps) {
       href={link??""}
       target={external ? "_blank" : "_self"}
     >
-      {text}
+       <TypewriterEffect text={text} />
     </Link>
   );
 }

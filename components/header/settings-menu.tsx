@@ -322,12 +322,25 @@ export default function SettingMenu(props: TProps) {
                     {({ active }) => (
                       <button
                         onClick={() =>
+                         { dispatch(updateAppState({
+                            ...appState,
+                            aiContent:{
+                              ...appState.aiContent,
+                              banner:"",
+                              hero:"",
+                              services:""
+                            },
+                            regenerate:{
+                              regenerating:true,
+                              progress:0
+                            }
+                          }));
                           getInstagramData({
                             appState,
                             dispatch,
                             searchParams,
                             regenerate: true,
-                          })
+                          })}
                         }
                         className={classNames(
                           active

@@ -24,19 +24,20 @@ type TParams = {
 };
 
 export const getContent = async (
-  mediaCaption?: string,
+  instagramDetails?: {
+    mediaCaption: any;
+    imageIds: any;
+    iPosts: any;
+  },
   fieldName?: string,
   type?: string,
   appState?: AppState,
-) => {
+  // setJsonContent?:any
+): Promise<any> => {
   try {
-    // Create a URL object
     const urlObj = new URL(window.location.href);
-
-    // Use URLSearchParams to extract the 'subdomain' parameter
     const params = new URLSearchParams(urlObj.search);
     const custom = params.get("id");
-    let data;
 
     let response;
     if (custom && fieldName !== "image" && fieldName !== "logo") {
@@ -52,105 +53,206 @@ export const getContent = async (
             ? fieldName?.split(".")[0]
             : fieldName ?? "",
           type: type ?? "",
-          services:appState?.aiContent.services
+          services: appState?.aiContent.services,
         }),
       });
     } else {
       response = await fetch("/api/content", {
         method: "POST",
         body: JSON.stringify({
-          mediaCaption,
+          mediaCaption: instagramDetails?.mediaCaption,
           fieldName: fieldName?.split(".")
             ? fieldName?.split(".")[0]
             : fieldName ?? "",
           type: type ?? "",
-          services:appState?.aiContent.services
+          services: appState?.aiContent.services,
         }),
       });
     }
 
-    let content = "";
+    // let content = "";
+    let totalProgress = 0;
     const reader = response.body?.getReader();
-    if (!reader) return;
+    if (!reader) {
+      throw new Error("ReadableStream not available");
+    }
 
     const decoder = new TextDecoder();
-    let done = false;
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
+    let accumulatedText = "";
+    let completeJson = ""
 
-      if (chunkValue && chunkValue !== "###") content += chunkValue;
-    }
-    data = JSON.parse(content);
+    const processText = async ({
+      done,
+      value,
+    }: ReadableStreamReadResult<Uint8Array>) => {
+      if (done) {
+        if (completeJson) {
+          try {
+            console.log("i came now", completeJson);
+            let parsedJson = JSON.parse(completeJson);
 
-    console.log("appStateWhileGenerating:", appState, data);
-    if (custom) {
-      // console.log("subdomain: " + subdomain);
-      if (fieldName === "image" && appState?.aiContent.businessType) {
-        data = {
-          hero: {
-            image: {
-              imageUrl: appState?.aiContent.hero.image.imageUrl ?? "",
-            },
-          },
-        };
-        const res = await fetch("/api/image", {
-          method: "POST",
-          body: JSON.stringify({
-            prompt: appState?.aiContent.businessType ?? "",
-          }),
-        });
-        const image = await res.json();
-        data["hero"]["image"]["imageUrl"] = image.imageUrl;
-      } else if (appState?.aiContent.businessType && !fieldName) {
-        const res = await fetch("/api/image", {
-          method: "POST",
-          body: JSON.stringify({
-            prompt: appState?.aiContent.businessType ?? "",
-          }),
-        });
-        const image = await res.json();
-        data["hero"]["image"]["imageUrl"] = image.imageUrl;
+            if (custom) {
+              // console.log("subdomain: " + subdomain);
+              if (fieldName === "image" && appState?.aiContent.businessType) {
+                parsedJson = {
+                  hero: {
+                    image: {
+                      imageUrl: appState?.aiContent.hero.image.imageUrl ?? "",
+                    },
+                  },
+                };
+                const res = await fetch("/api/image", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    prompt: appState?.aiContent.businessType ?? "",
+                  }),
+                });
+                const image = await res.json();
+                parsedJson["hero"]["image"]["imageUrl"] = image.imageUrl;
+              } else if (appState?.aiContent.businessType && !fieldName) {
+                const res = await fetch("/api/image", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    prompt: appState?.aiContent.businessType ?? "",
+                  }),
+                });
+                const image = await res.json();
+                parsedJson["hero"]["image"]["imageUrl"] = image.imageUrl;
+              }
+            }
+
+            if (fieldName === "logo") {
+              parsedJson = {
+                banner: {
+                  logo: {
+                    link: appState?.aiContent.banner.logo.link ?? "",
+                  },
+                },
+              };
+              const res = await fetch("/api/image", {
+                method: "POST",
+                body: JSON.stringify({
+                  prompt:
+                    "generate logo for " +
+                    (appState?.aiContent.banner.businessName ?? "") +
+                    " but don't add living things in it",
+                }),
+              });
+              const image = await res.json();
+              parsedJson["banner"]["logo"]["link"] = image.imageUrl;
+            } else if (parsedJson?.banner?.businessName && !fieldName) {
+              const res = await fetch("/api/image", {
+                method: "POST",
+                body: JSON.stringify({
+                  prompt:
+                    "generate logo for " +
+                    (parsedJson.banner.businessName ?? "") +
+                    " but don't add living things in it",
+                }),
+              });
+              const image = await res.json();
+              parsedJson["banner"]["logo"]["link"] = image.imageUrl;
+            }
+            console.log("parsedJson", parsedJson);
+            store.dispatch(
+              updateAppState({
+                ...getAppState(),
+                aiContent:{
+                  ...getAppState().aiContent,
+                  ...parsedJson,
+                  hero:{
+                    ...parsedJson.hero,
+                    image:{
+                      ...parsedJson.hero.image,
+                      imageUrl:instagramDetails?.imageIds[
+                        parsedJson["hero"]["image"]["imageId"]
+                      ] ??""
+                    }
+                  }
+                },
+                regenerate: {
+                  regenerating: false,
+                  progress: 100,
+                },
+              }),
+            );
+            // return parsedJson;
+          } catch (error) {
+            console.error("Error parsing final JSON:", error);
+          }
+        }
+        reader.releaseLock();
+        return;
       }
-    }
 
-    if (fieldName === "logo") {
-      data = {
-        banner: {
-          logo: {
-            link: appState?.aiContent.banner.logo.link ?? "",
-          },
-        },
-      };
-      const res = await fetch("/api/image", {
-        method: "POST",
-        body: JSON.stringify({
-          prompt:
-            "generate logo for " +
-            (appState?.aiContent.banner.businessName ?? "") +
-            " but don't add living things in it",
-        }),
-      });
-      const image = await res.json();
-      data["banner"]["logo"]["link"] = image.imageUrl;
-    } else if (data?.banner?.businessName && !fieldName) {
-      const res = await fetch("/api/image", {
-        method: "POST",
-        body: JSON.stringify({
-          prompt:
-            "generate logo for " +
-            (data.banner.businessName ?? "") +
-            " but don't add living things in it",
-        }),
-      });
-      const image = await res.json();
-      data["banner"]["logo"]["link"] = image.imageUrl;
-    }
-    console.log("generated-data", data);
-    return data;
+      const chunk = decoder.decode(value, { stream: true });
+      accumulatedText += chunk;
+      completeJson+= chunk
+      // setReceivedText(prev => prev + chunk);
+
+      // Check for valid JSON sections in the accumulated text
+      try {
+        const jsonSections = ["banner", "hero", "services"];
+        let sectionsParsed = 0;
+        const totalSections = jsonSections.length;
+        jsonSections.forEach((section) => {
+          const sectionStart = accumulatedText.indexOf(`"${section}": {`);
+          if (sectionStart !== -1) {
+            const sectionEnd = findClosingBracketIndex(
+              accumulatedText,
+              sectionStart + section.length + 4,
+            );
+            if (sectionEnd !== -1) {
+              // console.log("accumulatedText",accumulatedText)
+              const jsonString = accumulatedText.slice(
+                sectionStart - 1,
+                sectionEnd + 1,
+              );
+              const validJson = JSON.parse(`{${jsonString}}`);
+              console.log("validJson", validJson);
+              console.log(
+                "(sectionsParsed + 1) / totalSections) * 100",
+                ((sectionsParsed + 1) / totalSections) * 100,
+              );
+              const sectionProgress =
+                ((sectionsParsed + 1) / totalSections) * 100;
+              totalProgress += sectionProgress;
+
+              store.dispatch(
+                updateAppState({
+                  ...getAppState(),
+                  aiContent: {
+                    ...getAppState()?.aiContent,
+                    ...validJson,
+                  
+                  },
+                  regenerate: {
+                    regenerating: true,
+                    progress: totalProgress,
+                  },
+                }),
+              );
+
+              console.log("textBefore", accumulatedText);
+              accumulatedText = accumulatedText.slice(sectionEnd + 1);
+              console.log("textAfter", accumulatedText);
+            }
+          }
+        });
+      } catch (error) {
+        // Ignore parsing errors for incomplete JSON strings
+      }
+
+      reader.read().then(processText).catch(console.error);
+    };
+
+    reader.read().then(processText).catch(console.error);
+    console.log("heelobrom");
+    // return JSON.parse(accumulatedText);
+    // Return the final parsed JSON content
   } catch (error) {
-    console.log("error", error);
+    console.error("Error fetching content:", error);
+    return null;
   }
 };
 
@@ -251,7 +353,7 @@ export const regenerateIndividual = async (params: TRParams) => {
         content = await getAmazonData(getAppState(), fieldName, type);
       } else {
         content = await getContent(
-          instagramDetails.mediaCaption,
+          instagramDetails,
           fieldName,
           type,
           getAppState(), // Fetch the latest app state
@@ -532,12 +634,7 @@ export const regenerateText = async (params: TParams) => {
         }),
       );
 
-      const content = await getContent(
-        instagramDetails.mediaCaption,
-        "",
-        "",
-        appState,
-      );
+      const content = await getContent(instagramDetails, "", "", appState);
 
       if (content) {
         console.log("content", content);
@@ -579,12 +676,7 @@ export const regenerateImage = async (params: TParams) => {
         }),
       );
 
-      let content = await getContent(
-        instagramDetails.mediaCaption,
-        "",
-        "",
-        appState,
-      );
+      let content = await getContent(instagramDetails, "", "", appState);
 
       if (content) {
         dispatch(
@@ -622,27 +714,14 @@ export const regenerateImage = async (params: TParams) => {
 };
 
 export const getInstagramData = async (params: TParams) => {
-  const { regenerate, searchParams, dispatch, appState } = params;
+  const { regenerate, searchParams, dispatch } = params;
   const userId = searchParams.get("user_id") ?? "";
   const accessToken = searchParams.get("access_token") ?? "";
   const custom = searchParams.get("id") ?? "";
-  dispatch(
-    updateAppState({
-      ...appState,
-      status: "Loading",
-    }),
-  );
+  const appState = getAppState();
   const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
     userId,
   });
-  dispatch(
-    updateAppState({
-      ...appState,
-      subdomain: siteAvailable,
-      status: "Loading",
-      editable,
-    }),
-  );
   console.log("siteAvailable", siteAvailable);
   if (siteAvailable && !regenerate) {
     const siteData = await getSiteData(siteAvailable);
@@ -672,16 +751,21 @@ export const getInstagramData = async (params: TParams) => {
       dispatch(
         updateAppState({
           ...appState,
+          aiContent: {
+            ...appState.aiContent,
+            banner: "",
+            hero: "",
+            services: "",
+          },
           status: "Generating Content",
+          regenerate: {
+            regenerating: true,
+            progress: 0,
+          },
         }),
       );
 
-      const content = await getContent(
-        instagramDetails.mediaCaption,
-        "",
-        "",
-        appState,
-      );
+      const content = await getContent(instagramDetails, "", "", appState);
       if (content) {
         console.log("content", content);
         if (!custom) {
@@ -750,14 +834,16 @@ export const getInstagramData = async (params: TParams) => {
             status: "Done",
           }),
         );
-      } else {
-        dispatch(
-          updateAppState({
-            ...appState,
-            status: "Done",
-          }),
-        );
       }
+
+      // else {
+      //   dispatch(
+      //     updateAppState({
+      //       ...appState,
+      //       status: "Done",
+      //     }),
+      //   );
+      // }
     } else {
       dispatch(
         updateAppState({
@@ -1261,7 +1347,7 @@ export async function getAmazonData(
           ? fieldName?.split(".")[0]
           : fieldName ?? "",
         type: type ?? "",
-        features:appState?.aiContent?.features
+        features: appState?.aiContent?.features,
       }),
     });
     let content = "";
@@ -1273,6 +1359,7 @@ export async function getAmazonData(
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
+
       const chunkValue = decoder.decode(value);
 
       if (chunkValue && chunkValue !== "###") content += chunkValue;
@@ -1281,3 +1368,46 @@ export async function getAmazonData(
     return data;
   } catch (error) {}
 }
+
+export const findClosingBracketIndex = (
+  text: string,
+  startIndex: number,
+): number => {
+  let openBrackets = 0;
+
+  for (let i = startIndex; i < text.length; i++) {
+    if (text[i] === "{") {
+      openBrackets++;
+    } else if (text[i] === "}") {
+      openBrackets--;
+      if (openBrackets === 0) {
+        return i;
+      }
+    }
+  }
+
+  return -1;
+};
+
+export const fetchContent = async (setJsonContent: any) => {
+  try {
+    const response = await fetch("/api/content", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mediaCaption: "", // Replace with actual caption
+        fieldName: "", // Example field name; replace as needed
+        type: "", // Optional: Add type if needed
+        services: [], // Example services array; replace with actual data if needed
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Error fetching content:", error);
+  }
+};

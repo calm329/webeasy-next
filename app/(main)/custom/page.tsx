@@ -70,7 +70,7 @@ export default function Page() {
   console.log("saveLoading",saveLoading, appState.status)
   return (
     <>
-    {(!saveLoading && appState.status === "Done") && appState?.aiContent?.banner ?
+    {(!saveLoading ) ?
     <>
       <SiteHeader
         showNavigation={false}

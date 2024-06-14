@@ -5,6 +5,8 @@ import { TBanner, TColors, TFields, TSection } from "@/types";
 import Image from "next/image";
 import { updateAppState, appState as AS } from '@/lib/store/slices/site-slice';
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { Skeleton } from "../ui/skeleton";
+import TypewriterEffect from "../typewriter-effect";
 
 type TopBarProps = {
   banner: TBanner;
@@ -43,7 +45,7 @@ export default function TopBar(props: TopBarProps) {
             style={{ color: colors?.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {banner.logo && editable
+            {banner?.logo?.link ?(banner.logo && editable
               ? banner.logo.show && (
                   <Image
                     src={banner.logo.link}
@@ -73,8 +75,10 @@ export default function TopBar(props: TopBarProps) {
                     height={32}
                     width={200}
                   />
-                )}
-            {editable ? (
+                )):<Skeleton className="h-8 w-8 bg-white"/>}
+
+
+            {banner ?(editable ? (
               <button
               
                 className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -96,11 +100,11 @@ export default function TopBar(props: TopBarProps) {
                   }
                 }}
               >
-                {banner.businessName}
+                <TypewriterEffect text={banner.businessName} />
               </button>
             ) : (
               <Link href="#">{banner.businessName}</Link>
-            )}
+            )):<Skeleton className="h-8 w-52 bg-white"/>}
           </div>
         </div>
       </div>
@@ -109,7 +113,7 @@ export default function TopBar(props: TopBarProps) {
           <div className="w-auto lg:block">
             <div className="-m-2 flex flex-wrap">
               {editable ? (
-                banner.button.show && (
+                banner? (banner.button.show && (
                   <div
                     className={`w-full p-2 md:w-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500 flex gap-5"}`}
                     onClick={() => {
@@ -135,7 +139,7 @@ export default function TopBar(props: TopBarProps) {
                       </div>
                     ))}
                   </div>
-                )
+                )):<Skeleton className="h-12 w-40 bg-white"/>
               ) : (
                 <div className={`w-full p-2 md:w-auto flex gap-5`}>
                   {banner.button.list.map((data, i) => (

@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       {
         "banner": {
           "logo": {
-            "link":  "https://xhq5zxhb2o7dgubv.public.blob.vercel-storage.com/2weWEVnPETmQLpQx52_W1-Ofz4wnOvkqM6307M1pfxfkLAZXXBbX.jpeg",
+          
             "alt": "",
             "show": true
           },
@@ -56,7 +56,8 @@ export async function POST(request: NextRequest) {
               }
             ]
           }
-        },
+        }
+
         "hero": {
           "image": {
             "heroImagePrompt": "*Create a prompt for dall-e-3 to create a hero image to represent the business and content from the instagram posts in a simple above the fold style*",
@@ -76,7 +77,8 @@ export async function POST(request: NextRequest) {
               }
             ]
           }
-        },
+        }
+
         "services": {
           show: true,
           "title": "*type of services title Services or Features*",
@@ -99,9 +101,6 @@ export async function POST(request: NextRequest) {
   const readableStream = new ReadableStream({
     // The start method is where you'll add the stream's content
     async start(controller) {
-      const text = "###";
-      // Queue the encoded content into the stream
-      controller.enqueue(encoder.encode(text));
 
       try {
         const response = await openai.chat.completions.create({
@@ -112,10 +111,8 @@ export async function POST(request: NextRequest) {
               role: "system",
               content: `You are a helpful assistant that writes website content in a friendly simple marketing tone. Generate comprehensive engaging content for a business website homepage that showcases our unique offerings and product descriptions that connects with our target audience. Use insights and themes from our Instagram post captions provided in json to create a series of sections that highlight different aspects of our brand. Ensure the content is lively, informative, and visually appealing, mirroring the dynamic nature of our Instagram feed.
                 Respond only contain JSON output with the following structure:
-                
-        
-                
-                ${fields}`,
+
+                ${fields}`
             },
             {
               role: "user",
@@ -127,11 +124,14 @@ export async function POST(request: NextRequest) {
           top_p: 1,
           frequency_penalty: 0,
           presence_penalty: 0,
+          stream:true
         });
-
-        controller.enqueue(
-          encoder.encode(response.choices[0].message.content || ""),
-        );
+        
+        for await (const chunk of response) {
+          if(chunk?.choices[0]?.delta.content)
+          controller.enqueue(encoder.encode(chunk?.choices[0]?.delta?.content));
+        console.log("response",chunk?.choices[0]?.delta.content)
+        }
       } catch (error) {}
 
       controller.close();

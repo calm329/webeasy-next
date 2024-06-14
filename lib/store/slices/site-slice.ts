@@ -23,6 +23,10 @@ type TInitialState = {
 
 const initialSite: AppState = {
   id:"",
+  regenerate:{
+    regenerating: false,
+    progress:0,
+  },
   openedSlide: null,
   focusedField: null,
   selectedFont: "",

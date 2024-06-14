@@ -69,6 +69,10 @@ export type TTemplateName =
 
 export interface AppState {
   id: string;
+  regenerate:{
+    regenerating: boolean;
+    progress:number;
+  }
   openedSlide: "Customize" | "Font" | null;
   selectedFont: string;
   focusedField: TFields | null;

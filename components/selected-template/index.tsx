@@ -47,10 +47,7 @@ const SelectedTemplate = (props: TProps) => {
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          banner={appState.aiContent.banner}
-          hero={appState.aiContent.hero}
           colors={appState.aiContent["colors"]}
-          services={appState.aiContent.services}
           posts={
             pathname.startsWith("/auth")
               ? appState.iPosts
