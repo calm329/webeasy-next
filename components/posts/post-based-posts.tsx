@@ -88,11 +88,7 @@ export function Posts(props: TProps) {
                         </p>
                       </blockquote>
                       <figcaption className="relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
-                        <div>
-                          <div className="font-display text-base text-slate-900">
-                            {data.username}
-                          </div>
-                        </div>
+                       
                         <div className="overflow-hidden rounded-full bg-slate-50">
                           <Image
                             className="h-14 w-14 object-cover"

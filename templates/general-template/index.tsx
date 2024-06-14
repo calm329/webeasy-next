@@ -269,7 +269,7 @@ export default function General(props: TProps) {
                         width={300}
                       />
                     </div>
-                    <h2>{data.username}</h2>
+                    {/* <h2>{data.username}</h2> */}
                     <p>{data.caption}</p>
                   </div>
                 ))}

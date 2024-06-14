@@ -61,7 +61,7 @@ export function Posts(props: TProps) {
       className="py-20 sm:py-32"
     >
       <ImageClipPaths id={id} />
-      <Container className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`} onClick={()=>{
+      <Container className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} flex`} onClick={()=>{
         if (setIsOpen && setSection && setShowForm) {
           setIsOpen(true);
           setSection("Posts");
@@ -79,13 +79,13 @@ export function Posts(props: TProps) {
  
         }
       }}>
-        <div className="mt-14 grid grid-cols-1 items-start gap-x-8 gap-y-8 sm:mt-16 sm:gap-y-16 lg:mt-24 lg:grid-cols-4">
+        <div className="mt-14 grid grid-cols-1 items-start gap-x-8 gap-y-8 sm:mt-16 sm:gap-y-16 lg:mt-24 lg:grid-cols-3">
           <div className="lg:col-span-3">
             <div className="ui-not-focus-visible:outline-none grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 sm:gap-y-16 md:grid-cols-3">
               {appState?.iPosts?.show &&posts.list.map((data, i) => (
                 posts.limit > i &&
                 <div key={data.id}>
-                  <div className="rounded-4xl group relative h-[17.5rem] transform overflow-hidden">
+                  <div className="rounded-4xl group relative h-96 transform overflow-hidden">
                     <div
                       className={clsx(
                         "rounded-4xl absolute bottom-6 left-0 right-4 top-0 border transition duration-300 group-hover:scale-95 xl:right-6",
@@ -111,9 +111,7 @@ export function Posts(props: TProps) {
                       />
                     </div>
                   </div>
-                  <h3 className="font-display mt-8 text-xl font-bold tracking-tight text-slate-900">
-                    {data.username}
-                  </h3>
+                 
                   <p className="mt-1 text-base tracking-tight text-slate-500">
                     {data.caption}
                   </p>
