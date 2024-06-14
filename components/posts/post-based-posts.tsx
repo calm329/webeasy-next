@@ -80,7 +80,7 @@ export function Posts(props: TProps) {
               <li key={i} className="">
                 <ul role="list" className="flex gap-y-6 sm:gap-y-8 h-full">
                   <li key={i}>
-                    <figure className="relative rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10 h-full">
+                    <figure className="relative rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10 h-full flex flex-col justify-between">
                       <QuoteIcon className="absolute left-6 top-6 fill-slate-100" />
                       <blockquote className="relative">
                         <p className="text-lg tracking-tight text-slate-900">
