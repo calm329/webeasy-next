@@ -71,7 +71,7 @@ export function Hero(props: TProps) {
     <div className="relative py-20 sm:pb-24 sm:pt-36 ">
       <BackgroundImage className="-bottom-14 -top-36 max-sm:-top-48" />
       <Container
-        className={`relative flex max-lg:flex-col-reverse ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+        className={`relative flex ${appState.view==="Tablet"|| appState.view==="Mobile"?"flex-col-reverse justify-center items-center":""} max-lg:flex-col-reverse ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
         onClick={() => {
           if (editable && setIsOpen && setSection && setShowForm) {
             setSection("Hero");
@@ -105,7 +105,7 @@ export function Hero(props: TProps) {
             }}
           />
         )}
-        <div className="ml-auto max-w-2xl max-lg:mx-auto lg:max-w-4xl lg:px-12">
+        <div className={`ml-auto max-w-2xl ${appState.view === "Desktop"&&"max-lg:mx-auto lg:max-w-4xl lg:px-12"} `}>
           <h1
             className={`font-display text-5xl font-bold tracking-tighter text-blue-600 sm:text-7xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             style={{ color: colors.primary }}

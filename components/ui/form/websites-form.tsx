@@ -13,10 +13,12 @@ import { FaAmazon, FaEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import SelectSourceModal from "../modal/select-source-modal";
 import {
+  appState,
   deleteSite,
   fetchSitesByUser,
   loading as LD,
   sitesData as SD,
+  updateAppState,
 } from "@/lib/store/slices/site-slice";
 import { BsTrash3 } from "react-icons/bs";
 import {
@@ -31,6 +33,7 @@ import {
 import DeleteModal from "../modal/delete-modal";
 import { DeleteDrawer } from "../drawer/delete-drawer";
 import { useMediaQuery } from "usehooks-ts";
+import { setSelectedTemplate, TemplatesData as TD } from "@/lib/store/slices/template-slice";
 
 type TSectionObject = Array<{
   logo: React.ReactNode;
@@ -91,6 +94,7 @@ export default function WebsitesForm() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState("");
   const pathname = usePathname()
+  const templates = useAppSelector(TD)
   useEffect(() => {
     if (sites) {
       const startIndex = (page - 1) * dataPerPage;
@@ -227,6 +231,9 @@ export default function WebsitesForm() {
                       <button
                         className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
                         onClick={() => {
+                          if(templates){
+                            dispatch(setSelectedTemplate(templates[0]))
+                          }
                           switch (site.type) {
                             case "Custom":
                               router.push("/custom?id=" + site.id);
