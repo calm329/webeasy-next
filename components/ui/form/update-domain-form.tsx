@@ -20,7 +20,7 @@ const UpdateDomainForm = (props: TProps) => {
   const loading = useAppSelector(LD);
   const dispatch = useAppDispatch();
   const formSchema = z.object({
-    subdomain: z.string().min(1, "required"),
+    subdomain: z.string().min(1, "required").max(15),
   });
 
   const defaultValues = {
