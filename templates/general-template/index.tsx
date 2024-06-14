@@ -208,7 +208,7 @@ export default function General(props: TProps) {
               {appState.aiContent.services.show && (
                 <div className="flex  flex-wrap justify-center gap-10">
                   {services.map((data) => (
-                    <Card
+                    <div
                       className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} max-w-96`}
                       onClick={() => {
                         // e.stopPropagation()
@@ -223,7 +223,7 @@ export default function General(props: TProps) {
                     >
                       <Card.Title>{data.name}</Card.Title>
                       <Card.Description>{data.description}</Card.Description>
-                    </Card>
+                    </div>
                   ))}
                 </div>
               )}
