@@ -210,6 +210,17 @@ export default function General(props: TProps) {
                     height={400}
                     width={300}
                     className={`mt-5 rounded-lg object-contain drop-shadow max-lg:mx-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    onClick={() => {
+                      if (editable && setIsOpen && setSection && setShowForm) {
+                        setSection("Hero");
+                        setIsOpen(true);
+                        setShowForm({
+                          form: "",
+                          edit: "",
+                          show: false,
+                        });
+                      }
+                    }}
                   />
                 </div>
               )}
