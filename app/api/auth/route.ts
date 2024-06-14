@@ -1,4 +1,4 @@
-export const maxDuration = 300;
+export const maxDuration = 60;
 // export const runtime = "edge";
 
 import { authOptions } from "@/lib/auth";
