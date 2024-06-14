@@ -118,6 +118,29 @@ const PostsContent = () => {
             />
           </div>
         </div>
+        <div className="flex justify-between gap-10">
+          <div>
+            <p className="text-sm">Show Caption</p>
+          </div>
+          <div className="flex items-center gap-2">
+         
+            <Switch
+              onCheckedChange={(checked) => {
+                console.log("checked", checked);
+                dispatch(
+                  updateAppState({
+                    ...appState,
+                    iPosts: {
+                      ...appState.iPosts,
+                      showHash: checked,
+                    },
+                  }),
+                );
+              }}
+              checked={appState.iPosts.showHash}
+            />
+          </div>
+        </div>
         {appState.iPosts.show && (
           <>
             <DragDropContext onDragEnd={onDragEnd}>
