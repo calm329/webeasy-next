@@ -25,14 +25,16 @@ const SelectTemplateCarousel = (props: TProps) => {
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const [activeIndex, setActiveIndex] = React.useState(0);
   const dispatch = useAppDispatch()
+  const sortedTemplates = templates ? [...templates].sort((a, b) => a.name.localeCompare(b.name)) : null;
   function handleSwitchTemplate() {
-    if (templates) {
-      const templateData = templates[activeIndex];
+    if (sortedTemplates) {
+      const templateData = sortedTemplates[activeIndex];
       dispatch(setSelectedTemplate(templateData))
       setOpen(false);
     }
   }
-  const sortedTemplates = templates ? [...templates].sort((a, b) => a.name.localeCompare(b.name)) : null;
+
+  console.log("sortedTemplates",sortedTemplates)
   return (
     <div className="mt-5 flex flex-col gap-5 text-center">
       {!isMobile && (
