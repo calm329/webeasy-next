@@ -722,6 +722,7 @@ export const getInstagramData = async (params: TParams) => {
               limit: 20,
               show: true,
               list: instagramDetails.iPosts,
+              showHash:true
             }),
             accessToken: searchParams.get("access_token") || "",
             userId: searchParams.get("user_id") || "",

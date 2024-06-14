@@ -110,6 +110,7 @@ export interface AppState {
 export type TPosts = {
   show: boolean;
   limit: number;
+  showHash:boolean
   list: Array<{
     id: string;
     media_url: string;

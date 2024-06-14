@@ -28,7 +28,7 @@ const initialSite: AppState = {
   selectedFont: "",
   subdomain: "",
   status: "Loading",
-  iPosts: { limit: 20, show: true, list: [] },
+  iPosts: { limit: 20, show: true, list: [],showHash:true },
   aiContent: {
     banner: {
       businessName: "",
