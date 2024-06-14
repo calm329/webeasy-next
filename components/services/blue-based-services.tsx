@@ -83,9 +83,9 @@ export function Services(props: TProps) {
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
   return (
-    <section id="schedule" aria-label="Schedule" className="py-20 sm:py-32">
-      <div className="relative mt-14 sm:mt-24">
-        <BackgroundImage position="right" className="-bottom-32 -top-40" />
+    <section id="schedule" aria-label="Schedule" className="py-14">
+      <div className="relative ">
+        <BackgroundImage position="right" />
         <Container
           className={`relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
           onClick={() => {
