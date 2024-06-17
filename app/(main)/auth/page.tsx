@@ -77,23 +77,23 @@ export default function Page() {
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    async function checkSiteEditable() {
-      const { subdomain: siteAvailable, editable } =
-        await checkSiteAvailability({
-          userId: searchParams.get("user_id") || "",
-        });
+  // useEffect(() => {
+  //   async function checkSiteEditable() {
+  //     const { subdomain: siteAvailable, editable } =
+  //       await checkSiteAvailability({
+  //         userId: searchParams.get("user_id") || "",
+  //       });
+  //       console.log("editable",editable)
+  //     dispatch(
+  //       updateAppState({
+  //         ...appState,
+  //         editable: editable,
+  //       }),
+  //     );
+  //   }
 
-      dispatch(
-        updateAppState({
-          ...appState,
-          editable: editable,
-        }),
-      );
-    }
-
-    checkSiteEditable();
-  }, [session]);
+  //   checkSiteEditable();
+  // }, [session]);
 
   const matches = useMediaQuery("(min-width: 768px)");
 

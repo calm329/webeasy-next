@@ -271,6 +271,7 @@ const siteSlice = createSlice({
     builder.addCase(fetchSiteById.fulfilled, (state, action) => {
       state.loading = false;
       console.log("history", action.payload?.posts);
+      state.sites.domain.present.editable = true;
       state.sites.domain.present.view="Desktop"
       state.sites.domain.present.meta = {
         title: action.payload?.title ?? "",
