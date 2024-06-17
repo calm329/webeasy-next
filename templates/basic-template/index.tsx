@@ -139,6 +139,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               media_type={post.media_type}
               caption={post.caption}
               timestamp={post.timestamp}
+              showHash={posts.showHash}
             />
           ))}
         </div>
