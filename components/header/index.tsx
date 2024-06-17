@@ -42,7 +42,11 @@ import { isBot } from "next/dist/server/web/spec-extension/user-agent";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { IoMdAdd, IoMdArrowRoundBack } from "react-icons/io";
-import { getInstagramData, saveState } from "@/lib/utils/function";
+import {
+  getInstagramData,
+  isSiteBuilderPage,
+  saveState,
+} from "@/lib/utils/function";
 import {
   appState as AS,
   clearPastAndFuture,
@@ -147,17 +151,16 @@ export default function SiteHeader(props: TProps) {
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
     >
-      {(pathname.startsWith("/auth") || pathname.startsWith("/custom")|| pathname.startsWith("/amazon")) &&
-        setIsFontOpen && (
-          <BottomToolBar
-            showNavigation={showNavigation}
-            // appState={appState}
-            handleChange={handleChange}
-            isAuth={isAuth}
-            setShowAuthModal={setShowAuthModal}
-            setIsFontOpen={setIsFontOpen}
-          />
-        )}
+      {isSiteBuilderPage(pathname) && setIsFontOpen && (
+        <BottomToolBar
+          showNavigation={showNavigation}
+          // appState={appState}
+          handleChange={handleChange}
+          isAuth={isAuth}
+          setShowAuthModal={setShowAuthModal}
+          setIsFontOpen={setIsFontOpen}
+        />
+      )}
 
       {isMobile ? (
         <BackDrawer setOpen={setShowBackModal} open={showBackModal} />
@@ -173,7 +176,7 @@ export default function SiteHeader(props: TProps) {
 
       <nav>
         {!isBottomBar &&
-          (pathname.startsWith("/auth") || pathname.startsWith("/custom") || pathname.startsWith("/amazon")) && (
+          isSiteBuilderPage(pathname) && (
             <div className="fixed top-0 z-10 flex w-full justify-around border-b bg-white pb-5 pt-5">
               <button className="flex flex-col items-center">
                 <IoMdAdd size={20} />
@@ -207,7 +210,7 @@ export default function SiteHeader(props: TProps) {
                           }),
                         );
                       }
-                    }else if (pathname.startsWith("/amazon")) {
+                    } else if (pathname.startsWith("/amazon")) {
                       if (searchParams.get("site_id")) {
                         dispatch(
                           fetchSiteById({
@@ -359,7 +362,7 @@ export default function SiteHeader(props: TProps) {
                     className="max-lg:hidden"
                     onClick={() =>
                       dispatch(
-                        updateAppState({ ...appState, openedSlide: null })
+                        updateAppState({ ...appState, openedSlide: null }),
                       )
                     }
                   >

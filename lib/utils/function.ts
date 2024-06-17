@@ -52,7 +52,7 @@ export const getContent = async (
             ? fieldName?.split(".")[0]
             : fieldName ?? "",
           type: type ?? "",
-          services:appState?.aiContent.services
+          services: appState?.aiContent.services,
         }),
       });
     } else {
@@ -64,7 +64,7 @@ export const getContent = async (
             ? fieldName?.split(".")[0]
             : fieldName ?? "",
           type: type ?? "",
-          services:appState?.aiContent.services
+          services: appState?.aiContent.services,
         }),
       });
     }
@@ -722,7 +722,7 @@ export const getInstagramData = async (params: TParams) => {
               limit: 20,
               show: true,
               list: instagramDetails.iPosts,
-              showHash:true
+              showHash: true,
             }),
             accessToken: searchParams.get("access_token") || "",
             userId: searchParams.get("user_id") || "",
@@ -1261,7 +1261,7 @@ export async function getAmazonData(
           ? fieldName?.split(".")[0]
           : fieldName ?? "",
         type: type ?? "",
-        features:appState?.aiContent?.features
+        features: appState?.aiContent?.features,
       }),
     });
     let content = "";
@@ -1280,4 +1280,16 @@ export async function getAmazonData(
     const data = JSON.parse(content);
     return data;
   } catch (error) {}
+}
+
+export function isSiteBuilderPage(pathname: string): boolean {
+  if (
+    pathname.startsWith("/auth") ||
+    pathname.startsWith("/custom") ||
+    pathname.startsWith("/amazon")
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 }

@@ -8,8 +8,11 @@ import { toast } from "sonner";
 import { z } from "zod";
 import CryptoJS from "crypto-js";
 import { usePathname, useRouter } from "next/navigation";
-import { saveState } from "@/lib/utils/function";
-import { clearPastAndFuture, appState as AS } from '@/lib/store/slices/site-slice';
+import { isSiteBuilderPage, saveState } from "@/lib/utils/function";
+import {
+  clearPastAndFuture,
+  appState as AS,
+} from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 
 type TProps = {
@@ -41,9 +44,9 @@ export default function SigninForm(props: TProps) {
     resolver: zodResolver(formSchema),
     defaultValues,
   });
-  const router = useRouter()
-  const pathname = usePathname()
-  const appState = useAppSelector(AS)
+  const router = useRouter();
+  const pathname = usePathname();
+  const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
   const encryptData = (email: string, password: string) => {
     const encryptedEmail = CryptoJS.AES.encrypt(email, "secretKey").toString();
@@ -67,14 +70,11 @@ export default function SigninForm(props: TProps) {
       password: data.password,
       redirect: false,
     });
-    if(!(pathname.startsWith("/auth")||pathname.startsWith("/custom")||pathname.startsWith("/amazon"))){
-      router.push("/settings/websites")
-    }
     
-    if((pathname.startsWith("/auth")||pathname.startsWith("/custom")||pathname.startsWith("/amazon"))) {
-      saveState(appState, dispatch).then(() =>
-        dispatch(clearPastAndFuture()),
-      );
+    if (isSiteBuilderPage(pathname)) {
+      saveState(appState, dispatch).then(() => dispatch(clearPastAndFuture()));
+    } else {
+      router.push("/settings/websites");
     }
 
     if (status?.error) {

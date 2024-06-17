@@ -22,7 +22,8 @@ import {
   updateAppState,
 } from "@/lib/store/slices/site-slice";
 import { useAppSelector } from "@/lib/store/hooks";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { isSiteBuilderPage } from "@/lib/utils/function";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -39,12 +40,21 @@ export default function AccountMenu(props: TProps) {
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const match = useMediaQuery("(max-width:1024px)");
   const router = useRouter();
+  const pathname = usePathname();
   return (
     <>
       {match ? (
-        <LeaveDrawer setOpen={setShowLeaveModal} open={showLeaveModal} redirectUrl={"/settings"}/>
+        <LeaveDrawer
+          setOpen={setShowLeaveModal}
+          open={showLeaveModal}
+          redirectUrl={"/settings"}
+        />
       ) : (
-        <LeaveModal setOpen={setShowLeaveModal} open={showLeaveModal} redirectUrl={"/settings"}/>
+        <LeaveModal
+          setOpen={setShowLeaveModal}
+          open={showLeaveModal}
+          redirectUrl={"/settings"}
+        />
       )}
       <Menu as="div" className="relative inline-block text-left">
         <div>
@@ -103,8 +113,9 @@ export default function AccountMenu(props: TProps) {
                   <button
                     onClick={() => {
                       if (
-                        futureAppState.length === 0 &&
-                        pastAppState.length === 0
+                        (futureAppState.length === 0 &&
+                          pastAppState.length === 0) ||
+                        !isSiteBuilderPage(pathname)
                       ) {
                         router.push("/settings");
                       } else {
@@ -113,7 +124,7 @@ export default function AccountMenu(props: TProps) {
                     }}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block px-4 py-2 text-sm w-full text-left",
+                      "block w-full px-4 py-2 text-left text-sm",
                     )}
                   >
                     Account settings

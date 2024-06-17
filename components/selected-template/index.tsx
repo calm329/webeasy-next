@@ -38,9 +38,10 @@ const SelectedTemplate = (props: TProps) => {
     setShowForm,
   } = props;
   const pathname = usePathname();
+  const isInstagramPage = pathname.startsWith("/auth");
   return (
     <div
-      className={` mx-auto overflow-auto ${appState.view === "Mobile" && "h-[800px] w-[480px] rounded-xl border-8 border-black no-scrollbar"} ${appState.view === "Tablet" && "h-[1024px] w-[768px] rounded-xl border-8  border-black no-scrollbar"} ${appState.view === "Desktop" && "h-full w-full"}`}
+      className={` mx-auto overflow-auto ${appState.view === "Mobile" && "no-scrollbar h-[800px] w-[480px] rounded-xl border-8 border-black"} ${appState.view === "Tablet" && "no-scrollbar h-[1024px] w-[768px] rounded-xl  border-8 border-black"} ${appState.view === "Desktop" && "h-full w-full"}`}
     >
       {selectedTemplate?.name === "Basic template" && (
         <BasicTemplate
@@ -52,9 +53,7 @@ const SelectedTemplate = (props: TProps) => {
           colors={appState.aiContent["colors"]}
           services={appState.aiContent.services}
           posts={
-            pathname.startsWith("/auth")
-              ? appState.iPosts
-              : { ...appState.iPosts, list: [] }
+            isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
           showForm={showForm}
@@ -71,9 +70,7 @@ const SelectedTemplate = (props: TProps) => {
           colors={appState.aiContent["colors"]}
           services={appState.aiContent["services"]["list"]}
           posts={
-            pathname.startsWith("/auth")
-              ? appState.iPosts
-              : { ...appState.iPosts, list: [] }
+            isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
           showForm={showForm}
@@ -90,9 +87,7 @@ const SelectedTemplate = (props: TProps) => {
           colors={appState.aiContent["colors"]}
           services={appState.aiContent["services"]["list"]}
           posts={
-            pathname.startsWith("/auth")
-              ? appState.iPosts
-              : { ...appState.iPosts, list: [] }
+            isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
           showForm={showForm}
@@ -109,9 +104,7 @@ const SelectedTemplate = (props: TProps) => {
           colors={appState.aiContent["colors"]}
           services={appState.aiContent["services"]["list"]}
           posts={
-            pathname.startsWith("/auth")
-              ? appState.iPosts
-              : { ...appState.iPosts, list: [] }
+            isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
           showForm={showForm}
