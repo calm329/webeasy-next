@@ -174,11 +174,13 @@ const ServiceContent = (props: TProps) => {
                                     form: "Service",
                                   });
                                 }}
+                                className="cursor-pointer"
                               />
                               <MdDeleteForever
                                 color="red"
                                 size={20}
                                 onClick={() => handleDeleteService(item.id)}
+                                className="cursor-pointer"
                               />
                             </div>
                           </div>

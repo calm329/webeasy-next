@@ -35,9 +35,9 @@ type TProps = {
       show: boolean;
     }>
   >;
-}
+};
 
-const FeaturesContent = (props:TProps) => {
+const FeaturesContent = (props: TProps) => {
   const { setShowForm } = props;
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
@@ -92,92 +92,97 @@ const FeaturesContent = (props:TProps) => {
             <h3 className="block text-sm font-medium leading-6 text-gray-900">
               Features
             </h3>
-            <p className="text-xs text-gray-400 ">Re-Order and Add , edit delete Features</p>
+            <p className="text-xs text-gray-400 ">
+              Re-Order and Add , edit delete Features
+            </p>
           </div>
         </div>
-          <div>
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable">
-                {(provided, snapshot) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    style={getListStyle(snapshot.isDraggingOver)}
-                    className="flex flex-col gap-5"
-                  >
-                    {appState.aiContent?.features?.map((item, index) => (
-                      <Draggable
-                        key={item.id}
-                        draggableId={item.id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            className=" flex items-center justify-between"
-                            key={item.id}
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style,
-                            )}
-                          >
-                            <div className="flex items-center gap-2 ">
-                              <div>
-                                <RxDragHandleDots2 />
-                              </div>
-                              {/* <FiLink /> */}
-                              <div>
-                                <h4>{item.title}</h4>
-                                <p className="line-clamp-1 ">{item.description}</p>
-                              </div>
+        <div>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable">
+              {(provided, snapshot) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                  className="flex flex-col gap-5"
+                >
+                  {appState.aiContent?.features?.map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          className=" flex items-center justify-between"
+                          key={item.id}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style,
+                          )}
+                        >
+                          <div className="flex items-center gap-2 ">
+                            <div>
+                              <RxDragHandleDots2 />
                             </div>
-                            <div className="flex items-center gap-2">
-                              <MdModeEditOutline
-                                color="blue"
-                                size={20}
-                                onClick={() => {
-                                  setShowForm({
-                                    edit: item.id,
-                                    show: true,
-                                    form: "Feature",
-                                  });
-                                }}
-                              />
-                              <MdDeleteForever
-                                color="red"
-                                size={20}
-                                onClick={() => handleDeleteFeature(item.id)}
-                              />
+                            {/* <FiLink /> */}
+                            <div>
+                              <h4>{item.title}</h4>
+                              <p className="line-clamp-1 ">
+                                {item.description}
+                              </p>
                             </div>
                           </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
-            {appState.aiContent?.features &&
-              appState.aiContent?.features?.length !== 9 && (
-                <button
-                  className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-                  onClick={() => {
-                    setShowForm({
-                      edit: "",
-                      show: true,
-                      form: "Feature",
-                    });
-                  }}
-                >
-                  Add Feature
-                  <IoMdAdd size={20} />
-                </button>)}
-            
-          </div>
-
+                          <div className="flex items-center gap-2">
+                            <MdModeEditOutline
+                              color="blue"
+                              size={20}
+                              onClick={() => {
+                                setShowForm({
+                                  edit: item.id,
+                                  show: true,
+                                  form: "Feature",
+                                });
+                              }}
+                              className="cursor-pointer"
+                            />
+                            <MdDeleteForever
+                              color="red"
+                              size={20}
+                              onClick={() => handleDeleteFeature(item.id)}
+                              className="cursor-pointer"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          {appState.aiContent?.features &&
+            appState.aiContent?.features?.length !== 9 && (
+              <button
+                className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                onClick={() => {
+                  setShowForm({
+                    edit: "",
+                    show: true,
+                    form: "Feature",
+                  });
+                }}
+              >
+                Add Feature
+                <IoMdAdd size={20} />
+              </button>
+            )}
+        </div>
       </div>
     </div>
   );
