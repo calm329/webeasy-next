@@ -246,7 +246,7 @@ export default function WebsitesForm() {
                               redirectToAuth(site.id);
                               break;
                             case "Amazon":
-                              router.push("/amazon?site_id=" + site.id);
+                              router.push("/amazon/" + site.id);
                               break;
                           }
                         }}

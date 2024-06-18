@@ -48,25 +48,6 @@ const ProductTemplate = (props: TProps) => {
   const appState = useAppSelector(AS);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (searchParams.get("site_id")) {
-      // setLoading(true);
-      dispatch(fetchSiteById({ id: searchParams.get("site_id") ?? "" }));
-    }
-  }, [searchParams]);
-
-  useEffect(() => {
-    const WebFontLoader = require("webfontloader");
-    if (appState.selectedFont) {
-      window &&
-        WebFontLoader.load({
-          google: {
-            families: [appState.selectedFont],
-          },
-        });
-    }
-  }, [appState.selectedFont]);
   const features = appState?.aiContent?.features ?? [];
   return (
     <div

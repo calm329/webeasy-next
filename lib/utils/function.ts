@@ -1390,7 +1390,7 @@ export const getAmazonDataUsingASIN = async (
     // const data = JSON.parse(content);
     const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL);
 
-    const finalData = {
+    const initialData = {
       images: {
         primary: amazonData?.Images?.Primary,
         variant: amazonData?.Images?.Variants,
@@ -1398,29 +1398,37 @@ export const getAmazonDataUsingASIN = async (
       price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
       title: amazonData?.ItemInfo?.Title?.DisplayValue,
       colors,
+      features:[],
+      description:""
     };
     store.dispatch(
       updateAppState({
         ...getAppState(),
         aiContent: {
           ...getAppState().aiContent,
-          ...finalData,
+          ...initialData,
         },
       }),
     );
     console.log("appState", getAppState());
     const features = await AmazonContent.getFeatures(amazonData);
     const description = await AmazonContent.getDescription(amazonData);
-    console.log("data done: " + features, description);
-    // await createNewSite({
-    //   subdomain: await generateUniqueHash("subdomain"),
-    //   aiResult: JSON.stringify({
-    //     ...finalData,
-    //     description: getAppState().aiContent.description,
-    //     features: getAppState().aiContent.features,
-    //   }),
-    //   type: "Amazon",
-    // });
+
+    const finalData = {
+      ...initialData,
+      features,
+      description,
+    };
+
+    console.log("data done: " + JSON.stringify(features), description);
+    const site = await createNewSite({
+      subdomain: await generateUniqueHash("subdomain"),
+      aiResult: JSON.stringify({
+        ...finalData,
+      }),
+      type: "Amazon",
+    });
+    router.push("/amazon/"+site.id);
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
   }
