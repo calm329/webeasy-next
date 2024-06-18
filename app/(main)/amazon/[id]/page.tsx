@@ -71,7 +71,7 @@ const Amazon = ({ params }: { params: { id: string } }) => {
 
   return (
     <>
-      {(loading && appState.generate.progress === 100) && <GeneratedOverlay />}
+      {(loading && appState?.generate?.progress === 100) && <GeneratedOverlay />}
       <SiteHeader
         showNavigation={false}
         setIsFontOpen={setIsFontOpen}

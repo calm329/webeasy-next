@@ -152,7 +152,7 @@ export default function SiteHeader(props: TProps) {
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
     >
       {isSiteBuilderPage(pathname) &&
-        !appState.generate.generating &&
+        !appState?.generate?.generating &&
         setIsFontOpen && (
           <BottomToolBar
             showNavigation={showNavigation}

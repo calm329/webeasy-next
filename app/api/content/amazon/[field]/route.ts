@@ -12,7 +12,7 @@ export async function POST(
   request: NextRequest,
   { params }: { params: { field: string } },
 ) {
-  const { productTitle, mediaCaption } = await request.json();
+  const { productTitle, mediaCaption, type, features } = await request.json();
   let fields = "";
   switch (params.field) {
     case "description":
@@ -21,6 +21,19 @@ export async function POST(
     case "features":
       fields = ` generate four features and only generate data for given fields
         {"features":[{"image":"", "id":"**unique id**", "title":"**Title for the feature**", "description":"**Description for the feature**"}]}`;
+      break;
+    case "featureName":
+      fields = `only generate the ${type ?? ""} data for features[0].title field "features":[
+          {
+           "title":"**Title for the feature**",
+          }] and it should not be similar to any description from this data ${JSON.stringify(features)} `;
+      break;
+    case "featureDescription":
+      fields = `
+            only generate the ${type ?? ""} data for features[0].description field "features":[
+          {
+            "description": "**Description for the feature**",
+          }] and it should not be similar to any description from this data ${JSON.stringify(features)} `;
       break;
   }
   const encoder = new TextEncoder();

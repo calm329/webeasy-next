@@ -67,7 +67,7 @@ const Amazon = () => {
   return (
     // <></>
     <>
-      {appState.generate.generating && <ProgressLoader />}
+      {appState?.generate?.generating && <ProgressLoader />}
       <SiteHeader
         showNavigation={false}
         setIsFontOpen={setIsFontOpen}

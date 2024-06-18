@@ -7,7 +7,7 @@ import { ImSpinner2 } from "react-icons/im";
 
 export function ProgressLoader() {
   const appState = useAppSelector(AS);
-  const progress = appState.generate.progress;
+  const progress = appState?.generate?.progress;
   console.log("Progress", progress);
   return (
     <div className="fixed   bottom-5 z-50 flex  h-10 w-full items-center justify-center ">

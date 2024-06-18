@@ -1286,10 +1286,12 @@ export async function getAmazonData(
 }
 
 export function isSiteBuilderPage(pathname: string): boolean {
+  const tempPathname = pathname.split("/")[1];
+  console.log("isSiteBuilderPage", tempPathname);
   if (
-    pathname.startsWith("/auth") ||
-    pathname.startsWith("/custom") ||
-    pathname.startsWith("/amazon")
+    tempPathname === "auth" ||
+    tempPathname === "custom" ||
+    tempPathname === "amazon"
   ) {
     return true;
   } else {
@@ -1363,9 +1365,7 @@ export const createNewAmazonSite = async (
   }
 };
 
-export const getAmazonDataUsingASIN = async (
-  product: string,
-) => {
+export const getAmazonDataUsingASIN = async (product: string) => {
   try {
     store.dispatch(
       updateAppState({
