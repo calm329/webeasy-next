@@ -23,6 +23,7 @@ import {
 } from "@/lib/utils/function";
 import Loader from "@/components/ui/loader";
 import { useRouter, useSearchParams } from "next/navigation";
+import GeneratedOverlay from "@/components/generated-overlay";
 
 const Amazon = ({ params }: { params: { id: string } }) => {
   //   const searchParams = useSearchParams();
@@ -70,6 +71,7 @@ const Amazon = ({ params }: { params: { id: string } }) => {
 
   return (
     <>
+      {(loading && appState.generate.progress === 100) && <GeneratedOverlay />}
       <SiteHeader
         showNavigation={false}
         setIsFontOpen={setIsFontOpen}

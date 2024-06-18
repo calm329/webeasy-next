@@ -11,7 +11,7 @@ export function ProgressLoader() {
   console.log("Progress", progress);
   return (
     <div className="fixed   bottom-5 z-50 flex  h-10 w-full items-center justify-center ">
-      <div className="relative h-full w-96 shadow-lg">
+      <div className="relative h-full w-96 shadow-xl border rounded">
         <div
           className="absolute  left-0 top-0 h-10 rounded"
           style={{

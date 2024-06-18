@@ -275,7 +275,9 @@ const siteSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchSiteById.fulfilled, (state, action) => {
-      // state.loading = false;
+      state.loading = false;
+      state.sites.domain.present.generate.generating = false;
+      state.sites.domain.present.generate.progress = 0
       console.log("history", action.payload?.posts);
       state.sites.domain.present.editable = true;
       state.sites.domain.present.view = "Desktop";
