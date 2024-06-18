@@ -1365,9 +1365,20 @@ export const createNewAmazonSite = async (
 
 export const getAmazonDataUsingASIN = async (
   product: string,
-  router: AppRouterInstance,
 ) => {
   try {
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          productId: product,
+        },
+        generate: {
+          generating: true,
+          progress: 0,
+        },
+      }),
+    );
     const url = "/api/amazon";
 
     const requestData = {
@@ -1393,6 +1404,7 @@ export const getAmazonDataUsingASIN = async (
     store.dispatch(
       updateAppState({
         ...getAppState(),
+        aiContent: {},
         generate: {
           ...getAppState().generate,
           progress: 10,
@@ -1433,16 +1445,152 @@ export const getAmazonDataUsingASIN = async (
       features,
       description,
     };
+    return finalData;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
 
-    console.log("data done: " + JSON.stringify(features), description);
-    const site = await createNewSite({
-      subdomain: await generateUniqueHash("subdomain"),
-      aiResult: JSON.stringify({
-        ...finalData,
+export const getLatestAmazonData = async (
+  product: string,
+  router: AppRouterInstance,
+) => {
+  try {
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          images: "",
+          price: "",
+          title: "",
+        },
       }),
-      type: "Amazon",
+    );
+    const url = "/api/amazon";
+
+    const requestData = {
+      itemIds: [product],
+    };
+
+    const response = await fetch(url, {
+      method: "POST", // Assuming this is a POST request
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
     });
-    router.push("/amazon/" + site.id);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok " + response.statusText);
+    }
+    const data = await response.json();
+    const amazonData = data.ItemsResult.Items[0];
+
+    const initialData = {
+      images: {
+        primary: amazonData?.Images?.Primary,
+        variant: amazonData?.Images?.Variants,
+      },
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      title: amazonData?.ItemInfo?.Title?.DisplayValue,
+    };
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          ...initialData,
+        },
+      }),
+    );
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+export const getNewAiDataForAmazon = async (
+  product: string,
+  router: AppRouterInstance,
+) => {
+  try {
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {},
+        generate: {
+          ...getAppState().generate,
+          progress: 0,
+        },
+      }),
+    );
+    const url = "/api/amazon";
+
+    const requestData = {
+      itemIds: [product],
+    };
+
+    const response = await fetch(url, {
+      method: "POST", // Assuming this is a POST request
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok " + response.statusText);
+    }
+    const data = await response.json();
+    const amazonData = data.ItemsResult.Items[0];
+    // const data = JSON.parse(content);
+    const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL);
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {},
+        generate: {
+          ...getAppState().generate,
+          progress: 10,
+        },
+      }),
+    );
+
+    const initialData = {
+      images: {
+        primary: amazonData?.Images?.Primary,
+        variant: amazonData?.Images?.Variants,
+      },
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      title: amazonData?.ItemInfo?.Title?.DisplayValue,
+      colors,
+      features: [],
+      description: "",
+    };
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          ...initialData,
+        },
+        generate: {
+          ...getAppState().generate,
+          progress: getAppState().generate.progress + 40,
+        },
+      }),
+    );
+    console.log("appState", getAppState());
+    const features = await AmazonContent.getFeatures(amazonData);
+    const description = await AmazonContent.getDescription(amazonData);
+
+    const finalData = {
+      ...initialData,
+      features,
+      description,
+    };
+    return finalData;
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
   }

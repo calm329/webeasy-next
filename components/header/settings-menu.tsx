@@ -17,6 +17,7 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAppState } from "@/lib/store/slices/site-slice";
 import {
   getAmazonData,
+  getAmazonDataUsingASIN,
   getColors,
   getInstagramData,
   regenerateImage,
@@ -221,48 +222,8 @@ export default function SettingMenu(props: TProps) {
                   {({ active }) => (
                     <button
                       onClick={async () => {
-                        dispatch(
-                          updateAppState({ ...appState, status: "Loading..." }),
-                        );
-                        const data = await getAmazonData(appState);
-                        const colors = await getColors(
-                          appState.aiContent.images?.primary?.Large?.URL ?? "",
-                        );
-                        console.log("data", data);
-                        dispatch(
-                          updateAppState({
-                            ...appState,
-                            aiContent: {
-                              ...appState.aiContent,
-                              features: data.features.map(
-                                (feature: any, i: any) => {
-                                  if (i === 0) {
-                                    return {
-                                      ...feature,
-                                      image:
-                                        appState.aiContent.images?.primary
-                                          ?.Large?.URL ?? "",
-                                    };
-                                  } else if (i === 1 || i === 2 || i === 3) {
-                                    return {
-                                      ...feature,
-                                      image:
-                                        appState.aiContent.images?.variant[
-                                          i - 1
-                                        ]?.Large?.URL ??
-                                        appState.aiContent.images?.primary
-                                          ?.Large?.URL ??
-                                        "",
-                                    };
-                                  }
-                                },
-                              ),
-                              colors: colors,
-                              description: data.description,
-                            },
-
-                            status: "Done",
-                          }),
+                        await getAmazonDataUsingASIN(
+                          appState.aiContent?.productId ?? "",
                         );
                       }}
                       className={classNames(

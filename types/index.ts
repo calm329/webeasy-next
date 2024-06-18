@@ -81,6 +81,7 @@ export interface AppState {
     progress: number;
     generating: boolean;
   };
+  
   openedSlide: "Customize" | "Font" | null;
   selectedFont: string;
   focusedField: TFields | null;
@@ -89,6 +90,7 @@ export interface AppState {
   view: "Mobile" | "Tablet" | "Desktop";
   iPosts: TPosts;
   aiContent: {
+    productId?:string;
     banner: TBanner;
     hero: THero;
     services: TServices;

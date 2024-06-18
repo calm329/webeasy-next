@@ -17,6 +17,7 @@ import { TFields, TSection } from "@/types";
 import { getUsernameFromPosts } from "@/lib/utils";
 import {
   createNewAmazonSite,
+  generateUniqueHash,
   getAmazonDataUsingASIN,
   handleChangeAppState,
 } from "@/lib/utils/function";
@@ -24,6 +25,7 @@ import Loader from "@/components/ui/loader";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ProgressLoader } from "@/components/progress-loader";
 import { appState } from "../../../lib/store/slices/site-slice";
+import { createNewSite } from "@/lib/actions";
 
 const Amazon = () => {
   const searchParams = useSearchParams();
@@ -48,18 +50,17 @@ const Amazon = () => {
   useEffect(() => {
     const product = searchParams.get("product");
     if (product) {
-      // setLoading(true);
-      dispatch(
-        updateAppState({
-          ...appState,
-          aiContent: {},
-          generate: {
-            progress: 0,
-            generating: true,
-          },
-        }),
-      );
-      getAmazonDataUsingASIN(product, router);
+      getAmazonDataUsingASIN(product).then(async (data) => {
+        const site = await createNewSite({
+          subdomain: await generateUniqueHash("subdomain"),
+          aiResult: JSON.stringify({
+            ...data,
+            productId: product,
+          }),
+          type: "Amazon",
+        });
+        router.push("/amazon/" + site.id);
+      });
     }
   }, [searchParams]);
 
