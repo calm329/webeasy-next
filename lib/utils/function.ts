@@ -1437,8 +1437,8 @@ export const getAmazonDataUsingASIN = async (product: string) => {
       }),
     );
     console.log("appState", getAppState());
-    const features = await AmazonContent.getFeatures(amazonData);
-    const description = await AmazonContent.getDescription(amazonData);
+    const features = await AmazonContent.getFeatures();
+    const description = await AmazonContent.getDescription();
 
     const finalData = {
       ...initialData,
@@ -1582,8 +1582,8 @@ export const getNewAiDataForAmazon = async (
       }),
     );
     console.log("appState", getAppState());
-    const features = await AmazonContent.getFeatures(amazonData);
-    const description = await AmazonContent.getDescription(amazonData);
+    const features = await AmazonContent.getFeatures();
+    const description = await AmazonContent.getDescription();
 
     const finalData = {
       ...initialData,

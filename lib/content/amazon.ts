@@ -6,14 +6,13 @@ import { getAppState } from "../utils/function";
 class AmazonContentApiService {
   private url = (api: string) => `/api/content/amazon/${api}`;
 
-  public async getFeatures(amazonData: any): Promise<TFeature[]> {
+  public async getFeatures(): Promise<TFeature[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log("title", amazonData);
         const response = await fetch(this.url("features"), {
           method: "POST",
           body: JSON.stringify({
-            productTitle: amazonData.ItemInfo.Title.DisplayValue,
+            productTitle: getAppState().aiContent.title,
           }),
         });
 
@@ -58,15 +57,21 @@ class AmazonContentApiService {
               break;
             }
 
-            const jsonString = accumulatedText.substring(startIndex, endIndex + 1);
+            const jsonString = accumulatedText.substring(
+              startIndex,
+              endIndex + 1,
+            );
 
             try {
               const jsonObject = JSON.parse(jsonString);
               tempFeatures.push({
                 ...jsonObject,
-                image: amazonData.Images.Primary.Large.URL,
+                image: getAppState().aiContent.images?.primary.Large.URL,
               });
-              console.log("tempFeatures", JSON.stringify(tempFeatures, null, 2));
+              console.log(
+                "tempFeatures",
+                JSON.stringify(tempFeatures, null, 2),
+              );
               store.dispatch(
                 updateAppState({
                   ...getAppState(),
@@ -74,13 +79,16 @@ class AmazonContentApiService {
                     ...getAppState().aiContent,
                     features: [...tempFeatures],
                   },
-                  generate:{
+                  generate: {
                     ...getAppState().generate,
-                    progress:getAppState().generate.progress + 10
-                  }
+                    progress: getAppState().generate.progress + 10,
+                  },
                 }),
               );
-              console.log("Complete JSON Object:", JSON.stringify(jsonObject, null, 2));
+              console.log(
+                "Complete JSON Object:",
+                JSON.stringify(jsonObject, null, 2),
+              );
               accumulatedText = accumulatedText.substring(endIndex + 1);
             } catch (error) {
               console.log("error parsing JSON", error);
@@ -101,14 +109,14 @@ class AmazonContentApiService {
     });
   }
 
-  public async getDescription(amazonData: any): Promise<string | null> {
+  public async getDescription(): Promise<string | null> {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log("title", amazonData);
+        // console.log("title", amazonData);
         const response = await fetch(this.url("description"), {
           method: "POST",
           body: JSON.stringify({
-            productTitle: amazonData.ItemInfo.Title.DisplayValue,
+            productTitle: getAppState().aiContent.title,
           }),
         });
 

@@ -1,4 +1,5 @@
 import RegenerateOptions from "@/components/regenerate-options";
+import AmazonContent from "@/lib/content/amazon";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { regenerateIndividual } from "@/lib/utils/function";
@@ -52,13 +53,7 @@ const DescriptionContent = () => {
                 type="button"
                 onClick={() => {
                   setLoading(true);
-                  regenerateIndividual({
-                    appState,
-                    dispatch,
-                    searchParams,
-                    fieldName: "amazonDescription",
-                    type,
-                  }).then(() => {
+                  AmazonContent.getDescription().then(() => {
                     setLoading(false);
                   });
                 }}
