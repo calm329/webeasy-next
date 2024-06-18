@@ -16,77 +16,6 @@ export default function Example() {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-
-  const createNewAmazonSite = async (amazonData: any) => {
-    try {
-      const startContentFetch = performance.now();
-      const response = await fetch("/api/content/amazon", {
-        method: "POST",
-        body: JSON.stringify({
-          productTitle: amazonData.ItemInfo.Title.DisplayValue,
-          
-        }),
-      });
-      let content = "";
-      const reader = response.body?.getReader();
-      if (!reader) return;
-
-      const decoder = new TextDecoder();
-      let done = false;
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
-
-        if (chunkValue && chunkValue !== "###") content += chunkValue;
-      }
-      const endContentFetch = performance.now();
-      console.log(
-        `Content fetch took ${endContentFetch - startContentFetch} ms`,
-      );
-      const data = JSON.parse(content);
-      const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL)
-      
-      const finalData = {
-        ...data,
-        images: {
-          primary: amazonData?.Images?.Primary,
-          variant: amazonData?.Images?.Variants,
-        },
-        price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
-        title: amazonData?.ItemInfo?.Title?.DisplayValue,
-        features: data.features.map((feature: any, i: any) => {
-          if (i === 0) {
-            return {
-              ...feature,
-              image: amazonData?.Images?.Primary?.Large?.URL ?? "",
-            };
-          } else if (i === 1 || i === 2 || i === 3) {
-            return {
-              ...feature,
-              image:
-                amazonData?.Images?.Variants[i - 1]?.Large?.URL ??
-                amazonData?.Images?.Primary?.Large?.URL ??
-                "",
-            };
-          }
-        }),
-        colors
-      };
-
-      // setAiData(data);
-      const responseSite = await createNewSite({
-        subdomain: await generateUniqueHash("subdomain"),
-        aiResult: JSON.stringify(finalData),
-        type: "Amazon",
-      });
-
-      // dispatch(updateAmazonSite(finalData));
-      router.push("/amazon?site_id=" + responseSite.id);
-    } catch (error) {
-      console.log("errorAmazonGeneration", error);
-    }
-  };
   return (
     <div className="relative isolate overflow-hidden bg-white">
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 ">
@@ -108,56 +37,19 @@ export default function Example() {
                 placeholder={"Product Url"}
                 onChange={(e) => setProductUrl(e.target.value)}
               />
-              <button
+              <Link
                 type="button"
+                href={"/amazon?product="+extractASIN(productUrl)}
                 className={`mx-auto  flex items-center gap-2 rounded-md px-3 py-2  text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
-                disabled={loading}
-                onClick={() => {
-                  if (productUrl) {
-                    setLoading(true);
-                    const url = "/api/amazon";
-
-                    const requestData = {
-                      itemIds: [extractASIN(productUrl)],
-                    };
-
-                    fetch(url, {
-                      method: "POST", // Assuming this is a POST request
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify(requestData),
-                    })
-                      .then((response) => {
-                        if (!response.ok) {
-                          throw new Error(
-                            "Network response was not ok " +
-                              response.statusText,
-                          );
-                        }
-                        return response.json();
-                      })
-                      .then(async (data) => {
-                        console.log(data);
-                        await createNewAmazonSite(data.ItemsResult.Items[0]);
-                      })
-                      .catch((error) => {
-                        console.error(
-                          "There was a problem with the fetch operation:",
-                          error,
-                        );
-                      })
-                      .finally(() => {
-                        setLoading(false);
-                      });
-                  }
-                }}
+                // disabled={loading}
+                
               >
-                {loading && (
+                {/* {loading && (
                   <ImSpinner2 className="animate-spin text-lg text-white" />
                 )}
-                {loading ? "Creating.." : "Create"}
-              </button>
+                {loading ? "Creating.." : "Create"} */}
+                Create
+              </Link>
             </div>
 
             <LearnMoreButton />

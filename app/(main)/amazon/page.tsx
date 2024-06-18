@@ -2,8 +2,12 @@
 import SiteHeader from "@/components/header";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import ProductTemplate from "@/templates/product-template/product-template-csr";
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { appState as AS, loading as LD } from "@/lib/store/slices/site-slice";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  appState as AS,
+  loading as LD,
+  updateAppState,
+} from "@/lib/store/slices/site-slice";
 import SlideOver from "@/components/ui/slide-over";
 import FontSlideOver from "@/components/ui/slide-over/font-slide";
 import { CustomDrawer } from "@/components/ui/drawer/custom-drawer";
@@ -11,10 +15,17 @@ import { FontsDrawer } from "@/components/ui/drawer/fonts-drawer";
 import { useMediaQuery } from "usehooks-ts";
 import { TFields, TSection } from "@/types";
 import { getUsernameFromPosts } from "@/lib/utils";
-import { handleChangeAppState } from "@/lib/utils/function";
+import {
+  createNewAmazonSite,
+  getAmazonDataUsingASIN,
+  handleChangeAppState,
+} from "@/lib/utils/function";
 import Loader from "@/components/ui/loader";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Amazon = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [isFontOpen, setIsFontOpen] = useState(false);
   const appState = useAppSelector(AS);
   const matches = useMediaQuery("(min-width: 768px)");
@@ -31,9 +42,25 @@ const Amazon = () => {
     handleChangeAppState(dispatch, appState, name, value);
   };
   console.log("hide", appState.openedSlide === "Customize" && isSideBarOpen);
+
+  useEffect(() => {
+    const product = searchParams.get("product");
+    if (product) {
+      // setLoading(true);
+      dispatch(
+        updateAppState({
+          ...appState,
+          aiContent: {},
+        }),
+      );
+      getAmazonDataUsingASIN(product, router);
+    }
+  }, [searchParams]);
+
   return (
+    // <></>
     <>
-     {(loading ||appState.status !== "Done")  && <Loader text="Loading" />}
+      {(loading) && <Loader text="Loading" />}
       <SiteHeader
         showNavigation={false}
         setIsFontOpen={setIsFontOpen}

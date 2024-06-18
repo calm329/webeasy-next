@@ -14,6 +14,8 @@ import { appState } from "../store/slices/site-slice";
 import Search from "../../components/ui/search/index";
 import App from "next/app";
 import { store } from "../store";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import AmazonContent from "../content/amazon";
 
 type TParams = {
   regenerate?: boolean;
@@ -663,7 +665,7 @@ export const getInstagramData = async (params: TParams) => {
         aiContent: aiContent,
         iPosts: JSON.parse(siteData?.posts ?? ""),
         meta: { title: siteData.title, description: siteData.description },
-        editable
+        editable,
       }),
     );
   } else {
@@ -1294,3 +1296,152 @@ export function isSiteBuilderPage(pathname: string): boolean {
     return false;
   }
 }
+
+export const createNewAmazonSite = async (
+  amazonData: any,
+  router: AppRouterInstance,
+) => {
+  try {
+    const startContentFetch = performance.now();
+    const response = await fetch("/api/content/amazon", {
+      method: "POST",
+      body: JSON.stringify({
+        productTitle: amazonData.ItemInfo.Title.DisplayValue,
+      }),
+    });
+    let content = "";
+    const reader = response.body?.getReader();
+    if (!reader) return;
+
+    const decoder = new TextDecoder();
+    let done = false;
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+
+      if (chunkValue && chunkValue !== "###") content += chunkValue;
+    }
+    const endContentFetch = performance.now();
+    console.log(`Content fetch took ${endContentFetch - startContentFetch} ms`);
+    const data = JSON.parse(content);
+    const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL);
+
+    const finalData = {
+      ...data,
+      images: {
+        primary: amazonData?.Images?.Primary,
+        variant: amazonData?.Images?.Variants,
+      },
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      title: amazonData?.ItemInfo?.Title?.DisplayValue,
+      features: data.features.map((feature: any, i: any) => {
+        if (i === 0) {
+          return {
+            ...feature,
+            image: amazonData?.Images?.Primary?.Large?.URL ?? "",
+          };
+        } else if (i === 1 || i === 2 || i === 3) {
+          return {
+            ...feature,
+            image:
+              amazonData?.Images?.Variants[i - 1]?.Large?.URL ??
+              amazonData?.Images?.Primary?.Large?.URL ??
+              "",
+          };
+        }
+      }),
+      colors,
+    };
+
+    // setAiData(data);
+
+    // dispatch(updateAmazonSite(finalData));
+    // router.push("/amazon?site_id=" + responseSite.id);
+  } catch (error) {
+    console.log("errorAmazonGeneration", error);
+  }
+};
+
+export const getAmazonDataUsingASIN = async (
+  product: string,
+  router: AppRouterInstance,
+) => {
+  try {
+    const url = "/api/amazon";
+
+    const requestData = {
+      itemIds: [product],
+    };
+
+    const response = await fetch(url, {
+      method: "POST", // Assuming this is a POST request
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok " + response.statusText);
+    }
+    const data = await response.json();
+    const amazonData = data.ItemsResult.Items[0];
+    // const data = JSON.parse(content);
+    const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL);
+
+    const finalData = {
+      images: {
+        primary: amazonData?.Images?.Primary,
+        variant: amazonData?.Images?.Variants,
+      },
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      title: amazonData?.ItemInfo?.Title?.DisplayValue,
+      colors,
+    };
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          ...finalData,
+        },
+      }),
+    );
+    console.log("appState", getAppState());
+    const features = await AmazonContent.getFeatures(amazonData);
+    const description = await AmazonContent.getDescription(amazonData);
+    console.log("data done: " + features, description);
+    // await createNewSite({
+    //   subdomain: await generateUniqueHash("subdomain"),
+    //   aiResult: JSON.stringify({
+    //     ...finalData,
+    //     description: getAppState().aiContent.description,
+    //     features: getAppState().aiContent.features,
+    //   }),
+    //   type: "Amazon",
+    // });
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+export const findClosingBracketIndex = (
+  text: string,
+  startIndex: number,
+): number => {
+  let openBrackets = 0;
+
+  for (let i = startIndex; i < text.length; i++) {
+    if (text[i] === "{") {
+      openBrackets++;
+    } else if (text[i] === "}") {
+      openBrackets--;
+      if (openBrackets === 0) {
+        return i;
+      }
+    }
+  }
+
+  return -1;
+};

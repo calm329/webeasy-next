@@ -8,38 +8,19 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function POST(request: NextRequest) {
-  const { productTitle,mediaCaption,type,fieldName,features } = await request.json();
-  let fields;
-  switch (fieldName) {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { field: string } },
+) {
+  const { productTitle, mediaCaption } = await request.json();
+  let fields = "";
+  switch (params.field) {
     case "description":
-      fields = `only generate the ${type??""} data for given fields "description":"**Write a Detailed Description for the product using title and features**"`;
+      fields = `only generate the  data for given fields {"description":"**Write a Detailed Description for the product using title and features**"}`;
       break;
-    case "featureTitle":
-      fields = `only generate the ${type??""} data for given fields "features": [
-        {
-           "title":"**Title for the feature**",   
-        }] and it should not be similar to any name from this data ${JSON.stringify(features)}`;
-      break;
-    case "featureDescription":
-      fields = `only generate the ${type??""} data for given fields "features":[
-          {
-         "description":"**Description for the feature**",       
-          }] and it should not be similar to any description from this data ${JSON.stringify(features)} `;
-      break;
-    default:
-      fields = ` generate four features
-                {
-                    "features":[
-                        {
-                            "image":"",
-                            "id":"**unique id**",
-                            "title":"**Title for the feature**",   
-                            "description":"**Description for the feature**",       
-                        }
-                    ],
-                    "description":"**Write a Detailed Description for the product using title and features**"
-                }`;
+    case "features":
+      fields = ` generate four features and only generate data for given fields
+        {"features":[{"image":"", "id":"**unique id**", "title":"**Title for the feature**", "description":"**Description for the feature**"}]}`;
       break;
   }
   const encoder = new TextEncoder();
@@ -47,10 +28,6 @@ export async function POST(request: NextRequest) {
   const readableStream = new ReadableStream({
     // The start method is where you'll add the stream's content
     async start(controller) {
-      const text = "###";
-      // Queue the encoded content into the stream
-      controller.enqueue(encoder.encode(text));
-
       try {
         const response = await openai.chat.completions.create({
           model: "gpt-4o",
@@ -59,13 +36,13 @@ export async function POST(request: NextRequest) {
             {
               role: "system",
               content: `You are a helpful assistant that writes website content in a friendly simple marketing tone. Generate comprehensive engaging content for a amazon product website homepage that showcases ${productTitle}.
-                Respond only contain JSON output with the following structure:
+                Respond only contain JSON output with the following structure and don't add any extra spaces to the JSON send it as it is every time please:
                 ${fields}
                 `,
             },
             {
               role: "user",
-              content: mediaCaption??"",
+              content: mediaCaption ?? "",
             },
           ],
           temperature: 1,
@@ -73,11 +50,16 @@ export async function POST(request: NextRequest) {
           top_p: 1,
           frequency_penalty: 0,
           presence_penalty: 0,
+          stream: true,
         });
 
-        controller.enqueue(
-          encoder.encode(response.choices[0].message.content || ""),
-        );
+        for await (const chunk of response) {
+          if (chunk?.choices[0]?.delta.content)
+            controller.enqueue(
+              encoder.encode(chunk?.choices[0]?.delta?.content),
+            );
+          console.log("response", chunk?.choices[0]?.delta.content);
+        }
       } catch (error) {}
 
       controller.close();

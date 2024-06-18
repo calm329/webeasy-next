@@ -36,7 +36,15 @@ export type FormField = {
   }>;
 };
 
-export type TSection = "Hero" | "Banner" | "Services" | "Posts"|"Gallery"|"Features"|"Description"|"Title";
+export type TSection =
+  | "Hero"
+  | "Banner"
+  | "Services"
+  | "Posts"
+  | "Gallery"
+  | "Features"
+  | "Description"
+  | "Title";
 
 export type TFields =
   | "logo"
@@ -84,7 +92,7 @@ export interface AppState {
       primary: string;
       secondary: string;
     };
-    features?: Array<{ id:string,image:string,title: string; description: string }>;
+    features?: Array<TFeature>;
     description?: string;
     images?: {
       primary: { Large: { Height: number; URL: string; Width: number } };
@@ -110,7 +118,7 @@ export interface AppState {
 export type TPosts = {
   show: boolean;
   limit: number;
-  showHash:boolean
+  showHash: boolean;
   list: Array<{
     id: string;
     media_url: string;
@@ -120,6 +128,13 @@ export type TPosts = {
     username: string;
     timestamp: string;
   }>;
+};
+
+export type TFeature = {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
 };
 
 export type TServices = {
