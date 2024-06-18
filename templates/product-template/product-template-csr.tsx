@@ -217,7 +217,8 @@ const ProductTemplate = (props: TProps) => {
                   }}
                 >
                   <h1 className="text-2xl font-bold tracking-tight  sm:text-3xl">
-                    {appState.generate.generating ? (
+                    {appState.generate.generating ||
+                    appState.generate.field === "title" ? (
                       <TypewriterEffect
                         text={appState.aiContent?.title ?? ""}
                       />
@@ -265,7 +266,8 @@ const ProductTemplate = (props: TProps) => {
 
                 {appState.aiContent?.price ? (
                   <p className="text-3xl tracking-tight ">
-                    {appState.generate.generating ? (
+                    {appState.generate.generating ||
+                    appState.generate.field === "price" ? (
                       <TypewriterEffect
                         text={appState.aiContent?.price ?? ""}
                       />
@@ -279,7 +281,8 @@ const ProductTemplate = (props: TProps) => {
                 {appState.aiContent?.description ? (
                   <div className="mt-10">
                     <p>
-                      {appState.generate.generating ? (
+                      {appState.generate.generating ||
+                      appState.generate.field === "description" ? (
                         <TypewriterEffect
                           text={appState.aiContent?.description ?? ""}
                         />
@@ -347,7 +350,8 @@ const ProductTemplate = (props: TProps) => {
                           color: appState?.aiContent?.colors?.primary,
                         }}
                       >
-                        {appState.generate.generating ? (
+                        {appState.generate.generating ||
+                        appState.generate.field === "featureTitle" ? (
                           <TypewriterEffect text={feature.title} />
                         ) : (
                           feature.title
@@ -359,7 +363,8 @@ const ProductTemplate = (props: TProps) => {
                           color: appState?.aiContent?.colors?.secondary,
                         }}
                       >
-                        {appState.generate.generating ? (
+                        {appState.generate.generating ||
+                        appState.generate.field === "featureDescription" ? (
                           <TypewriterEffect text={feature.description} />
                         ) : (
                           feature.description

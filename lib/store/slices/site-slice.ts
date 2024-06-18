@@ -26,6 +26,7 @@ const initialSite: AppState = {
   generate: {
     progress: 0,
     generating: false,
+    field:null
   },
   openedSlide: null,
   focusedField: null,

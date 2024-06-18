@@ -60,6 +60,10 @@ export type TFields =
   | "name"
   | "avatar"
   | "email"
+  | "description"
+  | "price"
+  | "featureTitle"
+  | "featureDescription"
   | null;
 
 export type TMeta = {
@@ -80,8 +84,8 @@ export interface AppState {
   generate: {
     progress: number;
     generating: boolean;
+    field: TFields | null;
   };
-  
   openedSlide: "Customize" | "Font" | null;
   selectedFont: string;
   focusedField: TFields | null;
@@ -90,7 +94,7 @@ export interface AppState {
   view: "Mobile" | "Tablet" | "Desktop";
   iPosts: TPosts;
   aiContent: {
-    productId?:string;
+    productId?: string;
     banner: TBanner;
     hero: THero;
     services: TServices;

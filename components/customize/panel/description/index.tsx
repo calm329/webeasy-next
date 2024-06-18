@@ -53,7 +53,20 @@ const DescriptionContent = () => {
                 type="button"
                 onClick={() => {
                   setLoading(true);
-                  AmazonContent.getDescription().then(() => {
+                  AmazonContent.getDescription().then((res) => {
+                    dispatch(
+                      updateAppState({
+                        ...appState,
+                        aiContent: {
+                          ...appState.aiContent,
+                          description: res,
+                        },
+                        generate: {
+                          ...appState.generate,
+                          field: "description",
+                        },
+                      }),
+                    );
                     setLoading(false);
                   });
                 }}
