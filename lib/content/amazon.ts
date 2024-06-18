@@ -74,6 +74,10 @@ class AmazonContentApiService {
                     ...getAppState().aiContent,
                     features: [...tempFeatures],
                   },
+                  generate:{
+                    ...getAppState().generate,
+                    progress:getAppState().generate.progress + 10
+                  }
                 }),
               );
               console.log("Complete JSON Object:", JSON.stringify(jsonObject, null, 2));
@@ -132,6 +136,10 @@ class AmazonContentApiService {
                     aiContent: {
                       ...getAppState().aiContent,
                       description: parseJson.description,
+                    },
+                    generate: {
+                      ...getAppState().generate,
+                      progress: getAppState().generate.progress + 10,
                     },
                   }),
                 );

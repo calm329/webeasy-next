@@ -1390,6 +1390,16 @@ export const getAmazonDataUsingASIN = async (
     // const data = JSON.parse(content);
     const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL);
 
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        generate: {
+          ...getAppState().generate,
+          progress: 10,
+        },
+      }),
+    );
+
     const initialData = {
       images: {
         primary: amazonData?.Images?.Primary,
@@ -1398,8 +1408,8 @@ export const getAmazonDataUsingASIN = async (
       price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
       title: amazonData?.ItemInfo?.Title?.DisplayValue,
       colors,
-      features:[],
-      description:""
+      features: [],
+      description: "",
     };
     store.dispatch(
       updateAppState({
@@ -1407,6 +1417,10 @@ export const getAmazonDataUsingASIN = async (
         aiContent: {
           ...getAppState().aiContent,
           ...initialData,
+        },
+        generate: {
+          ...getAppState().generate,
+          progress: getAppState().generate.progress + 40,
         },
       }),
     );
@@ -1428,7 +1442,7 @@ export const getAmazonDataUsingASIN = async (
       }),
       type: "Amazon",
     });
-    router.push("/amazon/"+site.id);
+    router.push("/amazon/" + site.id);
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
   }

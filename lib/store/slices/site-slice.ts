@@ -22,13 +22,17 @@ type TInitialState = {
 };
 
 const initialSite: AppState = {
-  id:"",
+  id: "",
+  generate: {
+    progress: 0,
+    generating: false,
+  },
   openedSlide: null,
   focusedField: null,
   selectedFont: "",
   subdomain: "",
   status: "Loading",
-  iPosts: { limit: 20, show: true, list: [],showHash:true },
+  iPosts: { limit: 20, show: true, list: [], showHash: true },
   aiContent: {
     banner: {
       businessName: "",
@@ -62,8 +66,8 @@ const initialSite: AppState = {
       list: [],
       title: "",
     },
-    businessType:"",
-    location:""
+    businessType: "",
+    location: "",
   },
   view: "Desktop",
   editable: true,
@@ -243,9 +247,9 @@ const siteSlice = createSlice({
     builder.addCase(fetchSitesByDomain.fulfilled, (state, action) => {
       state.loading = false;
       console.log("history", action.payload?.posts);
-      state.sites.domain.present.view="Desktop"
-      if(action.payload?.id){
-        state.sites.domain.present.id=action.payload?.id
+      state.sites.domain.present.view = "Desktop";
+      if (action.payload?.id) {
+        state.sites.domain.present.id = action.payload?.id;
       }
       state.sites.domain.present.meta = {
         title: action.payload?.title ?? "",
@@ -259,7 +263,9 @@ const siteSlice = createSlice({
           action.payload?.posts ?? "",
         );
       }
-      state.sites.domain.present.aiContent = JSON.parse(action.payload?.aiResult??"");
+      state.sites.domain.present.aiContent = JSON.parse(
+        action.payload?.aiResult ?? "",
+      );
     });
     builder.addCase(fetchSitesByDomain.rejected, (state) => {
       state.loading = false;
@@ -272,13 +278,13 @@ const siteSlice = createSlice({
       // state.loading = false;
       console.log("history", action.payload?.posts);
       state.sites.domain.present.editable = true;
-      state.sites.domain.present.view="Desktop"
+      state.sites.domain.present.view = "Desktop";
       state.sites.domain.present.meta = {
         title: action.payload?.title ?? "",
         description: action.payload?.description ?? "",
       };
-      if(action.payload?.id){
-        state.sites.domain.present.id=action.payload?.id
+      if (action.payload?.id) {
+        state.sites.domain.present.id = action.payload?.id;
       }
       state.sites.domain.present.subdomain = action.payload?.subdomain ?? "";
 
@@ -288,7 +294,9 @@ const siteSlice = createSlice({
           action.payload?.posts ?? "",
         );
       }
-      state.sites.domain.present.aiContent = JSON.parse(action.payload?.aiResult??"");
+      state.sites.domain.present.aiContent = JSON.parse(
+        action.payload?.aiResult ?? "",
+      );
     });
     builder.addCase(fetchSiteById.rejected, (state) => {
       state.loading = false;
@@ -340,7 +348,13 @@ const siteSlice = createSlice({
 });
 
 //export async thunks
-export { fetchSitesByDomain, updateSite, fetchSitesByUser, deleteSite,fetchSiteById };
+export {
+  fetchSitesByDomain,
+  updateSite,
+  fetchSitesByUser,
+  deleteSite,
+  fetchSiteById,
+};
 export const { updateAppState, undo, redo, clearPastAndFuture } =
   siteSlice.actions;
 export const appState = (state: RootState) =>

@@ -22,6 +22,8 @@ import {
 } from "@/lib/utils/function";
 import Loader from "@/components/ui/loader";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ProgressLoader } from "@/components/progress-loader";
+import { appState } from "../../../lib/store/slices/site-slice";
 
 const Amazon = () => {
   const searchParams = useSearchParams();
@@ -51,6 +53,10 @@ const Amazon = () => {
         updateAppState({
           ...appState,
           aiContent: {},
+          generate: {
+            progress: 0,
+            generating: true,
+          },
         }),
       );
       getAmazonDataUsingASIN(product, router);
@@ -60,7 +66,7 @@ const Amazon = () => {
   return (
     // <></>
     <>
-      {(loading) && <Loader text="Loading" />}
+      {appState.generate.generating && <ProgressLoader />}
       <SiteHeader
         showNavigation={false}
         setIsFontOpen={setIsFontOpen}
