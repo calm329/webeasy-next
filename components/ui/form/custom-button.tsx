@@ -190,7 +190,7 @@ const CustomButton = (props: TProps) => {
   }
 
   return (
-    <div className="">
+    <div className="max-h-[600px] h-[55vh] overflow-auto">
       <div className=" border-b px-4 py-6 sm:px-6">
         <div className="flex items-center justify-between">
           <h2
