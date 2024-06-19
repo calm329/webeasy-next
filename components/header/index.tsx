@@ -65,10 +65,10 @@ import { LeaveDrawer } from "../ui/drawer/leave-drawer";
 import LeaveModal from "../ui/modal/leave-modal";
 import AiAssist from "../ai-assist";
 
-const navigation = [
-  { name: "Customization", href: "#" },
-  { name: "Analytics", href: "#" },
-];
+// const navigation = [
+//   { name: "Customization", href: "#" },
+//   { name: "Analytics", href: "#" },
+// ];
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -281,7 +281,7 @@ export default function SiteHeader(props: TProps) {
             <div
               className={`flex lg:gap-x-12 ${hideNavigation && "hidden"} max-lg:hidden`}
             >
-              {user &&
+              {/* {user &&
                 showNavigation &&
                 navigation.map((item) => (
                   <a
@@ -291,7 +291,7 @@ export default function SiteHeader(props: TProps) {
                   >
                     {item.name}
                   </a>
-                ))}
+                ))} */}
             </div>
           </div>
           {isAuth && isBottomBar && status === "authenticated" && (
