@@ -6,15 +6,28 @@ import { getAppState } from "../utils/function";
 class AmazonContentApiService {
   private url = (api: string) => `/api/content/amazon/${api}`;
 
-  public async getFeatures(): Promise<TFeature[]> {
+  public async getFeatures({
+    individual,
+    type,
+    fieldName,
+  }: {
+    individual: boolean;
+    type: string;
+    fieldName: string;
+  }): Promise<TFeature[] | TFeature> {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(this.url("features"), {
-          method: "POST",
-          body: JSON.stringify({
-            productTitle: getAppState().aiContent.title,
-          }),
-        });
+        const response = await fetch(
+          this.url(individual ? fieldName : "features"),
+          {
+            method: "POST",
+            body: JSON.stringify({
+              productTitle: getAppState().aiContent.title,
+              type: type ?? "",
+              features: getAppState().aiContent.features ?? "",
+            }),
+          },
+        );
 
         const reader = response.body?.getReader();
         if (!reader) {
@@ -34,6 +47,9 @@ class AmazonContentApiService {
             if (completeJson) {
               try {
                 console.log("completeJson", completeJson);
+                if(individual){
+                  resolve(JSON.parse(completeJson).features);
+                }
                 resolve(tempFeatures);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
@@ -64,6 +80,7 @@ class AmazonContentApiService {
 
             try {
               const jsonObject = JSON.parse(jsonString);
+              
               tempFeatures.push({
                 ...jsonObject,
                 image: getAppState().aiContent.images?.primary.Large.URL,

@@ -63,7 +63,7 @@ export type TFields =
   | "description"
   | "price"
   | "featureTitle"
-  | "featureDescription"
+  | "featureDescription"|string
   | null;
 
 export type TMeta = {

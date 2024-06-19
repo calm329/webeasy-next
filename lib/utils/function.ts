@@ -16,6 +16,7 @@ import App from "next/app";
 import { store } from "../store";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import AmazonContent from "../content/amazon";
+import { TFeature } from "../../types/index";
 
 type TParams = {
   regenerate?: boolean;
@@ -1437,7 +1438,11 @@ export const getAmazonDataUsingASIN = async (product: string) => {
       }),
     );
     console.log("appState", getAppState());
-    const features = await AmazonContent.getFeatures();
+    const features = await AmazonContent.getFeatures({
+      individual: false,
+      type: "",
+      fieldName: "",
+    });
     const description = await AmazonContent.getDescription();
 
     const finalData = {
@@ -1582,7 +1587,11 @@ export const getNewAiDataForAmazon = async (
       }),
     );
     console.log("appState", getAppState());
-    const features = await AmazonContent.getFeatures();
+    const features = await AmazonContent.getFeatures({
+      individual: false,
+      type: "",
+      fieldName: "",
+    });
     const description = await AmazonContent.getDescription();
 
     const finalData = {
@@ -1615,3 +1624,118 @@ export const findClosingBracketIndex = (
 
   return -1;
 };
+
+export async function generateIndividualFeature({
+  fieldName,
+  type,
+}: {
+  fieldName: string;
+  type: string;
+}) {
+  try {
+    const featureData = await AmazonContent.getFeatures({
+      individual: true,
+      type: type,
+      fieldName: fieldName?.split(".") && fieldName?.split(".")[0],
+    });
+    console.log("featureData", featureData);
+    let feature: TFeature;
+
+    if (Array.isArray(featureData)) {
+      feature = featureData[0]; // Assuming we need the first feature from the array
+    } else {
+      feature = featureData;
+    }
+    if (fieldName?.split(".") && !fieldName?.split(".")[1]) {
+      switch (fieldName?.split(".")[0]) {
+        case "featureTitle":
+          return {
+            id: "",
+            title: feature.title,
+            image: "",
+            description: "",
+          };
+        case "featureDescription":
+          return {
+            id: "",
+            title: "",
+            image: "",
+            description: feature.description,
+          };
+      }
+    }
+
+    const updateState = async (fieldName: string, content: any) => {
+      const currentAppState = getAppState(); // Ensure we are using the latest app state
+      return new Promise<void>((resolve) => {
+        switch (fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName) {
+          case "featureTitle":
+            if (fieldName?.split(".")[1]) {
+              store.dispatch(
+                updateAppState({
+                  ...currentAppState,
+                  aiContent: {
+                    ...currentAppState.aiContent,
+                    features: currentAppState.aiContent.features?.map(
+                      (feature) => {
+                        if (feature.id === fieldName?.split(".")[1]) {
+                          return {
+                            ...feature,
+                            title: content.title,
+                          };
+                        } else {
+                          return feature;
+                        }
+                      },
+                    ),
+                  },
+                  generate: {
+                    ...currentAppState.generate,
+                    field: fieldName,
+                  },
+                }),
+              );
+            } else {
+              resolve();
+              return;
+            }
+            break;
+          case "featureDescription":
+            if (fieldName?.split(".")[1]) {
+              store.dispatch(
+                updateAppState({
+                  ...currentAppState,
+                  aiContent: {
+                    ...currentAppState.aiContent,
+                    features: currentAppState.aiContent.features?.map(
+                      (feature) => {
+                        if (feature.id === fieldName?.split(".")[1]) {
+                          return {
+                            ...feature,
+                            description: content.description,
+                          };
+                        } else {
+                          return feature;
+                        }
+                      },
+                    ),
+                  },
+                  generate: {
+                    ...currentAppState.generate,
+                    field: fieldName,
+                  },
+                }),
+              );
+            } else {
+              resolve();
+              return;
+            }
+            break;
+        }
+        resolve();
+      });
+    };
+
+    updateQueue.enqueue(() => updateState(fieldName, feature));
+  } catch (error) {}
+}

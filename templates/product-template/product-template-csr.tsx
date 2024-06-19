@@ -350,8 +350,7 @@ const ProductTemplate = (props: TProps) => {
                           color: appState?.aiContent?.colors?.primary,
                         }}
                       >
-                        {appState.generate.generating ||
-                        appState.generate.field === "featureTitle" ? (
+                        {appState.generate.generating ? (
                           <TypewriterEffect text={feature.title} />
                         ) : (
                           feature.title
@@ -363,8 +362,7 @@ const ProductTemplate = (props: TProps) => {
                           color: appState?.aiContent?.colors?.secondary,
                         }}
                       >
-                        {appState.generate.generating ||
-                        appState.generate.field === "featureDescription" ? (
+                        {appState.generate.generating  ? (
                           <TypewriterEffect text={feature.description} />
                         ) : (
                           feature.description

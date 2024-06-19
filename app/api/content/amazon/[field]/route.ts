@@ -22,15 +22,15 @@ export async function POST(
       fields = ` generate four features and only generate data for given fields
         {"features":[{"image":"", "id":"**unique id**", "title":"**Title for the feature**", "description":"**Description for the feature**"}]}`;
       break;
-    case "featureName":
-      fields = `only generate the ${type ?? ""} data for features[0].title field "features":[
+    case "featureTitle":
+      fields = `only generate the ${type ?? ""} data for features[0].title field and please don't add any other field expect the given "features":[
           {
            "title":"**Title for the feature**",
           }] and it should not be similar to any description from this data ${JSON.stringify(features)} `;
       break;
     case "featureDescription":
       fields = `
-            only generate the ${type ?? ""} data for features[0].description field "features":[
+            only generate the ${type ?? ""} data for features[0].description field and please don't add any other field expect the given "features":[
           {
             "description": "**Description for the feature**",
           }] and it should not be similar to any description from this data ${JSON.stringify(features)} `;

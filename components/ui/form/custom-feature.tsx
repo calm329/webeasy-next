@@ -23,7 +23,11 @@ import { FormField, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
-import { generateUniqueId, regenerateIndividual } from "@/lib/utils/function";
+import {
+  generateIndividualFeature,
+  generateUniqueId,
+  regenerateIndividual,
+} from "@/lib/utils/function";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import RegenerateOptions from "@/components/regenerate-options";
 import { useSearchParams } from "next/navigation";
@@ -93,14 +97,16 @@ const CustomFeature = (props: TProps) => {
     });
   }
 
-    useEffect(() => {
-      if (showForm.edit) {
-        const features = appState?.aiContent?.features?.filter((feature) => feature.id === showForm.edit);
-        if(features){
-          setData(features[0]);
-        }
+  useEffect(() => {
+    if (showForm.edit) {
+      const features = appState?.aiContent?.features?.filter(
+        (feature) => feature.id === showForm.edit,
+      );
+      if (features) {
+        setData(features[0]);
       }
-    }, [showForm.edit, appState]);
+    }
+  }, [showForm.edit, appState]);
 
   console.log("data", data);
   return (
@@ -150,7 +156,7 @@ const CustomFeature = (props: TProps) => {
         </div>
       </div>
       <form className="flex flex-col gap-5 p-5">
-      <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5">
           <div className="flex justify-between ">
             <h3 className="block text-sm font-medium leading-6 text-gray-900">
               Image
@@ -158,7 +164,7 @@ const CustomFeature = (props: TProps) => {
           </div>
           <div>
             <Uploader
-              defaultValue={data?.image??""}
+              defaultValue={data?.image ?? ""}
               name={"image"}
               label={""}
               onChange={(value) => {
@@ -184,10 +190,7 @@ const CustomFeature = (props: TProps) => {
                 onClick={() => {
                   setSelectedField("title");
                   setLoadingTitle(true);
-                  regenerateIndividual({
-                    appState,
-                    dispatch,
-                    searchParams,
+                  generateIndividualFeature({
                     fieldName: "featureTitle." + (data?.id ?? ""),
                     type,
                   }).then((res) => {
@@ -236,14 +239,12 @@ const CustomFeature = (props: TProps) => {
                 onClick={() => {
                   setSelectedField("description");
                   setLoadingDesc(true);
-                  regenerateIndividual({
-                    appState,
-                    dispatch,
-                    searchParams,
+                  generateIndividualFeature({
                     fieldName: "featureDescription." + (data?.id ?? ""),
                     type,
                   }).then((res) => {
                     setLoadingDesc(false);
+
                     res &&
                       setData((preval: any) => {
                         return { ...preval, description: res.description };
