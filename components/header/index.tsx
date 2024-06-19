@@ -361,7 +361,7 @@ export default function SiteHeader(props: TProps) {
                 {status === "authenticated" && <AiAssist />}
               </div>
               <div className="-mt-4">
-                {status === "authenticated" ? (
+                {status === "authenticated" && (
                   <button
                     className="max-lg:hidden"
                     onClick={() =>
@@ -372,7 +372,8 @@ export default function SiteHeader(props: TProps) {
                   >
                     <AccountMenu user={user} />
                   </button>
-                ) : (
+                )}
+                {status === "unauthenticated" && (
                   <button
                     className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-lg:hidden"
                     onClick={() => {
@@ -389,9 +390,9 @@ export default function SiteHeader(props: TProps) {
           <div
             className={`flex ${isAuth && "hidden"} justify-end gap-5  max-lg:hidden`}
           >
-            {status === "authenticated" ? (
-              <AccountMenu user={user} />
-            ) : (
+            {status === "authenticated" && <AccountMenu user={user} />}
+
+            {status === "unauthenticated" && (
               <button
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={() => {
@@ -406,7 +407,7 @@ export default function SiteHeader(props: TProps) {
           <div
             className={`flex ${isAuth ? "ml-4 w-auto" : "w-full"} justify-end gap-5  lg:hidden`}
           >
-            {status === "authenticated" ? (
+            {status === "authenticated" && (
               <div className="flex">
                 <button
                   type="button"
@@ -417,7 +418,8 @@ export default function SiteHeader(props: TProps) {
                   <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
-            ) : (
+            )}
+            {status === "unauthenticated" && (
               <button
                 className="flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={() => {
