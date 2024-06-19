@@ -92,7 +92,7 @@ const ServiceContent = (props: TProps) => {
     );
   };
   return (
-    <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
+    <div className="max-h-[600px] h-[55vh] overflow-y-auto py-5 transition-all ease-in-out">
       {" "}
       <div className="flex flex-col gap-5 border-t p-5 pt-5">
         <div className="flex justify-between gap-10">
