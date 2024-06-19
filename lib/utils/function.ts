@@ -663,7 +663,7 @@ export const getInstagramData = async (params: TParams) => {
         selectedFont: siteData.font,
         subdomain: siteAvailable,
         status: "Done",
-        aiContent: aiContent,
+        aiContent: {...appState.aiContent,...aiContent},
         iPosts: JSON.parse(siteData?.posts ?? ""),
         meta: { title: siteData.title, description: siteData.description },
         editable,
