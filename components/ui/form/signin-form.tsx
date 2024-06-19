@@ -72,18 +72,13 @@ export default function SigninForm(props: TProps) {
       redirect: false,
     });
     const sites = await getSitesByUserId();
-    if (isSiteBuilderPage(pathname)) {
-      saveState(appState, dispatch).then(() => dispatch(clearPastAndFuture()));
-    }else if (sites && sites.length > 0) {
-      router.push("/settings/websites");
-    } else {
-      router.push("/website-builder");
-    }
+
 
     if (status?.error) {
       toast.error(status?.error, {
         position: "top-right",
       });
+      return;
     }
     if (status?.ok) {
       if (rememberMe) {
@@ -98,6 +93,14 @@ export default function SigninForm(props: TProps) {
         position: "top-right",
       });
       setIsOpen(false);
+    }
+
+    if (isSiteBuilderPage(pathname)) {
+      saveState(appState, dispatch).then(() => dispatch(clearPastAndFuture()));
+    }else if (sites && sites.length > 0) {
+      router.push("/settings/websites");
+    } else {
+      router.push("/website-builder");
     }
 
     setLoading(false);
