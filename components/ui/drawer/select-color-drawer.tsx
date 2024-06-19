@@ -12,19 +12,22 @@ type TProps = {
   field: ControllerRenderProps<
     FieldValues,
     | "logo"
-    | "title"
-    | "name"
     | "businessName"
     | "ctaLink"
     | "imageUrl"
     | "heading"
     | "subheading"
     | "cta"
+    | "title"
     | "primary"
     | "secondary"
+    | "name"
     | "avatar"
     | "email"
     | "description"
+    | "price"
+    | "featureTitle"
+    | "featureDescription"
   >;
   getValues: any;
   f: FormField;
