@@ -323,24 +323,27 @@ export default function SiteHeader(props: TProps) {
                 )}
               </div>
               <div className={` ml-3 mr-5 flex ${!isBottomBar && "hidden"}`}>
-                <span className="hidden sm:block">
-                  <button
-                    type="button"
-                    className="inline-flex flex-col items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-black"
-                    onClick={() => {
-                      setWidgetModal(true);
-                      dispatch(
-                        updateAppState({ ...appState, openedSlide: null }),
-                      );
-                    }}
-                  >
-                    <ChatBubbleLeftIcon
-                      className="-ml-0.5 mr-1.5 h-5 w-5 "
-                      aria-hidden="true"
-                    />
-                    Widget
-                  </button>
-                </span>
+                {status === "authenticated" && (
+                  <span className="hidden sm:block">
+                    <button
+                      type="button"
+                      className="inline-flex flex-col items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-black"
+                      onClick={() => {
+                        setWidgetModal(true);
+                        dispatch(
+                          updateAppState({ ...appState, openedSlide: null }),
+                        );
+                      }}
+                    >
+                      <ChatBubbleLeftIcon
+                        className="-ml-0.5 mr-1.5 h-5 w-5 "
+                        aria-hidden="true"
+                      />
+                      Widget
+                    </button>
+                  </span>
+                )}
+
                 {isMobile ? (
                   <WidgetDrawer
                     open={showWidgetModal}
@@ -355,7 +358,7 @@ export default function SiteHeader(props: TProps) {
                 <ViewMenu />
 
                 <PublishMenu setShowAuthModal={setShowAuthModal} />
-                <AiAssist />
+                {status === "authenticated" && <AiAssist />}
               </div>
               <div className="-mt-4">
                 {status === "authenticated" ? (

@@ -83,19 +83,22 @@ const BottomToolBar = (props: TProps) => {
             )}
           </div>
 
-          <span className="ml-3">
-            <button
-              type="button"
-              className="rounded-m inline-flex flex-col items-center  justify-center gap-2  px-3 py-2 text-sm font-semibold text-black max-sm:text-xs"
-              onClick={() => setWidgetModal(true)}
-            >
-              <ChatBubbleLeftIcon
-                className="ml-0.5 mr-1.5 h-5 w-5 max-sm:m-0"
-                aria-hidden="true"
-              />
-              Widget
-            </button>
-          </span>
+          {status === "authenticated" && (
+            <span className="ml-3">
+              <button
+                type="button"
+                className="rounded-m inline-flex flex-col items-center  justify-center gap-2  px-3 py-2 text-sm font-semibold text-black max-sm:text-xs"
+                onClick={() => setWidgetModal(true)}
+              >
+                <ChatBubbleLeftIcon
+                  className="ml-0.5 mr-1.5 h-5 w-5 max-sm:m-0"
+                  aria-hidden="true"
+                />
+                Widget
+              </button>
+            </span>
+          )}
+
           {isMobile ? (
             <WidgetDrawer open={showWidgetModal} setOpen={setWidgetModal} />
           ) : (
@@ -105,7 +108,7 @@ const BottomToolBar = (props: TProps) => {
           {/* <ViewMenu /> */}
 
           <PublishMenu setShowAuthModal={setShowAuthModal} />
-          <AiAssist />
+          {status === "authenticated" && <AiAssist />}
         </div>
       ) : (
         <div className="flex w-full max-w-7xl justify-around">
@@ -137,7 +140,7 @@ const BottomToolBar = (props: TProps) => {
                       }),
                     );
                   }
-                }else if (pathname.startsWith("/amazon")) {
+                } else if (pathname.startsWith("/amazon")) {
                   if (searchParams.get("site_id")) {
                     dispatch(
                       fetchSiteById({
