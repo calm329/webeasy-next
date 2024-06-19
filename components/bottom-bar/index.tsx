@@ -68,7 +68,7 @@ const BottomToolBar = (props: TProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   return (
-    <div className="z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white   py-2 shadow-xl ">
+    <div className=" z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white   py-2 shadow-xl ">
       {isBottomBar ? (
         <div className="flex max-w-7xl justify-between">
           <div className=" flex justify-end gap-5  max-sm:gap-2">

@@ -110,7 +110,7 @@ export default function Page() {
   return (
     <>
       {!saveLoading &&appState.status === "Done"&&appState?.aiContent?.banner ? (
-        <>
+        <div className="mb-20">
           <SiteHeader
             showNavigation={false}
             isAuth={true}
@@ -178,7 +178,7 @@ export default function Page() {
             )}
           </div>
           {saveLoading && <Loader text="Saving Data" />}
-        </>
+        </div>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">
           <Loader text={appState.status} />

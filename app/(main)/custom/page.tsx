@@ -42,18 +42,16 @@ export default function Page() {
     show: false,
   });
 
-  const handleChange =((name: string, value: string) => {
+  const handleChange = (name: string, value: string) => {
     handleChangeAppState(dispatch, appState, name, value);
-  });
-  
+  };
+
   const matches = useMediaQuery("(min-width: 768px)");
   useEffect(() => {
     if (searchParams.get("id")) {
-      dispatch(
-        fetchSiteById({ id: searchParams.get("id") ?? "" }),
-      );
-    }else{
-      router.push("/website-builder")
+      dispatch(fetchSiteById({ id: searchParams.get("id") ?? "" }));
+    } else {
+      router.push("/website-builder");
     }
   }, [searchParams]);
   useEffect(() => {
@@ -67,72 +65,85 @@ export default function Page() {
         });
     }
   }, [appState.selectedFont]);
-  console.log("saveLoading",saveLoading, appState.status)
+  console.log("saveLoading", saveLoading, appState.status);
   return (
     <>
-    {(!saveLoading && appState.status === "Done") && appState?.aiContent?.banner ?
-    <>
-      <SiteHeader
-        showNavigation={false}
-        isAuth={true}
-        handleChange={handleChange}
-        setIsFontOpen={setIsFontOpen}
-      />
-      <EditWebsiteHeader />
-
-      <div className="relative flex size-full ">
-        <div style={{ fontFamily: appState.selectedFont }} className="w-full">
-          <SelectedTemplate
-            appState={appState}
-            setFocusedField={setFocusedField}
-            setIsSideBarOpen={setIsSideBarOpen}
-            setSection={setSection}
-            showForm={showForm}
-            setShowForm={setShowForm}
+      {!saveLoading &&
+      appState.status === "Done" &&
+      appState?.aiContent?.banner ? (
+        <div className="mb-20">
+          <SiteHeader
+            showNavigation={false}
+            isAuth={true}
+            handleChange={handleChange}
+            setIsFontOpen={setIsFontOpen}
           />
-        </div>
-        {appState.editable && (
-          <>
-            {matches ? (
-              <>
-                <SlideOver
-                  open={appState.openedSlide === "Customize" && isSideBarOpen}
-                  setIsOpen={setIsSideBarOpen}
-                  section={section}
-                  handleChange={handleChange}
-                  subdomain={
-                    getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
-                  }
-                  showForm={showForm}
-                  setShowForm={setShowForm}
-                />
+          <EditWebsiteHeader />
 
-                <FontSlideOver
-                  open={appState.openedSlide === "Font" && isFontOpen}
-                  setIsOpen={setIsFontOpen}
-                />
-              </>
-            ) : (
+          <div className="relative flex size-full ">
+            <div
+              style={{ fontFamily: appState.selectedFont }}
+              className="w-full"
+            >
+              <SelectedTemplate
+                appState={appState}
+                setFocusedField={setFocusedField}
+                setIsSideBarOpen={setIsSideBarOpen}
+                setSection={setSection}
+                showForm={showForm}
+                setShowForm={setShowForm}
+              />
+            </div>
+            {appState.editable && (
               <>
-                <CustomDrawer
-                  open={isSideBarOpen}
-                  setIsOpen={setIsSideBarOpen}
-                  section={section}
-                  handleChange={handleChange}
-                  subdomain={
-                    getUsernameFromPosts(JSON.stringify(appState.iPosts)) || ""
-                  }
-                  showForm={showForm}
-                  setShowForm={setShowForm}
-                />
-                <FontsDrawer open={isFontOpen} setIsOpen={setIsFontOpen} />
+                {matches ? (
+                  <>
+                    <SlideOver
+                      open={
+                        appState.openedSlide === "Customize" && isSideBarOpen
+                      }
+                      setIsOpen={setIsSideBarOpen}
+                      section={section}
+                      handleChange={handleChange}
+                      subdomain={
+                        getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
+                        ""
+                      }
+                      showForm={showForm}
+                      setShowForm={setShowForm}
+                    />
+
+                    <FontSlideOver
+                      open={appState.openedSlide === "Font" && isFontOpen}
+                      setIsOpen={setIsFontOpen}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <CustomDrawer
+                      open={isSideBarOpen}
+                      setIsOpen={setIsSideBarOpen}
+                      section={section}
+                      handleChange={handleChange}
+                      subdomain={
+                        getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
+                        ""
+                      }
+                      showForm={showForm}
+                      setShowForm={setShowForm}
+                    />
+                    <FontsDrawer open={isFontOpen} setIsOpen={setIsFontOpen} />
+                  </>
+                )}
               </>
             )}
-          </>
-        )}
-      </div>
-      </>
-      : <Loader text={appState.status === "Done"?"Loading":appState.status} />}
+          </div>
+        </div>
+      ) : (
+        <Loader
+          text={appState.status === "Done" ? "Loading" : appState.status}
+        />
+      )}
     </>
   );
 }

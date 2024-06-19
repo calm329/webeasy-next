@@ -70,7 +70,7 @@ const Amazon = ({ params }: { params: { id: string } }) => {
   }, [appState.selectedFont]);
 
   return (
-    <>
+    <div className="mb-20">
       {(loading && appState?.generate?.progress === 100) && <GeneratedOverlay />}
       <SiteHeader
         showNavigation={false}
@@ -125,7 +125,7 @@ const Amazon = ({ params }: { params: { id: string } }) => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
