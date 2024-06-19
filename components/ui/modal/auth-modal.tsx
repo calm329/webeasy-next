@@ -13,6 +13,7 @@ import RegisterForm from "../form/signup-form";
 import { FaApple, FaFacebook } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
+import { IoClose } from "react-icons/io5";
 type TProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
@@ -57,13 +58,24 @@ export default function AuthModal(props: TProps) {
               >
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
                   <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                    <Image
-                      className="mx-auto h-10 w-auto"
-                      src="/WebEasy-logo-dark.svg"
-                      alt="Your Company"
-                      height={40}
-                      width={200}
-                    />
+                    <div className="flex">
+                      <Image
+                        className="mx-auto h-10 w-auto"
+                        src="/WebEasy-logo-dark.svg"
+                        alt="Your Company"
+                        height={40}
+                        width={200}
+                        
+                      />
+                      <div className="flex ">
+                        <button
+                          onClick={() => setOpen(false)}
+                          className="mb-5"
+                        >
+                          <IoClose size={20} />
+                        </button>
+                      </div>
+                    </div>
                     <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                       {state === "signin"
                         ? "Sign in to your account"
