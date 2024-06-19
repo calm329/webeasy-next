@@ -663,7 +663,7 @@ export const getInstagramData = async (params: TParams) => {
         selectedFont: siteData.font,
         subdomain: siteAvailable,
         status: "Done",
-        aiContent: {...appState.aiContent,...aiContent},
+        aiContent: { ...appState.aiContent, ...aiContent },
         iPosts: JSON.parse(siteData?.posts ?? ""),
         meta: { title: siteData.title, description: siteData.description },
         editable,
@@ -1368,6 +1368,8 @@ export const createNewAmazonSite = async (
 
 export const getAmazonDataUsingASIN = async (product: string) => {
   try {
+    const startTime = performance.now();
+
     store.dispatch(
       updateAppState({
         ...getAppState(),
@@ -1380,38 +1382,35 @@ export const getAmazonDataUsingASIN = async (product: string) => {
         },
       }),
     );
+
     const url = "/api/amazon";
+    const requestData = { itemIds: [product] };
 
-    const requestData = {
-      itemIds: [product],
-    };
-
+    const responseStartTime = performance.now();
     const response = await fetch(url, {
-      method: "POST", // Assuming this is a POST request
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestData),
     });
 
+    const responseEndTime = performance.now();
+    const responseTimeTaken = responseEndTime - responseStartTime;
+    console.log(`Time taken by fetch call: ${responseTimeTaken} milliseconds`);
+
     if (!response.ok) {
       throw new Error("Network response was not ok " + response.statusText);
     }
+
     const data = await response.json();
     const amazonData = data.ItemsResult.Items[0];
-    // const data = JSON.parse(content);
-    const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL);
 
-    store.dispatch(
-      updateAppState({
-        ...getAppState(),
-        aiContent: {},
-        generate: {
-          ...getAppState().generate,
-          progress: 10,
-        },
-      }),
-    );
+    const colorsStartTime = performance.now();
+    const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL);
+    const colorsEndTime = performance.now();
+    const colorsTimeTaken = colorsEndTime - colorsStartTime;
+    console.log(`Time taken by getColors: ${colorsTimeTaken} milliseconds`);
 
     const initialData = {
       images: {
@@ -1424,6 +1423,7 @@ export const getAmazonDataUsingASIN = async (product: string) => {
       features: [],
       description: "",
     };
+
     store.dispatch(
       updateAppState({
         ...getAppState(),
@@ -1437,19 +1437,38 @@ export const getAmazonDataUsingASIN = async (product: string) => {
         },
       }),
     );
-    console.log("appState", getAppState());
-    const features = await AmazonContent.getFeatures({
-      individual: false,
-      type: "",
-      fieldName: "",
-    });
-    const description = await AmazonContent.getDescription();
+
+    // Parallel execution of getFeatures and getDescription
+    const [features, description] = await Promise.all([
+      AmazonContent.getFeatures({
+        individual: false,
+        type: "",
+        fieldName: "",
+      }),
+      AmazonContent.getDescription(),
+    ]);
+
+    const featuresEndTime = performance.now();
+    const descriptionEndTime = performance.now();
+
+    const featuresTimeTaken = featuresEndTime - responseEndTime; // Calculate relative to response end time
+    const descriptionTimeTaken = descriptionEndTime - responseEndTime; // Calculate relative to response end time
+
+    console.log(`Time taken by getFeatures: ${featuresTimeTaken} milliseconds`);
+    console.log(
+      `Time taken by getDescription: ${descriptionTimeTaken} milliseconds`,
+    );
 
     const finalData = {
       ...initialData,
       features,
       description,
     };
+
+    const endTime = performance.now();
+    const totalTimeTaken = endTime - startTime;
+    console.log(`Total time taken: ${totalTimeTaken} milliseconds`);
+
     return finalData;
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
