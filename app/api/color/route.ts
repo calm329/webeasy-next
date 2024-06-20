@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
           content: [
             {
               type: "text",
-              text: `Identify the prominent primary and secondary brand logo colors in the image except white and black. The colors will be used on a website for heading and subheading and should be vibrant and have contrast with a white background.
+              text: `Identify the prominent primary and secondary brand logo colors in the image except white and black and light colors. The colors will be used on a website for heading and subheading and should be vibrant and have contrast with a white background.
               Output results in JSON following this template: 
               {"primary":"*color in hex*",
               "secondary":"*color in hex*"}`,
