@@ -17,6 +17,7 @@ import { store } from "../store";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import AmazonContent from "../content/amazon";
 import { TFeature } from "../../types/index";
+import CustomContent from "../content/custom";
 
 type TParams = {
   regenerate?: boolean;
@@ -1756,5 +1757,327 @@ export async function generateIndividualFeature({
     };
 
     updateQueue.enqueue(() => updateState(fieldName, feature));
+  } catch (error) {}
+}
+
+export async function generateNewCustomSite(data: {
+  businessType: string;
+  businessName: string;
+  location: string;
+}) {
+  try {
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {},
+        generate: {
+          generating: true,
+          progress: 0,
+        },
+      }),
+    );
+
+    const startTime = performance.now();
+    const startImagesTime = performance.now();
+    // Start all API calls in parallel
+    const [heroImage, logo] = await Promise.all([
+      getHeroImageForCustom(data.businessType),
+      getLogo(data.businessType),
+    ]);
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        generate: {
+          ...getAppState().generate,
+          progress: 5,
+        },
+      }),
+    );
+
+    const endImagesTime = performance.now();
+    const timeImagesTaken = endImagesTime - startImagesTime;
+    console.log(
+      `Total time taken by Image Api Calls: ${timeImagesTaken} milliseconds`,
+    );
+    const startColorTime = performance.now();
+    const colors = await getColors(heroImage.imageUrl);
+    const endColorTime = performance.now();
+    const timeColorTaken = endColorTime - startColorTime;
+    console.log(
+      `Total time taken by Colors Api Calls: ${timeColorTaken} milliseconds`,
+    );
+
+    const initialData = {
+      colors,
+      hero: {
+        image: {
+          show: true,
+          imageUrl: heroImage.imageUrl,
+        },
+      },
+      banner: {
+        logo: {
+          show: true,
+          link: logo.imageUrl,
+        },
+      },
+      services: {
+        show: true,
+      },
+    };
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...initialData,
+        },
+        generate: {
+          ...getAppState().generate,
+          progress: getAppState().generate.progress + 5,
+        },
+      }),
+    );
+    const startTextTime = performance.now();
+    const [hero, banner, services] = await Promise.all([
+      CustomContent.getHero({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getBanner({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getServices({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+    ]);
+
+    const endTextTime = performance.now();
+    const timeTextTaken = endTextTime - startTextTime;
+    console.log(
+      `Total time taken by Text Api Calls: ${timeTextTaken} milliseconds`,
+    );
+
+    const endTime = performance.now();
+    const timeTaken = endTime - startTime;
+
+    console.log("heroImage", heroImage.imageUrl);
+    console.log("colors", colors);
+    console.log("logo", logo.imageUrl);
+    console.log(`Total time taken by all API calls: ${timeTaken} milliseconds`);
+    console.log("services", services, hero, banner);
+
+    const finalData = {
+      ...initialData,
+      services: {
+        ...services,
+        ...initialData.services,
+      },
+      hero: {
+        ...hero,
+        ...initialData.hero,
+      },
+      banner: {
+        ...banner,
+        ...initialData.banner,
+      },
+    };
+
+    return finalData;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+export async function generateImagesForCustom(data: {
+  businessType: string;
+  businessName: string;
+  location: string;
+}) {
+  try {
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          banner: {
+            ...getAppState().aiContent.banner,
+
+            logo: "",
+          },
+          hero: {
+            ...getAppState().aiContent.hero,
+            image: "",
+          },
+        },
+        generate: {
+          generating: true,
+          progress: 0,
+        },
+      }),
+    );
+
+    const startTime = performance.now();
+    const startImagesTime = performance.now();
+    // Start all API calls in parallel
+    const [heroImage, logo] = await Promise.all([
+      getHeroImageForCustom(data.businessType),
+      getLogo(data.businessType),
+    ]);
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          banner: {
+            ...getAppState().aiContent.banner,
+
+            logo: {
+              ...getAppState().aiContent.banner.logo,
+              link: logo.imageUrl,
+            },
+          },
+          hero: {
+            ...getAppState().aiContent.hero,
+            image: {
+              ...getAppState().aiContent.hero.image,
+              imageUrl: heroImage.imageUrl,
+            },
+          },
+        },
+        generate: {
+          generating: true,
+          progress: 0,
+        },
+      }),
+    );
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+export async function generateTextForCustom(data: {
+  businessType: string;
+  businessName: string;
+  location: string;
+}) {
+  try {
+    const heroImage = getAppState().aiContent.hero.image.imageUrl;
+    const logo = getAppState().aiContent.banner.logo.link;
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          banner: {
+            ...getAppState().aiContent.banner,
+            businessName: "",
+            button: "",
+          },
+          hero: {
+            ...getAppState().aiContent.hero,
+            button: "",
+            heading: "",
+            subheading: "",
+          },
+          services: "",
+        },
+        generate: {
+          generating: true,
+          progress: 0,
+        },
+      }),
+    );
+
+    const startTextTime = performance.now();
+    const [hero, banner, services] = await Promise.all([
+      CustomContent.getHero({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getBanner({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getServices({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+    ]);
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          banner: {
+            ...banner,
+            logo: {
+              ...banner.logo,
+              link: logo,
+            },
+          },
+          hero: {
+            ...hero,
+            image: {
+              ...hero.image,
+              imageUrl: heroImage,
+            },
+          },
+        },
+        generate: {
+          generating: true,
+          progress: 0,
+        },
+      }),
+    );
+
+    const endTextTime = performance.now();
+    const timeTextTaken = endTextTime - startTextTime;
+    console.log(
+      `Total time taken by Text Api Calls: ${timeTextTaken} milliseconds`,
+    );
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+export async function getHeroImageForCustom(businessType: string) {
+  try {
+    const res = await fetch("/api/image", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt: businessType,
+      }),
+    });
+    return await res.json();
+  } catch (error) {}
+}
+
+export async function getLogo(prompt: string) {
+  try {
+    const res = await fetch("/api/image", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt: prompt,
+      }),
+    });
+    return await res.json();
   } catch (error) {}
 }

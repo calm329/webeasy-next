@@ -133,7 +133,7 @@ const BannerContent = (props: TProps) => {
   return (
     <div className="max-h-[600px] h-[55vh] overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-5">
-        {Object.keys(appState.aiContent.banner).map((data) => (
+        {Object.keys(appState.aiContent?.banner ??{}).map((data) => (
           <>
             {(() => {
               switch (data) {

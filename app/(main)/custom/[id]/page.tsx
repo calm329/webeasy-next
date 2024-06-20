@@ -3,7 +3,7 @@ import { CustomDrawer } from "@/components/ui/drawer/custom-drawer";
 import { useMediaQuery } from "usehooks-ts";
 import Loader from "@/components/ui/loader";
 import SlideOver from "@/components/ui/slide-over";
-import { checkSiteAvailability, createNewSite } from "@/lib/actions";
+import { checkSiteAvailability } from "@/lib/actions";
 import { fetchData, getUsernameFromPosts } from "@/lib/utils";
 import { TFields, TSection } from "@/types";
 import { useSession } from "next-auth/react";
@@ -14,7 +14,6 @@ import SiteHeader from "@/components/header";
 import SelectedTemplate from "@/components/selected-template";
 import {
   generateNewCustomSite,
-  generateUniqueHash,
   getInstagramData,
   handleChangeAppState,
 } from "@/lib/utils/function";
@@ -29,9 +28,9 @@ import {
 } from "@/lib/store/slices/site-slice";
 import FontSlideOver from "@/components/ui/slide-over/font-slide";
 import { FontsDrawer } from "@/components/ui/drawer/fonts-drawer";
-import { ProgressLoader } from "@/components/progress-loader";
+import GeneratedOverlay from "@/components/generated-overlay";
 
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
   const { data: session, status } = useSession();
   const searchParams = useSearchParams();
@@ -41,7 +40,7 @@ export default function Page() {
   const [focusedField, setFocusedField] = useState<TFields>(null);
   const [section, setSection] = useState<TSection>("Banner");
   const dispatch = useAppDispatch();
-  const saveLoading = useAppSelector(LD);
+  const loading = useAppSelector(LD);
   const [showForm, setShowForm] = useState({
     form: "",
     edit: "",
@@ -52,34 +51,30 @@ export default function Page() {
     handleChangeAppState(dispatch, appState, name, value);
   };
 
+  const matches = useMediaQuery("(min-width: 768px)");
   useEffect(() => {
-    const business = searchParams.get("business");
-    const businessName = searchParams.get("businessName");
-    const location = searchParams.get("location");
-    if (business && businessName && location) {
-      generateNewCustomSite({
-        businessName: businessName,
-        businessType: business,
-        location: location,
-      }).then(async (data) => {
-        console.log("data", data);
-        const site = await createNewSite({
-          subdomain: await generateUniqueHash("subdomain"),
-          aiResult: JSON.stringify({
-            ...data,
-            businessType:business,
-            businessName,
-            location
-          }),
-          type: "Custom",
-        });
-        router.push("/custom/" + site.id);
-      });
+    if (params.id) {
+      dispatch(fetchSiteById({ id: params.id }));
+    } else {
+      router.push("/website-builder");
     }
-  }, []);
+  }, [params]);
+
+  useEffect(() => {
+    const WebFontLoader = require("webfontloader");
+    if (appState.selectedFont) {
+      window &&
+        WebFontLoader.load({
+          google: {
+            families: [appState.selectedFont],
+          },
+        });
+    }
+  }, [appState.selectedFont]);
+  // console.log("saveLoading", saveLoading, appState.status);
   return (
     <>
-      {appState?.generate?.generating && <ProgressLoader />}
+      {loading && appState?.generate?.progress === 100 && <GeneratedOverlay />}
       <SiteHeader
         showNavigation={false}
         isAuth={true}
@@ -90,6 +85,7 @@ export default function Page() {
 
       <div className="relative flex size-full ">
         <div style={{ fontFamily: appState.selectedFont }} className="w-full">
+
           <EditWebsiteHeader />
 
           <div className="relative flex size-full ">
@@ -106,6 +102,49 @@ export default function Page() {
                 setShowForm={setShowForm}
               />
             </div>
+            {appState.editable && (
+              <>
+                {matches ? (
+                  <>
+                    <SlideOver
+                      open={
+                        appState.openedSlide === "Customize" && isSideBarOpen
+                      }
+                      setIsOpen={setIsSideBarOpen}
+                      section={section}
+                      handleChange={handleChange}
+                      subdomain={
+                        getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
+                        ""
+                      }
+                      showForm={showForm}
+                      setShowForm={setShowForm}
+                    />
+
+                    <FontSlideOver
+                      open={appState.openedSlide === "Font" && isFontOpen}
+                      setIsOpen={setIsFontOpen}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <CustomDrawer
+                      open={isSideBarOpen}
+                      setIsOpen={setIsSideBarOpen}
+                      section={section}
+                      handleChange={handleChange}
+                      subdomain={
+                        getUsernameFromPosts(JSON.stringify(appState.iPosts)) ||
+                        ""
+                      }
+                      showForm={showForm}
+                      setShowForm={setShowForm}
+                    />
+                    <FontsDrawer open={isFontOpen} setIsOpen={setIsFontOpen} />
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

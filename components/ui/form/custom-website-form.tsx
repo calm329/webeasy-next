@@ -225,119 +225,127 @@ const CustomWebsiteForm = () => {
   });
   console.log("errors", errors);
   const onSubmit = async () => {
-    try {
-      setLoading(true);
-      console.log("onSubmit");
+    router.push(
+      "/custom?location=" +
+        getValues().location +
+        "&business=" +
+        getValues().business +
+        "&businessName=" +
+        getValues().businessName,
+    );
+    // try {
+    //   setLoading(true);
+    //   console.log("onSubmit");
 
-      // const startIsSubdomain = performance.now();
-      // // const isSubdomain = await isSubdomainAlreadyInDB(getValues().subdomain);
-      // const endIsSubdomain = performance.now();
-      // console.log(`isSubdomainAlreadyInDB took ${endIsSubdomain - startIsSubdomain} ms`);
+    //   // const startIsSubdomain = performance.now();
+    //   // // const isSubdomain = await isSubdomainAlreadyInDB(getValues().subdomain);
+    //   // const endIsSubdomain = performance.now();
+    //   // console.log(`isSubdomainAlreadyInDB took ${endIsSubdomain - startIsSubdomain} ms`);
 
-      // if (isSubdomain) {
-      //   toast.error("Subdomain already exists. Please Enter a unique sub domain");
-      //   setLoading(false);
-      //   return;
-      // }
+    //   // if (isSubdomain) {
+    //   //   toast.error("Subdomain already exists. Please Enter a unique sub domain");
+    //   //   setLoading(false);
+    //   //   return;
+    //   // }
 
-      const startContentFetch = performance.now();
-      const response = await fetch("/api/content/custom", {
-        method: "POST",
-        body: JSON.stringify({
-          data: {
-            businessType: getValues().business,
-            location: getValues().location,
-            businessName: getValues().businessName,
-          },
-        }),
-      });
+    //   const startContentFetch = performance.now();
+    //   const response = await fetch("/api/content/custom", {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       data: {
+    //         businessType: getValues().business,
+    //         location: getValues().location,
+    //         businessName: getValues().businessName,
+    //       },
+    //     }),
+    //   });
 
-      let content = "";
-      const reader = response.body?.getReader();
-      if (!reader) return;
+    //   let content = "";
+    //   const reader = response.body?.getReader();
+    //   if (!reader) return;
 
-      const decoder = new TextDecoder();
-      let done = false;
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
+    //   const decoder = new TextDecoder();
+    //   let done = false;
+    //   while (!done) {
+    //     const { value, done: doneReading } = await reader.read();
+    //     done = doneReading;
+    //     const chunkValue = decoder.decode(value);
 
-        if (chunkValue && chunkValue !== "###") content += chunkValue;
-      }
-      const endContentFetch = performance.now();
-      console.log(
-        `Content fetch took ${endContentFetch - startContentFetch} ms`,
-      );
-      const data = JSON.parse(content);
+    //     if (chunkValue && chunkValue !== "###") content += chunkValue;
+    //   }
+    //   const endContentFetch = performance.now();
+    //   console.log(
+    //     `Content fetch took ${endContentFetch - startContentFetch} ms`,
+    //   );
+    //   const data = JSON.parse(content);
 
-      const startImageFetch = performance.now();
-      const res = await fetch("/api/image", {
-        method: "POST",
-        body: JSON.stringify({
-          prompt: getValues().business,
-        }),
-      });
-      const endImageFetch = performance.now();
-      console.log(`Image fetch took ${endImageFetch - startImageFetch} ms`);
-      const image = await res.json();
+    //   const startImageFetch = performance.now();
+    //   const res = await fetch("/api/image", {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       prompt: getValues().business,
+    //     }),
+    //   });
+    //   const endImageFetch = performance.now();
+    //   console.log(`Image fetch took ${endImageFetch - startImageFetch} ms`);
+    //   const image = await res.json();
 
-      const startLogoFetch = performance.now();
-      const logoRes = await fetch("/api/image", {
-        method: "POST",
-        body: JSON.stringify({
-          prompt:
-            "generate logo for " +
-            getValues().businessName +
-            " but don't add living things in it",
-        }),
-      });
-      const endLogoFetch = performance.now();
-      console.log(`Logo fetch took ${endLogoFetch - startLogoFetch} ms`);
-      const logo = await logoRes.json();
+    //   const startLogoFetch = performance.now();
+    //   const logoRes = await fetch("/api/image", {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       prompt:
+    //         "generate logo for " +
+    //         getValues().businessName +
+    //         " but don't add living things in it",
+    //     }),
+    //   });
+    //   const endLogoFetch = performance.now();
+    //   console.log(`Logo fetch took ${endLogoFetch - startLogoFetch} ms`);
+    //   const logo = await logoRes.json();
 
-      const startGetColors = performance.now();
-      const colors = await getColors(image.imageUrl);
-      const endGetColors = performance.now();
-      console.log(`getColors took ${endGetColors - startGetColors} ms`);
+    //   const startGetColors = performance.now();
+    //   const colors = await getColors(image.imageUrl);
+    //   const endGetColors = performance.now();
+    //   console.log(`getColors took ${endGetColors - startGetColors} ms`);
 
-      console.log("imageUrl", image);
-      const finalData = {
-        ...appState.aiContent,
-        ...data,
-        banner: {
-          ...data.banner,
-          logo: {
-            ...data.banner.logo,
-            link: logo.imageUrl,
-          },
-        },
-        hero: {
-          ...data.hero,
-          image: {
-            ...data.hero.image,
-            imageUrl: image.imageUrl,
-          },
-        },
-        colors: colors,
-        businessType: getValues().business,
-        location: getValues().location,
-      };
+    //   console.log("imageUrl", image);
+    //   const finalData = {
+    //     ...appState.aiContent,
+    //     ...data,
+    //     banner: {
+    //       ...data.banner,
+    //       logo: {
+    //         ...data.banner.logo,
+    //         link: logo.imageUrl,
+    //       },
+    //     },
+    //     hero: {
+    //       ...data.hero,
+    //       image: {
+    //         ...data.hero.image,
+    //         imageUrl: image.imageUrl,
+    //       },
+    //     },
+    //     colors: colors,
+    //     businessType: getValues().business,
+    //     location: getValues().location,
+    //   };
 
-      const startCreateSite = performance.now();
-      const responseSite = await createNewSite({
-        subdomain: await generateUniqueHash(getValues().businessName),
-        aiResult: JSON.stringify(finalData),
-        type: "Custom",
-      });
-      const endCreateSite = performance.now();
-      console.log(`createNewSite took ${endCreateSite - startCreateSite} ms`);
+    //   const startCreateSite = performance.now();
+    //   const responseSite = await createNewSite({
+    //     subdomain: await generateUniqueHash(getValues().businessName),
+    //     aiResult: JSON.stringify(finalData),
+    //     type: "Custom",
+    //   });
+    //   const endCreateSite = performance.now();
+    //   console.log(`createNewSite took ${endCreateSite - startCreateSite} ms`);
 
-      router.push("/custom?id=" + responseSite.id);
-      setLoading(false);
-    } catch (error) {
-      console.log("error:creatingCustom", error);
-    }
+    //   router.push("/custom?id=" + responseSite.id);
+    //   setLoading(false);
+    // } catch (error) {
+    //   console.log("error:creatingCustom", error);
+    // }
   };
 
   return (
@@ -354,7 +362,7 @@ const CustomWebsiteForm = () => {
             What type of business are you building?
           </label>
           <div className="relative">
-            <IoSearchSharp className="absolute top-2.5 left-2 z-1" size={20}/>
+            <IoSearchSharp className="z-1 absolute left-2 top-2.5" size={20} />
 
             <CreatableSelect
               isClearable

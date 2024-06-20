@@ -16,6 +16,9 @@ import SelectTemplateDrawer from "../ui/drawer/select-template-drawer";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAppState } from "@/lib/store/slices/site-slice";
 import {
+  generateImagesForCustom,
+  generateNewCustomSite,
+  generateTextForCustom,
   getAmazonData,
   getAmazonDataUsingASIN,
   getColors,
@@ -241,11 +244,21 @@ export default function SettingMenu(props: TProps) {
                     {({ active }) => (
                       <button
                         onClick={() => {
-                          regenerateText({
-                            appState,
-                            dispatch,
-                            searchParams,
-                          });
+                          if (pathname.startsWith("/custom")) {
+                            generateTextForCustom({
+                              businessName:
+                                appState.aiContent.banner.businessName,
+                              businessType:
+                                appState.aiContent.businessType ?? "",
+                              location: appState.aiContent.location ?? "",
+                            });
+                          } else {
+                            regenerateText({
+                              appState,
+                              dispatch,
+                              searchParams,
+                            });
+                          }
                         }}
                         className={classNames(
                           active
@@ -262,11 +275,21 @@ export default function SettingMenu(props: TProps) {
                     {({ active }) => (
                       <button
                         onClick={() => {
-                          regenerateImage({
-                            appState,
-                            dispatch,
-                            searchParams,
-                          });
+                          if (pathname.startsWith("/custom")) {
+                            generateImagesForCustom({
+                              businessName:
+                                appState.aiContent.banner.businessName,
+                              businessType:
+                                appState.aiContent.businessType ?? "",
+                              location: appState.aiContent.location ?? "",
+                            });
+                          } else {
+                            regenerateImage({
+                              appState,
+                              dispatch,
+                              searchParams,
+                            });
+                          }
                         }}
                         className={classNames(
                           active
@@ -282,14 +305,24 @@ export default function SettingMenu(props: TProps) {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() =>
-                          getInstagramData({
-                            appState,
-                            dispatch,
-                            searchParams,
-                            regenerate: true,
-                          })
-                        }
+                        onClick={() => {
+                          if (pathname.startsWith("/custom")) {
+                            generateNewCustomSite({
+                              businessType:
+                                appState.aiContent.businessType ?? "",
+                              location: appState.aiContent.location ?? "",
+                              businessName:
+                                appState.aiContent.banner.businessName ?? "",
+                            });
+                          } else {
+                            getInstagramData({
+                              appState,
+                              dispatch,
+                              searchParams,
+                              regenerate: true,
+                            });
+                          }
+                        }}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
