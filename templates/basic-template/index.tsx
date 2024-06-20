@@ -53,7 +53,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                           <CTA
                             text={data.label}
                             bgColor={colors.secondary}
-                            link={data.value ?? ""}
+                            link={data.link ?? ""}
                             external={data.type === "External"}
                           />
                         </div>
@@ -89,7 +89,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                             <CTA
                               text={button.label}
                               bgColor={colors.secondary}
-                              link={button.value ?? ""}
+                              link={button.link ?? ""}
                               external={button.type === "External"}
                             />
                           </div>

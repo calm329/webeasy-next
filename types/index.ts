@@ -172,7 +172,7 @@ export type TBanner = {
     list: Array<{
       name: string;
       type: "External" | "Section";
-      value: string;
+      link: string;
       label: string;
     }>;
   };
@@ -193,7 +193,7 @@ export type THero = {
     list: Array<{
       name: string;
       type: "External" | "Section";
-      value: string;
+      link: string;
       label: string;
     }>;
   };
