@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import FontPicker from "@/components/font-picker";
 import { appState } from "../../../lib/store/slices/site-slice";
 import { Skeleton } from "@/components/ui/skeleton";
+import TypewriterEffect from "@/components/typewriter-effect";
 
 type TProps = {
   hero: THero;
@@ -94,7 +95,11 @@ const EditableHero = (props: TProps) => {
                 }
               }}
             >
-              {hero.heading}
+              {appState.generate.generating ? (
+                <TypewriterEffect text={hero.heading ?? ""} />
+              ) : (
+                hero.heading
+              )}
             </h2>
           ) : (
             <h2
@@ -135,10 +140,14 @@ const EditableHero = (props: TProps) => {
                 }
               }}
             >
-              {hero.subheading}
+              {appState.generate.generating ? (
+                <TypewriterEffect text={hero.subheading ?? ""} />
+              ) : (
+                hero.subheading
+              )}
             </p>
           ) : (
-            <p className={`mb-8 text-xl font-bold flex flex-col gap-1`}>
+            <p className={`mb-8 flex flex-col gap-1 text-xl font-bold`}>
               <Skeleton className="h-8 w-full" />
               <Skeleton className="h-8 w-1/2" />
             </p>

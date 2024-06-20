@@ -6,6 +6,7 @@ import Image from "next/image";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { Skeleton } from "../ui/skeleton";
+import TypewriterEffect from "../typewriter-effect";
 
 type TopBarProps = {
   banner: TBanner;
@@ -123,7 +124,13 @@ export default function TopBar(props: TopBarProps) {
                   {banner.businessName}
                 </button>
               ) : (
-                <Link href="#">{banner.businessName}</Link>
+                <Link href="#">
+                  {appState.generate.generating ? (
+                    <TypewriterEffect text={banner.businessName ?? ""} />
+                  ) : (
+                    banner.businessName
+                  )}
+                </Link>
               )
             ) : (
               <Skeleton className="h-10 w-40 bg-white" />
