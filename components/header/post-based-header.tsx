@@ -118,7 +118,7 @@ export function Header(props: TProps) {
               {banner.button.list.map((data, i) => (
                 <div key={i}>
                   <Button
-                    href={data.value ?? "#"}
+                    href={data.link ?? "#"}
                     text={data.label}
                     bgColor={colors.secondary}
                   />

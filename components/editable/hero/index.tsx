@@ -117,7 +117,7 @@ const EditableHero = (props: TProps) => {
                     <CTA
                       text={data.label}
                       bgColor={colors?.secondary}
-                      link={editable ? "#" : data.value}
+                      link={editable ? "#" : data.link}
                       external={editable?false:data.type === "External"}
                     />
                   </div>
