@@ -26,7 +26,7 @@ const initialSite: AppState = {
   generate: {
     progress: 0,
     generating: false,
-    field:null
+    field: null,
   },
   openedSlide: null,
   focusedField: null,
@@ -277,10 +277,9 @@ const siteSlice = createSlice({
     });
     builder.addCase(fetchSiteById.fulfilled, (state, action) => {
       state.loading = false;
-      if(state?.sites?.domain?.present?.generate?.generating &&state.sites?.domain?.present?.generate?.progress){
-        state.sites.domain.present.generate.generating = false;
-        state.sites.domain.present.generate.progress = 0
-      }
+
+      state.sites.domain.present.generate.generating = false;
+      state.sites.domain.present.generate.progress = 0;
 
       console.log("history", action.payload?.posts);
       state.sites.domain.present.editable = true;

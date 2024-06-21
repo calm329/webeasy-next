@@ -100,7 +100,7 @@ const CustomService = (props: TProps) => {
   useEffect(() => {
     if (showForm.edit) {
       let services = appState.aiContent.services.list;
-      services = services.filter((service) => service.id === showForm.edit);
+      services = services?.filter((service) => service.id === showForm.edit);
       setData(services[0]);
     }
   }, [showForm.edit, appState]);

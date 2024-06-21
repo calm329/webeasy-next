@@ -66,7 +66,7 @@ const Amazon = () => {
 
   return (
     // <></>
-    <div >
+    <div>
       {appState?.generate?.generating && <ProgressLoader />}
       <SiteHeader
         showNavigation={false}

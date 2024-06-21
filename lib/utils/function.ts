@@ -1949,6 +1949,7 @@ export async function generateImagesForCustom(data: {
 
             logo: {
               ...getAppState().aiContent.banner.logo,
+              show:true,
               link: logo,
             },
           },
@@ -1956,12 +1957,13 @@ export async function generateImagesForCustom(data: {
             ...getAppState().aiContent.hero,
             image: {
               ...getAppState().aiContent.hero.image,
+              show:true,
               imageUrl: heroImage,
             },
           },
         },
         generate: {
-          generating: true,
+          generating: false,
           progress: 0,
         },
       }),
@@ -1977,7 +1979,7 @@ export async function generateTextForCustom(data: {
   location: string;
 }) {
   try {
-    const heroImage = getAppState().aiContent.hero.image;
+    const heroImage = getAppState().aiContent.hero.image.imageUrl;
     const logo = getAppState().aiContent.banner.logo.link;
     store.dispatch(
       updateAppState({
@@ -2047,7 +2049,7 @@ export async function generateTextForCustom(data: {
           },
         },
         generate: {
-          generating: true,
+          generating: false,
           progress: 0,
         },
       }),
