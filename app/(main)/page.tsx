@@ -31,11 +31,7 @@ const sections: TSectionObject = [
   },
 ];
 
-export default function Layout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function Home() {
   const pathname = usePathname();
   const [selectedTab, setSelectedTab] = useState<
     "CUSTOM" | "AMAZON" | "INSTAGRAM"
