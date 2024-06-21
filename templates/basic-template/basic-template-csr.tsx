@@ -109,7 +109,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 <div className="flex flex-col">
                   {services?.title ? (
                     <h2 className="text-center text-2xl font-bold">
-                      {appState.generate.generating ? (
+                      {appState?.generate?.generating ? (
                         <TypewriterEffect text={services?.title} />
                       ) : (
                         services?.title
@@ -120,7 +120,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   )}
                   {services?.description ? (
                     <p className="mb-6 mt-2 text-center">
-                      {appState.generate.generating ? (
+                      {appState?.generate?.generating ? (
                         <TypewriterEffect text={services?.description} />
                       ) : (
                         services?.description

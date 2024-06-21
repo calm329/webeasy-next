@@ -57,14 +57,14 @@ export default function ServiceCard(props: ServiceCardProps) {
         </div>
         <div className="flex-1 p-3">
           <h3 className="font-heading mb-2 text-xl font-black text-gray-900">
-            {appState?.generate.generating ? (
+            {appState?.generate?.generating ? (
               <TypewriterEffect text={name} />
             ) : (
               name
             )}
           </h3>
           <p className="text-sm font-bold text-gray-700">
-            {appState?.generate.generating ? (
+            {appState?.generate?.generating ? (
               <TypewriterEffect text={description} />
             ) : (
               description

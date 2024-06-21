@@ -240,7 +240,7 @@ export default function WebsitesForm() {
                           }))
                           switch (site.type) {
                             case "Custom":
-                              router.push("/custom?id=" + site.id);
+                              router.push("/custom/" + site.id);
                               break;
                             case "Instagram":
                               redirectToAuth(site.id);

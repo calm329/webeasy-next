@@ -125,7 +125,7 @@ export default function TopBar(props: TopBarProps) {
                 </button>
               ) : (
                 <Link href="#">
-                  {appState.generate.generating ? (
+                  {appState?.generate?.generating ? (
                     <TypewriterEffect text={banner.businessName ?? ""} />
                   ) : (
                     banner.businessName

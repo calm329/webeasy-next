@@ -55,7 +55,7 @@ const EditableBanner = (props: TProps) => {
         }
       }}
     >
-      {appState.aiContent.banner ? (
+      {appState.aiContent?.banner ? (
         <TopBar
           banner={banner}
           colors={colors}

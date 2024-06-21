@@ -95,7 +95,7 @@ const EditableHero = (props: TProps) => {
                 }
               }}
             >
-              {appState.generate.generating ? (
+              {appState?.generate?.generating ? (
                 <TypewriterEffect text={hero.heading ?? ""} />
               ) : (
                 hero.heading
@@ -140,7 +140,7 @@ const EditableHero = (props: TProps) => {
                 }
               }}
             >
-              {appState.generate.generating ? (
+              {appState?.generate?.generating ? (
                 <TypewriterEffect text={hero.subheading ?? ""} />
               ) : (
                 hero.subheading

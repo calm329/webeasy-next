@@ -21,7 +21,7 @@ export default function CTA(props: TProps) {
       href={link ?? ""}
       target={external ? "_blank" : "_self"}
     >
-      {appState?.generate.generating ? <TypewriterEffect text={text} /> : text}
+      {appState?.generate?.generating ? <TypewriterEffect text={text} /> : text}
     </Link>
   );
 }

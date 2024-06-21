@@ -48,10 +48,10 @@ const SelectedTemplate = (props: TProps) => {
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          banner={appState.aiContent.banner}
-          hero={appState.aiContent.hero}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent.services}
+          banner={appState.aiContent?.banner}
+          hero={appState.aiContent?.hero}
+          colors={appState.aiContent?.colors}
+          services={appState.aiContent?.services}
           posts={
             isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
@@ -65,10 +65,10 @@ const SelectedTemplate = (props: TProps) => {
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          banner={appState.aiContent.banner}
-          hero={appState.aiContent.hero}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
+          banner={appState.aiContent?.banner}
+          hero={appState.aiContent?.hero}
+          colors={appState.aiContent?.colors}
+          services={appState.aiContent?.services.list}
           posts={
             isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
@@ -82,10 +82,10 @@ const SelectedTemplate = (props: TProps) => {
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          banner={appState.aiContent.banner}
-          hero={appState.aiContent.hero}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
+          banner={appState.aiContent?.banner}
+          hero={appState.aiContent?.hero}
+          colors={appState.aiContent?.colors}
+          services={appState.aiContent?.services.list}
           posts={
             isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
@@ -99,10 +99,10 @@ const SelectedTemplate = (props: TProps) => {
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          banner={appState.aiContent.banner}
-          hero={appState.aiContent.hero}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
+          banner={appState.aiContent?.banner}
+          hero={appState.aiContent?.hero}
+          colors={appState.aiContent?.colors}
+          services={appState.aiContent?.services.list}
           posts={
             isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
