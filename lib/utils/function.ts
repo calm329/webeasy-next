@@ -95,7 +95,7 @@ export const getContent = async (
         data = {
           hero: {
             image: {
-              imageUrl: appState?.aiContent.hero.image.imageUrl ?? "",
+              imageUrl: appState?.aiContent.hero.image ?? "",
             },
           },
         };
@@ -106,7 +106,7 @@ export const getContent = async (
           }),
         });
         const image = await res.json();
-        data["hero"]["image"]["imageUrl"] = image.imageUrl;
+        data["hero"]["image"]["imageUrl"] = image;
       } else if (appState?.aiContent.businessType && !fieldName) {
         const res = await fetch("/api/image", {
           method: "POST",
@@ -115,7 +115,7 @@ export const getContent = async (
           }),
         });
         const image = await res.json();
-        data["hero"]["image"]["imageUrl"] = image.imageUrl;
+        data["hero"]["image"]["imageUrl"] = image;
       }
     }
 
@@ -137,7 +137,7 @@ export const getContent = async (
         }),
       });
       const image = await res.json();
-      data["banner"]["logo"]["link"] = image.imageUrl;
+      data["banner"]["logo"]["link"] = image;
     } else if (data?.banner?.businessName && !fieldName) {
       const res = await fetch("/api/image", {
         method: "POST",
@@ -149,7 +149,7 @@ export const getContent = async (
         }),
       });
       const image = await res.json();
-      data["banner"]["logo"]["link"] = image.imageUrl;
+      data["banner"]["logo"]["link"] = image;
     }
     console.log("generated-data", data);
     return data;
@@ -546,7 +546,7 @@ export const regenerateText = async (params: TParams) => {
       if (content) {
         console.log("content", content);
         content["hero"]["image"]["imageUrl"] =
-          appState.aiContent.hero.image.imageUrl;
+          appState.aiContent.hero.image;
         content["banner"]["logo"]["link"] = appState.aiContent.banner.logo.link;
 
         content["colors"] = appState.aiContent.colors;
@@ -1786,7 +1786,7 @@ export async function generateNewCustomSite(data: {
     // Start all API calls in parallel
     const [heroImage, logo] = await Promise.all([
       getHeroImageForCustom(data.businessType),
-      getLogo(data.businessType),
+      getLogo(data.businessName),
     ]);
 
     store.dispatch(
@@ -1805,7 +1805,7 @@ export async function generateNewCustomSite(data: {
       `Total time taken by Image Api Calls: ${timeImagesTaken} milliseconds`,
     );
     const startColorTime = performance.now();
-    const colors = await getColors(heroImage.imageUrl);
+    const colors = await getColors(heroImage);
     const endColorTime = performance.now();
     const timeColorTaken = endColorTime - startColorTime;
     console.log(
@@ -1817,13 +1817,13 @@ export async function generateNewCustomSite(data: {
       hero: {
         image: {
           show: true,
-          imageUrl: heroImage.imageUrl,
+          imageUrl: heroImage,
         },
       },
       banner: {
         logo: {
           show: true,
-          link: logo.imageUrl,
+          link: logo,
         },
       },
       services: {
@@ -1875,9 +1875,9 @@ export async function generateNewCustomSite(data: {
     const endTime = performance.now();
     const timeTaken = endTime - startTime;
 
-    console.log("heroImage", heroImage.imageUrl);
+    console.log("heroImage", heroImage);
     console.log("colors", colors);
-    console.log("logo", logo.imageUrl);
+    console.log("logo", logo);
     console.log(`Total time taken by all API calls: ${timeTaken} milliseconds`);
     console.log("services", services, hero, banner);
 
@@ -1949,14 +1949,14 @@ export async function generateImagesForCustom(data: {
 
             logo: {
               ...getAppState().aiContent.banner.logo,
-              link: logo.imageUrl,
+              link: logo,
             },
           },
           hero: {
             ...getAppState().aiContent.hero,
             image: {
               ...getAppState().aiContent.hero.image,
-              imageUrl: heroImage.imageUrl,
+              imageUrl: heroImage,
             },
           },
         },
@@ -1977,7 +1977,7 @@ export async function generateTextForCustom(data: {
   location: string;
 }) {
   try {
-    const heroImage = getAppState().aiContent.hero.image.imageUrl;
+    const heroImage = getAppState().aiContent.hero.image;
     const logo = getAppState().aiContent.banner.logo.link;
     store.dispatch(
       updateAppState({
@@ -2065,24 +2065,20 @@ export async function generateTextForCustom(data: {
 
 export async function getHeroImageForCustom(businessType: string) {
   try {
-    const res = await fetch("/api/image", {
-      method: "POST",
-      body: JSON.stringify({
-        prompt: businessType,
-      }),
-    });
-    return await res.json();
+    const res = await fetch(
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${businessType}`,
+    );
+    const data = await res.json();
+    return data.urls.full;
   } catch (error) {}
 }
 
 export async function getLogo(prompt: string) {
   try {
-    const res = await fetch("/api/image", {
-      method: "POST",
-      body: JSON.stringify({
-        prompt: prompt,
-      }),
-    });
-    return await res.json();
+    const res = await fetch(
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}`,
+    );
+    const data = await res.json();
+    return data.urls.full;
   } catch (error) {}
 }
