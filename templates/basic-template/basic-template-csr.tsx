@@ -92,7 +92,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               />
 
               <div
-                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${services?.show === false ? "bg-transparent" : "bg-gray-100"}`}
+                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} bg-gray-100`}
                 onClick={() => {
                   if (setIsOpen && setSection) {
                     setIsOpen(true);
@@ -106,9 +106,36 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   }
                 }}
               >
-                <div className="flex flex-col mb-10">
+                <div className="mb-10 flex flex-col">
                   {services?.title ? (
-                    <h2 className="text-center text-2xl font-bold">
+                    <h2
+                      className={`mx-auto w-fit text-center text-2xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (
+                          editable &&
+                          setIsOpen &&
+                          setSection &&
+                          setFocusedField &&
+                          setShowForm
+                        ) {
+                          setSection("Services");
+                          setIsOpen(true);
+                          setShowForm({
+                            form: "",
+                            edit: "",
+                            show: false,
+                          });
+                          dispatch(
+                            updateAppState({
+                              ...appState,
+                              focusedField: "title",
+                              openedSlide: "Customize",
+                            }),
+                          );
+                        }
+                      }}
+                    >
                       {appState?.generate?.generating ? (
                         <TypewriterEffect text={services?.title} />
                       ) : (
@@ -116,10 +143,37 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                       )}
                     </h2>
                   ) : (
-                    <Skeleton className="mx-auto h-12 w-40 bg-white" />
+                    <Skeleton className={`mx-auto h-12 w-40 bg-white `} />
                   )}
                   {services?.description ? (
-                    <p className="mb-6 mt-2 text-center">
+                    <p
+                      className={`mx-auto mb-6 mt-2 w-fit text-center ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (
+                          editable &&
+                          setIsOpen &&
+                          setSection &&
+                          setFocusedField &&
+                          setShowForm
+                        ) {
+                          setSection("Services");
+                          setIsOpen(true);
+                          setShowForm({
+                            form: "",
+                            edit: "",
+                            show: false,
+                          });
+                          dispatch(
+                            updateAppState({
+                              ...appState,
+                              focusedField: "description",
+                              openedSlide: "Customize",
+                            }),
+                          );
+                        }
+                      }}
+                    >
                       {appState?.generate?.generating ? (
                         <TypewriterEffect text={services?.description} />
                       ) : (
@@ -149,33 +203,34 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                       />
                     ))}
 
-                  {appState?.generate?.generating && Array.from({ length: 6 })?.map(
-                    (_, i) =>
-                      i > (services?.list ?? [])?.length - 1 && (
-                        <div
-                          key={i}
-                          className={`w-full p-8 md:w-1/3 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                        >
-                          <div className="-m-3 flex flex-wrap">
-                            <div className="w-auto p-3 md:w-full lg:w-auto">
-                              <div className="flex  items-center justify-center rounded-xl ">
-                                <Skeleton className="h-12 w-12 bg-white" />
+                  {appState?.generate?.generating &&
+                    Array.from({ length: 6 })?.map(
+                      (_, i) =>
+                        i > (services?.list ?? [])?.length - 1 && (
+                          <div
+                            key={i}
+                            className={`w-full p-8 md:w-1/3 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                          >
+                            <div className="-m-3 flex flex-wrap">
+                              <div className="w-auto p-3 md:w-full lg:w-auto">
+                                <div className="flex  items-center justify-center rounded-xl ">
+                                  <Skeleton className="h-12 w-12 bg-white" />
+                                </div>
+                              </div>
+                              <div className="flex-1 p-3">
+                                <h3 className="font-heading mb-2 text-xl font-black text-gray-900">
+                                  <Skeleton className="h-10 w-full bg-white" />
+                                </h3>
+                                <p className="flex flex-col gap-1 text-sm font-bold text-gray-700">
+                                  {" "}
+                                  <Skeleton className="h-8 w-full bg-white" />{" "}
+                                  <Skeleton className="h-8 w-1/2 bg-white" />
+                                </p>
                               </div>
                             </div>
-                            <div className="flex-1 p-3">
-                              <h3 className="font-heading mb-2 text-xl font-black text-gray-900">
-                                <Skeleton className="h-10 w-full bg-white" />
-                              </h3>
-                              <p className="flex flex-col gap-1 text-sm font-bold text-gray-700">
-                                {" "}
-                                <Skeleton className="h-8 w-full bg-white" />{" "}
-                                <Skeleton className="h-8 w-1/2 bg-white" />
-                              </p>
-                            </div>
                           </div>
-                        </div>
-                      ),
-                  )}
+                        ),
+                    )}
                 </div>
               </div>
             </div>

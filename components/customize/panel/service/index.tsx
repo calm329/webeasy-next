@@ -1,7 +1,8 @@
+import RegenerateOptions from "@/components/regenerate-options";
 import { Switch } from "@/components/ui/switch";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -9,6 +10,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { FiLink } from "react-icons/fi";
+import { ImPower, ImSpinner2 } from "react-icons/im";
 import { IoMdAdd } from "react-icons/io";
 import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
 import { RxDragHandleDots2 } from "react-icons/rx";
@@ -91,21 +93,72 @@ const ServiceContent = (props: TProps) => {
       }),
     );
   };
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (appState.focusedField === "title") {
+      inputRef.current?.focus();
+    }
+
+    if (appState.focusedField === "description") {
+      textareaRef.current?.focus();
+    }
+  }, [appState]);
+
   return (
-    <div className="max-h-[600px] h-[55vh] overflow-y-auto py-5 transition-all ease-in-out">
-      {" "}
-      <div className="flex flex-col gap-5 border-t p-5 pt-5">
-        <div className="flex justify-between gap-10">
-          <div>
-            <h3 className="block text-sm font-medium leading-6 text-gray-900">
-              Services
-            </h3>
-            <p className="text-xs text-gray-400 ">
-              Add, Update or delete a service
-            </p>
+    <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
+      <div className="flex justify-between gap-10 px-5 pb-5">
+        <div>
+          <h3 className="block text-sm font-medium leading-6 text-gray-900">
+            Services
+          </h3>
+          <p className="text-xs text-gray-400 ">
+            Add, Update or delete a service
+          </p>
+        </div>
+        <Switch
+          onCheckedChange={(checked) =>
+            dispatch(
+              updateAppState({
+                ...appState,
+                aiContent: {
+                  ...appState.aiContent,
+                  services: {
+                    ...appState.aiContent.services,
+                    show: checked,
+                  },
+                },
+              }),
+            )
+          }
+          checked={appState.aiContent.services.show}
+        />
+      </div>
+      <div className="px-5 pb-5">
+        <div className="flex flex-col border-t pt-5">
+          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor={"title"} className="block">
+              {"title"}
+            </label>
+            <div className="flex items-center gap-2">
+              <button type="button" className="flex items-center gap-2 ">
+                Regenerate
+                {false ? (
+                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                ) : (
+                  <ImPower className=" text-xs " />
+                )}
+              </button>
+              {/* <RegenerateOptions setType={setType} type={type} /> */}
+            </div>
           </div>
-          <Switch
-            onCheckedChange={(checked) =>
+
+          <input
+            type="text"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            id={"title"}
+            placeholder={"Enter Title..."}
+            onChange={(e) => {
               dispatch(
                 updateAppState({
                   ...appState,
@@ -113,15 +166,58 @@ const ServiceContent = (props: TProps) => {
                     ...appState.aiContent,
                     services: {
                       ...appState.aiContent.services,
-                      show: checked,
+                      title: e.target.value,
                     },
                   },
                 }),
-              )
-            }
-            checked={appState.aiContent.services.show}
+              );
+            }}
+            ref={inputRef}
+            value={appState.aiContent.services.title}
           />
         </div>
+
+        <div className="flex flex-col border-t pt-5">
+          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor={"description"} className="block">
+              {"description"}
+            </label>
+            <div className="flex items-center gap-2">
+              <button type="button" className="flex items-center gap-2 ">
+                Regenerate
+                {false ? (
+                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                ) : (
+                  <ImPower className=" text-xs " />
+                )}
+              </button>
+              {/* <RegenerateOptions setType={setType} type={type} /> */}
+            </div>
+          </div>
+          <textarea
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            id={"description"}
+            placeholder={"Enter Description"}
+            onChange={(e) => {
+              dispatch(
+                updateAppState({
+                  ...appState,
+                  aiContent: {
+                    ...appState.aiContent,
+                    services: {
+                      ...appState.aiContent.services,
+                      description: e.target.value,
+                    },
+                  },
+                }),
+              );
+            }}
+            ref={textareaRef}
+            value={appState.aiContent.services.description}
+          />
+        </div>
+      </div>
+      <div className="flex flex-col gap-5 border-t p-5 pt-5">
         {appState.aiContent.services.show && (
           <>
             <DragDropContext onDragEnd={onDragEnd}>
