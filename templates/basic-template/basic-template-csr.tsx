@@ -149,7 +149,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                       />
                     ))}
 
-                  {Array.from({ length: 6 })?.map(
+                  {appState?.generate?.generating && Array.from({ length: 6 })?.map(
                     (_, i) =>
                       i > (services?.list ?? [])?.length - 1 && (
                         <div

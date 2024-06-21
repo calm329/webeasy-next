@@ -372,7 +372,7 @@ const ProductTemplate = (props: TProps) => {
                   </div>
                 ))}
 
-                {Array.from({ length: 4 })?.map(
+                {appState?.generate?.generating && Array.from({ length: 4 })?.map(
                   (_, i) =>
                     i > features?.length - 1 && (
                       <div
