@@ -19,6 +19,7 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState } from "../../lib/store/slices/site-slice";
 import { Skeleton } from "@/components/ui/skeleton";
+import TypewriterEffect from "@/components/typewriter-effect";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -91,7 +92,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               />
 
               <div
-                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${!services?.show ? "bg-transparent" : "bg-gray-100"}`}
+                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${services?.show === false ? "bg-transparent" : "bg-gray-100"}`}
                 onClick={() => {
                   if (setIsOpen && setSection) {
                     setIsOpen(true);
@@ -105,9 +106,34 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   }
                 }}
               >
-                {services?.show && (
-                  <div className="-m-8 flex flex-wrap">
-                    {services?.list?.map((service) => (
+                <div className="flex flex-col">
+                  {services?.title ? (
+                    <h2 className="text-center text-2xl font-bold">
+                      {appState.generate.generating ? (
+                        <TypewriterEffect text={services?.title} />
+                      ) : (
+                        services?.title
+                      )}
+                    </h2>
+                  ) : (
+                    <Skeleton className="mx-auto h-12 w-40 bg-white" />
+                  )}
+                  {services?.description ? (
+                    <p className="mb-6 mt-2 text-center">
+                      {appState.generate.generating ? (
+                        <TypewriterEffect text={services?.description} />
+                      ) : (
+                        services?.description
+                      )}
+                    </p>
+                  ) : (
+                    <Skeleton className="mx-auto mb-6 mt-2 h-8 w-96 bg-white" />
+                  )}
+                </div>
+
+                <div className="-m-8 flex flex-wrap">
+                  {services?.show &&
+                    services?.list?.map((service) => (
                       <ServiceCard
                         id={service["id"]}
                         key={service["name"]}
@@ -119,10 +145,38 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                         setSection={setSection}
                         showForm={showForm}
                         setShowForm={setShowForm}
+                        appState={appState}
                       />
                     ))}
-                  </div>
-                )}
+
+                  {Array.from({ length: 6 })?.map(
+                    (_, i) =>
+                      i > (services?.list ?? [])?.length - 1 && (
+                        <div
+                          key={i}
+                          className={`w-full p-8 md:w-1/3 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                        >
+                          <div className="-m-3 flex flex-wrap">
+                            <div className="w-auto p-3 md:w-full lg:w-auto">
+                              <div className="flex  items-center justify-center rounded-xl ">
+                                <Skeleton className="h-12 w-12 bg-white" />
+                              </div>
+                            </div>
+                            <div className="flex-1 p-3">
+                              <h3 className="font-heading mb-2 text-xl font-black text-gray-900">
+                                <Skeleton className="h-10 w-full bg-white" />
+                              </h3>
+                              <p className="flex flex-col gap-1 text-sm font-bold text-gray-700">
+                                {" "}
+                                <Skeleton className="h-8 w-full bg-white" />{" "}
+                                <Skeleton className="h-8 w-1/2 bg-white" />
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ),
+                  )}
+                </div>
               </div>
             </div>
           </div>

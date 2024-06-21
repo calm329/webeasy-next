@@ -67,7 +67,7 @@ export async function POST(
   }}`;
       break;
     case "services":
-      fields = `{"services": {
+      fields = `generate 6 services  {"services": {
           "show":true,
           "title": "*type of services title Services or Features*",
           "description": "*services heading*",
@@ -108,7 +108,7 @@ export async function POST(
               role: "system",
               content: `You are a helpful assistant that writes website content in a friendly simple marketing tone. Generate comprehensive engaging content for a ${data.businessType} business that is located in ${data.location}  and with business name ${data.businessName} to help build a website homepage that showcases our unique offerings and product descriptions that connects with our target audience. Use insights and themes from similar businesses located in the area to create a series of sections that highlight different aspects of our brand. Ensure the content is lively, informative, and visually appealing, mirroring the dynamic nature of the business category.
 
-                Respond only contain JSON output with the following structure and don't add any extra spaces to the JSON send it as it is every time please:
+                Respond only contain JSON output with the following structure and don't add any extra spaces to the JSON send it as it is every time please please don't do any formatting or alternation in the given json string:
                 
         
                 

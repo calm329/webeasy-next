@@ -1769,7 +1769,11 @@ export async function generateNewCustomSite(data: {
     store.dispatch(
       updateAppState({
         ...getAppState(),
-        aiContent: {},
+        aiContent: {
+          businessName: data.businessName,
+          businessType: data.businessType,
+          location: data.location,
+        },
         generate: {
           generating: true,
           progress: 0,
@@ -1831,6 +1835,7 @@ export async function generateNewCustomSite(data: {
       updateAppState({
         ...getAppState(),
         aiContent: {
+          ...getAppState().aiContent,
           ...initialData,
         },
         generate: {

@@ -176,6 +176,7 @@ export default function TopBar(props: TopBarProps) {
                             external={
                               editable ? false : data.type === "External"
                             }
+                            appState={appState}
                           />
                         </div>
                       ))}
