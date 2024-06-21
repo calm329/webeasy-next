@@ -111,7 +111,7 @@ export default function WebsitesForm() {
     try {
       const siteData = await dispatch(fetchSitesByUser()).unwrap();
       console.log("siteData", siteData);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -130,7 +130,7 @@ export default function WebsitesForm() {
 
         router.replace(`/auth?${newURLSearchParams.toString()}`);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     if (sites) {
@@ -145,10 +145,10 @@ export default function WebsitesForm() {
       }
     }
   }, [page, sites, selectedSection]);
-  
+
   const totalPages = Math.ceil(
     (sites?.filter((site) => site.type === selectedSection).length || 0) /
-      dataPerPage,
+    dataPerPage,
   );
   const matches = useMediaQuery("(min-width: 768px)");
   return (
@@ -209,13 +209,13 @@ export default function WebsitesForm() {
                     <BsTrash3 color="red" />
                   </button>
                   <div className="min-h-80 rounded-t-lg flex justify-center items-center">
-                  <Image
-                    src={site.type === "Amazon"?JSON.parse(site?.aiResult).images.primary.Large?.URL: JSON.parse(site?.aiResult)?.hero?.image.imageUrl}
-                    height={200}
-                    width={500}
-                    className="contain "
-                    alt=""
-                  />
+                    <Image
+                      src={site.type === "Amazon" ? JSON.parse(site?.aiResult)?.images?.primary?.Large?.URL ?? "" : JSON.parse(site?.aiResult)?.hero?.image?.imageUrl ?? ""}
+                      height={200}
+                      width={500}
+                      className="contain "
+                      alt=""
+                    />
                   </div>
                   <div className="flex flex-col gap-5 p-5">
                     <div className="flex flex-col gap-2 ">
@@ -231,12 +231,12 @@ export default function WebsitesForm() {
                       <button
                         className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
                         onClick={() => {
-                          if(templates){
+                          if (templates) {
                             dispatch(setSelectedTemplate(templates[0]))
                           }
                           dispatch(updateAppState({
                             ...appState,
-                            view:"Desktop"
+                            view: "Desktop"
                           }))
                           switch (site.type) {
                             case "Custom":
@@ -255,11 +255,11 @@ export default function WebsitesForm() {
                         Edit
                       </button>
                       <Link
-                        href={site.type === "Amazon"?"/preview/amazon?preview_site="+site.id:"/preview?preview_site="+site.id}
+                        href={site.type === "Amazon" ? "/preview/amazon?preview_site=" + site.id : "/preview?preview_site=" + site.id}
                         target="_blank"
                         className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
                       >
-                        
+
                         <FaExternalLinkAlt />
                         Preview
                       </Link>
