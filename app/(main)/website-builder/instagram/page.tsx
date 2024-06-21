@@ -17,7 +17,7 @@ export default function Example() {
             your exclusive website straight from your feed!
           </p>
         </div>
-        <div className=" p-10 mx-auto max-w-3xl lg:mx-0 lg:flex-shrink-0 ">
+        <div className=" mx-auto max-w-3xl lg:mx-0 lg:flex-shrink-0 ">
           <div className="mt-10 flex items-center gap-x-6">
             <Link
               id="instagram-login-button"

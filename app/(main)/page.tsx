@@ -21,7 +21,7 @@ const sections: TSectionObject = [
   },
   {
     id: "INSTAGRAM",
-    text: "Build a InstaSite",
+    text: "Build an InstaSite",
     shortText: "Instagram",
   },
   {
@@ -50,7 +50,7 @@ export default function Home() {
         </p>
       </div>
       <div className="">
-        <div className="border-b border-gray-200 ">
+        <div className="border-b border-gray-200 mx-10 max-sm:mx-5">
           <nav className=" flex " aria-label="Tabs">
             {sections.map((section) => (
               <button
