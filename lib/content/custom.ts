@@ -58,14 +58,15 @@ class CustomContentApiService {
                   updateAppState({
                     ...getAppState(),
                     aiContent: {
-                     ...getAppState().aiContent,
+                      ...getAppState().aiContent,
                       services: parsedData.services,
                     },
                     generate: {
                       ...getAppState().generate,
                       progress: 100,
                     },
-                  }))
+                  }),
+                );
                 resolve(parsedData.services);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
@@ -79,6 +80,31 @@ class CustomContentApiService {
           const chunk = decoder.decode(value, { stream: true });
           accumulatedText += chunk;
           completeJson += chunk;
+
+          const titleMatch = accumulatedText.match(/"title"\s*:\s*"([^"]*)"/);
+          const descriptionMatch = accumulatedText.match(
+            /"description"\s*:\s*"([^"]*)"/,
+          );
+          console.log("titleMatch", titleMatch, descriptionMatch);
+          if (titleMatch || descriptionMatch) {
+            store.dispatch(
+              updateAppState({
+                ...getAppState(),
+                aiContent: {
+                  ...getAppState().aiContent,
+                  services: {
+                    ...getAppState().aiContent.services,
+                    title: titleMatch
+                      ? titleMatch[1]
+                      : getAppState().aiContent.services.title,
+                    description: descriptionMatch
+                      ? descriptionMatch[1]
+                      : getAppState().aiContent.services.description,
+                  },
+                },
+              }),
+            );
+          }
 
           let startIndex = accumulatedText.indexOf('{"id":');
           console.log("startIndex", startIndex);
@@ -110,6 +136,7 @@ class CustomContentApiService {
                   aiContent: {
                     ...getAppState().aiContent,
                     services: {
+                      ...getAppState().aiContent.services,
                       show: true,
                       list: [...tempServices],
                     },

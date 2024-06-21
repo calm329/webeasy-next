@@ -255,7 +255,11 @@ export default function SiteHeader(props: TProps) {
           <div className="flex items-center gap-x-12 ">
             <button
               onClick={() => {
-                setShowLeaveModal(true);
+                if(isSiteBuilderPage(pathname)){
+                  setShowLeaveModal(true);
+                }else{
+                  
+                }
               }}
             >
               <Image
