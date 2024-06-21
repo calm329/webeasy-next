@@ -7,7 +7,7 @@ export default function Example() {
   return (
     <div className="relative isolate overflow-hidden bg-white">
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-col lg:px-8 ">
-        <div className="p-10">
+        <div className="">
           <h1 className="mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
             AI-Powered InstaSite Builder
           </h1>
@@ -17,15 +17,7 @@ export default function Example() {
             your exclusive website straight from your feed!
           </p>
         </div>
-        <div className="mx-auto max-w-3xl lg:mx-0 lg:flex-shrink-0 ">
-          {/* <Image src={tailwindIcon} alt="Your Company" className="h-11 ml-auto" /> */}
-          {/* <PageStatus /> */}
-          <h1 className="mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Instantly create your website from your Instagram profile
-          </h1>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            Connect you instagram profile and we will create a website for you.
-          </p>
+        <div className=" p-10 mx-auto max-w-3xl lg:mx-0 lg:flex-shrink-0 ">
           <div className="mt-10 flex items-center gap-x-6">
             <Link
               id="instagram-login-button"
