@@ -1,37 +1,82 @@
+"use client";
 import SiteHeader from "@/components/header";
+import AmazonHomeTab from "@/components/home/amazon";
+import CustomHomeTab from "@/components/home/custom";
+import InstagramHomeTab from "@/components/home/instagram";
 import Link from "next/link";
-import LearnMoreButton from "@/components/ui/button/learn-more-button";
-import PageStatus from "@/components/ui/pagestatus";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
-export default function Example() {
+type TSectionObject = Array<{
+  id: "CUSTOM" | "AMAZON" | "INSTAGRAM";
+  text: string;
+  shortText: string;
+}>;
+
+const sections: TSectionObject = [
+  {
+    id: "CUSTOM",
+    text: "Build a Website",
+    shortText: "Scratch",
+  },
+  {
+    id: "INSTAGRAM",
+    text: "Build a InstaSite",
+    shortText: "Instagram",
+  },
+  {
+    id: "AMAZON",
+    text: "Build an Amazon landing page",
+    shortText: "Amazon",
+  },
+];
+
+export default function Layout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const pathname = usePathname();
+  const [selectedTab, setSelectedTab] = useState<
+    "CUSTOM" | "AMAZON" | "INSTAGRAM"
+  >("CUSTOM");
   return (
-    <>
+    <div className="mx-auto max-w-7xl">
       <SiteHeader showNavigation={true} />
-      <div className="relative isolate overflow-hidden bg-white">
-        <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-3xl lg:mx-0 lg:flex-shrink-0 ">
-            {/* <Image src={tailwindIcon} alt="Your Company" className="h-11 ml-auto" /> */}
-            {/* <PageStatus /> */}
-            <h1 className="mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              AI that builds a website for you.
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Get your business online in 30 seconds with the #1 AI website
-              builder and marketing platform.
-            </p>
-            <div className="mt-10 flex items-center gap-x-6">
-              <Link
-                id="instagram-login-button"
-                href={`/website-builder`}
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      <div className="flex flex-col justify-center  gap-5 p-10">
+        <h1 className="text-6xl font-bold leading-normal max-md:text-3xl max-sm:text-2xl">
+          WebEasy.ai,
+          <br />
+          Instant Online Presence Made Simple
+        </h1>
+        <p className="mx-auto text-xl font-semibold sm:hidden">
+          Build a website from{" "}
+        </p>
+      </div>
+      <div className="">
+        <div className="border-b border-gray-200 ">
+          <nav className=" flex " aria-label="Tabs">
+            {sections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => {
+                  setSelectedTab(section.id);
+                }}
+                className={`group inline-flex  w-fit border-b-2 px-5  py-4  text-sm font-medium max-sm:w-full ${selectedTab === section.id ? "border-indigo-500 text-indigo-600" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} w-1/2 justify-center gap-2 `}
+                // onClick={() => setSelectedSection(section)}
               >
-                Generate your website
-              </Link>
-              {/* <LearnMoreButton /> */}
-            </div>
-          </div>
+                <span className="max-sm:hidden">{section.text}</span>
+                <span className="sm:hidden">{section.shortText}</span>
+              </button>
+            ))}
+          </nav>
         </div>
       </div>
-    </>
+      <div>
+        {selectedTab === "CUSTOM" && <CustomHomeTab />}
+        {selectedTab === "AMAZON" && <AmazonHomeTab />}
+        {selectedTab === "INSTAGRAM" && <InstagramHomeTab />}
+      </div>
+    </div>
   );
 }

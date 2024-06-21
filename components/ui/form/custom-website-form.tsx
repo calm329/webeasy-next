@@ -350,7 +350,7 @@ const CustomWebsiteForm = () => {
 
   return (
     <form
-      className="flex w-full items-center justify-center gap-5 max-sm:flex-col"
+      className="flex w-full   gap-5 max-sm:flex-col"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-5">
@@ -444,16 +444,18 @@ const CustomWebsiteForm = () => {
             )}
           </div>
         </div> */}
+        <button
+          //   onClick={() => handleButtonSubmit(data.name)}
+          type="submit"
+          className={` flex justify-center gap-2 rounded-md  py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
+          disabled={loading}
+        >
+          {loading && (
+            <ImSpinner2 className="animate-spin text-lg text-white" />
+          )}
+          Build
+        </button>
       </div>
-      <button
-        //   onClick={() => handleButtonSubmit(data.name)}
-        type="submit"
-        className={`mx-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
-        disabled={loading}
-      >
-        {loading && <ImSpinner2 className="animate-spin text-lg text-white" />}
-        Generate your website
-      </button>
     </form>
   );
 };

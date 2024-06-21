@@ -36,29 +36,13 @@ export default function Layout({
   return (
     <div className="max-w-7xl mx-auto">
       <SiteHeader showNavigation={true} />
-      <div className="flex flex-col justify-center items-center p-10 gap-5">
-        <h1 className="mx-auto   text-2xl font-bold">
-          Establish your online presence in seconds with WebEasy.ai
+      <div className="flex flex-col justify-center pt-10  px-10 gap-5">
+        <h1 className="text-6xl font-bold leading-normal">
+          Instant Online Presence Made Simple
         </h1>
         <p className="mx-auto text-xl font-semibold sm:hidden">Build a website from </p>
       </div>
-      <div className="">
-        <div className="border-b border-gray-200 ">
-          <nav className=" flex " aria-label="Tabs">
-            {sections.map((section) => (
-              <Link
-                key={section.link}
-                href={section.link}
-                className={`group inline-flex items-center border-b-2  px-1 py-4 text-sm font-medium ${pathname === section.link ? "border-indigo-500 text-indigo-600" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} w-1/2 justify-center gap-2`}
-                // onClick={() => setSelectedSection(section)}
-              >
-                <span className="max-sm:hidden">{section.text}</span>
-                <span className="sm:hidden">{section.shortText}</span>
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </div>
+     
       <div>{children}</div>
     </div>
   );

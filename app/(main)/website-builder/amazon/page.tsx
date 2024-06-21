@@ -7,7 +7,11 @@ import { useState } from "react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAmazonSite } from "@/lib/store/slices/amazon-slice";
 import { useRouter } from "next/navigation";
-import { extractASIN, generateUniqueHash, getColors } from "@/lib/utils/function";
+import {
+  extractASIN,
+  generateUniqueHash,
+  getColors,
+} from "@/lib/utils/function";
 import { createNewSite } from "@/lib/actions";
 import { ImSpinner2 } from "react-icons/im";
 
@@ -22,37 +26,38 @@ export default function Example() {
         <div className="mx-auto  max-w-3xl lg:mx-0 lg:flex-shrink-0 ">
           {/* <Image src={tailwindIcon} alt="Your Company" className="h-11 ml-auto" /> */}
           {/* <PageStatus /> */}
-          <h1 className="mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Instantly create your website from your Amazon Product
+          <h1 className="mt-10 text-4xl font-bold leading-relaxed tracking-tight text-gray-900 sm:text-6xl">
+            AI-Powered Amazon Landing Page Builder
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Enter your amazon&apos;s product url below and we will create a
-            website for you.
+            Boost your online presence instantly with our state-of-the-art AI
+            Amazon landing page builder. Simply share your Amazon affiliate link
+            and let&apos;s create your unique landing page in seconds!
           </p>
-          <div className="mt-10 flex items-center gap-x-6">
+          <div className="mt-10 gap-5 gap-x-6 flex flex-col">
+            <p className="mb-5 text-gray-600">
+              let&apos;s start with submission of an Amazon affiliate link below
+            </p>
             <div className="flex gap-2">
               <input
                 type="text"
-                className="border-1 rounded-md border-gray-300"
-                placeholder={"Product Url"}
+                className="border-1 rounded-md border-gray-300 min-w-96"
+                placeholder={"Amazon affiliate link"}
                 onChange={(e) => setProductUrl(e.target.value)}
               />
-              <Link
-                type="button"
-                href={"/amazon?product="+extractASIN(productUrl)}
-                className={`mx-auto  flex items-center gap-2 rounded-md px-3 py-2  text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
-                // disabled={loading}
-                
-              >
-                {/* {loading && (
+            </div>
+            <Link
+              type="button"
+              href={"/amazon?product=" + extractASIN(productUrl)}
+              className={`px-10 w-fit  flex items-center gap-2 rounded-md py-2  text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
+              // disabled={loading}
+            >
+              {/* {loading && (
                   <ImSpinner2 className="animate-spin text-lg text-white" />
                 )}
                 {loading ? "Creating.." : "Create"} */}
-                Create
-              </Link>
-            </div>
-
-            <LearnMoreButton />
+             Build
+            </Link>
           </div>
         </div>
       </div>
