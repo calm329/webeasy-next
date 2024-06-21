@@ -258,7 +258,7 @@ export default function SiteHeader(props: TProps) {
                 if(isSiteBuilderPage(pathname)){
                   setShowLeaveModal(true);
                 }else{
-                  
+                  router.push("/")
                 }
               }}
             >
