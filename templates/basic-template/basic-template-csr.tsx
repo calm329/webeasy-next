@@ -106,7 +106,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   }
                 }}
               >
-                <div className="flex flex-col">
+                <div className="flex flex-col mb-10">
                   {services?.title ? (
                     <h2 className="text-center text-2xl font-bold">
                       {appState?.generate?.generating ? (
