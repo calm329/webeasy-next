@@ -545,8 +545,7 @@ export const regenerateText = async (params: TParams) => {
 
       if (content) {
         console.log("content", content);
-        content["hero"]["image"]["imageUrl"] =
-          appState.aiContent.hero.image;
+        content["hero"]["image"]["imageUrl"] = appState.aiContent.hero.image;
         content["banner"]["logo"]["link"] = appState.aiContent.banner.logo.link;
 
         content["colors"] = appState.aiContent.colors;
@@ -1784,9 +1783,8 @@ export async function generateNewCustomSite(data: {
     const startTime = performance.now();
     const startImagesTime = performance.now();
     // Start all API calls in parallel
-    const [heroImage, logo] = await Promise.all([
+    const [heroImage] = await Promise.all([
       getHeroImageForCustom(data.businessType),
-      getLogo(data.businessName),
     ]);
 
     store.dispatch(
@@ -1820,12 +1818,6 @@ export async function generateNewCustomSite(data: {
           imageUrl: heroImage,
         },
       },
-      banner: {
-        logo: {
-          show: true,
-          link: logo,
-        },
-      },
       services: {
         show: true,
       },
@@ -1845,7 +1837,7 @@ export async function generateNewCustomSite(data: {
       }),
     );
     const startTextTime = performance.now();
-    const [hero, banner, services] = await Promise.all([
+    const [hero, banner, services, logo] = await Promise.all([
       CustomContent.getHero({
         data,
         individual: false,
@@ -1864,12 +1856,13 @@ export async function generateNewCustomSite(data: {
         fieldName: "",
         type: "",
       }),
+      getLogo(data.businessType),
     ]);
 
     const endTextTime = performance.now();
     const timeTextTaken = endTextTime - startTextTime;
     console.log(
-      `Total time taken by Text Api Calls: ${timeTextTaken} milliseconds`,
+      `Total time taken by Text and logo Api Calls: ${timeTextTaken} milliseconds`,
     );
 
     const endTime = performance.now();
@@ -1880,6 +1873,23 @@ export async function generateNewCustomSite(data: {
     console.log("logo", logo);
     console.log(`Total time taken by all API calls: ${timeTaken} milliseconds`);
     console.log("services", services, hero, banner);
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          banner: {
+            ...getAppState().aiContent.banner,
+            logo: {
+              ...getAppState().aiContent.banner.logo,
+              show: true,
+              link: logo,
+            },
+          },
+        },
+      }),
+    );
 
     const finalData = {
       ...initialData,
@@ -1893,7 +1903,11 @@ export async function generateNewCustomSite(data: {
       },
       banner: {
         ...banner,
-        ...initialData.banner,
+        logo: {
+          ...banner.logo,
+          show: true,
+          link: logo,
+        },
       },
     };
 
@@ -1949,7 +1963,7 @@ export async function generateImagesForCustom(data: {
 
             logo: {
               ...getAppState().aiContent.banner.logo,
-              show:true,
+              show: true,
               link: logo,
             },
           },
@@ -1957,7 +1971,7 @@ export async function generateImagesForCustom(data: {
             ...getAppState().aiContent.hero,
             image: {
               ...getAppState().aiContent.hero.image,
-              show:true,
+              show: true,
               imageUrl: heroImage,
             },
           },
@@ -2071,16 +2085,19 @@ export async function getHeroImageForCustom(businessType: string) {
       `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${businessType}`,
     );
     const data = await res.json();
-    return data.urls.full;
+    return data.urls.small;
   } catch (error) {}
 }
 
 export async function getLogo(prompt: string) {
   try {
-    const res = await fetch(
-      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}`,
-    );
+    const res = await fetch("/api/image", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt: prompt,
+      }),
+    });
     const data = await res.json();
-    return data.urls.full;
+    return data.imageUrl;
   } catch (error) {}
 }

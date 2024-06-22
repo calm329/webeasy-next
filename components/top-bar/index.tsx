@@ -49,7 +49,7 @@ export default function TopBar(props: TopBarProps) {
             style={{ color: colors?.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {banner.logo ? (
+            {banner.logo.link ? (
               editable ? (
                 banner.logo.show && (
                   <Image
