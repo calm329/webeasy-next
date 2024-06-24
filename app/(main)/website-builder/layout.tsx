@@ -37,10 +37,7 @@ export default function Layout({
     <div className="max-w-7xl mx-auto">
       <SiteHeader showNavigation={true} />
       <div className="flex flex-col justify-center pt-10  px-10 gap-5">
-        {/* <h1 className="text-6xl font-bold leading-normal">
-          Instant Online Presence Made Simple
-        </h1> */}
-        <p className="mx-auto text-xl font-semibold sm:hidden">Build a website from </p>
+
       </div>
      
       <div>{children}</div>
