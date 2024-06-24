@@ -2105,3 +2105,30 @@ export async function getLogo(req: {
     return data.imageUrl;
   } catch (error) {}
 }
+
+export async function getAiHeroImageForCustom() {
+  try {
+    const res = await fetch("/api/image", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt: `generate hero image for ${getAppState().aiContent.businessType}`,
+      }),
+    });
+    const data = await res.json();
+    return data.imageUrl;
+  } catch (error) {}
+}
+
+export async function regenerateHeroImage(type: string) {
+  try {
+    
+    let image = "";
+    console.log("type",type)
+    if (type === "Stored Image") {
+      image = await getHeroImageForCustom(getAppState().aiContent?.businessType ?? "");
+    } else {
+      image = await getAiHeroImageForCustom();
+    }
+    return image
+  } catch (error) {}
+}

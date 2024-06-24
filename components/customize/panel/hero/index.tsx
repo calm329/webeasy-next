@@ -24,7 +24,10 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import RegenerateOptions from "@/components/regenerate-options";
-import { regenerateIndividual } from "@/lib/utils/function";
+import {
+  regenerateHeroImage,
+  regenerateIndividual,
+} from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
 type TProps = {
   section: TSection;
@@ -67,6 +70,8 @@ const HeroContent = (props: TProps) => {
     setIsLinkInValid(true);
   };
   const [type, setType] = useState("");
+  const [imageGenerationType, setImageGenerationType] =
+    useState("Stored Image");
   const reorder = (list: any, startIndex: number, endIndex: number): any => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -137,44 +142,227 @@ const HeroContent = (props: TProps) => {
   }, [appState]);
 
   return (
-    <div className="max-h-[600px] h-[55vh]  overflow-y-auto py-5 transition-all ease-in-out">
+    <div className="h-[55vh] max-h-[600px]  overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
-        {appState.aiContent?.hero && Object.keys(appState.aiContent?.hero).map((data) => (
-          <>
-            {(() => {
-              switch (data) {
-                case "image":
-                  return (
-                    <div className="flex flex-col gap-5">
-                      <div className="flex justify-between ">
-                        <h3 className="block text-sm font-medium leading-6 text-gray-900">
-                          Hero Image
-                        </h3>
-                        <div className="flex gap-5">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedField(data);
-                              setLoadingImage(true);
-                              regenerateIndividual({
-                                appState,
-                                dispatch,
-                                searchParams,
-                                fieldName: data,
-                                type,
-                              }).then(() => {
-                                setLoadingImage(false);
-                              });
-                            }}
-                            className="flex items-center gap-2 "
-                          >
-                            Regenerate
-                            {loadingImage  ? (
-                              <ImSpinner2 className="animate-spin text-lg text-black" />
-                            ) : (
-                              <ImPower className=" text-xs " />
-                            )}
-                          </button>
+        {appState.aiContent?.hero &&
+          Object.keys(appState.aiContent?.hero).map((data) => (
+            <>
+              {(() => {
+                switch (data) {
+                  case "image":
+                    return (
+                      <div className="flex flex-col gap-5">
+                        <div className="flex justify-between ">
+                          <h3 className="block text-sm font-medium leading-6 text-gray-900">
+                            Hero Image
+                          </h3>
+                          <div className="flex gap-5">
+                            <div className="flex">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelectedField(data);
+                                  setLoadingImage(true);
+                                  dispatch(
+                                    updateAppState({
+                                      ...appState,
+                                      aiContent: {
+                                        ...appState.aiContent,
+                                        hero: {
+                                          ...appState.aiContent.hero,
+                                          image: {
+                                            ...appState.aiContent.hero.image,
+                                            imageUrl: "" ,
+                                          },
+                                        },
+                                      },
+                                    }),
+                                  );
+                                  regenerateHeroImage(imageGenerationType).then((image) => {
+                                    setLoadingImage(false);
+                                    dispatch(
+                                      updateAppState({
+                                        ...appState,
+                                        aiContent: {
+                                          ...appState.aiContent,
+                                          hero: {
+                                            ...appState.aiContent.hero,
+                                            image: {
+                                              ...appState.aiContent.hero.image,
+                                              imageUrl: image ,
+                                            },
+                                          },
+                                        },
+                                      }),
+                                    );
+                                  });
+                                }}
+                                className="flex items-center gap-2 "
+                              >
+                                Regenerate
+                                {loadingImage ? (
+                                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                                ) : (
+                                  <ImPower className=" text-xs " />
+                                )}
+                              </button>
+                              <RegenerateOptions
+                                setType={setImageGenerationType}
+                                type={imageGenerationType}
+                                types={["Ai Generated", "Stored Image"]}
+                                title="Generation Type"
+                              />
+                            </div>
+
+                            <Switch
+                              onCheckedChange={(checked) =>
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      hero: {
+                                        ...appState.aiContent.hero,
+                                        image: {
+                                          ...appState.aiContent.hero.image,
+                                          show: checked,
+                                        },
+                                      },
+                                    },
+                                  }),
+                                )
+                              }
+                              checked={appState.aiContent.hero.image.show}
+                            />
+                          </div>
+                        </div>
+                        {appState.aiContent.hero.image.show && (
+                          <div>
+                            <Uploader
+                              defaultValue={
+                                appState.aiContent.hero.image.imageUrl
+                              }
+                              name={data}
+                              label={""}
+                              onChange={(value) => {
+                                handleChange(data, value);
+                                // field.onChange(value);
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  case "heading":
+                    return (
+                      <div className="flex flex-col border-t pt-5">
+                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                          <label htmlFor={data} className="block">
+                            {data}
+                          </label>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedField(data);
+                                setLoadingHeading(true);
+                                regenerateIndividual({
+                                  appState,
+                                  dispatch,
+                                  searchParams,
+                                  fieldName: data,
+                                  type,
+                                }).then(() => {
+                                  setLoadingHeading(false);
+                                });
+                              }}
+                              className="flex items-center gap-2 "
+                            >
+                              Regenerate
+                              {loadingHeading ? (
+                                <ImSpinner2 className="animate-spin text-lg text-black" />
+                              ) : (
+                                <ImPower className=" text-xs " />
+                              )}
+                            </button>
+                            <RegenerateOptions setType={setType} type={type} />
+                          </div>
+                        </div>
+
+                        <input
+                          type="text"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          id={data}
+                          placeholder={"Enter heading..."}
+                          onChange={(e) => {
+                            handleChange(data, e.target.value);
+                          }}
+                          ref={inputRef}
+                          value={appState.aiContent.hero.heading}
+                        />
+                      </div>
+                    );
+                  case "subheading":
+                    return (
+                      <div className="flex flex-col border-t pt-5">
+                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                          <label htmlFor={data} className="block">
+                            {data}
+                          </label>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedField(data);
+                                setLoadingSubHeading(true);
+                                regenerateIndividual({
+                                  appState,
+                                  dispatch,
+                                  searchParams,
+                                  fieldName: data,
+                                  type,
+                                }).then(() => {
+                                  setLoadingSubHeading(false);
+                                });
+                              }}
+                              className="flex items-center gap-2 "
+                            >
+                              Regenerate
+                              {loadingSubHeading ? (
+                                <ImSpinner2 className="animate-spin text-lg text-black" />
+                              ) : (
+                                <ImPower className=" text-xs " />
+                              )}
+                            </button>
+                            <RegenerateOptions setType={setType} type={type} />
+                          </div>
+                        </div>
+                        <textarea
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          id={data}
+                          placeholder={"Enter Sub-heading"}
+                          onChange={(e) => {
+                            handleChange(data, e.target.value);
+                          }}
+                          ref={textareaRef}
+                          value={appState.aiContent.hero.subheading}
+                        />
+                      </div>
+                    );
+
+                  case "button":
+                    return (
+                      <div className="flex flex-col gap-5 border-t pt-5">
+                        <div className="flex justify-between gap-10">
+                          <div>
+                            <h3 className="block text-sm font-medium leading-6 text-gray-900">
+                              Buttons
+                            </h3>
+                            <p className="text-xs text-gray-400 ">
+                              Add a button with a link to a page, phone number,
+                              email or section
+                            </p>
+                          </div>
                           <Switch
                             onCheckedChange={(checked) =>
                               dispatch(
@@ -184,8 +372,8 @@ const HeroContent = (props: TProps) => {
                                     ...appState.aiContent,
                                     hero: {
                                       ...appState.aiContent.hero,
-                                      image: {
-                                        ...appState.aiContent.hero.image,
+                                      button: {
+                                        ...appState.aiContent.hero.button,
                                         show: checked,
                                       },
                                     },
@@ -193,245 +381,101 @@ const HeroContent = (props: TProps) => {
                                 }),
                               )
                             }
-                            checked={appState.aiContent.hero.image.show}
+                            checked={appState.aiContent.hero.button.show}
                           />
                         </div>
-                      </div>
-                      {appState.aiContent.hero.image.show && (
-                        <div>
-                          <Uploader
-                            defaultValue={
-                              appState.aiContent.hero.image.imageUrl
-                            }
-                            name={data}
-                            label={""}
-                            onChange={(value) => {
-                              handleChange(data, value);
-                              // field.onChange(value);
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  );
-                case "heading":
-                  return (
-                    <div className="flex flex-col border-t pt-5">
-                      <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
-                        <label htmlFor={data} className="block">
-                          {data}
-                        </label>
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedField(data);
-                              setLoadingHeading(true);
-                              regenerateIndividual({
-                                appState,
-                                dispatch,
-                                searchParams,
-                                fieldName: data,
-                                type,
-                              }).then(() => {
-                                setLoadingHeading(false);
-                              });
-                            }}
-                            className="flex items-center gap-2 "
-                          >
-                            Regenerate
-                            {loadingHeading  ? (
-                              <ImSpinner2 className="animate-spin text-lg text-black" />
-                            ) : (
-                              <ImPower className=" text-xs " />
-                            )}
-                          </button>
-                          <RegenerateOptions setType={setType} type={type} />
-                        </div>
-                      </div>
-
-                      <input
-                        type="text"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        id={data}
-                        placeholder={"Enter heading..."}
-                        onChange={(e) => {
-                          handleChange(data, e.target.value);
-                        }}
-                        ref={inputRef}
-                        value={appState.aiContent.hero.heading}
-                      />
-                    </div>
-                  );
-                case "subheading":
-                  return (
-                    <div className="flex flex-col border-t pt-5">
-                      <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
-                        <label htmlFor={data} className="block">
-                          {data}
-                        </label>
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedField(data);
-                              setLoadingSubHeading(true);
-                              regenerateIndividual({
-                                appState,
-                                dispatch,
-                                searchParams,
-                                fieldName: data,
-                                type,
-                              }).then(() => {
-                                setLoadingSubHeading(false);
-                              });
-                            }}
-                            className="flex items-center gap-2 "
-                          >
-                            Regenerate
-                            {loadingSubHeading  ? (
-                              <ImSpinner2 className="animate-spin text-lg text-black" />
-                            ) : (
-                              <ImPower className=" text-xs " />
-                            )}
-                          </button>
-                          <RegenerateOptions setType={setType} type={type} />
-                        </div>
-                      </div>
-                      <textarea
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        id={data}
-                        placeholder={"Enter Sub-heading"}
-                        onChange={(e) => {
-                          handleChange(data, e.target.value);
-                        }}
-                        ref={textareaRef}
-                        value={appState.aiContent.hero.subheading}
-                      />
-                    </div>
-                  );
-
-                case "button":
-                  return (
-                    <div className="flex flex-col gap-5 border-t pt-5">
-                      <div className="flex justify-between gap-10">
-                        <div>
-                          <h3 className="block text-sm font-medium leading-6 text-gray-900">
-                            Buttons
-                          </h3>
-                          <p className="text-xs text-gray-400 ">
-                            Add a button with a link to a page, phone number,
-                            email or section
-                          </p>
-                        </div>
-                        <Switch
-                          onCheckedChange={(checked) =>
-                            dispatch(
-                              updateAppState({
-                                ...appState,
-                                aiContent: {
-                                  ...appState.aiContent,
-                                  hero: {
-                                    ...appState.aiContent.hero,
-                                    button: {
-                                      ...appState.aiContent.hero.button,
-                                      show: checked,
-                                    },
-                                  },
-                                },
-                              }),
-                            )
-                          }
-                          checked={appState.aiContent.hero.button.show}
-                        />
-                      </div>
-                      {appState.aiContent.hero.button.show && (
-                        <>
-                          <DragDropContext onDragEnd={onDragEnd}>
-                            <Droppable droppableId="droppable">
-                              {(provided, snapshot) => (
-                                <div
-                                  {...provided.droppableProps}
-                                  ref={provided.innerRef}
-                                  style={getListStyle(snapshot.isDraggingOver)}
-                                >
-                                  {appState.aiContent.hero.button.list.map(
-                                    (item, index) => (
-                                      <Draggable
-                                        key={item.name}
-                                        draggableId={item.name}
-                                        index={index}
-                                      >
-                                        {(provided, snapshot) => (
-                                          <div
-                                            className=" flex items-center justify-between"
-                                            key={item.name}
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                              snapshot.isDragging,
-                                              provided.draggableProps.style,
-                                            )}
-                                          >
-                                            <div className="flex items-center gap-2">
-                                              <RxDragHandleDots2 />
-                                              <FiLink />
-                                              <h4>{item.label}</h4>
+                        {appState.aiContent.hero.button.show && (
+                          <>
+                            <DragDropContext onDragEnd={onDragEnd}>
+                              <Droppable droppableId="droppable">
+                                {(provided, snapshot) => (
+                                  <div
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                    style={getListStyle(
+                                      snapshot.isDraggingOver,
+                                    )}
+                                  >
+                                    {appState.aiContent.hero.button.list.map(
+                                      (item, index) => (
+                                        <Draggable
+                                          key={item.name}
+                                          draggableId={item.name}
+                                          index={index}
+                                        >
+                                          {(provided, snapshot) => (
+                                            <div
+                                              className=" flex items-center justify-between"
+                                              key={item.name}
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              style={getItemStyle(
+                                                snapshot.isDragging,
+                                                provided.draggableProps.style,
+                                              )}
+                                            >
+                                              <div className="flex items-center gap-2">
+                                                <RxDragHandleDots2 />
+                                                <FiLink />
+                                                <h4>{item.label}</h4>
+                                              </div>
+                                              <div className="flex items-center gap-2">
+                                                <MdModeEditOutline
+                                                  color="blue"
+                                                  size={20}
+                                                  onClick={() =>
+                                                    setShowForm({
+                                                      form: "Button",
+                                                      show: true,
+                                                      edit: item.name,
+                                                    })
+                                                  }
+                                                />
+                                                <MdDeleteForever
+                                                  color="red"
+                                                  size={20}
+                                                  onClick={() =>
+                                                    handleDeleteButton(
+                                                      item.name,
+                                                    )
+                                                  }
+                                                />
+                                              </div>
                                             </div>
-                                            <div className="flex items-center gap-2">
-                                              <MdModeEditOutline
-                                                color="blue"
-                                                size={20}
-                                                onClick={() =>
-                                                  setShowForm({
-                                                    form: "Button",
-                                                    show: true,
-                                                    edit: item.name,
-                                                  })
-                                                }
-                                              />
-                                              <MdDeleteForever
-                                                color="red"
-                                                size={20}
-                                                onClick={() =>
-                                                  handleDeleteButton(item.name)
-                                                }
-                                              />
-                                            </div>
-                                          </div>
-                                        )}
-                                      </Draggable>
-                                    ),
-                                  )}
-                                  {provided.placeholder}
-                                </div>
-                              )}
-                            </Droppable>
-                          </DragDropContext>
-                          {appState.aiContent.hero.button.list.length !== 2 && (
-                            <button
-                              className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-                              onClick={() =>
-                                setShowForm({
-                                  form: "Button",
-                                  edit: "",
-                                  show: true,
-                                })
-                              }
-                            >
-                              Add Button
-                              <IoMdAdd size={20} />
-                            </button>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  );
-              }
-            })()}
-          </>
-        ))}
+                                          )}
+                                        </Draggable>
+                                      ),
+                                    )}
+                                    {provided.placeholder}
+                                  </div>
+                                )}
+                              </Droppable>
+                            </DragDropContext>
+                            {appState.aiContent.hero.button.list.length !==
+                              2 && (
+                              <button
+                                className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                                onClick={() =>
+                                  setShowForm({
+                                    form: "Button",
+                                    edit: "",
+                                    show: true,
+                                  })
+                                }
+                              >
+                                Add Button
+                                <IoMdAdd size={20} />
+                              </button>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    );
+                }
+              })()}
+            </>
+          ))}
       </form>
     </div>
   );

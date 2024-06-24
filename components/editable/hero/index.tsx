@@ -205,7 +205,7 @@ const EditableHero = (props: TProps) => {
           )}
         </div>
       </div>
-      {appState.aiContent.hero.image ? (
+      {appState.aiContent.hero.image.imageUrl ? (
         hero.image.show && (
           <div
             className={` min-w-72 p-8  max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
