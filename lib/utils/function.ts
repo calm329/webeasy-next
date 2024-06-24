@@ -2139,3 +2139,64 @@ export async function regenerateHeroImage(type: string) {
     return image;
   } catch (error) {}
 }
+
+export async function generateCustomServiceTAndD({
+  individual,
+  type,
+  fieldName,
+  data,
+}: {
+  individual: boolean;
+  type: string;
+  fieldName: string;
+  data: { businessType: string; businessName: string; location: string };
+}) {
+  try {
+    const response = await CustomContent.getServiceTAndD({
+      data,
+      fieldName,
+      type: "",
+      individual: true,
+    });
+
+    const updateState = async (fieldName: string, content: any) => {
+      const currentAppState = getAppState(); // Ensure we are using the latest app state
+      return new Promise<void>((resolve) => {
+        switch (fieldName) {
+          case "title":
+            store.dispatch(
+              updateAppState({
+                ...currentAppState,
+                aiContent: {
+                  ...currentAppState.aiContent,
+                  services: {
+                    ...currentAppState.aiContent.services,
+                    title: content.title,
+                  },
+                },
+              }),
+            );
+
+            break;
+          case "description":
+            store.dispatch(
+              updateAppState({
+                ...currentAppState,
+                aiContent: {
+                  ...currentAppState.aiContent,
+                  services: {
+                    ...currentAppState.aiContent.services,
+                    description: content.description,
+                  },
+                },
+              }),
+            );
+            break;
+        }
+        resolve();
+      });
+    };
+
+    updateQueue.enqueue(() => updateState(fieldName, response));
+  } catch (error) {}
+}

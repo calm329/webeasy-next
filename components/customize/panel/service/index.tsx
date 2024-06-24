@@ -21,6 +21,7 @@ import { IoMdAdd } from "react-icons/io";
 import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
 import { RxDragHandleDots2 } from "react-icons/rx";
 import CustomContent from "../../../../lib/content/custom";
+import { generateCustomServiceTAndD } from "@/lib/utils/function";
 
 const grid = 2;
 
@@ -158,7 +159,7 @@ const ServiceContent = (props: TProps) => {
                 onClick={() => {
                   setLoadingTitle(true);
                   setSelectedField("title");
-                  CustomContent.getServiceTAndD({
+                  generateCustomServiceTAndD({
                     data: {
                       businessName: appState.aiContent.banner.businessName,
                       businessType: appState.aiContent.businessType ?? "",
@@ -167,20 +168,9 @@ const ServiceContent = (props: TProps) => {
                     fieldName: "title",
                     type: "",
                     individual: true,
-                  }).then((data) => {
+                  }).then(() => {
                     setLoadingTitle(false);
-                    dispatch(
-                      updateAppState({
-                        ...appState,
-                        aiContent: {
-                          ...appState.aiContent,
-                          services: {
-                            ...appState.aiContent.services,
-                            title: data.title,
-                          },
-                        },
-                      }),
-                    );
+                    
                   });
                 }}
               >
@@ -231,7 +221,7 @@ const ServiceContent = (props: TProps) => {
                 onClick={() => {
                   setLoadingDescription(true);
                   setSelectedField("description");
-                  CustomContent.getServiceTAndD({
+                  generateCustomServiceTAndD({
                     data: {
                       businessName: appState.aiContent.banner.businessName,
                       businessType: appState.aiContent.businessType ?? "",
@@ -240,20 +230,9 @@ const ServiceContent = (props: TProps) => {
                     fieldName: "description",
                     type: "",
                     individual: true,
-                  }).then((data) => {
+                  }).then(() => {
                     setLoadingDescription(false);
-                    dispatch(
-                      updateAppState({
-                        ...appState,
-                        aiContent: {
-                          ...appState.aiContent,
-                          services: {
-                            ...appState.aiContent.services,
-                            description: data.description,
-                          },
-                        },
-                      }),
-                    );
+                    
                   });
                 }}
               >
