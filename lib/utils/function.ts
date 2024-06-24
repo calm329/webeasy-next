@@ -1856,7 +1856,7 @@ export async function generateNewCustomSite(data: {
         fieldName: "",
         type: "",
       }),
-      getLogo(data.businessType),
+      getLogo(data),
     ]);
 
     const endTextTime = performance.now();
@@ -1931,7 +1931,11 @@ export async function generateImagesForCustom(data: {
           banner: {
             ...getAppState().aiContent.banner,
 
-            logo: "",
+            logo: {
+              ...getAppState().aiContent.banner.logo,
+              show: true,
+              link: "",
+            },
           },
           hero: {
             ...getAppState().aiContent.hero,
@@ -1946,7 +1950,7 @@ export async function generateImagesForCustom(data: {
     // Start all API calls in parallel
     const [heroImage, logo] = await Promise.all([
       getHeroImageForCustom(data.businessType),
-      getLogo(data.businessType),
+      getLogo(data),
     ]);
 
     store.dispatch(
@@ -2079,12 +2083,16 @@ export async function getHeroImageForCustom(businessType: string) {
   } catch (error) {}
 }
 
-export async function getLogo(prompt: string) {
+export async function getLogo(req: {
+  businessName:string,
+  businessType:string,
+  location:string,
+}) {
   try {
     const res = await fetch("/api/image", {
       method: "POST",
       body: JSON.stringify({
-        prompt: prompt,
+        prompt: `generate logo for business name ${req.businessName} and businessType ${req.businessType} but don't add living things in it.`,
       }),
     });
     const data = await res.json();
