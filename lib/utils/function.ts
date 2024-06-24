@@ -1938,10 +1938,6 @@ export async function generateImagesForCustom(data: {
             image: "",
           },
         },
-        generate: {
-          generating: true,
-          progress: 0,
-        },
       }),
     );
 
@@ -2013,10 +2009,7 @@ export async function generateTextForCustom(data: {
           },
           services: "",
         },
-        generate: {
-          generating: true,
-          progress: 0,
-        },
+
       }),
     );
 
@@ -2062,10 +2055,7 @@ export async function generateTextForCustom(data: {
             },
           },
         },
-        generate: {
-          generating: false,
-          progress: 0,
-        },
+
       }),
     );
 
