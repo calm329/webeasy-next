@@ -139,7 +139,7 @@ const HeroContent = (props: TProps) => {
   return (
     <div className="max-h-[600px] h-[55vh]  overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
-        {Object.keys(appState.aiContent?.hero).map((data) => (
+        {appState.aiContent?.hero && Object.keys(appState.aiContent?.hero).map((data) => (
           <>
             {(() => {
               switch (data) {

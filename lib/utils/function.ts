@@ -2013,7 +2013,10 @@ export async function generateTextForCustom(data: {
           },
           services: "",
         },
-
+        generate: {
+          generating: true,
+          progress: 0,
+        },
       }),
     );
 
@@ -2059,7 +2062,10 @@ export async function generateTextForCustom(data: {
             },
           },
         },
-
+        generate: {
+          generating: false,
+          progress: 0,
+        },
       }),
     );
 
@@ -2084,9 +2090,9 @@ export async function getHeroImageForCustom(businessType: string) {
 }
 
 export async function getLogo(req: {
-  businessName:string,
-  businessType:string,
-  location:string,
+  businessName: string;
+  businessType: string;
+  location: string;
 }) {
   try {
     const res = await fetch("/api/image", {
