@@ -2,7 +2,13 @@ import RegenerateOptions from "@/components/regenerate-options";
 import { Switch } from "@/components/ui/switch";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
-import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   DragDropContext,
   Draggable,
@@ -14,6 +20,7 @@ import { ImPower, ImSpinner2 } from "react-icons/im";
 import { IoMdAdd } from "react-icons/io";
 import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
 import { RxDragHandleDots2 } from "react-icons/rx";
+import CustomContent from "../../../../lib/content/custom";
 
 const grid = 2;
 
@@ -49,6 +56,10 @@ const ServiceContent = (props: TProps) => {
     result.splice(endIndex, 0, removed);
     return result;
   };
+  const [loadingDescription, setLoadingDescription] = useState(false);
+  const [loadingTitle, setLoadingTitle] = useState(false);
+
+  const [selectedField, setSelectedField] = useState("");
 
   const onDragEnd = (result: DropResult): void => {
     if (!result.destination) {
@@ -141,9 +152,40 @@ const ServiceContent = (props: TProps) => {
               {"title"}
             </label>
             <div className="flex items-center gap-2">
-              <button type="button" className="flex items-center gap-2 ">
+              <button
+                type="button"
+                className="flex items-center gap-2 "
+                onClick={() => {
+                  setLoadingTitle(true);
+                  setSelectedField("title");
+                  CustomContent.getServiceTAndD({
+                    data: {
+                      businessName: appState.aiContent.banner.businessName,
+                      businessType: appState.aiContent.businessType ?? "",
+                      location: appState.aiContent.location ?? "",
+                    },
+                    fieldName: "title",
+                    type: "",
+                    individual: true,
+                  }).then((data) => {
+                    setLoadingTitle(false);
+                    dispatch(
+                      updateAppState({
+                        ...appState,
+                        aiContent: {
+                          ...appState.aiContent,
+                          services: {
+                            ...appState.aiContent.services,
+                            title: data.title,
+                          },
+                        },
+                      }),
+                    );
+                  });
+                }}
+              >
                 Regenerate
-                {false ? (
+                {loadingTitle ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
                   <ImPower className=" text-xs " />
@@ -183,9 +225,40 @@ const ServiceContent = (props: TProps) => {
               {"description"}
             </label>
             <div className="flex items-center gap-2">
-              <button type="button" className="flex items-center gap-2 ">
+              <button
+                type="button"
+                className="flex items-center gap-2 "
+                onClick={() => {
+                  setLoadingDescription(true);
+                  setSelectedField("description");
+                  CustomContent.getServiceTAndD({
+                    data: {
+                      businessName: appState.aiContent.banner.businessName,
+                      businessType: appState.aiContent.businessType ?? "",
+                      location: appState.aiContent.location ?? "",
+                    },
+                    fieldName: "description",
+                    type: "",
+                    individual: true,
+                  }).then((data) => {
+                    setLoadingDescription(false);
+                    dispatch(
+                      updateAppState({
+                        ...appState,
+                        aiContent: {
+                          ...appState.aiContent,
+                          services: {
+                            ...appState.aiContent.services,
+                            description: data.description,
+                          },
+                        },
+                      }),
+                    );
+                  });
+                }}
+              >
                 Regenerate
-                {false ? (
+                {loadingDescription ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
                   <ImPower className=" text-xs " />
