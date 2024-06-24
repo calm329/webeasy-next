@@ -61,10 +61,6 @@ class CustomContentApiService {
                       ...getAppState().aiContent,
                       services: parsedData.services,
                     },
-                    generate: {
-                      ...getAppState().generate,
-                      progress: 100,
-                    },
                   }),
                 );
                 resolve(parsedData.services);
@@ -226,7 +222,7 @@ class CustomContentApiService {
                     },
                     generate: {
                       ...getAppState().generate,
-                      progress: getAppState().generate.progress + 10,
+                      progress: getAppState().generate.progress + 5,
                     },
                   }),
                 );
@@ -378,7 +374,7 @@ class CustomContentApiService {
                     },
                     generate: {
                       ...getAppState().generate,
-                      progress: getAppState().generate.progress + 10,
+                      progress: getAppState().generate.progress + 5,
                     },
                   }),
                 );

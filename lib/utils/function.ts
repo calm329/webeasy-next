@@ -1874,22 +1874,28 @@ export async function generateNewCustomSite(data: {
     console.log(`Total time taken by all API calls: ${timeTaken} milliseconds`);
     console.log("services", services, hero, banner);
 
-    store.dispatch(
-      updateAppState({
-        ...getAppState(),
-        aiContent: {
-          ...getAppState().aiContent,
-          banner: {
-            ...getAppState().aiContent.banner,
-            logo: {
-              ...getAppState().aiContent.banner.logo,
-              show: true,
-              link: logo,
+    if (logo) {
+      store.dispatch(
+        updateAppState({
+          ...getAppState(),
+          aiContent: {
+            ...getAppState().aiContent,
+            banner: {
+              ...getAppState().aiContent.banner,
+              logo: {
+                ...getAppState().aiContent.banner.logo,
+                show: true,
+                link: logo,
+              },
             },
           },
-        },
-      }),
-    );
+          generate: {
+            regenerating: true,
+            progress: 100,
+          },
+        }),
+      );
+    }
 
     const finalData = {
       ...initialData,
@@ -2121,14 +2127,15 @@ export async function getAiHeroImageForCustom() {
 
 export async function regenerateHeroImage(type: string) {
   try {
-    
     let image = "";
-    console.log("type",type)
+    console.log("type", type);
     if (type === "Stored Image") {
-      image = await getHeroImageForCustom(getAppState().aiContent?.businessType ?? "");
+      image = await getHeroImageForCustom(
+        getAppState().aiContent?.businessType ?? "",
+      );
     } else {
       image = await getAiHeroImageForCustom();
     }
-    return image
+    return image;
   } catch (error) {}
 }
