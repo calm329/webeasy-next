@@ -65,45 +65,48 @@ export default function SigninForm(props: TProps) {
 
   const onSubmit = async (data: UserFormValue) => {
     setLoading(true);
-
-    const status = await signIn("email", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
-    const sites = await getSitesByUserId();
-
-
-    if (status?.error) {
-      toast.error(status?.error, {
-        position: "top-right",
+    try {
+      const status = await signIn("email", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
       });
-      return;
-    }
-    if (status?.ok) {
-      if (rememberMe) {
-        encryptData(data.email, data.password);
-      } else {
-        const encryptedData = localStorage.getItem("userData");
-        if (encryptedData) {
-          localStorage.removeItem("userData");
-        }
+      const sites = await getSitesByUserId();
+
+      if (status?.error) {
+        toast.error(status?.error, {
+          position: "top-right",
+        });
+        return;
       }
-      toast.success("Login successful", {
-        position: "top-right",
-      });
-      setIsOpen(false);
-    }
+      if (status?.ok) {
+        if (rememberMe) {
+          encryptData(data.email, data.password);
+        } else {
+          const encryptedData = localStorage.getItem("userData");
+          if (encryptedData) {
+            localStorage.removeItem("userData");
+          }
+        }
+        toast.success("Login successful", {
+          position: "top-right",
+        });
+        setIsOpen(false);
+      }
 
-    if (isSiteBuilderPage(pathname)) {
-      saveState(appState, dispatch).then(() => dispatch(clearPastAndFuture()));
-    }else if (sites && sites.length > 0) {
-      router.push("/settings/websites");
-    } else {
-      router.push("/website-builder");
+      if (isSiteBuilderPage(pathname)) {
+        saveState(appState, dispatch).then(() =>
+          dispatch(clearPastAndFuture()),
+        );
+      } else if (sites && sites.length > 0) {
+        router.push("/settings/websites");
+      } else {
+        router.push("/website-builder");
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const decryptData = () => {
