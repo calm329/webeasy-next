@@ -208,14 +208,14 @@ const EditableHero = (props: TProps) => {
       {appState.aiContent.hero.image.imageUrl ? (
         hero.image.show && (
           <div
-            className={` min-w-72 p-8  max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
+            className={`overflow-hidden p-8 max-w-80 max-h-80  max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
           >
             <Image
               src={hero.image.imageUrl}
               width={256}
               height={256}
               alt="Hero Image"
-              className={`${appState.view === "Mobile" ? "" : "mx-auto "} rounded-3xl object-contain md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              className={`${appState.view === "Mobile" ? "" : "mx-auto "} w-full h-full rounded-3xl object-cover md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
               onClick={() => {
                 if (
                   editable &&

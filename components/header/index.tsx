@@ -64,6 +64,7 @@ import { BackDrawer } from "../ui/drawer/back-drawer";
 import { LeaveDrawer } from "../ui/drawer/leave-drawer";
 import LeaveModal from "../ui/modal/leave-modal";
 import AiAssist from "../ai-assist";
+import { fetchUser, UsersData as UD } from "@/lib/store/slices/user-slice";
 
 // const navigation = [
 //   { name: "Customization", href: "#" },
@@ -96,7 +97,6 @@ export default function SiteHeader(props: TProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const matches = useMediaQuery("(max-width: 500px)");
-  const [user, setUser] = useState<TUser>(null);
   const [loading, setLoading] = useState(false);
   const [hideNavigation, setHideNavigation] = useState(false);
   const [showWidgetModal, setWidgetModal] = useState(false);
@@ -109,6 +109,7 @@ export default function SiteHeader(props: TProps) {
   const [showBackModal, setShowBackModal] = useState(false);
   const selectedTemplate = useAppSelector(ST);
   const [templates, setTemplates] = useState<TTemplate | null>(null);
+  const userData = useAppSelector(UD);
   const fetchData = async () => {
     try {
       const temp = await dispatch(fetchTemplates()).unwrap();
@@ -116,7 +117,7 @@ export default function SiteHeader(props: TProps) {
       setTemplates(temp);
     } catch (error) {}
   };
-
+  console.log("userData", userData);
   useEffect(() => {
     !templates && fetchData();
 
@@ -135,18 +136,24 @@ export default function SiteHeader(props: TProps) {
   const getUserData = async () => {
     setLoading(true);
     try {
-      const user = await getUserById();
-      setUser({ ...user });
+      // const user = await getUserById();
+      const res = await dispatch(fetchUser()).unwrap();
+
+      // setUser({ ...user });
     } catch (error) {
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // if (session?.user?.email) {
+    !userData && getUserData();
+    // }
+  }, [status]);
   const isBottomBar = useMediaQuery("(min-width: 900px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
-  useEffect(() => {
-    getUserData();
-  }, [status]);
+
   return (
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
@@ -255,10 +262,10 @@ export default function SiteHeader(props: TProps) {
           <div className="flex items-center gap-x-12 ">
             <button
               onClick={() => {
-                if(isSiteBuilderPage(pathname)){
+                if (isSiteBuilderPage(pathname)) {
                   setShowLeaveModal(true);
-                }else{
-                  router.push("/")
+                } else {
+                  router.push("/");
                 }
               }}
             >
@@ -363,7 +370,7 @@ export default function SiteHeader(props: TProps) {
                       )
                     }
                   >
-                    <AccountMenu user={user} />
+                    <AccountMenu user={userData} />
                   </button>
                 )}
                 {status === "unauthenticated" && (
@@ -383,7 +390,7 @@ export default function SiteHeader(props: TProps) {
           <div
             className={`flex ${isAuth && "hidden"} justify-end gap-5  max-lg:hidden`}
           >
-            {status === "authenticated" && <AccountMenu user={user} />}
+            {status === "authenticated" && <AccountMenu user={userData} />}
 
             {status === "unauthenticated" && (
               <button
@@ -460,9 +467,9 @@ export default function SiteHeader(props: TProps) {
               {status === "authenticated" && (
                 <div className="py-5 pt-10">
                   <div className="flex gap-3">
-                    {user?.image ? (
+                    {userData?.image ? (
                       <Image
-                        src={user?.image}
+                        src={userData?.image}
                         className=" aspect-1 h-[45px] w-[45px] rounded-full object-cover text-gray-900"
                         alt=""
                         width={50}
@@ -478,8 +485,8 @@ export default function SiteHeader(props: TProps) {
                       />
                     )}
                     <div>
-                      <h2 className="font-semibold">{user?.name}</h2>
-                      <p className="text-sm">{user?.email}</p>
+                      <h2 className="font-semibold">{userData?.name}</h2>
+                      <p className="text-sm">{userData?.email}</p>
                     </div>
                   </div>
                 </div>

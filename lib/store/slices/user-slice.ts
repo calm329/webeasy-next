@@ -4,6 +4,14 @@ import UserApi from "../../api/user-api";
 
 import { RootState } from "..";
 import { TUser } from "@/types";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const persistConfig = {
+  key: "user",
+  storage,
+  whiteList: ["selectedTemplate"],
+};
 
 type TInitialState = {
   user: TUser;
@@ -34,7 +42,7 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.loading = false;
-     
+
       state.user = action.payload;
     });
     builder.addCase(fetchUser.rejected, (state) => {
@@ -47,5 +55,6 @@ const userSlice = createSlice({
 export { fetchUser };
 export const UsersData = (state: RootState) => state.userSlice.user;
 export const loading = (state: RootState) => state.userSlice.loading;
+
 //export default reducer
-export default userSlice.reducer;
+export default persistReducer(persistConfig, userSlice.reducer);

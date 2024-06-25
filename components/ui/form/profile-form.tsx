@@ -9,24 +9,24 @@ import { FormField, TFields, TUser } from "@/types";
 import UserModal from "@/components/ui/modal/user-modal";
 import { UserDrawer } from "@/components/ui/drawer/user-drawer";
 import { useMediaQuery } from "usehooks-ts";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { fetchUser } from "@/lib/store/slices/user-slice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { fetchUser, UsersData as UD } from "@/lib/store/slices/user-slice";
 
 export default function Profileform() {
   const { data: session } = useSession();
-  const [user, setUser] = useState<TUser>(null);
+  // const [user, setUser] = useState<TUser>(null);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState<TFields>(null);
   const dispatch = useAppDispatch();
+  const userData = useAppSelector(UD);
   const getUserData = async () => {
     setLoading(true);
     try {
-      const user = await getUserById();
+      // const user = await getUserById();
       const res = await dispatch(fetchUser()).unwrap();
 
-      setUser({ ...user });
+      // setUser({ ...user });
     } catch (error) {
-
     } finally {
       setLoading(false);
     }
@@ -34,7 +34,7 @@ export default function Profileform() {
 
   useEffect(() => {
     // if (session?.user?.email) {
-    getUserData();
+    !userData && getUserData();
     // }
   }, []);
   const matches = useMediaQuery("(max-width: 1024px)");
@@ -44,14 +44,14 @@ export default function Profileform() {
         <UserDrawer
           open={open}
           setOpen={setOpen}
-          user={user}
+          user={userData}
           getUserData={getUserData}
         />
       ) : (
         <UserModal
           open={open}
           setOpen={setOpen}
-          user={user}
+          user={userData}
           getUserData={getUserData}
         />
       )}
@@ -68,9 +68,9 @@ export default function Profileform() {
                 Avatar
               </dt>
               <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                {user?.image ? (
+                {userData?.image ? (
                   <Image
-                    src={user?.image}
+                    src={userData?.image}
                     className="aspect-1 h-12 w-12 rounded-full object-cover text-gray-900"
                     alt=""
                     width={100}
@@ -99,7 +99,7 @@ export default function Profileform() {
                 Name
               </dt>
               <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                <div className="text-gray-900"> {user?.name}</div>
+                <div className="text-gray-900"> {userData?.name}</div>
                 <button
                   type="button"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
@@ -114,7 +114,7 @@ export default function Profileform() {
                 Email address
               </dt>
               <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                <div className="text-gray-900">{user?.email}</div>
+                <div className="text-gray-900">{userData?.email}</div>
                 <button
                   type="button"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"

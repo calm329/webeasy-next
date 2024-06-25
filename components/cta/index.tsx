@@ -13,15 +13,16 @@ type TProps = {
 export default function CTA(props: TProps) {
   const { text, bgColor, link, external, appState } = props;
   return (
-    <Link
+    <a
       className="block w-full rounded-full bg-blue-500 px-8 py-3.5 text-center text-lg font-bold text-white hover:bg-blue-600 focus:ring-4 focus:ring-blue-200"
       style={{
         backgroundColor: bgColor,
       }}
       href={link ?? ""}
       target={external ? "_blank" : "_self"}
+      rel={external ? "noopener noreferrer" : ""}
     >
       {appState?.generate?.generating ? <TypewriterEffect text={text} /> : text}
-    </Link>
+    </a>
   );
 }
