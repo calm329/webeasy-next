@@ -256,7 +256,7 @@ export default function SiteHeader(props: TProps) {
           </div>
         )}
         <div
-          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-5 px-0 ${!isBottomBar && "mt-14 w-full max-w-full justify-between"}`}
+          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-5 px-0 ${!isBottomBar && isSiteBuilderPage(pathname) && " w-full max-w-full justify-between mt-14"}`}
           aria-label="Global"
         >
           <div className="flex items-center gap-x-12 ">
@@ -278,9 +278,7 @@ export default function SiteHeader(props: TProps) {
               />
             </button>
 
-            <div
-              className={`flex lg:gap-x-12  max-lg:hidden`}
-            >
+            <div className={`flex max-lg:hidden  lg:gap-x-12`}>
               {status === "authenticated" &&
                 showNavigation &&
                 navigation.map((item) => (

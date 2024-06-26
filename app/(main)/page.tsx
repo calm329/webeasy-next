@@ -39,11 +39,10 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-7xl">
       <SiteHeader showNavigation={true} />
-      <div className="flex flex-col justify-center max-sm:pb-5 gap-5 p-10 max-sm:px-5">
+      <div className="flex flex-col justify-center  gap-5 p-5 max-sm:py-0">
         <h1 className="text-6xl font-bold leading-normal max-md:text-3xl max-sm:text-2xl">
-          WebEasy.ai,
-          <br />
-          Instant Online Presence Made Simple
+      
+          Instant Online Presence Made Easy
         </h1>
         <p className="mx-auto text-xl font-semibold sm:hidden">
           Build a website from{" "}
