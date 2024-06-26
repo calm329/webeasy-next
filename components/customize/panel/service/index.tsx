@@ -121,7 +121,7 @@ const ServiceContent = (props: TProps) => {
     <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
       <div className="flex justify-between gap-10 px-5 pb-5">
         <div>
-          <h3 className="block text-sm font-medium leading-6 text-gray-900">
+          <h3 className="text-sm font-medium leading-6 text-gray-900 ">
             Services
           </h3>
           <p className="text-xs text-gray-400 ">

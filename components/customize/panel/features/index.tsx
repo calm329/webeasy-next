@@ -89,7 +89,7 @@ const FeaturesContent = (props: TProps) => {
       <div className="flex flex-col gap-5 border-t p-5 pt-5">
         <div className="flex justify-between gap-10">
           <div>
-            <h3 className="block text-sm font-medium leading-6 text-gray-900">
+            <h3 className="text-sm font-medium leading-6 text-gray-900 ">
               Features
             </h3>
             <p className="text-xs text-gray-400 ">

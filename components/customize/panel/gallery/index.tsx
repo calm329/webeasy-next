@@ -27,7 +27,7 @@ const GalleryContent = (props: TProps) => {
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
         <div className="flex flex-col gap-5">
           <div className="flex justify-between ">
-            <h3 className="block text-sm font-medium leading-6 text-gray-900">
+            <h3 className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
               Primary Image
             </h3>
           </div>
@@ -48,7 +48,7 @@ const GalleryContent = (props: TProps) => {
             i<3 &&
           <div className="flex flex-col gap-5" key={i}>
             <div className="flex justify-between ">
-              <h3 className="block text-sm font-medium leading-6 text-gray-900">
+              <h3 className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
                 Image {i+1}
               </h3>
             </div>

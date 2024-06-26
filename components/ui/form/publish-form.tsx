@@ -62,7 +62,7 @@ const PublishForm = () => {
       <div>
         <label
           htmlFor="subdomain"
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className="text-sm font-medium leading-6 text-gray-900 "
         >
           Enter Subdomain for your site?
         </label>

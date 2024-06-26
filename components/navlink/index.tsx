@@ -20,7 +20,7 @@ const secondaryNavigation = [
     icon: FingerPrintIcon,
   },
   { name: "Dashboard", href: "/settings/websites", icon: GlobeAltIcon },
-  { name: "Domain", href: "/settings/domain", icon: MdDomain },
+  // { name: "Domain", href: "/settings/domain", icon: MdDomain },
 ];
 
 function classNames(...classes: any[]) {
@@ -32,7 +32,7 @@ export default function Navlink() {
   return (
     <div className="mx-10 max-w-7xl lg:flex lg:gap-x-16 lg:px-8">
       <h1 className="sr-only text-black">User Settings</h1>
-      <aside className="flex overflow-x-auto border-b border-gray-900/5 py-4 lg:block lg:w-64 lg:flex-none lg:border-0 lg:py-10">
+      <aside className="flex overflow-x-auto border-b border-gray-900/5 py-4 lg:block lg:w-44 lg:flex-none lg:border-0 lg:py-10">
         <nav className="flex-none px-4 sm:px-6 lg:px-0">
           <ul className="flex gap-x-3 gap-y-1 whitespace-nowrap lg:flex-col">
             {secondaryNavigation.map((item) => (

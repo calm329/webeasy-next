@@ -153,7 +153,7 @@ const HeroContent = (props: TProps) => {
                     return (
                       <div className="flex flex-col gap-5">
                         <div className="flex justify-between ">
-                          <h3 className="block text-sm font-medium leading-6 text-gray-900">
+                          <h3 className=" text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
                             Hero Image
                           </h3>
                           <div className="flex gap-5">
@@ -257,7 +257,7 @@ const HeroContent = (props: TProps) => {
                     return (
                       <div className="flex flex-col border-t pt-5">
                         <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
-                          <label htmlFor={data} className="block">
+                          <label htmlFor={data} className="my-auto">
                             {data}
                           </label>
                           <div className="flex items-center gap-2">
@@ -306,7 +306,7 @@ const HeroContent = (props: TProps) => {
                     return (
                       <div className="flex flex-col border-t pt-5">
                         <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
-                          <label htmlFor={data} className="block">
+                          <label htmlFor={data} className="my-auto">
                             {data}
                           </label>
                           <div className="flex items-center gap-2">
@@ -355,7 +355,7 @@ const HeroContent = (props: TProps) => {
                       <div className="flex flex-col gap-5 border-t pt-5">
                         <div className="flex justify-between gap-10">
                           <div>
-                            <h3 className="block text-sm font-medium leading-6 text-gray-900">
+                            <h3 className="text-sm font-medium leading-6 text-gray-900">
                               Buttons
                             </h3>
                             <p className="text-xs text-gray-400 ">

@@ -239,7 +239,7 @@ const CustomButton = (props: TProps) => {
         <div className="flex flex-col ">
           <label
             htmlFor="linktype"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center"
           >
             Link type
           </label>
@@ -274,7 +274,7 @@ const CustomButton = (props: TProps) => {
         <div className="flex flex-col ">
           <label
             htmlFor="label"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center"
           >
             Label
           </label>
@@ -298,7 +298,7 @@ const CustomButton = (props: TProps) => {
         <div className="flex flex-col ">
           <label
             htmlFor="website"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center"
           >
             Website
           </label>

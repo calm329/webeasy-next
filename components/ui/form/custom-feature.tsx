@@ -158,7 +158,7 @@ const CustomFeature = (props: TProps) => {
       <form className="flex flex-col gap-5 p-5">
         <div className="flex flex-col gap-5">
           <div className="flex justify-between ">
-            <h3 className="block text-sm font-medium leading-6 text-gray-900">
+            <h3 className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
               Image
             </h3>
           </div>

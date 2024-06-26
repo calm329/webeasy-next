@@ -66,7 +66,7 @@ const UpdateDomainForm = (props: TProps) => {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="text-sm font-medium leading-6 text-gray-900 "
           >
             Sub Domain
           </label>

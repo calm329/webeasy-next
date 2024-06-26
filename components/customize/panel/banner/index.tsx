@@ -142,7 +142,7 @@ const BannerContent = (props: TProps) => {
                   return (
                     <div className="flex flex-col gap-5">
                       <div className="flex justify-between ">
-                        <h3 className="block text-sm font-medium leading-6 text-gray-900">
+                        <h3 className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
                           {data}
                         </h3>
                         <div className="flex gap-5">
@@ -272,7 +272,7 @@ const BannerContent = (props: TProps) => {
                     <div className="flex flex-col gap-5 border-t pt-5">
                       <div className="flex justify-between gap-10">
                         <div>
-                          <h3 className="block text-sm font-medium leading-6 text-gray-900">
+                          <h3 className="text-sm font-medium leading-6 text-gray-900">
                             Buttons
                           </h3>
                           <p className="text-xs text-gray-400 ">

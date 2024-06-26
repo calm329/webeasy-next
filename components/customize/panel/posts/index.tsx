@@ -77,7 +77,7 @@ const PostsContent = () => {
       <div className="flex flex-col gap-5 border-t p-5 pt-5">
         <div className="flex justify-between gap-10">
           <div>
-            <h3 className="block text-sm font-medium leading-6 text-gray-900">
+            <h3 className="text-sm font-medium leading-6 text-gray-900 ">
               Posts
             </h3>
             <p className="text-xs text-gray-400 ">Re-Order and limit Posts</p>

@@ -141,7 +141,7 @@ export default function SigninForm(props: TProps) {
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className="text-sm font-medium leading-6 text-gray-900"
         >
           Email address
         </label>
@@ -163,7 +163,7 @@ export default function SigninForm(props: TProps) {
       <div>
         <label
           htmlFor="password"
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className="text-sm font-medium leading-6 text-gray-900"
         >
           Password
         </label>

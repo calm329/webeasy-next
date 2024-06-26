@@ -357,7 +357,7 @@ const CustomWebsiteForm = () => {
         <div>
           <label
             htmlFor="business"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="text-sm font-medium leading-6 text-gray-900"
           >
             What type of business are you building?
           </label>
@@ -382,7 +382,7 @@ const CustomWebsiteForm = () => {
         <div>
           <label
             htmlFor="location"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="text-sm font-medium leading-6 text-gray-900"
           >
             What is your business location?
           </label>
@@ -404,7 +404,7 @@ const CustomWebsiteForm = () => {
         <div>
           <label
             htmlFor="businessName"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="text-sm font-medium leading-6 text-gray-900"
           >
             What is the name of the business?
           </label>
@@ -426,7 +426,7 @@ const CustomWebsiteForm = () => {
         {/* <div>
           <label
             htmlFor="subdomain"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="text-sm font-medium leading-6 text-gray-900"
           >
             Enter Subdomain for your site?
           </label>
