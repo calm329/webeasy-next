@@ -19,7 +19,7 @@ export async function POST(
       fields = `only generate the ${type ?? ""} data for title field for services and please don't add any other field expect the given {"title": "*insert title here*"}`;
       break;
     case "description":
-      fields = `only generate the ${type ?? ""} data for description field for services and please don't add any other field expect the given {"description": "*insert description here*"}`;
+      fields = `only generate the ${type ?? ""} data for description field for services and please don't add any other field expect the given {"description": "*insert description here*"} and don't exceed 50 words `;
       break;
     case "heading":
       fields = `only generate the ${type ?? ""} data for heading field and please don't add any other field expect the given {"heading": "*insert heading here*"}`;
