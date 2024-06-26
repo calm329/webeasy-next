@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-7xl">
       <SiteHeader showNavigation={true} />
-      <div className="flex flex-col justify-center  gap-5 p-5 max-sm:py-0">
+      <div className="flex flex-col justify-center  gap-8 p-5 max-sm:py-0">
         <h1 className="text-6xl font-bold leading-normal max-md:text-3xl max-sm:text-2xl">
       
           Instant Online Presence Made Easy
