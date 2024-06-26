@@ -33,7 +33,7 @@ import { DebouncedState } from "use-debounce";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { randomUUID } from "crypto";
-import { generateUniqueId } from "@/lib/utils/function";
+import { generateUniqueId, validateURL } from "@/lib/utils/function";
 
 const linkTypes = ["External", "Section"];
 
@@ -65,132 +65,136 @@ const CustomButton = (props: TProps) => {
       }
     }
   }, [showForm]);
-
+  const [error, setError] = useState("");
   function handleButtonSubmit(name: string) {
-    if (showForm.edit) {
-      switch (section) {
-        case "Banner":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                banner: {
-                  ...appState.aiContent.banner,
-                  button: {
-                    ...appState.aiContent.banner.button,
-                    list: appState.aiContent.banner.button.list.map((item) => {
-                      if (item.name === name) {
-                        return {
-                          name: name,
+    if (!error) {
+      if (showForm.edit) {
+        switch (section) {
+          case "Banner":
+            dispatch(
+              updateAppState({
+                ...appState,
+                aiContent: {
+                  ...appState.aiContent,
+                  banner: {
+                    ...appState.aiContent.banner,
+                    button: {
+                      ...appState.aiContent.banner.button,
+                      list: appState.aiContent.banner.button.list.map(
+                        (item) => {
+                          if (item.name === name) {
+                            return {
+                              name: name,
+                              label: data.label,
+                              type: data.type,
+                              link: data.link,
+                            };
+                          } else {
+                            return item;
+                          }
+                        },
+                      ),
+                    },
+                  },
+                },
+              }),
+            );
+            break;
+          case "Hero":
+            dispatch(
+              updateAppState({
+                ...appState,
+                aiContent: {
+                  ...appState.aiContent,
+                  hero: {
+                    ...appState.aiContent.hero,
+                    button: {
+                      ...appState.aiContent.hero.button,
+                      list: appState.aiContent.hero.button.list.map((item) => {
+                        if (item.name === name) {
+                          return {
+                            name: name,
+                            label: data.label,
+                            type: data.type,
+                            link: data.link,
+                          };
+                        } else {
+                          return item;
+                        }
+                      }),
+                    },
+                  },
+                },
+              }),
+            );
+            break;
+        }
+      } else {
+        const id = generateUniqueId();
+        switch (section) {
+          case "Banner":
+            dispatch(
+              updateAppState({
+                ...appState,
+                aiContent: {
+                  ...appState.aiContent,
+                  banner: {
+                    ...appState.aiContent.banner,
+                    button: {
+                      ...appState.aiContent.banner.button,
+                      list: [
+                        ...appState.aiContent.banner.button.list,
+                        {
+                          name: id,
                           label: data.label,
-                          type: data.type,
+                          type: "External",
                           link: data.link,
-                        };
-                      } else {
-                        return item;
-                      }
-                    }),
+                        },
+                      ],
+                    },
                   },
                 },
-              },
-            }),
-          );
-          break;
-        case "Hero":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                hero: {
-                  ...appState.aiContent.hero,
-                  button: {
-                    ...appState.aiContent.hero.button,
-                    list: appState.aiContent.hero.button.list.map((item) => {
-                      if (item.name === name) {
-                        return {
-                          name: name,
+              }),
+            );
+            break;
+          case "Hero":
+            dispatch(
+              updateAppState({
+                ...appState,
+                aiContent: {
+                  ...appState.aiContent,
+                  hero: {
+                    ...appState.aiContent.hero,
+                    button: {
+                      ...appState.aiContent.hero.button,
+                      list: [
+                        ...appState.aiContent.hero.button.list,
+                        {
+                          name: id,
                           label: data.label,
-                          type: data.type,
+                          type: "External",
                           link: data.link,
-                        };
-                      } else {
-                        return item;
-                      }
-                    }),
+                        },
+                      ],
+                    },
                   },
                 },
-              },
-            }),
-          );
-          break;
+              }),
+            );
+            break;
+        }
       }
-    } else {
-      const id = generateUniqueId();
-      switch (section) {
-        case "Banner":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                banner: {
-                  ...appState.aiContent.banner,
-                  button: {
-                    ...appState.aiContent.banner.button,
-                    list: [
-                      ...appState.aiContent.banner.button.list,
-                      {
-                        name: id,
-                        label: data.label,
-                        type: "External",
-                        link: data.link,
-                      },
-                    ],
-                  },
-                },
-              },
-            }),
-          );
-          break;
-        case "Hero":
-          dispatch(
-            updateAppState({
-              ...appState,
-              aiContent: {
-                ...appState.aiContent,
-                hero: {
-                  ...appState.aiContent.hero,
-                  button: {
-                    ...appState.aiContent.hero.button,
-                    list: [
-                      ...appState.aiContent.hero.button.list,
-                      {
-                        name: id,
-                        label: data.label,
-                        type: "External",
-                        link: data.link,
-                      },
-                    ],
-                  },
-                },
-              },
-            }),
-          );
-          break;
-      }
-    }
 
-    setShowForm({
-      form: "",
-      edit: "",
-      show: false,
-    });
+      setShowForm({
+        form: "",
+        edit: "",
+        show: false,
+      });
+    }
   }
 
   return (
-    <div className="max-h-[600px] h-[55vh] overflow-auto">
+    <div className="h-[55vh] max-h-[600px] overflow-auto">
       <div className=" border-b px-4 py-6 sm:px-6">
         <div className="flex items-center justify-between">
           <h2
@@ -239,7 +243,7 @@ const CustomButton = (props: TProps) => {
         <div className="flex flex-col ">
           <label
             htmlFor="linktype"
-            className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center"
+            className="text-sm font-medium leading-6 text-gray-900 "
           >
             Link type
           </label>
@@ -274,7 +278,7 @@ const CustomButton = (props: TProps) => {
         <div className="flex flex-col ">
           <label
             htmlFor="label"
-            className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center"
+            className="text-sm font-medium leading-6 text-gray-900 "
           >
             Label
           </label>
@@ -298,7 +302,7 @@ const CustomButton = (props: TProps) => {
         <div className="flex flex-col ">
           <label
             htmlFor="website"
-            className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center"
+            className="text-sm font-medium leading-6 text-gray-900 "
           >
             Website
           </label>
@@ -306,18 +310,28 @@ const CustomButton = (props: TProps) => {
             type="text"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             id={"website"}
+            placeholder="https://www.example.com"
             defaultValue={data?.link ?? ""}
             onChange={(e) => {
-              setData({ ...data, link: e.target.value });
+              const url = e.target.value;
+              setData({ ...data, link: url });
+
+              if (!validateURL(url)) {
+                setError("Please enter a valid URL.");
+              } else {
+                setError("");
+              }
+
               if (showForm.edit) {
                 handleChange(data.name, {
-                  ...{ ...data, link: e.target.value },
+                  ...{ ...data, link: url },
                   fieldType: "button",
                   section,
                 });
               }
             }}
           />
+          {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
         </div>
         <button
           onClick={() => handleButtonSubmit(data.name)}
