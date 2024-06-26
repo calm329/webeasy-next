@@ -47,7 +47,7 @@ const EditableHero = (props: TProps) => {
   const appState = useAppSelector(AS);
   return appState.aiContent?.hero ? (
     <div
-      className={`-m-8 mb-10 flex flex-wrap ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`-m-8 mb-10 flex flex-wrap justify-between pr-2 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => {
         if (editable && setIsOpen && setSection) {
           setSection("Hero");
@@ -208,7 +208,7 @@ const EditableHero = (props: TProps) => {
       {appState.aiContent.hero.image.imageUrl ? (
         hero.image.show && (
           <div
-            className={`overflow-hidden p-8 max-w-80 max-h-80  max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
+            className={`overflow-hidden py-2 max-w-96 max-h-96  max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
           >
             <Image
               src={hero.image.imageUrl}
@@ -247,7 +247,7 @@ const EditableHero = (props: TProps) => {
     </div>
   ) : (
     <div
-      className={`-m-8 mb-10 flex flex-wrap ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`-m-8 mb-10 flex flex-wrap justify-between pr-2 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => {
         if (editable && setIsOpen && setSection) {
           setSection("Hero");
