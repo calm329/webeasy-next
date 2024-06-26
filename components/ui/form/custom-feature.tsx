@@ -110,7 +110,7 @@ const CustomFeature = (props: TProps) => {
 
   console.log("data", data);
   return (
-    <div className="max-h-[600px] h-[55vh] overflow-auto">
+    <div className="h-[55vh] max-h-[600px] overflow-auto">
       <div className=" border-b px-4 py-6 sm:px-6">
         <div className="flex items-center justify-between">
           <h2
@@ -278,18 +278,19 @@ const CustomFeature = (props: TProps) => {
             }}
           />
         </div>
-
-        <button
-          onClick={() => handleFeatureSubmit(data?.id)}
-          type="button"
-          className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
-          disabled={loading}
-        >
-          {loading && (
-            <ImSpinner2 className="animate-spin text-lg text-white" />
-          )}
-          Save
-        </button>
+        {!showForm?.edit && (
+          <button
+            onClick={() => handleFeatureSubmit(data?.id)}
+            type="button"
+            className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
+            disabled={loading}
+          >
+            {loading && (
+              <ImSpinner2 className="animate-spin text-lg text-white" />
+            )}
+            Save
+          </button>
+        )}
       </form>
     </div>
   );
