@@ -249,7 +249,7 @@ const CustomService = (props: TProps) => {
             }}
           />
         </div>
-
+        {!showForm?.edit &&
         <button
           onClick={() => handleServiceSubmit(data?.id)}
           type="button"
@@ -260,7 +260,7 @@ const CustomService = (props: TProps) => {
             <ImSpinner2 className="animate-spin text-lg text-white" />
           )}
           Save
-        </button>
+        </button>}
       </form>
     </div>
   );
