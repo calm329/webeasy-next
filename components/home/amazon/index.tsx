@@ -5,7 +5,7 @@ import React from "react";
 const AmazonHomeTab = () => {
   return (
     <div className="relative isolate overflow-hidden bg-white">
-      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 ">
+      <div className="mx-auto max-w-7xl px-5 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 ">
         <div className="mx-auto  max-w-4xl lg:mx-0 lg:flex-shrink-0 ">
           {/* <Image src={tailwindIcon} alt="Your Company" className="h-11 ml-auto" /> */}
           <h1 className="mt-10 text-4xl font-bold leading-relaxed tracking-tight text-gray-900 sm:text-6xl">

@@ -256,7 +256,7 @@ export default function SiteHeader(props: TProps) {
           </div>
         )}
         <div
-          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "mt-14 w-full max-w-full justify-between"}`}
+          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-5 px-0 ${!isBottomBar && "mt-14 w-full max-w-full justify-between"}`}
           aria-label="Global"
         >
           <div className="flex items-center gap-x-12 ">

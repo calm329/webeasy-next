@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-7xl">
       <SiteHeader showNavigation={true} />
-      <div className="flex flex-col justify-center  gap-5 p-10">
+      <div className="flex flex-col justify-center max-sm:pb-5 gap-5 p-10 max-sm:px-5">
         <h1 className="text-6xl font-bold leading-normal max-md:text-3xl max-sm:text-2xl">
           WebEasy.ai,
           <br />
