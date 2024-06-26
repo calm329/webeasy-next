@@ -19,7 +19,7 @@ export async function POST(
       fields = `only generate the ${type ?? ""} data for title field for services and please don't add any other field expect the given {"title": "*insert title here*"}`;
       break;
     case "description":
-      fields = `only generate the ${type ?? ""} data for description field for services and please don't add any other field expect the given {"description": "*insert description here*"} and don't exceed 50 words `;
+      fields = `only generate the ${type ?? ""} data for description field for services and please don't add any other field expect the given {"description": "*insert description here*"} and don't exceed 20 words `;
       break;
     case "heading":
       fields = `only generate the ${type ?? ""} data for heading field and please don't add any other field expect the given {"heading": "*insert heading here*"}`;
@@ -73,7 +73,7 @@ export async function POST(
   }}`;
       break;
     case "services":
-      fields = `generate 6 services  {"services": {
+      fields = `generate 6 services  and services.description shouldn't exceed 20 words {"services": {
           "show":true,
           "title": "*type of services title Services or Features*",
           "description": "*services heading*",
