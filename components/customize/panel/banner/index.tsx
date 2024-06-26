@@ -26,8 +26,9 @@ import {
 import { ImPower } from "react-icons/im";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import RegenerateOptions from "@/components/regenerate-options";
-import { regenerateIndividual } from "@/lib/utils/function";
+import { getLogo, regenerateIndividual } from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
+import CustomContent from "@/lib/content/custom";
 type TProps = {
   section: TSection;
   handleChange: (name: string, value: string) => void;
@@ -131,9 +132,9 @@ const BannerContent = (props: TProps) => {
     }
   }, [appState]);
   return (
-    <div className="max-h-[600px] h-[55vh] overflow-y-auto py-5 transition-all ease-in-out">
+    <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-5">
-        {Object.keys(appState.aiContent?.banner ??{}).map((data) => (
+        {Object.keys(appState.aiContent?.banner ?? {}).map((data) => (
           <>
             {(() => {
               switch (data) {
@@ -148,17 +149,56 @@ const BannerContent = (props: TProps) => {
                           <button
                             type="button"
                             onClick={() => {
-                              setSelectedField(data)
+                              setSelectedField(data);
                               setLoading(true);
-                              regenerateIndividual({
-                                appState,
-                                dispatch,
-                                searchParams,
-                                fieldName: data,
-                                // type,
-                              }).then(() => {
+                              dispatch(
+                                updateAppState({
+                                  ...appState,
+                                  aiContent: {
+                                    ...appState.aiContent,
+                                    banner: {
+                                      ...appState.aiContent.banner,
+                                      logo: {
+                                        ...appState.aiContent.banner.logo,
+                                        link: "",
+                                      },
+                                    },
+                                  },
+                                }),
+                              );
+                              getLogo({
+                                businessName:
+                                  appState.aiContent?.banner?.businessName,
+                                businessType:
+                                  appState.aiContent?.businessType ?? "",
+                                location: appState.aiContent?.location ?? "",
+                              }).then((data) => {
                                 setLoading(false);
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      banner: {
+                                        ...appState.aiContent.banner,
+                                        logo: {
+                                          ...appState.aiContent.banner.logo,
+                                          link: data,
+                                        },
+                                      },
+                                    },
+                                  }),
+                                );
                               });
+                              // regenerateIndividual({
+                              //   appState,
+                              //   dispatch,
+                              //   searchParams,
+                              //   fieldName: data,
+                              //   // type,
+                              // }).then(() => {
+                              //   setLoading(false);
+                              // });
                             }}
                             className="flex items-center gap-2 "
                           >

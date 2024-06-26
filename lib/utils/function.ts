@@ -1890,7 +1890,7 @@ export async function generateNewCustomSite(data: {
             },
           },
           generate: {
-            regenerating: true,
+            generating: true,
             progress: 100,
           },
         }),
