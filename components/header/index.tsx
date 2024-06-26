@@ -67,7 +67,7 @@ import AiAssist from "../ai-assist";
 import { fetchUser, UsersData as UD } from "@/lib/store/slices/user-slice";
 
 const navigation = [
-  { name: "My Websites", href: "/settings/websites" },
+  { name: "Dashboard", href: "/settings/websites" },
   // { name: "Analytics", href: "#" },
 ];
 
