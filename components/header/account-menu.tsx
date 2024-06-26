@@ -107,6 +107,31 @@ export default function AccountMenu(props: TProps) {
                 {session?.user?.email}
               </p>
             </div>
+            {status === "authenticated" && (
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={() => {
+                      if (
+                        (futureAppState.length === 0 &&
+                          pastAppState.length === 0) ||
+                        !isSiteBuilderPage(pathname)
+                      ) {
+                        router.push("/settings/websites");
+                      } else {
+                        setShowLeaveModal(true);
+                      }
+                    }}
+                    className={classNames(
+                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                      "block w-full px-4 py-2 text-left text-sm",
+                    )}
+                  >
+                    Dashboard
+                  </button>
+                )}
+              </Menu.Item>
+            )}
             <div className="py-1">
               <Menu.Item>
                 {({ active }) => (

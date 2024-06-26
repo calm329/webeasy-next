@@ -256,16 +256,19 @@ export default function SiteHeader(props: TProps) {
           </div>
         )}
         <div
-          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-5 px-0 ${!isBottomBar && isSiteBuilderPage(pathname) && " w-full max-w-full justify-between mt-14"}`}
+          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-5 px-0 ${!isBottomBar && isSiteBuilderPage(pathname) && " mt-14 w-full max-w-full justify-between"}`}
           aria-label="Global"
         >
           <div className="flex items-center gap-x-12 ">
             <button
               onClick={() => {
-                if (isSiteBuilderPage(pathname)) {
-                  setShowLeaveModal(true);
-                } else {
+                if (
+                  (futureAppState.length === 0 && pastAppState.length === 0) ||
+                  !isSiteBuilderPage(pathname)
+                ) {
                   router.push("/");
+                } else {
+                  setShowLeaveModal(true);
                 }
               }}
             >
