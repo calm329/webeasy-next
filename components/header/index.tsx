@@ -66,10 +66,10 @@ import LeaveModal from "../ui/modal/leave-modal";
 import AiAssist from "../ai-assist";
 import { fetchUser, UsersData as UD } from "@/lib/store/slices/user-slice";
 
-// const navigation = [
-//   { name: "Customization", href: "#" },
-//   { name: "Analytics", href: "#" },
-// ];
+const navigation = [
+  { name: "My Websites", href: "/settings/websites" },
+  // { name: "Analytics", href: "#" },
+];
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
@@ -279,9 +279,9 @@ export default function SiteHeader(props: TProps) {
             </button>
 
             <div
-              className={`flex lg:gap-x-12 ${hideNavigation && "hidden"} max-lg:hidden`}
+              className={`flex lg:gap-x-12  max-lg:hidden`}
             >
-              {/* {user &&
+              {status === "authenticated" &&
                 showNavigation &&
                 navigation.map((item) => (
                   <a
@@ -291,7 +291,7 @@ export default function SiteHeader(props: TProps) {
                   >
                     {item.name}
                   </a>
-                ))} */}
+                ))}
             </div>
           </div>
           {isAuth && isBottomBar && status === "authenticated" && (
@@ -491,8 +491,8 @@ export default function SiteHeader(props: TProps) {
                   </div>
                 </div>
               )}
-              {/* <div className="space-y-1 py-5">
-                {user &&
+              <div className="space-y-1 py-5">
+                {status === "authenticated" &&
                   navigation.map((item) => (
                     <a
                       key={item.name}
@@ -502,7 +502,7 @@ export default function SiteHeader(props: TProps) {
                       {item.name}
                     </a>
                   ))}
-              </div> */}
+              </div>
 
               {status === "authenticated" ? (
                 <>
