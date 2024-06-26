@@ -24,7 +24,7 @@ const DeleteContent = (props: TProps) => {
   return (
     <div className="rounded  p-4  text-center">
       <div className="mb-4 text-lg">
-        Are You Sure You Wanna Delete This Site?
+        Are you sure you want to delete this site?
       </div>
       <div className="flex justify-center">
         <button
