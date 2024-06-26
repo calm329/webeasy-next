@@ -19,7 +19,7 @@ const secondaryNavigation = [
     href: "/settings/security",
     icon: FingerPrintIcon,
   },
-  { name: "My Websites", href: "/settings/websites", icon: GlobeAltIcon },
+  { name: "Dashboard", href: "/settings/websites", icon: GlobeAltIcon },
   { name: "Domain", href: "/settings/domain", icon: MdDomain },
 ];
 
