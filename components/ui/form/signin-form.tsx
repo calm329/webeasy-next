@@ -15,6 +15,7 @@ import {
 } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { getSitesByUserId } from "@/lib/fetchers";
+import { selectedTemplate as ST } from '@/lib/store/slices/template-slice';
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -29,7 +30,7 @@ export default function SigninForm(props: TProps) {
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
   });
-
+  const selectedTemplate = useAppSelector(ST)
   type UserFormValue = z.infer<typeof formSchema>;
 
   const defaultValues = {
@@ -95,7 +96,7 @@ export default function SigninForm(props: TProps) {
       }
 
       if (isSiteBuilderPage(pathname)) {
-        saveState(appState, dispatch).then(() =>
+        saveState(appState, dispatch,selectedTemplate?.id ?? "").then(() =>
           dispatch(clearPastAndFuture()),
         );
       } else if (sites && sites.length > 0) {

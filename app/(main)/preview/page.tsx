@@ -11,9 +11,9 @@ import {
   TemplatesData as TD,
   selectedTemplate as ST,
 } from "@/lib/store/slices/template-slice";
-import BlueBasedTemplate from "@/templates/blue-based-template";
-import PostBasedTemplate from "@/templates/post-based-template";
-import General from "@/templates/general-template";
+import BlueBasedTemplate from "@/templates/blue-based-template/blue-based-template-csr";
+import PostBasedTemplate from "@/templates/post-based-template/post-based-template-csr";
+import General from "@/templates/general-template/general-template-csr";
 import { useSearchParams } from "next/navigation";
 import Loader from "@/components/ui/loader";
 

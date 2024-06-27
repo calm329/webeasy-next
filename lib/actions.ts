@@ -14,6 +14,7 @@ export async function createNewSite({
   accessToken,
   userId,
   type,
+  template,
 }: {
   subdomain: string;
   aiResult: string;
@@ -21,6 +22,7 @@ export async function createNewSite({
   accessToken?: string;
   userId?: string;
   type: TSiteType;
+  template?: string;
 }) {
   const session = await getServerSession(authOptions);
   console.log("i came here");
@@ -37,7 +39,7 @@ export async function createNewSite({
   // find default template (basic template)
   const defaultTemplate = await prisma.template.findFirst({
     where: {
-      name: "Basic template",
+      name: template || "Basic template",
     },
   });
 
@@ -249,6 +251,9 @@ export async function updateSite(
           break;
         case "posts":
           newData["posts"] = data[key];
+          break;
+        case "templateId":
+          newData["templateId"] = data[key];
           break;
         case "primary":
           newData["aiResult"]["colors"]["primary"] = data[key];

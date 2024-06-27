@@ -8,16 +8,17 @@ import {
 import { saveState } from "@/lib/utils/function";
 import { useRouter } from "next/navigation";
 import React, { SetStateAction } from "react";
+import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
 
 type TProps = {
   setOpen: React.Dispatch<SetStateAction<boolean>>;
 };
-
+ST;
 const BackContent = (props: TProps) => {
   const { setOpen } = props;
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
-
+  const selectedTemplate = useAppSelector(ST);
   const router = useRouter();
   return (
     <div className="rounded  p-4  text-center">
@@ -30,10 +31,12 @@ const BackContent = (props: TProps) => {
           className="mr-2 rounded bg-indigo-600 px-4 py-2 text-white"
           onClick={() => {
             setOpen(false);
-            saveState(appState, dispatch).then(() => {
-              dispatch(clearPastAndFuture());
-              router.push("/settings/websites");
-            });
+            saveState(appState, dispatch, selectedTemplate?.id ?? "").then(
+              () => {
+                dispatch(clearPastAndFuture());
+                router.push("/settings/websites");
+              },
+            );
           }}
         >
           Save

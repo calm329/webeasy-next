@@ -34,6 +34,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import AiAssist from "../ai-assist";
 import { usePathname, useSearchParams } from "next/navigation";
+import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
 
 type TProps = {
   showNavigation: boolean;
@@ -67,6 +68,7 @@ const BottomToolBar = (props: TProps) => {
   const { status } = useSession();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const selectedTemplate = useAppSelector(ST);
   return (
     <div className=" z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white   py-2 shadow-xl ">
       {isBottomBar ? (
@@ -165,9 +167,11 @@ const BottomToolBar = (props: TProps) => {
               size={20}
               onClick={() => {
                 if (status === "authenticated") {
-                  saveState(appState, dispatch).then(() =>
-                    dispatch(clearPastAndFuture()),
-                  );
+                  saveState(
+                    appState,
+                    dispatch,
+                    selectedTemplate?.id ?? "",
+                  ).then(() => dispatch(clearPastAndFuture()));
                 } else {
                   setShowAuthModal(true);
                 }

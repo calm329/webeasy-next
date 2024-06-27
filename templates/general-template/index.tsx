@@ -1,157 +1,118 @@
-import Image, { type ImageProps } from "next/image";
+import Image from "next/image";
 import clsx from "clsx";
-
 import { Button } from "@/components/ui/button/template-button";
 import { Card } from "@/components/ui/card/general-card";
-import { Container } from "@/components/container/nested-container";
-import { Header } from "@/components/header/general-header";
-import { Dispatch, SetStateAction } from "react";
-import { TBanner, TColors, TFields, THero, TPosts, TSection } from "@/types";
-import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-
-type TPostProps = {
-  posts: TPosts;
-};
+import {
+  TBanner,
+  TFeature,
+  THero,
+  TPosts,
+  TServices,
+} from "@/types";
 
 type TProps = {
-  hero: THero;
-  banner: TBanner;
-  colors: TColors;
-  services: any[];
-  posts: TPosts;
-  setIsOpen?: Dispatch<SetStateAction<boolean>>;
-  setSection?: Dispatch<SetStateAction<TSection>>;
-  editable?: boolean;
-  setFocusedField?: Dispatch<SetStateAction<TFields>>;
-  showForm?: {
-    form: string;
-    edit: string;
-    show: boolean;
+  aiContent: {
+    productId?: string;
+    banner: TBanner;
+    hero: THero;
+    services: TServices;
+    colors: {
+      primary: string;
+      secondary: string;
+    };
+    features?: Array<TFeature>;
+    description?: string;
+    images?: {
+      primary: { Large: { Height: number; URL: string; Width: number } };
+      variant: Array<{
+        Large: { Height: number; URL: string; Width: number };
+        Medium: { Height: number; URL: string; Width: number };
+        Small: { Height: number; URL: string; Width: number };
+      }>;
+    };
+    price?: string;
+    title?: string;
+    businessType?: string;
+    location?: string;
   };
-  setShowForm?: React.Dispatch<
-    React.SetStateAction<{
-      form: string;
-      edit: string;
-      show: boolean;
-    }>
-  >;
+  posts: TPosts;
 };
 
 export default function General(props: TProps) {
-  const {
-    banner,
-    hero,
-    colors,
-    services,
-    posts,
-    setIsOpen,
-    setSection,
-    editable,
-    setFocusedField,
-    showForm,
-    setShowForm,
-  } = props;
-  const appState = useAppSelector(AS);
-  const dispatch = useAppDispatch();
-
+  const { aiContent, posts } = props;
   return (
-    <div className={`relative flex w-full flex-col  px-5 ${appState.view==="Desktop"&&"max-w-7xl mx-auto"}`}>
-      <Header
-        banner={banner}
-        colors={colors}
-        editable={editable}
-        setIsOpen={setIsOpen}
-        setSection={setSection}
-        setShowForm={setShowForm}
-        showForm={showForm}
-      />
+    <div className={`relative mx-auto flex w-full max-w-7xl flex-col px-5`}>
+      <div>
+        <header
+          className={`pointer-events-none relative flex flex-none flex-col `}
+        >
+          <div className="top-0  pt-6">
+            <div className={`top-[var(--header-top,theme(spacing.6))] w-full `}>
+              <div className={`relative flex gap-4`}>
+                <div className="flex flex-1 justify-end md:justify-center">
+                  <nav className="pointer-events-auto block w-full">
+                    <div className="flex w-full items-center justify-between rounded-full border bg-white/90 px-10 py-3 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur-lg dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 max-md:px-5 max-sm:flex-col max-sm:gap-5 max-sm:rounded">
+                      <div
+                        className="flex items-center gap-5 max-md:gap-2"
+                        style={{ color: aiContent.colors.primary }}
+                      >
+                        {aiContent.banner.logo.show && (
+                          <Image
+                            src={aiContent.banner.logo.link ?? ""}
+                            alt={aiContent.banner.logo.alt ?? ""}
+                            height={100}
+                            width={100}
+                          />
+                        )}
+
+                        <span>{aiContent.banner.businessName}</span>
+                      </div>
+                      {aiContent.banner.button.show &&
+                        aiContent.banner.button.list.map((data, i) => (
+                          <div key={i}>
+                            <Button
+                              href={data.link ?? "#"}
+                              text={data.label}
+                              bgColor={aiContent.colors.secondary}
+                            />
+                          </div>
+                        ))}
+                    </div>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div
+          className="flex-none"
+          style={{ height: "var(--content-offset)" }}
+        />
+      </div>
       <main className="mt-24 flex flex-col gap-10 ">
         <div className={`flex w-full`}>
           <div
-            className={`flex justify-center gap-10 max-lg:flex-col ${editable && "mb-20 rounded border-2 border-transparent hover:border-indigo-500"} ${appState.view==="Tablet"||appState.view==="Mobile" && "flex-col justify-center items-center"}`}
-            onClick={() => {
-              if (editable && setIsOpen && setSection && setShowForm) {
-                setSection("Hero");
-                setIsOpen(true);
-                dispatch(
-                  updateAppState({ ...appState, openedSlide: "Customize" }),
-                );
-                setShowForm({
-                  show: false,
-                  edit: "",
-                  form: "",
-                });
-              }
-            }}
+            className={`flex items-center justify-center gap-10 max-lg:flex-col`}
           >
             <div className="">
               <h1
-                className={`text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                style={{ color: colors.primary }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (editable && setIsOpen && setSection && setShowForm) {
-                    setSection("Hero");
-                    setIsOpen(true);
-                    setShowForm({
-                      form: "",
-                      edit: "",
-                      show: false,
-                    });
-                    dispatch(
-                      updateAppState({
-                        ...appState,
-                        focusedField: "heading",
-                        openedSlide: "Customize",
-                      }),
-                    );
-                  }
-                }}
+                className={`text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl`}
               >
-                {hero.heading}
+                {aiContent.hero.heading}
               </h1>
-              <p
-                className={`mt-6 text-base text-zinc-600 dark:text-zinc-400 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (editable && setIsOpen && setSection && setShowForm) {
-                    setSection("Hero");
-                    setIsOpen(true);
-                    setShowForm({
-                      form: "",
-                      edit: "",
-                      show: false,
-                    });
-                    dispatch(
-                      updateAppState({
-                        ...appState,
-                        focusedField: "subheading",
-                        openedSlide: "Customize",
-                      }),
-                    );
-                  }
-                }}
-              >
-                {hero.subheading}
+              <p className={`mt-6 text-base text-zinc-600 dark:text-zinc-400 `}>
+                {aiContent.hero.subheading}
               </p>
               <div>
-                {hero.button.show && (
-                  <div
-                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                    onClick={() => {
-                      if (editable && setIsOpen && setSection) {
-                        setSection("Hero");
-                        setIsOpen(true);
-                      }
-                    }}
-                  >
-                    {hero.button.list.map((data, i) => (
+                {aiContent.hero.button.show && (
+                  <div>
+                    {aiContent.hero.button.list.map((data, i) => (
                       <div key={i}>
                         <Button
                           href={data.link ?? "#"}
                           text={data.label}
-                          bgColor={colors.secondary}
+                          bgColor={aiContent.colors.secondary}
                           className="mt-10  "
                         />
                       </div>
@@ -160,62 +121,25 @@ export default function General(props: TProps) {
                 )}
               </div>
             </div>
-            {hero.image.show && (
+            {aiContent.hero.image.show && (
               <div>
                 <Image
-                  src={hero.image.imageUrl}
+                  src={aiContent.hero.image.imageUrl}
                   alt=""
                   height={400}
                   width={300}
-                  className={`mt-5 rounded-lg object-contain drop-shadow max-lg:mx-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                  onClick={() => {
-                    if (editable && setIsOpen && setSection && setShowForm) {
-                      setSection("Hero");
-                      setIsOpen(true);
-                      setShowForm({
-                        form: "",
-                        edit: "",
-                        show: false,
-                      });
-                    }
-                  }}
+                  className={`mt-5 rounded-lg object-contain drop-shadow max-lg:mx-auto`}
                 />
               </div>
             )}
           </div>
         </div>
         <div className="my-24 md:mt-28">
-          <div
-            className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} mx-auto  gap-y-20 lg:max-w-none lg:grid-cols-2`}
-            onClick={() => {
-              if (setIsOpen && setSection) {
-                setIsOpen(true);
-                setSection("Services");
-                dispatch(
-                  updateAppState({
-                    ...appState,
-                    openedSlide: "Customize",
-                  }),
-                );
-              }
-            }}
-          >
-            {appState.aiContent.services.show && (
+          <div className={`mx-auto  gap-y-20 lg:max-w-none lg:grid-cols-2`}>
+            {aiContent.services.show && (
               <div className="flex  flex-wrap justify-center gap-10">
-                {services.map((data) => (
-                  <div
-                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} max-w-96`}
-                    onClick={() => {
-                    
-                      setShowForm &&
-                        setShowForm({
-                          edit: data.id,
-                          form: "Service",
-                          show: true,
-                        });
-                    }}
-                    key={data.id}
-                  >
+                {aiContent.services.list.map((data) => (
+                  <div className={`max-w-96`} key={data.id}>
                     <Card.Title>{data.name}</Card.Title>
                     <Card.Description>{data.description}</Card.Description>
                   </div>
@@ -225,27 +149,8 @@ export default function General(props: TProps) {
           </div>
         </div>
         <div>
-          <div
-            className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} "mt-16 my-20" sm:mt-20`}
-            onClick={() => {
-              if (setIsOpen && setSection && setShowForm) {
-                setIsOpen(true);
-                setSection("Posts");
-                dispatch(
-                  updateAppState({
-                    ...appState,
-                    openedSlide: "Customize",
-                  }),
-                );
-                setShowForm({
-                  form: "",
-                  edit: "",
-                  show: false,
-                });
-              }
-            }}
-          >
-            {appState?.iPosts?.show && (
+          <div className={`my-20" mt-16 sm:mt-20`}>
+            {posts?.show && (
               <div className="my flex flex-wrap justify-center gap-10 overflow-hidden py-4 ">
                 {posts.list.map(
                   (data, i) =>
@@ -254,7 +159,6 @@ export default function General(props: TProps) {
                         <div
                           className={clsx(
                             "relative aspect-[9/10] overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 sm:rounded-2xl",
-                            
                           )}
                         >
                           <Image
@@ -265,7 +169,7 @@ export default function General(props: TProps) {
                             width={300}
                           />
                         </div>
-                  
+
                         <p>{data.caption}</p>
                       </div>
                     ),

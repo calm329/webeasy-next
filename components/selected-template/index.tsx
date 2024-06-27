@@ -1,8 +1,8 @@
 import BasicTemplate from "@/templates/basic-template/basic-template-csr";
-import BlueBasedTemplate from "@/templates/blue-based-template";
-import PostBasedTemplate from "@/templates/post-based-template";
+import BlueBasedTemplate from "@/templates/blue-based-template/blue-based-template-csr";
+import PostBasedTemplate from "@/templates/post-based-template/post-based-template-csr";
 import React, { Dispatch, SetStateAction } from "react";
-import GeneralTemplate from "@/templates/general-template";
+import GeneralTemplate from "@/templates/general-template/general-template-csr";
 import { AppState, TFields, TSection } from "@/types";
 import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
 import { useAppSelector } from "@/lib/store/hooks";

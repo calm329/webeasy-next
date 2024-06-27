@@ -82,7 +82,7 @@ export function Posts(props: TProps) {
         <div className="mt-14 grid grid-cols-1 items-start gap-x-8 gap-y-8 sm:mt-16 sm:gap-y-16 lg:mt-24 lg:grid-cols-3">
           <div className="lg:col-span-3">
             <div className={`ui-not-focus-visible:outline-none grid  gap-x-8 gap-y-10 sm:gap-y-16  ${appState.view==="Tablet"&&"grid-cols-2"}   ${appState.view==="Mobile"&&"grid-cols-1"} ${appState.view=== "Desktop"&&"md:grid-cols-3 grid-cols-1 sm:grid-cols-2"} `}>
-              {appState?.iPosts?.show &&posts.list.map((data, i) => (
+              {appState?.iPosts?.show &&posts.list?.map((data, i) => (
                 posts.limit > i &&
                 <div key={data.id}>
                   <div className="rounded-4xl group relative h-96 transform overflow-hidden">

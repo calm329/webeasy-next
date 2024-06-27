@@ -18,6 +18,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import AmazonContent from "../content/amazon";
 import { TFeature } from "../../types/index";
 import CustomContent from "../content/custom";
+// import { selectedTemplate } from "../store/slices/template-slice";
 
 type TParams = {
   regenerate?: boolean;
@@ -1198,12 +1199,17 @@ export function generateUniqueId() {
   return uniqueId;
 }
 
-export async function saveState(appState: AppState, dispatch: any) {
+export async function saveState(
+  appState: AppState,
+  dispatch: any,
+  templateId: string,
+) {
   try {
     const data = {
       aiResult: appState.aiContent,
       font: appState.selectedFont,
       posts: appState.iPosts,
+      templateId: templateId,
     };
     console.log("Saved state", appState);
     await dispatch(

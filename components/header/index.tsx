@@ -243,9 +243,11 @@ export default function SiteHeader(props: TProps) {
                 size={20}
                 onClick={() => {
                   if (status === "authenticated") {
-                    saveState(appState, dispatch).then(() =>
-                      dispatch(clearPastAndFuture()),
-                    );
+                    saveState(
+                      appState,
+                      dispatch,
+                      selectedTemplate?.id ?? "",
+                    ).then(() => dispatch(clearPastAndFuture()));
                   } else {
                     setShowAuthModal(true);
                   }
