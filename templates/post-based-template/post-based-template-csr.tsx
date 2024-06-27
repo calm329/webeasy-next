@@ -71,14 +71,16 @@ export default function PostBasedTemplate(props: TProps) {
           setShowForm={setShowForm}
           showForm={showForm}
         />
-        <Posts
-          posts={posts}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-          setShowForm={setShowForm}
-          showForm={showForm}
-        />
+        {posts?.list?.length > 0 && (
+          <Posts
+            posts={posts}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            setShowForm={setShowForm}
+            showForm={showForm}
+          />
+        )}
       </main>
     </>
   );

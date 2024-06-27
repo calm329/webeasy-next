@@ -8,6 +8,8 @@ import Image from "next/image";
 import { TColors, TFields, TSection } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
+import { appState } from "../../lib/store/slices/site-slice";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function BackgroundImage({
   className,
@@ -86,6 +88,7 @@ export function Services(props: TProps) {
     <section id="schedule" aria-label="Schedule" className="py-14">
       <div className="relative ">
         <BackgroundImage position="right" />
+
         <Container
           className={`relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
           onClick={() => {
@@ -136,6 +139,25 @@ export function Services(props: TProps) {
                     )}
                   </li>
                 ))}
+
+                {Array.from({ length: 6 })?.map(
+                  (data, i) =>
+                    (services?.length ?? 0) < i && (
+                      <li key={i}>
+                        {i > 0 && (
+                          <div className="mx-auto  mb-8 h-px  border-b-2 border-gray-400 bg-white" />
+                        )}
+                        <h4 className="mx-auto text-center text-lg font-semibold tracking-tight text-blue-900">
+                          <Skeleton className="h-12 w-44 border-gray-400" />
+                        </h4>
+
+                        <p className="mt-1 flex flex-col gap-2 text-center tracking-tight text-blue-900">
+                          <Skeleton className="h-10 w-44 border-gray-400" />
+                          <Skeleton className="h-10 w-20 border-gray-400" />
+                        </p>
+                      </li>
+                    )
+                )}
               </ol>
             )}
           </div>

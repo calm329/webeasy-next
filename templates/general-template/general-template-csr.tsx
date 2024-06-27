@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction } from "react";
 import { TBanner, TColors, TFields, THero, TPosts, TSection } from "@/types";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type TPostProps = {
   posts: TPosts;
@@ -56,7 +57,9 @@ export default function General(props: TProps) {
   const dispatch = useAppDispatch();
 
   return (
-    <div className={`relative flex w-full flex-col  px-5 ${appState.view==="Desktop"&&"max-w-7xl mx-auto"}`}>
+    <div
+      className={`relative flex w-full flex-col  px-5 ${appState.view === "Desktop" && "mx-auto max-w-7xl"}`}
+    >
       <Header
         banner={banner}
         colors={colors}
@@ -69,7 +72,7 @@ export default function General(props: TProps) {
       <main className="mt-24 flex flex-col gap-10 ">
         <div className={`flex w-full`}>
           <div
-            className={`flex justify-center gap-10 max-lg:flex-col ${editable && "mb-20 rounded border-2 border-transparent hover:border-indigo-500"} ${appState.view==="Tablet"||appState.view==="Mobile" && "flex-col justify-center items-center"}`}
+            className={`flex justify-center gap-10 max-lg:flex-col ${editable && "mb-20 rounded border-2 border-transparent hover:border-indigo-500"} ${appState.view === "Tablet" || (appState.view === "Mobile" && "flex-col items-center justify-center")}`}
             onClick={() => {
               if (editable && setIsOpen && setSection && setShowForm) {
                 setSection("Hero");
@@ -85,9 +88,9 @@ export default function General(props: TProps) {
               }
             }}
           >
-            <div className="">
+            <div className="w-full">
               <h1
-                className={`text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                className={`text-4xl  font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                 style={{ color: colors?.primary }}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -109,7 +112,9 @@ export default function General(props: TProps) {
                   }
                 }}
               >
-                {hero?.heading}
+                {hero?.heading || (
+                  <Skeleton className="h-14 w-full bg-gray-400" />
+                )}
               </h1>
               <p
                 className={`mt-6 text-base text-zinc-600 dark:text-zinc-400 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -133,54 +138,67 @@ export default function General(props: TProps) {
                   }
                 }}
               >
-                {hero?.subheading}
+                {hero?.subheading || (
+                  <Skeleton className="h-8 w-full bg-gray-400" />
+                )}
               </p>
               <div>
-                {hero?.button?.show && (
-                  <div
-                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                    onClick={() => {
-                      if (editable && setIsOpen && setSection) {
-                        setSection("Hero");
-                        setIsOpen(true);
-                      }
-                    }}
-                  >
-                    {hero?.button?.list?.map((data, i) => (
-                      <div key={i}>
-                        <Button
-                          href={data.link ?? "#"}
-                          text={data.label}
-                          bgColor={colors?.secondary}
-                          className="mt-10  "
-                        />
-                      </div>
-                    ))}
-                  </div>
+                {hero?.button?.list ? (
+                  hero?.button?.show && (
+                    <div
+                      className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                      onClick={() => {
+                        if (editable && setIsOpen && setSection) {
+                          setSection("Hero");
+                          setIsOpen(true);
+                        }
+                      }}
+                    >
+                      {hero?.button?.list?.map((data, i) => (
+                        <div key={i}>
+                          <Button
+                            href={data.link ?? "#"}
+                            text={data.label}
+                            bgColor={colors?.secondary}
+                            className="mt-10  "
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )
+                ) : (
+                  <>
+                    <Skeleton className="h-16 w-full bg-gray-400" />
+                  </>
                 )}
               </div>
             </div>
-            {hero?.image?.show && (
-              <div>
-                <Image
-                  src={hero?.image?.imageUrl}
-                  alt=""
-                  height={400}
-                  width={300}
-                  className={`mt-5 rounded-lg object-contain drop-shadow max-lg:mx-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                  onClick={() => {
-                    if (editable && setIsOpen && setSection && setShowForm) {
-                      setSection("Hero");
-                      setIsOpen(true);
-                      setShowForm({
-                        form: "",
-                        edit: "",
-                        show: false,
-                      });
-                    }
-                  }}
-                />
-              </div>
+
+            {hero?.image?.imageUrl ? (
+              hero?.image?.show && (
+                <div>
+                  <Image
+                    src={hero?.image?.imageUrl}
+                    alt=""
+                    height={400}
+                    width={300}
+                    className={`mt-5 rounded-lg object-contain drop-shadow max-lg:mx-auto ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    onClick={() => {
+                      if (editable && setIsOpen && setSection && setShowForm) {
+                        setSection("Hero");
+                        setIsOpen(true);
+                        setShowForm({
+                          form: "",
+                          edit: "",
+                          show: false,
+                        });
+                      }
+                    }}
+                  />
+                </div>
+              )
+            ) : (
+              <Skeleton className="h-[400px]  w-[300px] bg-gray-400" />
             )}
           </div>
         </div>
@@ -206,7 +224,6 @@ export default function General(props: TProps) {
                   <div
                     className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} max-w-96`}
                     onClick={() => {
-                    
                       setShowForm &&
                         setShowForm({
                           edit: data.id,
@@ -220,6 +237,19 @@ export default function General(props: TProps) {
                     <Card.Description>{data.description}</Card.Description>
                   </div>
                 ))}
+
+                {appState.generate.generating &&
+                  Array.from({ length: 6 })?.map((_, i) => (
+                    (services?.length??0) <i &&
+                    <div className={`max-w-96 w-96`} key={i}>
+                      <Card.Title>
+                        <Skeleton className="h-10 w-full bg-gray-400" />
+                      </Card.Title>
+                      <Card.Description>
+                        <Skeleton className="h-8 w-full bg-gray-400" />
+                      </Card.Description>
+                    </div>
+                  ))}
               </div>
             )}
           </div>
@@ -254,7 +284,6 @@ export default function General(props: TProps) {
                         <div
                           className={clsx(
                             "relative aspect-[9/10] overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 sm:rounded-2xl",
-                            
                           )}
                         >
                           <Image
@@ -265,7 +294,7 @@ export default function General(props: TProps) {
                             width={300}
                           />
                         </div>
-                  
+
                         <p>{data.caption}</p>
                       </div>
                     ),
