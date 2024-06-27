@@ -1459,6 +1459,17 @@ export const getAmazonDataUsingASIN = async (product: string) => {
       `Time taken by getDescription: ${descriptionTimeTaken} milliseconds`,
     );
 
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        generate: {
+          ...getAppState().generate,
+          progress: 100,
+          generating: true,
+        },
+      }),
+    );
+
     const finalData = {
       ...initialData,
       features,
@@ -2201,14 +2212,15 @@ export async function generateCustomServiceTAndD({
   } catch (error) {}
 }
 
-export const validateURL = (url:string) => {
+export const validateURL = (url: string) => {
   const urlPattern = new RegExp(
-    '^(https?:\\/\\/)' + // protocol
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-    '(\\#[-a-z\\d_]*)?$','i' // fragment locator
+    "^(https?:\\/\\/)" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i", // fragment locator
   );
   return !!urlPattern.test(url);
 };
