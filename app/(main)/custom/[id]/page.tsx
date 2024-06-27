@@ -25,6 +25,7 @@ import {
   loading as LD,
   fetchSitesByDomain,
   fetchSiteById,
+  clearPastAndFuture,
 } from "@/lib/store/slices/site-slice";
 import FontSlideOver from "@/components/ui/slide-over/font-slide";
 import { FontsDrawer } from "@/components/ui/drawer/fonts-drawer";
@@ -54,6 +55,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const matches = useMediaQuery("(min-width: 768px)");
   useEffect(() => {
     if (params.id) {
+      dispatch(clearPastAndFuture())
       dispatch(fetchSiteById({ id: params.id }));
     } else {
       router.push("/website-builder");

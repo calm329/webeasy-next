@@ -5,6 +5,7 @@ import ProductTemplate from "@/templates/product-template/product-template-csr";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   appState as AS,
+  clearPastAndFuture,
   fetchSiteById,
   loading as LD,
   updateAppState,
@@ -53,6 +54,7 @@ const Amazon = ({ params }: { params: { id: string } }) => {
           aiContent: {},
         }),
       );
+      dispatch(clearPastAndFuture())
       dispatch(fetchSiteById({ id: params.id ?? "" }));
     }
   }, [params]);

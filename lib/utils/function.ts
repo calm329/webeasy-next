@@ -2088,7 +2088,7 @@ export async function generateTextForCustom(data: {
 export async function getHeroImageForCustom(businessType: string) {
   try {
     const res = await fetch(
-      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${businessType}&orientation=squarish`,
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${businessType}`,
     );
     const data = await res.json();
     return data.urls.small;

@@ -281,7 +281,7 @@ export default function SiteHeader(props: TProps) {
               />
             </button>
 
-            <div className={`flex max-lg:hidden  lg:gap-x-12`}>
+            {/* <div className={`flex max-lg:hidden  lg:gap-x-12`}>
               {status === "authenticated" &&
                 showNavigation &&
                 navigation.map((item) => (
@@ -293,7 +293,7 @@ export default function SiteHeader(props: TProps) {
                     {item.name}
                   </a>
                 ))}
-            </div>
+            </div> */}
           </div>
           {isAuth && isBottomBar && status === "authenticated" && (
             <div className="ml-5 flex gap-2">

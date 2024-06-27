@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 
 import { RootState } from "..";
 import SiteApi from "@/lib/api/site-api";
@@ -210,7 +210,17 @@ const siteSlice = createSlice({
         JSON.stringify(newState.aiContent) !==
         JSON.stringify(present.aiContent);
 
-      if (isStateDifferent && present.status === "Done") {
+      let hasRequiredFields = false;
+
+      if (
+        present.aiContent?.hero?.image?.imageUrl &&
+        present.aiContent?.banner?.logo?.link
+      ) {
+        hasRequiredFields = true;
+      }
+      console.log("hasRequiredFields", hasRequiredFields);
+      if (isStateDifferent && present.status === "Done" && hasRequiredFields) {
+        console.log("hello", current(present.aiContent), newState.aiContent);
         past.push(present);
 
         // Ensure not to exceed the maximum history length
