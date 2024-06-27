@@ -36,7 +36,7 @@ export function Header(props: TProps) {
     <header className={`z-1 relative flex-none lg:pt-20  `}>
       <Container
         className={`flex flex-wrap items-center justify-center gap-10 max-sm:flex-col sm:justify-between lg:flex-nowrap  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-        style={{ color: colors.primary }}
+        style={{ color: colors?.primary }}
         onClick={() => {
           if (editable && setIsOpen && setSection && setShowForm) {
             setSection("Banner");
@@ -53,7 +53,7 @@ export function Header(props: TProps) {
         <div
           className={`mt-10 flex items-center  gap-2 text-xl lg:mt-0 lg:grow lg:basis-0 `}
         >
-          {banner.logo.show && (
+          {banner?.logo?.show && (
             <Image
               src={banner.logo.link ?? ""}
               alt={banner.logo.alt ?? ""}
@@ -96,10 +96,10 @@ export function Header(props: TProps) {
               }
             }}
           >
-            {banner.businessName}
+            {banner?.businessName}
           </span>
         </div>
-        {banner.button.show && (
+        {banner?.button?.show && (
           <div
             className={`sm:mt-10 sm:flex lg:mt-0 lg:grow lg:basis-0 lg:justify-end `}
           >
@@ -112,12 +112,12 @@ export function Header(props: TProps) {
                 }
               }}
             >
-              {banner.button.list.map((data, i) => (
+              {banner?.button?.list.map((data, i) => (
                 <div key={i}>
                   <Button
                     href={data.link ?? "#"}
                     text={data.label}
-                    bgColor={colors.secondary}
+                    bgColor={colors?.secondary}
                   />
                 </div>
               ))}

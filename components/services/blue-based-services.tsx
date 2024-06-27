@@ -103,7 +103,7 @@ export function Services(props: TProps) {
         >
           <div className="grid  lg:gap-x-8">
             {/* <DaySummary day={day} /> */}
-            {appState.aiContent.services.show && (
+            {appState?.aiContent?.services?.show && (
               <ol
                 role="list"
                 className={

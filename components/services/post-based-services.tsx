@@ -55,9 +55,9 @@ export function Services(props: TProps) {
           }
         }}
       >
-        {appState.aiContent.services.show && (
+        {appState?.aiContent?.services?.show && (
           <div className="-mx-4 mt-20 flex flex-col gap-y-10 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:hidden">
-            {services.map((data) => (
+            {services?.map((data) => (
               <div
                 key={data.name}
                 className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -107,10 +107,10 @@ export function Services(props: TProps) {
                       "text-slate-600",
                     )}
                   >
-                    {data.name}
+                    {data?.name}
                   </h3>
                   <p className="mt-4 text-sm text-slate-600">
-                    {data.description}
+                    {data?.description}
                   </p>
                 </div>
                 <div className="relative mt-10 pb-10">
@@ -121,10 +121,10 @@ export function Services(props: TProps) {
             ))}
           </div>
         )}
-        {appState.aiContent.services.show && (
+        {appState?.aiContent?.services?.show && (
           <div className="hidden lg:mt-20 lg:block">
             <div className="grid grid-cols-2  gap-10 ">
-              {services.map((data, featureIndex) => (
+              {services?.map((data, featureIndex) => (
                 <div
                   className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                   key={featureIndex}
@@ -173,10 +173,10 @@ export function Services(props: TProps) {
                       "text-slate-600",
                     )}
                   >
-                    {data.name}
+                    {data?.name}
                   </h3>
                   <p className="mt-4 text-sm text-slate-600">
-                    {data.description}
+                    {data?.description}
                   </p>
                 </div>
               ))}

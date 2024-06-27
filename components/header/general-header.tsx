@@ -72,12 +72,12 @@ export function Header(props: TProps) {
                   <div className="flex w-full items-center justify-between rounded-full border bg-white/90 px-10 py-3 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur-lg dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 max-md:px-5 max-sm:flex-col max-sm:gap-5 max-sm:rounded">
                     <div
                       className="flex items-center gap-5 max-md:gap-2"
-                      style={{ color: colors.primary }}
+                      style={{ color: colors?.primary }}
                     >
-                      {banner.logo.show && (
+                      {banner?.logo?.show && (
                         <Image
-                          src={banner.logo.link ?? ""}
-                          alt={banner.logo.alt ?? ""}
+                          src={banner?.logo?.link ?? ""}
+                          alt={banner?.logo?.alt ?? ""}
                           height={100}
                           width={100}
                           className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -118,11 +118,11 @@ export function Header(props: TProps) {
                           }
                         }}
                       >
-                        {banner.businessName}
+                        {banner?.businessName}
                       </span>
                     </div>
-                    {banner.button.show &&
-                      banner.button.list.map((data, i) => (
+                    {banner?.button?.show &&
+                      banner?.button?.list?.map((data, i) => (
                         <div key={i}>
                           <Button
                             href={data.link ?? "#"}

@@ -85,7 +85,7 @@ export function Hero(props: TProps) {
           }
         }}
       >
-        {hero.image.show && (
+        {hero?.image?.show && (
           <Image
             src={appState.aiContent.hero?.image?.imageUrl ?? ""}
             alt=""
@@ -108,7 +108,7 @@ export function Hero(props: TProps) {
         <div className={`ml-auto max-w-2xl ${appState.view === "Desktop"&&"max-lg:mx-auto lg:max-w-4xl lg:px-12"} `}>
           <h1
             className={`font-display text-5xl font-bold tracking-tighter text-blue-600 sm:text-7xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-            style={{ color: colors.primary }}
+            style={{ color: colors?.primary }}
             onClick={(e) => {
               e.stopPropagation();
               if (editable && setIsOpen && setSection && setShowForm) {
@@ -130,7 +130,7 @@ export function Hero(props: TProps) {
             }}
           >
             <span className="sr-only">DeceptiConf - </span>
-            {hero.heading}
+            {hero?.heading}
           </h1>
           <div className="font-display mt-6 space-y-6 text-2xl tracking-tight text-blue-900">
             <p
@@ -155,10 +155,10 @@ export function Hero(props: TProps) {
                 }
               }}
             >
-              {hero.subheading}
+              {hero?.subheading}
             </p>
           </div>
-          {hero.button.show && (
+          {hero?.button?.show && (
             <div
               className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} flex gap-5 `}
               onClick={() => {
@@ -168,12 +168,12 @@ export function Hero(props: TProps) {
                 }
               }}
             >
-              {hero.button.list.map((data, i) => (
+              {hero?.button?.list?.map((data, i) => (
                 <div key={i} className="w-full">
                   <Button
                     href={data.link ?? "#"}
                     text={data.label}
-                    bgColor={colors.secondary}
+                    bgColor={colors?.secondary}
                     className="mt-10 w-full "
                   />
                 </div>

@@ -88,7 +88,7 @@ export default function General(props: TProps) {
             <div className="">
               <h1
                 className={`text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                style={{ color: colors.primary }}
+                style={{ color: colors?.primary }}
                 onClick={(e) => {
                   e.stopPropagation();
                   if (editable && setIsOpen && setSection && setShowForm) {
@@ -109,7 +109,7 @@ export default function General(props: TProps) {
                   }
                 }}
               >
-                {hero.heading}
+                {hero?.heading}
               </h1>
               <p
                 className={`mt-6 text-base text-zinc-600 dark:text-zinc-400 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -133,10 +133,10 @@ export default function General(props: TProps) {
                   }
                 }}
               >
-                {hero.subheading}
+                {hero?.subheading}
               </p>
               <div>
-                {hero.button.show && (
+                {hero?.button?.show && (
                   <div
                     className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                     onClick={() => {
@@ -146,12 +146,12 @@ export default function General(props: TProps) {
                       }
                     }}
                   >
-                    {hero.button.list.map((data, i) => (
+                    {hero?.button?.list?.map((data, i) => (
                       <div key={i}>
                         <Button
                           href={data.link ?? "#"}
                           text={data.label}
-                          bgColor={colors.secondary}
+                          bgColor={colors?.secondary}
                           className="mt-10  "
                         />
                       </div>
@@ -160,10 +160,10 @@ export default function General(props: TProps) {
                 )}
               </div>
             </div>
-            {hero.image.show && (
+            {hero?.image?.show && (
               <div>
                 <Image
-                  src={hero.image.imageUrl}
+                  src={hero?.image?.imageUrl}
                   alt=""
                   height={400}
                   width={300}
@@ -200,9 +200,9 @@ export default function General(props: TProps) {
               }
             }}
           >
-            {appState.aiContent.services.show && (
+            {appState?.aiContent?.services?.show && (
               <div className="flex  flex-wrap justify-center gap-10">
-                {services.map((data) => (
+                {services?.map((data) => (
                   <div
                     className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} max-w-96`}
                     onClick={() => {
@@ -247,9 +247,9 @@ export default function General(props: TProps) {
           >
             {appState?.iPosts?.show && (
               <div className="my flex flex-wrap justify-center gap-10 overflow-hidden py-4 ">
-                {posts.list.map(
+                {posts?.list?.map(
                   (data, i) =>
-                    posts.limit > i && (
+                    posts?.limit > i && (
                       <div className={`flex w-96 flex-col `} key={data.id}>
                         <div
                           className={clsx(
