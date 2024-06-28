@@ -1854,7 +1854,7 @@ export async function generateNewCustomSite(data: {
       }),
     );
     const startTextTime = performance.now();
-    const [hero, banner, services, logo, testimonials,gallery] = await Promise.all([
+    const [hero, banner, services, logo, testimonials,gallery,partners] = await Promise.all([
       CustomContent.getHero({
         data,
         individual: false,
@@ -1881,7 +1881,13 @@ export async function generateNewCustomSite(data: {
         fieldName: "",
         type: "",
       }),
-      getPhotosFromUnsplash(data.businessType)
+      getPhotosFromUnsplash(data.businessType),
+      CustomContent.getPartners({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
     ]);
 
     const endTextTime = performance.now();
@@ -1947,7 +1953,8 @@ export async function generateNewCustomSite(data: {
       gallery:{
         show: true,
         list: gallery,
-      }
+      },
+      partners
     };
 
     return finalData;

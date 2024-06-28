@@ -247,6 +247,74 @@ export default function BasicTemplate(props: BasicTemplateProps) {
         </div>
       </section>
       <section className=" container mb-20 mt-20">
+        {appState?.aiContent?.gallery?.list ? (
+          appState?.aiContent?.gallery?.show && (
+            <Carousel className="h-full w-full">
+              <CarouselContent>
+                {appState?.aiContent?.gallery?.list?.map((image, i) => (
+                  <CarouselItem key={i}>
+                    <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
+                      <Image
+                        src={image}
+                        alt=""
+                        height={1000}
+                        width={1000}
+                        className=" w-full  object-cover"
+                        style={{
+                          height: 500,
+                        }}
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          )
+        ) : (
+          <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
+            <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
+              <Skeleton
+                className="h-[500px] w-full"
+                style={{
+                  height: 500,
+                }}
+              />
+            </div>
+          </div>
+        )}
+      </section>
+
+      <section className=" container mb-20 mt-20">
+        {appState?.aiContent?.partners ? (
+          appState?.aiContent?.partners?.show && (
+            <div className="flex flex-col gap-5">
+              <h2 className="text-3xl font-bold text-gray-900">
+                {appState?.aiContent?.partners?.title}
+              </h2>
+              <p>{appState?.aiContent?.partners?.description}</p>
+              <div className="h-full w-full">
+                {appState?.aiContent?.partners?.list?.map((image, i) => (
+                  <div key={i}></div>
+                ))}
+              </div>
+            </div>
+          )
+        ) : (
+          <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
+            <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
+              <Skeleton
+                className="h-[500px] w-full"
+                style={{
+                  height: 500,
+                }}
+              />
+            </div>
+          </div>
+        )}
+      </section>
+      <section className=" container mb-20 mt-20">
         {appState?.aiContent?.testimonials?.list ? (
           appState?.aiContent?.testimonials?.show && (
             <Carousel className="h-full w-full">
@@ -287,45 +355,6 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               </div>
               <Skeleton className="h-14 w-full " />
               <Skeleton className="h-10 w-full " />
-            </div>
-          </div>
-        )}
-      </section>
-      <section className=" container mb-20 mt-20">
-        {appState?.aiContent?.gallery?.list ? (
-          appState?.aiContent?.gallery?.show && (
-            <Carousel className="h-full w-full">
-              <CarouselContent>
-                {appState?.aiContent?.gallery?.list?.map((image, i) => (
-                  <CarouselItem key={i}>
-                    <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
-                      <Image
-                        src={image}
-                        alt=""
-                        height={1000}
-                        width={1000}
-                        className=" w-full  object-cover"
-                        style={{
-                          height: 500,
-                        }}
-                      />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          )
-        ) : (
-          <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
-            <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
-              <Skeleton
-                className="h-[500px] w-full"
-                style={{
-                  height: 500,
-                }}
-              />
             </div>
           </div>
         )}

@@ -576,8 +576,88 @@ class CustomContentApiService {
     });
   }
 
+  public async getPartners({
+    individual,
+    type,
+    fieldName,
+    data,
+  }: {
+    individual: boolean;
+    type: string;
+    fieldName: string;
+    data: { businessType: string; businessName: string; location: string };
+  }): Promise<TBanner> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(
+          this.url(individual ? fieldName : "partners"),
+          {
+            method: "POST",
+            body: JSON.stringify({
+              data: data,
+              type: type ?? "",
+              services: getAppState().aiContent.services ?? "",
+            }),
+          },
+        );
 
+        const reader = response.body?.getReader();
+        if (!reader) {
+          reject(new Error("ReadableStream not available"));
+          return;
+        }
+        const decoder = new TextDecoder();
+        let completeJson = "";
 
+        const processText = async ({
+          done,
+          value,
+        }: ReadableStreamReadResult<Uint8Array>) => {
+          if (done) {
+            if (completeJson) {
+              try {
+                console.log("completeJson", completeJson);
+                const parsedData = JSON.parse(completeJson);
+                // if(individual){
+                //   resolve(JSON.parse(completeJson).features);
+                // }
+
+                store.dispatch(
+                  updateAppState({
+                    ...getAppState(),
+                    aiContent: {
+                      ...getAppState().aiContent,
+                      partners: {
+                        ...parsedData.partners,
+                        ...getAppState().aiContent.partners,
+                      },
+                    }
+                  }),
+                );
+
+                resolve(parsedData.partners);
+              } catch (error) {
+                console.error("Error parsing final JSON:", error);
+                reject(error);
+              }
+            }
+            reader.releaseLock();
+            return;
+          }
+
+          const chunk = decoder.decode(value, { stream: true });
+          completeJson += chunk;
+
+          reader.read().then(processText).catch(console.error);
+        };
+
+        reader.read().then(processText).catch(console.error);
+      } catch (error) {
+        console.error("Error fetching content:", error);
+        reject(error);
+      }
+    });
+  }
 }
 
 const CustomContent = new CustomContentApiService();

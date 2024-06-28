@@ -87,7 +87,7 @@ export async function POST(
   }}`;
       break;
 
-      case "testimonials":
+    case "testimonials":
       fields = `generate 6 testimonials {"testimonials": {
           "show":true,
           "list": [
@@ -98,6 +98,14 @@ export async function POST(
               "gender":"**generate gender according to name it will MALE or FEMALE** "
             }
           ]
+  }}`;
+      break;
+    case "partners":
+      fields = `generate partners {"partners": {
+          "show":true,
+          title:"**generate title for partner section**",
+          description:"**generate description for partner section**"
+
   }}`;
       break;
     case "serviceName":
