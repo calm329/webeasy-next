@@ -253,7 +253,9 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               <CarouselContent>
                 {appState?.aiContent?.gallery?.list?.map((image, i) => (
                   <CarouselItem key={i}>
-                    <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
+                    <div
+                      className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} h-[500px] rounded-lg border border-gray-300 shadow-lg`}
+                    >
                       <Image
                         src={image}
                         alt=""
@@ -289,7 +291,9 @@ export default function BasicTemplate(props: BasicTemplateProps) {
       <section className=" container mb-20 mt-20">
         {appState?.aiContent?.partners ? (
           appState?.aiContent?.partners?.show && (
-            <div className="flex flex-col gap-5">
+            <div
+              className={`flex flex-col gap-5 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
+            >
               <h2 className="text-3xl font-bold text-gray-900">
                 {appState?.aiContent?.partners?.title}
               </h2>
@@ -322,7 +326,9 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 {appState?.aiContent?.testimonials?.list?.map(
                   (testimonial, i) => (
                     <CarouselItem key={i}>
-                      <div className=" h-full rounded-lg border border-gray-300 p-8 shadow-lg">
+                      <div
+                        className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} h-full rounded-lg border border-gray-300 p-8 shadow-lg`}
+                      >
                         <div className="flex flex-col gap-5">
                           <div className="h-44 w-44 overflow-hidden">
                             <Image
