@@ -698,11 +698,11 @@ class CustomContentApiService {
                         ...parsedData.partners,
                         ...getAppState().aiContent.partners,
                         list:[
-                          "https://cdn.durable.co/assets/logo-showcase/logo-ipsum-1.png",
-                          "https://cdn.durable.co/assets/logo-showcase/logo-ipsum-2.png",
-                          "https://cdn.durable.co/assets/logo-showcase/logo-ipsum-3.png",
-                          "https://cdn.durable.co/assets/logo-showcase/logo-ipsum-4.png",
-                          "https://cdn.durable.co/assets/logo-showcase/logo-ipsum-5.png",
+                          "/images/partners/logo-ipsum-1.png",
+                          "/images/partners/logo-ipsum-2.png",
+                          "/images/partners/logo-ipsum-3.png",
+                          "/images/partners/logo-ipsum-4.png",
+                          "/images/partners/logo-ipsum-5.png",
                         ]
                       },
                     }

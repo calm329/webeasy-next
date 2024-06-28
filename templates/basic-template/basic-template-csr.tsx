@@ -244,16 +244,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           </div>
         </div>
       </section>
-      <section className=" container mb-20 mt-20">
-        {appState?.aiContent?.gallery?.list ? (
-          appState?.aiContent?.gallery?.show && (
-            <Carousel className="h-full w-full">
-              <CarouselContent>
-                {appState?.aiContent?.gallery?.list?.map((image, i) => (
-                  <CarouselItem key={i}>
-                    <div
-                      className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} h-[500px] rounded-lg border border-gray-300 shadow-lg`}
-                      onClick={() => {
+      <section className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} container mb-20 mt-20`}  onClick={() => {
                         if (setIsOpen && setSection) {
                           setIsOpen(true);
                           setSection("Image Gallery");
@@ -264,7 +255,16 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                             }),
                           );
                         }
-                      }}
+                      }}>
+        {appState?.aiContent?.gallery?.list ? (
+          appState?.aiContent?.gallery?.show ? (
+            <Carousel className="h-full w-full">
+              <CarouselContent>
+                {appState?.aiContent?.gallery?.list?.map((image, i) => (
+                  <CarouselItem key={i}>
+                    <div
+                      className={` h-[500px] rounded-lg border border-gray-300 shadow-lg`}
+                     
                     >
                       <Image
                         src={image}
@@ -283,7 +283,10 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
-          )
+          ):
+          <div className="h-[100px]">
+
+          </div>
         ) : (
           <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
             <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
