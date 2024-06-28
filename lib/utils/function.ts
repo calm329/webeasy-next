@@ -474,14 +474,14 @@ export const regenerateIndividual = async (params: TRParams) => {
               break;
               case "testimonialName":
                 if (fieldName?.split(".")[1]) {
-                  console.log("testimonialName",content)
+                  console.log("testimonialName",content.testimonials[0].name)
                   dispatch(
                     updateAppState({
                       ...currentAppState,
                       aiContent: {
                         ...currentAppState.aiContent,
-                        testimonial: {
-                          ...currentAppState.aiContent.services,
+                        testimonials: {
+                          ...currentAppState.aiContent.testimonials,
                           list: currentAppState.aiContent.testimonials.list.map(
                             (testimonial) => {
                               if (testimonial.id === fieldName?.split(".")[1]) {
@@ -510,8 +510,8 @@ export const regenerateIndividual = async (params: TRParams) => {
                       ...currentAppState,
                       aiContent: {
                         ...currentAppState.aiContent,
-                        testimonial: {
-                          ...currentAppState.aiContent.services,
+                        testimonials: {
+                          ...currentAppState.aiContent.testimonials,
                           list: currentAppState.aiContent.testimonials.list.map(
                             (testimonial) => {
                               if (testimonial.id === fieldName?.split(".")[1]) {

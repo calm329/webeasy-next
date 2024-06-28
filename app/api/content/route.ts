@@ -9,27 +9,41 @@ const openai = new OpenAI({
 });
 
 export async function POST(request: NextRequest) {
-  const { mediaCaption, fieldName, type,services } = await request.json();
+  const { mediaCaption, fieldName, type, services, testimonials } =
+    await request.json();
   console.log("prompt", fieldName);
   // if (!mediaCaption) {
   //   return NextResponse.json({ error: "Missing data" }, { status: 400 });
   // }
   let fields;
   switch (fieldName) {
+    case "testimonialName":
+      fields = `only generate the ${type ?? ""} data for testimonials[0].name field and please don't add any other field expect the given "testimonials":[
+          {
+           "name": "*first testimonial*",
+          }] and it should not be similar to any name from this data ${JSON.stringify(testimonials)} `;
+      break;
+    case "testimonialContent":
+      fields = `
+            only generate the ${type ?? ""} data for testimonials[0].content field and please don't add any other field expect the given "testimonials":[
+          {
+            "content": "*content*",
+          }] and it should not be similar to any content from this data ${JSON.stringify(testimonials)} `;
+      break;
     case "heading":
-      fields = `only generate the ${type??""} data for hero.heading "hero": {"heading": "*insert heading here*"}`;
+      fields = `only generate the ${type ?? ""} data for hero.heading "hero": {"heading": "*insert heading here*"}`;
       break;
     case "subheading":
-      fields = `only generate the ${type??""} data for hero.subheading "hero": {"subheading": "*insert subheading here*"}`;
+      fields = `only generate the ${type ?? ""} data for hero.subheading "hero": {"subheading": "*insert subheading here*"}`;
       break;
     case "serviceName":
-      fields = `only generate the ${type??""} data for services.list[0].name "services": {"list": [
+      fields = `only generate the ${type ?? ""} data for services.list[0].name "services": {"list": [
         {
           "name": "*first service or feature*",
         }]}  and it should not be similar to any name from this data ${JSON.stringify(services)}`;
       break;
     case "serviceDescription":
-      fields = `only generate the ${type??""} data for services.list[0].description field "services": {"list": [
+      fields = `only generate the ${type ?? ""} data for services.list[0].description field "services": {"list": [
           {
             "description": "*description*",
           }]} and it should not be similar to any description from this data ${JSON.stringify(services)} `;
