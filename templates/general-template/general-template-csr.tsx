@@ -219,7 +219,69 @@ export default function General(props: TProps) {
             }}
           >
             {appState?.aiContent?.services?.show && (
+              <>
+                  <div className="mx-auto text-center flex flex-col gap-3 border-b-2 border-gray-400 pb-5 mb-5">
+                  <h1
+                    className={`text-3xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (
+                        editable &&
+                        setIsOpen &&
+                        setSection &&
+                        setShowForm
+                      ) {
+                        setSection("Services");
+                        setIsOpen(true);
+                        setShowForm({
+                          form: "",
+                          edit: "",
+                          show: false,
+                        });
+                        dispatch(
+                          updateAppState({
+                            ...appState,
+                            focusedField: "title",
+                            openedSlide: "Customize",
+                          }),
+                        );
+                      }
+                    }}
+                  >
+                    {appState?.aiContent?.services.title}
+                  </h1>
+                  <p
+                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} line-clamp-3`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (
+                        editable &&
+                        setIsOpen &&
+                        setSection &&
+                        setShowForm
+                      ) {
+                        setSection("Services");
+                        setIsOpen(true);
+                        setShowForm({
+                          form: "",
+                          edit: "",
+                          show: false,
+                        });
+                        dispatch(
+                          updateAppState({
+                            ...appState,
+                            focusedField: "description",
+                            openedSlide: "Customize",
+                          }),
+                        );
+                      }
+                    }}
+                  >
+                    {appState?.aiContent?.services.description}
+                  </p>
+                </div>
               <div className="flex  flex-wrap justify-center gap-10">
+
                 {services?.map((data) => (
                   <div
                     className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} max-w-96`}
@@ -234,7 +296,7 @@ export default function General(props: TProps) {
                     key={data.id}
                   >
                     <Card.Title>{data.name}</Card.Title>
-                    <Card.Description>{data.description}</Card.Description>
+                    <Card.Description ><p className="line-clamp-3">{data.description}</p></Card.Description>
                   </div>
                 ))}
 
@@ -251,6 +313,7 @@ export default function General(props: TProps) {
                     </div>
                   ))}
               </div>
+              </>
             )}
           </div>
         </div>

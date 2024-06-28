@@ -113,6 +113,67 @@ export function Services(props: TProps) {
                   " mt-10  space-y-8 bg-white px-10 py-14 text-center shadow-xl shadow-blue-900/5"
                 }
               >
+                <div className="flex flex-col gap-3 border-b-2 border-gray-400 pb-5 ">
+                  <h1
+                    className={`text-3xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (
+                        editable &&
+                        setIsOpen &&
+                        setSection &&
+                        setShowForm
+                      ) {
+                        setSection("Services");
+                        setIsOpen(true);
+                        setShowForm({
+                          form: "",
+                          edit: "",
+                          show: false,
+                        });
+                        dispatch(
+                          updateAppState({
+                            ...appState,
+                            focusedField: "title",
+                            openedSlide: "Customize",
+                          }),
+                        );
+                      }
+                    }}
+                  >
+                    {appState?.aiContent?.services.title}
+                  </h1>
+                  <p
+                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (
+                        editable &&
+                        setIsOpen &&
+                        setSection &&
+                        setShowForm
+                      ) {
+                        setSection("Services");
+                        setIsOpen(true);
+                        setShowForm({
+                          form: "",
+                          edit: "",
+                          show: false,
+                        });
+                        dispatch(
+                          updateAppState({
+                            ...appState,
+                            focusedField: "description",
+                            openedSlide: "Customize",
+                          }),
+                        );
+                      }
+                    }}
+                  >
+                    {appState?.aiContent?.services.description}
+                  </p>
+                </div>
+
                 {services?.map((data, i) => (
                   <li
                     key={i}
@@ -133,7 +194,7 @@ export function Services(props: TProps) {
                       {data.name}
                     </h4>
                     {data.description && (
-                      <p className="mt-1 tracking-tight text-blue-900">
+                      <p className="mt-1 tracking-tight text-blue-900 line-clamp-3">
                         {data.description}
                       </p>
                     )}
@@ -156,7 +217,7 @@ export function Services(props: TProps) {
                           <Skeleton className="h-10 w-20 border-gray-400" />
                         </p>
                       </li>
-                    )
+                    ),
                 )}
               </ol>
             )}
