@@ -63,7 +63,8 @@ export type TFields =
   | "description"
   | "price"
   | "featureTitle"
-  | "featureDescription"|string
+  | "featureDescription"
+  | string
   | null;
 
 export type TMeta = {
@@ -101,6 +102,15 @@ export interface AppState {
     colors: {
       primary: string;
       secondary: string;
+    };
+    testimonials: {
+      show: boolean;
+      list: Array<{
+        id: string;
+        name: string;
+        avatar: string;
+        content: string;
+      }>;
     };
     features?: Array<TFeature>;
     description?: string;

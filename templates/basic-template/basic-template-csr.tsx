@@ -20,6 +20,15 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState } from "../../lib/store/slices/site-slice";
 import { Skeleton } from "@/components/ui/skeleton";
 import TypewriterEffect from "@/components/typewriter-effect";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/select-template-carousel";
+import { Card } from "@/components/ui/card/general-card";
+import { CardContent } from "@/components/ui/card";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -236,6 +245,43 @@ export default function BasicTemplate(props: BasicTemplateProps) {
             </div>
           </div>
         </div>
+      </section>
+      <section className=" container mb-20 mt-20">
+        {appState?.aiContent?.testimonials?.list ?(appState?.aiContent?.testimonials?.show && (
+          <Carousel className="w-full h-full">
+            <CarouselContent>
+              {appState?.aiContent?.testimonials?.list?.map(
+                (testimonial, i) => (
+                  <CarouselItem key={i}>
+                    <div className=" border p-8 h-full border-gray-300 rounded-lg shadow-lg">
+                      <div className="flex flex-col gap-5">
+                        <div className="h-44 w-44 overflow-hidden">
+
+                        <Image src={testimonial.avatar} alt="" height={100} width={100} className="object-cover h-[100px] w-[100px] rounded-full"/>
+                        </div>
+                        <h3 className="text-3xl font-bold">{testimonial.name}</h3>
+                        <p className="text-xl">{testimonial.content}</p>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ),
+              )}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        )):
+        <div className=" border p-8 h-full border-gray-300 rounded-lg shadow-lg">
+                      <div className="flex flex-col gap-5">
+                        <div className="h-44 w-44 overflow-hidden">
+
+                        <Skeleton className=" object-cover h-[100px] w-[100px] rounded-full"/>
+                        </div>
+                        <Skeleton className="h-14 w-full "/>
+                        <Skeleton className="h-10 w-full "/>
+                      </div>
+                    </div>
+        }
       </section>
       <div
         className={`mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}

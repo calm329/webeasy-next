@@ -86,6 +86,20 @@ export async function POST(
           ]
   }}`;
       break;
+
+      case "testimonials":
+      fields = `generate 6 testimonials {"testimonials": {
+          "show":true,
+          "list": [
+            {"id":"**unique id**",
+              "name": "*first testimonial*",
+              "content": "*content*",
+              "avatar": "url-to-testimonial1-image.jpg"
+              "gender":"**generate gender according to name it will MALE or FEMALE** "
+            }
+          ]
+  }}`;
+      break;
     case "serviceName":
       fields = `only generate the ${type ?? ""} data for services[0].title field and please don't add any other field expect the given "services":[
           {

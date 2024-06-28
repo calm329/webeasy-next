@@ -1801,7 +1801,7 @@ export async function generateNewCustomSite(data: {
     const startImagesTime = performance.now();
     // Start all API calls in parallel
     const [heroImage] = await Promise.all([
-      getHeroImageForCustom(data.businessType),
+      getRandomImageFromUnsplash(data.businessType),
     ]);
 
     store.dispatch(
@@ -1854,7 +1854,7 @@ export async function generateNewCustomSite(data: {
       }),
     );
     const startTextTime = performance.now();
-    const [hero, banner, services, logo] = await Promise.all([
+    const [hero, banner, services, logo,testimonials] = await Promise.all([
       CustomContent.getHero({
         data,
         individual: false,
@@ -1873,7 +1873,14 @@ export async function generateNewCustomSite(data: {
         fieldName: "",
         type: "",
       }),
+      
       getLogo(data),
+      CustomContent.getTestimonials({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
     ]);
 
     const endTextTime = performance.now();
@@ -1932,6 +1939,9 @@ export async function generateNewCustomSite(data: {
           link: logo,
         },
       },
+      testimonials:{
+        ...testimonials
+      }
     };
 
     return finalData;
@@ -1972,7 +1982,7 @@ export async function generateImagesForCustom(data: {
     const startImagesTime = performance.now();
     // Start all API calls in parallel
     const [heroImage, logo] = await Promise.all([
-      getHeroImageForCustom(data.businessType),
+      getRandomImageFromUnsplash(data.businessType),
       getLogo(data),
     ]);
 
@@ -2102,10 +2112,10 @@ export async function generateTextForCustom(data: {
   }
 }
 
-export async function getHeroImageForCustom(businessType: string) {
+export async function getRandomImageFromUnsplash(prompt: string) {
   try {
     const res = await fetch(
-      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${businessType}`,
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}`,
     );
     const data = await res.json();
     return data.urls.small;
@@ -2147,7 +2157,7 @@ export async function regenerateHeroImage(type: string) {
     let image = "";
     console.log("type", type);
     if (type === "Stored Image") {
-      image = await getHeroImageForCustom(
+      image = await getRandomImageFromUnsplash(
         getAppState().aiContent?.businessType ?? "",
       );
     } else {

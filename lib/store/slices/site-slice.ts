@@ -67,6 +67,10 @@ const initialSite: AppState = {
       list: [],
       title: "",
     },
+    testimonials: {
+      show: true,
+      list: [],
+    },
     businessType: "",
     location: "",
   },
