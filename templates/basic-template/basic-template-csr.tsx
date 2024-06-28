@@ -247,41 +247,88 @@ export default function BasicTemplate(props: BasicTemplateProps) {
         </div>
       </section>
       <section className=" container mb-20 mt-20">
-        {appState?.aiContent?.testimonials?.list ?(appState?.aiContent?.testimonials?.show && (
-          <Carousel className="w-full h-full">
-            <CarouselContent>
-              {appState?.aiContent?.testimonials?.list?.map(
-                (testimonial, i) => (
-                  <CarouselItem key={i}>
-                    <div className=" border p-8 h-full border-gray-300 rounded-lg shadow-lg">
-                      <div className="flex flex-col gap-5">
-                        <div className="h-44 w-44 overflow-hidden">
-
-                        <Image src={testimonial.avatar} alt="" height={100} width={100} className="object-cover h-[100px] w-[100px] rounded-full"/>
+        {appState?.aiContent?.testimonials?.list ? (
+          appState?.aiContent?.testimonials?.show && (
+            <Carousel className="h-full w-full">
+              <CarouselContent>
+                {appState?.aiContent?.testimonials?.list?.map(
+                  (testimonial, i) => (
+                    <CarouselItem key={i}>
+                      <div className=" h-full rounded-lg border border-gray-300 p-8 shadow-lg">
+                        <div className="flex flex-col gap-5">
+                          <div className="h-44 w-44 overflow-hidden">
+                            <Image
+                              src={testimonial.avatar}
+                              alt=""
+                              height={100}
+                              width={100}
+                              className="h-[100px] w-[100px] rounded-full object-cover"
+                            />
+                          </div>
+                          <h3 className="text-3xl font-bold">
+                            {testimonial.name}
+                          </h3>
+                          <p className="text-xl">{testimonial.content}</p>
                         </div>
-                        <h3 className="text-3xl font-bold">{testimonial.name}</h3>
-                        <p className="text-xl">{testimonial.content}</p>
                       </div>
+                    </CarouselItem>
+                  ),
+                )}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          )
+        ) : (
+          <div className=" h-full rounded-lg border border-gray-300 p-8 shadow-lg">
+            <div className="flex flex-col gap-5">
+              <div className="h-44 w-44 overflow-hidden">
+                <Skeleton className=" h-[100px] w-[100px] rounded-full object-cover" />
+              </div>
+              <Skeleton className="h-14 w-full " />
+              <Skeleton className="h-10 w-full " />
+            </div>
+          </div>
+        )}
+      </section>
+      <section className=" container mb-20 mt-20">
+        {appState?.aiContent?.gallery?.list ? (
+          appState?.aiContent?.gallery?.show && (
+            <Carousel className="h-full w-full">
+              <CarouselContent>
+                {appState?.aiContent?.gallery?.list?.map((image, i) => (
+                  <CarouselItem key={i}>
+                    <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
+                      <Image
+                        src={image}
+                        alt=""
+                        height={1000}
+                        width={1000}
+                        className=" w-full  object-cover"
+                        style={{
+                          height: 500,
+                        }}
+                      />
                     </div>
                   </CarouselItem>
-                ),
-              )}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        )):
-        <div className=" border p-8 h-full border-gray-300 rounded-lg shadow-lg">
-                      <div className="flex flex-col gap-5">
-                        <div className="h-44 w-44 overflow-hidden">
-
-                        <Skeleton className=" object-cover h-[100px] w-[100px] rounded-full"/>
-                        </div>
-                        <Skeleton className="h-14 w-full "/>
-                        <Skeleton className="h-10 w-full "/>
-                      </div>
-                    </div>
-        }
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          )
+        ) : (
+          <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
+            <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
+              <Skeleton
+                className="h-[500px] w-full"
+                style={{
+                  height: 500,
+                }}
+              />
+            </div>
+          </div>
+        )}
       </section>
       <div
         className={`mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}

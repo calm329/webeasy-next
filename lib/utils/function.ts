@@ -1854,7 +1854,7 @@ export async function generateNewCustomSite(data: {
       }),
     );
     const startTextTime = performance.now();
-    const [hero, banner, services, logo,testimonials] = await Promise.all([
+    const [hero, banner, services, logo, testimonials,gallery] = await Promise.all([
       CustomContent.getHero({
         data,
         individual: false,
@@ -1873,7 +1873,7 @@ export async function generateNewCustomSite(data: {
         fieldName: "",
         type: "",
       }),
-      
+
       getLogo(data),
       CustomContent.getTestimonials({
         data,
@@ -1881,6 +1881,7 @@ export async function generateNewCustomSite(data: {
         fieldName: "",
         type: "",
       }),
+      getPhotosFromUnsplash(data.businessType)
     ]);
 
     const endTextTime = performance.now();
@@ -1939,8 +1940,13 @@ export async function generateNewCustomSite(data: {
           link: logo,
         },
       },
-      testimonials:{
-        ...testimonials
+      testimonials: {
+        
+        ...testimonials,
+      },
+      gallery:{
+        show: true,
+        list: gallery,
       }
     };
 
@@ -2239,4 +2245,25 @@ export const validateURL = (url: string) => {
     "i", // fragment locator
   );
   return !!urlPattern.test(url);
+};
+
+export const getPhotosFromUnsplash = async (prompt: string) => {
+  try {
+    const res = await fetch(
+      `https://api.unsplash.com/photos?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&page=1&per_page=6`,
+    );
+    const data = await res.json();
+    const fullUrls = data.map((photo:any) => photo.urls.full);
+    store.dispatch(updateAppState({
+      ...getAppState(),
+      aiContent:{
+        ...getAppState().aiContent,
+        gallery: {
+         ...getAppState().aiContent.gallery,
+          list: fullUrls,
+        },
+      }
+    }))
+    return fullUrls
+  } catch (error) {}
 };

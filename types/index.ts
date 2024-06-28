@@ -112,6 +112,7 @@ export interface AppState {
         content: string;
       }>;
     };
+    gallery:{show:boolean,list:Array<string>}
     features?: Array<TFeature>;
     description?: string;
     images?: {
