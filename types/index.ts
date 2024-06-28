@@ -44,7 +44,10 @@ export type TSection =
   | "Gallery"
   | "Features"
   | "Description"
-  | "Title";
+  | "Title"
+  | "Image Gallery"
+  | "Partners"
+  | "Testimonials";
 
 export type TFields =
   | "logo"
@@ -112,13 +115,13 @@ export interface AppState {
         content: string;
       }>;
     };
-    partners:{
-      show: boolean,
-      title: string
-      description:string
-      list:Array<string>
-    }
-    gallery:{show:boolean,list:Array<string>}
+    partners: {
+      show: boolean;
+      title: string;
+      description: string;
+      list: Array<string>;
+    };
+    gallery: { show: boolean; list: Array<string> };
     features?: Array<TFeature>;
     description?: string;
     images?: {

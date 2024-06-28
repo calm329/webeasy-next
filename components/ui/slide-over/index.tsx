@@ -10,6 +10,9 @@ import GalleryContent from "@/components/customize/panel/gallery";
 import TitleContent from "@/components/customize/panel/title";
 import DescriptionContent from "@/components/customize/panel/description";
 import FeaturesContent from "@/components/customize/panel/features";
+import CustomGalleryContent from "@/components/customize/panel/custom-gallery";
+import PartnersContent from "@/components/customize/panel/partners";
+import TestimonialContent from "@/components/customize/panel/testimonials";
 
 type TProps = {
   open: boolean;
@@ -75,9 +78,23 @@ function SlideOver(props: TProps) {
             {section === "Services" && (
               <ServiceContent setShowForm={setShowForm} />
             )}
+            {section === "Partners" && (
+              <PartnersContent setShowForm={setShowForm} />
+            )}
+            {section === "Testimonials" && (
+              <TestimonialContent setShowForm={setShowForm} />
+            )}
             {section === "Posts" && <PostsContent />}
             {section === "Gallery" && (
               <GalleryContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "Image Gallery" && (
+              <CustomGalleryContent
                 section={section}
                 handleChange={handleChange}
                 subdomain={subdomain}

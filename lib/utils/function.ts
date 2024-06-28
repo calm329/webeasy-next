@@ -58,6 +58,7 @@ export const getContent = async (
             : fieldName ?? "",
           type: type ?? "",
           services: appState?.aiContent.services,
+          testimonials: appState?.aiContent?.testimonials.list
         }),
       });
     } else {
@@ -282,6 +283,20 @@ export const regenerateIndividual = async (params: TRParams) => {
               description: content.services.list[0].description,
             };
 
+            case "testimonialName":
+            return {
+              id: "",
+              name: content.testimonials[0].name,
+              avatar: "",
+              content: "",
+            };
+          case "testimonialContent":
+            return {
+              id: "",
+              name: "",
+              avatar: "",
+              content: content.testimonials[0].content,
+            };
           case "featureTitle":
             return {
               id: "",
@@ -457,7 +472,68 @@ export const regenerateIndividual = async (params: TRParams) => {
                 return;
               }
               break;
-            case "featureTitle":
+              case "testimonialName":
+                if (fieldName?.split(".")[1]) {
+                  console.log("testimonialName",content)
+                  dispatch(
+                    updateAppState({
+                      ...currentAppState,
+                      aiContent: {
+                        ...currentAppState.aiContent,
+                        testimonial: {
+                          ...currentAppState.aiContent.services,
+                          list: currentAppState.aiContent.testimonials.list.map(
+                            (testimonial) => {
+                              if (testimonial.id === fieldName?.split(".")[1]) {
+                                return {
+                                  ...testimonial,
+                                  name: content.testimonials[0].name,
+                                };
+                              } else {
+                                return testimonial;
+                              }
+                            },
+                          ),
+                        },
+                      },
+                    }),
+                  );
+                } else {
+                  resolve();
+                  return;
+                }
+                break;
+              case "testimonialContent":
+                if (fieldName?.split(".")[1]) {
+                  dispatch(
+                    updateAppState({
+                      ...currentAppState,
+                      aiContent: {
+                        ...currentAppState.aiContent,
+                        testimonial: {
+                          ...currentAppState.aiContent.services,
+                          list: currentAppState.aiContent.testimonials.list.map(
+                            (testimonial) => {
+                              if (testimonial.id === fieldName?.split(".")[1]) {
+                                return {
+                                  ...testimonial,
+                                  content: content.testimonials[0].content,
+                                };
+                              } else {
+                                return testimonial;
+                              }
+                            },
+                          ),
+                        },
+                      },
+                    }),
+                  );
+                } else {
+                  resolve();
+                  return;
+                }
+                break;
+              case "featureTitle":
               if (fieldName?.split(".")[1]) {
                 dispatch(
                   updateAppState({
@@ -1954,7 +2030,9 @@ export async function generateNewCustomSite(data: {
         show: true,
         list: gallery,
       },
-      partners
+      partners:{
+        ...getAppState().aiContent.partners
+      }
     };
 
     return finalData;
@@ -2226,6 +2304,67 @@ export async function generateCustomServiceTAndD({
                   ...currentAppState.aiContent,
                   services: {
                     ...currentAppState.aiContent.services,
+                    description: content.description,
+                  },
+                },
+              }),
+            );
+            break;
+        }
+        resolve();
+      });
+    };
+
+    updateQueue.enqueue(() => updateState(fieldName, response));
+  } catch (error) {}
+}
+
+export async function generatePartnersTAndD({
+  individual,
+  type,
+  fieldName,
+  data,
+}: {
+  individual: boolean;
+  type: string;
+  fieldName: string;
+  data: { businessType: string; businessName: string; location: string };
+}) {
+  try {
+    const response = await CustomContent.getPartnersTAndD({
+      data,
+      fieldName,
+      type: "",
+      individual: true,
+    });
+
+    const updateState = async (fieldName: string, content: any) => {
+      const currentAppState = getAppState(); // Ensure we are using the latest app state
+      return new Promise<void>((resolve) => {
+        switch (fieldName) {
+          case "partnersTitle":
+            store.dispatch(
+              updateAppState({
+                ...currentAppState,
+                aiContent: {
+                  ...currentAppState.aiContent,
+                  partners: {
+                    ...currentAppState.aiContent.partners,
+                    title: content.title,
+                  },
+                },
+              }),
+            );
+
+            break;
+          case "partnersDescription":
+            store.dispatch(
+              updateAppState({
+                ...currentAppState,
+                aiContent: {
+                  ...currentAppState.aiContent,
+                  partners: {
+                    ...currentAppState.aiContent.partners,
                     description: content.description,
                   },
                 },

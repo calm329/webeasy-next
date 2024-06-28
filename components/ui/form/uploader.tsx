@@ -140,7 +140,7 @@ export default function Uploader(props: TProps) {
           <Image
             src={data[name] as string}
             alt="Preview"
-            className="h-full w-full rounded-md object-cover"
+            className="h-full w-full rounded-md object-contain"
             height={400}
             width={400}
           />

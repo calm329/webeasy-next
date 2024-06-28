@@ -4,6 +4,7 @@ import CustomButton from "@/components/ui/form/custom-button";
 import { DebouncedState } from "use-debounce";
 import CustomService from "@/components/ui/form/custom-service";
 import CustomFeature from "@/components/ui/form/custom-feature";
+import CustomTestimonial from "@/components/ui/form/custom-testimonial";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -61,6 +62,15 @@ const CustomizePanel = (props: TProps) => {
       )}
       {showForm.form === "Feature" && (
         <CustomFeature
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+       {showForm.form === "Testimonial" && (
+        <CustomTestimonial
           handleChange={handleChange}
           section={section}
           setIsOpen={setIsOpen}

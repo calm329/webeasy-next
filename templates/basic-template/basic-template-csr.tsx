@@ -27,8 +27,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/select-template-carousel";
-import { Card } from "@/components/ui/card/general-card";
-import { CardContent } from "@/components/ui/card";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -255,6 +253,18 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   <CarouselItem key={i}>
                     <div
                       className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} h-[500px] rounded-lg border border-gray-300 shadow-lg`}
+                      onClick={() => {
+                        if (setIsOpen && setSection) {
+                          setIsOpen(true);
+                          setSection("Image Gallery");
+                          dispatch(
+                            updateAppState({
+                              ...appState,
+                              openedSlide: "Customize",
+                            }),
+                          );
+                        }
+                      }}
                     >
                       <Image
                         src={image}
@@ -288,22 +298,112 @@ export default function BasicTemplate(props: BasicTemplateProps) {
         )}
       </section>
 
-      <section className=" container mb-20 mt-20">
+      <section
+        className={`container mb-20 mt-20 ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+        onClick={() => {
+          if (setIsOpen && setSection) {
+            setIsOpen(true);
+            setSection("Partners");
+            dispatch(
+              updateAppState({
+                ...appState,
+                openedSlide: "Customize",
+              }),
+            );
+          }
+        }}
+      >
         {appState?.aiContent?.partners ? (
-          appState?.aiContent?.partners?.show && (
-            <div
-              className={`flex flex-col gap-5 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
-            >
+          appState?.aiContent?.partners?.show ? (
+            <div className={`flex flex-col gap-5`}>
               <h2 className="text-3xl font-bold text-gray-900">
                 {appState?.aiContent?.partners?.title}
               </h2>
               <p>{appState?.aiContent?.partners?.description}</p>
-              <div className="h-full w-full">
-                {appState?.aiContent?.partners?.list?.map((image, i) => (
-                  <div key={i}></div>
-                ))}
+              {/* <div className="inline-edit flex-1 px-5 md:px-6 mt-10">
+                <div
+                  className="flex w-full overflow-hidden"
+                  style={{
+                    mask: "linear-gradient(90deg, transparent, white 5%, white 95%, transparent)",
+                  }}
+                >
+                  <div
+                    className="flex w-full  items-center justify-center gap-20"
+                  
+                  >
+                    {images.map((src, index) => (
+                      <div
+                        key={index}
+                        className="relative flex h-12 w-auto flex-shrink-0 rounded-lg transition-all md:h-16  md:rounded-xl lg:rounded-2xl "
+                      >
+                        <Image
+                          className="h-full grayscale transition-all duration-300 "
+                          src={src}
+                          alt={`Logo ${index + 1}`}
+                          height={200}
+                          width={200}
+                        />
+                      </div>
+                    ))}
+                    {images.map((src, index) => (
+                      <div
+                        key={index + images.length}
+                        className="relative flex h-12 w-auto flex-shrink-0 rounded-lg transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
+                      >
+                        <Image
+                          className="h-full grayscale transition-all duration-300"
+                          src={src}
+                          alt={`Logo ${index + 1}`}
+                          height={200}
+                          width={200}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div> */}
+              <div className="inline-edit mt-10 flex-1 px-5 md:px-6">
+                <div
+                  className="flex w-full overflow-hidden"
+                  style={{
+                    mask: "linear-gradient(90deg, transparent, white 5%, white 95%, transparent)",
+                  }}
+                >
+                  <div className="marquee flex w-full items-center gap-10 justify-center">
+                    {[...appState?.aiContent?.partners?.list?? [], ...appState?.aiContent?.partners?.list?? []].map((src, index) => (
+                      <div
+                        key={index}
+                        className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
+                      >
+                        <Image
+                          className="h-full object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                          src={src}
+                          alt={`Logo ${index + 1}`}
+                          height={200}
+                          width={200}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <style jsx>{`
+                  .marquee {
+                    animation: marquee 15s linear infinite;
+                  }
+
+                  @keyframes marquee {
+                    from {
+                      transform: translate3d(-50%, 0, 0);
+                    }
+                    to {
+                      transform: translate3d(0, 0, 0);
+                    }
+                  }
+                `}</style>
               </div>
             </div>
+          ) : (
+            <div className="h-[100px]"></div>
           )
         ) : (
           <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
@@ -318,16 +418,30 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           </div>
         )}
       </section>
-      <section className=" container mb-20 mt-20">
+      <section
+        className={`container mb-20 mt-20 ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+        onClick={() => {
+          if (setIsOpen && setSection) {
+            setIsOpen(true);
+            setSection("Testimonials");
+            dispatch(
+              updateAppState({
+                ...appState,
+                openedSlide: "Customize",
+              }),
+            );
+          }
+        }}
+      >
         {appState?.aiContent?.testimonials?.list ? (
-          appState?.aiContent?.testimonials?.show && (
+          appState?.aiContent?.testimonials?.show ? (
             <Carousel className="h-full w-full">
               <CarouselContent>
                 {appState?.aiContent?.testimonials?.list?.map(
                   (testimonial, i) => (
                     <CarouselItem key={i}>
                       <div
-                        className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} h-full rounded-lg border border-gray-300 p-8 shadow-lg`}
+                        className={` h-full rounded-lg border border-gray-300 p-8 shadow-lg`}
                       >
                         <div className="flex flex-col gap-5">
                           <div className="h-44 w-44 overflow-hidden">
@@ -352,6 +466,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
+          ) : (
+            <div className="h-[100px]"></div>
           )
         ) : (
           <div className=" h-full rounded-lg border border-gray-300 p-8 shadow-lg">

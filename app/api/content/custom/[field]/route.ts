@@ -12,9 +12,28 @@ export async function POST(
   request: NextRequest,
   { params }: { params: { field: string } },
 ) {
-  const { data, mediaCaption, type, services } = await request.json();
+  const { data, mediaCaption, type, services,testimonials } = await request.json();
   let fields = "";
   switch (params.field) {
+    case "testimonialName":
+      fields = `only generate the ${type ?? ""} data for testimonials[0].name field and please don't add any other field expect the given "testimonials":[
+          {
+           "name": "*first testimonial*",
+          }] and it should not be similar to any name from this data ${JSON.stringify(testimonials)} `;
+      break;
+    case "testimonialContent":
+      fields = `
+            only generate the ${type ?? ""} data for testimonials[0].content field and please don't add any other field expect the given "testimonials":[
+          {
+            "content": "*content*",
+          }] and it should not be similar to any content from this data ${JSON.stringify(testimonials)} `;
+      break;
+    case "partnersTitle":
+      fields = `only generate the ${type ?? ""} data for title field for partners section and please don't add any other field expect the given {"title": "*insert title here*"}`;
+      break;
+    case "partnersDescription":
+      fields = `only generate the ${type ?? ""} data for description field for partners section and please don't add any other field expect the given {"description": "*insert description here*"} and don't exceed 20 words `;
+      break;
     case "title":
       fields = `only generate the ${type ?? ""} data for title field for services and please don't add any other field expect the given {"title": "*insert title here*"}`;
       break;

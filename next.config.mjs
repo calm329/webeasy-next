@@ -16,7 +16,9 @@ const nextConfig = {
       "tailwindui.com",
       "images.unsplash.com",
       'oaidalleapiprodscus.blob.core.windows.net',
-      'm.media-amazon.com'
+      'm.media-amazon.com',
+      'cdn.durable.co'
+
     ],
   },
 };
