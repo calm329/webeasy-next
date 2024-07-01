@@ -58,7 +58,7 @@ export const getContent = async (
             : fieldName ?? "",
           type: type ?? "",
           services: appState?.aiContent.services,
-          testimonials: appState?.aiContent?.testimonials.list
+          testimonials: appState?.aiContent?.testimonials.list,
         }),
       });
     } else {
@@ -283,7 +283,7 @@ export const regenerateIndividual = async (params: TRParams) => {
               description: content.services.list[0].description,
             };
 
-            case "testimonialName":
+          case "testimonialName":
             return {
               id: "",
               name: content.testimonials[0].name,
@@ -472,68 +472,68 @@ export const regenerateIndividual = async (params: TRParams) => {
                 return;
               }
               break;
-              case "testimonialName":
-                if (fieldName?.split(".")[1]) {
-                  console.log("testimonialName",content.testimonials[0].name)
-                  dispatch(
-                    updateAppState({
-                      ...currentAppState,
-                      aiContent: {
-                        ...currentAppState.aiContent,
-                        testimonials: {
-                          ...currentAppState.aiContent.testimonials,
-                          list: currentAppState.aiContent.testimonials.list.map(
-                            (testimonial) => {
-                              if (testimonial.id === fieldName?.split(".")[1]) {
-                                return {
-                                  ...testimonial,
-                                  name: content.testimonials[0].name,
-                                };
-                              } else {
-                                return testimonial;
-                              }
-                            },
-                          ),
-                        },
+            case "testimonialName":
+              if (fieldName?.split(".")[1]) {
+                console.log("testimonialName", content.testimonials[0].name);
+                dispatch(
+                  updateAppState({
+                    ...currentAppState,
+                    aiContent: {
+                      ...currentAppState.aiContent,
+                      testimonials: {
+                        ...currentAppState.aiContent.testimonials,
+                        list: currentAppState.aiContent.testimonials.list.map(
+                          (testimonial) => {
+                            if (testimonial.id === fieldName?.split(".")[1]) {
+                              return {
+                                ...testimonial,
+                                name: content.testimonials[0].name,
+                              };
+                            } else {
+                              return testimonial;
+                            }
+                          },
+                        ),
                       },
-                    }),
-                  );
-                } else {
-                  resolve();
-                  return;
-                }
-                break;
-              case "testimonialContent":
-                if (fieldName?.split(".")[1]) {
-                  dispatch(
-                    updateAppState({
-                      ...currentAppState,
-                      aiContent: {
-                        ...currentAppState.aiContent,
-                        testimonials: {
-                          ...currentAppState.aiContent.testimonials,
-                          list: currentAppState.aiContent.testimonials.list.map(
-                            (testimonial) => {
-                              if (testimonial.id === fieldName?.split(".")[1]) {
-                                return {
-                                  ...testimonial,
-                                  content: content.testimonials[0].content,
-                                };
-                              } else {
-                                return testimonial;
-                              }
-                            },
-                          ),
-                        },
+                    },
+                  }),
+                );
+              } else {
+                resolve();
+                return;
+              }
+              break;
+            case "testimonialContent":
+              if (fieldName?.split(".")[1]) {
+                dispatch(
+                  updateAppState({
+                    ...currentAppState,
+                    aiContent: {
+                      ...currentAppState.aiContent,
+                      testimonials: {
+                        ...currentAppState.aiContent.testimonials,
+                        list: currentAppState.aiContent.testimonials.list.map(
+                          (testimonial) => {
+                            if (testimonial.id === fieldName?.split(".")[1]) {
+                              return {
+                                ...testimonial,
+                                content: content.testimonials[0].content,
+                              };
+                            } else {
+                              return testimonial;
+                            }
+                          },
+                        ),
                       },
-                    }),
-                  );
-                } else {
-                  resolve();
-                  return;
-                }
-                break;
-              case "featureTitle":
+                    },
+                  }),
+                );
+              } else {
+                resolve();
+                return;
+              }
+              break;
+            case "featureTitle":
               if (fieldName?.split(".")[1]) {
                 dispatch(
                   updateAppState({
@@ -1930,41 +1930,42 @@ export async function generateNewCustomSite(data: {
       }),
     );
     const startTextTime = performance.now();
-    const [hero, banner, services, logo, testimonials,gallery,partners] = await Promise.all([
-      CustomContent.getHero({
-        data,
-        individual: false,
-        fieldName: "",
-        type: "",
-      }),
-      CustomContent.getBanner({
-        data,
-        individual: false,
-        fieldName: "",
-        type: "",
-      }),
-      CustomContent.getServices({
-        data,
-        individual: false,
-        fieldName: "",
-        type: "",
-      }),
+    const [hero, banner, services, logo, testimonials, gallery, partners] =
+      await Promise.all([
+        CustomContent.getHero({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getBanner({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getServices({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
 
-      getLogo(data),
-      CustomContent.getTestimonials({
-        data,
-        individual: false,
-        fieldName: "",
-        type: "",
-      }),
-      getPhotosFromUnsplash(data.businessType),
-      CustomContent.getPartners({
-        data,
-        individual: false,
-        fieldName: "",
-        type: "",
-      }),
-    ]);
+        getLogo(data),
+        CustomContent.getTestimonials({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        getPhotosFromUnsplash(data.businessType),
+        CustomContent.getPartners({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+      ]);
 
     const endTextTime = performance.now();
     const timeTextTaken = endTextTime - startTextTime;
@@ -2023,16 +2024,15 @@ export async function generateNewCustomSite(data: {
         },
       },
       testimonials: {
-        
         ...testimonials,
       },
-      gallery:{
+      gallery: {
         show: true,
         list: gallery,
       },
-      partners:{
-        ...getAppState().aiContent.partners
-      }
+      partners: {
+        ...getAppState().aiContent.partners,
+      },
     };
 
     return finalData;
@@ -2205,27 +2205,29 @@ export async function generateTextForCustom(data: {
 
 export async function getRandomImageFromUnsplash(prompt: string) {
   try {
-    const startTime = performance.now()
+    const startTime = performance.now();
     const resUnsplash = await fetch(
       `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=5`,
     );
     const data = await resUnsplash.json();
 
-    const dataToBeFiltered = data.map((obj:any)=>{
+    const dataToBeFiltered = data.map((obj: any) => {
       return {
         description: obj.alt_description,
-      }
-    })
+      };
+    });
     const response = await fetch("/api/content/image", {
       method: "POST",
       body: JSON.stringify({
         data: dataToBeFiltered,
-        businessType: prompt
+        businessType: prompt,
       }),
     });
     const index = await response.json();
-    const endTime = performance.now()
-    console.log(`Image Generation using ai+unplash took ${endTime - startTime} ms`);
+    const endTime = performance.now();
+    console.log(
+      `Image Generation using ai+unplash took ${endTime - startTime} ms`,
+    );
     // console.log("response",res)
     return data[parseInt(index)].urls.small;
   } catch (error) {
@@ -2239,14 +2241,39 @@ export async function getLogo(req: {
   location: string;
 }) {
   try {
-    const res = await fetch("/api/image", {
-      method: "POST",
-      body: JSON.stringify({
-        prompt: `generate logo for business name ${req.businessName} and businessType ${req.businessType} but don't add living things in it.`,
-      }),
+    const myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + process.env.NEXT_PUBLIC_MIDJOURNEY_API_KEY ?? "",
+    );
+
+    const formdata = new FormData();
+    formdata.append(
+      "prompt",
+      "generate a logo for businessName " + req.businessName,
+    );
+    formdata.append("style_id", "128");
+
+    const response = await fetch(
+      "https://api.vyro.ai/v1/imagine/api/generations",
+      {
+        method: "POST",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+      },
+    );
+
+    const blob = await response.blob();
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onloadend = () => {
+        const base64Data = reader.result?.toString() || "";
+        resolve(base64Data); // Extracting only the base64 data portion
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
     });
-    const data = await res.json();
-    return data.imageUrl;
   } catch (error) {}
 }
 
@@ -2419,17 +2446,19 @@ export const getPhotosFromUnsplash = async (prompt: string) => {
       `https://api.unsplash.com/photos?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&page=1&per_page=6`,
     );
     const data = await res.json();
-    const fullUrls = data.map((photo:any) => photo.urls.full);
-    store.dispatch(updateAppState({
-      ...getAppState(),
-      aiContent:{
-        ...getAppState().aiContent,
-        gallery: {
-         ...getAppState().aiContent.gallery,
-          list: fullUrls,
+    const fullUrls = data.map((photo: any) => photo.urls.full);
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          gallery: {
+            ...getAppState().aiContent.gallery,
+            list: fullUrls,
+          },
         },
-      }
-    }))
-    return fullUrls
+      }),
+    );
+    return fullUrls;
   } catch (error) {}
 };
