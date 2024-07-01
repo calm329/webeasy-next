@@ -393,20 +393,6 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     ))}
                   </div>
                 </div>
-                <style jsx>{`
-                  .marquee {
-                    animation: marquee 15s linear infinite;
-                  }
-
-                  @keyframes marquee {
-                    from {
-                      transform: translate3d(-50%, 0, 0);
-                    }
-                    to {
-                      transform: translate3d(0, 0, 0);
-                    }
-                  }
-                `}</style>
               </div>
             </div>
           ) : (
@@ -437,9 +423,8 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                       <Skeleton
                         style={{
                           height: 100,
-                          width:300
+                          width: 300,
                         }}
-                       
                       />
                     </div>
                   ))}

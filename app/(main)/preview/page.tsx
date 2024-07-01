@@ -44,10 +44,7 @@ const Preview = (props: TProps) => {
       case "Basic template":
         return (
           <BasicTemplate
-            banner={appState.aiContent["banner"]}
-            hero={appState.aiContent["hero"]}
-            colors={appState.aiContent["colors"]}
-            services={appState.aiContent["services"]["list"]}
+            aiContent={appState?.aiContent}
             posts={appState.iPosts}
           />
         );
@@ -84,10 +81,7 @@ const Preview = (props: TProps) => {
       default:
         return (
           <BasicTemplate
-            banner={appState.aiContent["banner"]}
-            hero={appState.aiContent["hero"]}
-            colors={appState.aiContent["colors"]}
-            services={appState.aiContent["services"]["list"]}
+            aiContent={appState.aiContent}
             posts={appState.iPosts}
           />
         );

@@ -39,11 +39,7 @@ export default async function SiteHomePage(props: TProps) {
       <div>
         {selectedTemplate.name === "Basic template" && (
           <BasicTemplate
-            banner={aiResult["banner"]}
-            hero={aiResult["hero"]}
-            colors={aiResult["colors"]}
-            services={aiResult["services"]["list"]}
-            posts={posts}
+          aiContent={aiResult} posts={posts}
           />
         )}
         {selectedTemplate.name === "Blue-Based template" && (

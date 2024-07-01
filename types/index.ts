@@ -97,46 +97,7 @@ export interface AppState {
   status: string;
   view: "Mobile" | "Tablet" | "Desktop";
   iPosts: TPosts;
-  aiContent: {
-    productId?: string;
-    banner: TBanner;
-    hero: THero;
-    services: TServices;
-    colors: {
-      primary: string;
-      secondary: string;
-    };
-    testimonials: {
-      show: boolean;
-      list: Array<{
-        id: string;
-        name: string;
-        avatar: string;
-        content: string;
-      }>;
-    };
-    partners: {
-      show: boolean;
-      title: string;
-      description: string;
-      list: Array<string>;
-    };
-    gallery: { show: boolean; list: Array<string> };
-    features?: Array<TFeature>;
-    description?: string;
-    images?: {
-      primary: { Large: { Height: number; URL: string; Width: number } };
-      variant: Array<{
-        Large: { Height: number; URL: string; Width: number };
-        Medium: { Height: number; URL: string; Width: number };
-        Small: { Height: number; URL: string; Width: number };
-      }>;
-    };
-    price?: string;
-    title?: string;
-    businessType?: string;
-    location?: string;
-  };
+  aiContent: TAiContent
 
   editable: boolean;
   meta: {
@@ -144,6 +105,47 @@ export interface AppState {
     description: string;
   };
 }
+
+export type TAiContent = {
+  productId?: string;
+  banner: TBanner;
+  hero: THero;
+  services: TServices;
+  colors: {
+    primary: string;
+    secondary: string;
+  };
+  testimonials: {
+    show: boolean;
+    list: Array<{
+      id: string;
+      name: string;
+      avatar: string;
+      content: string;
+    }>;
+  };
+  partners: {
+    show: boolean;
+    title: string;
+    description: string;
+    list: Array<string>;
+  };
+  gallery: { show: boolean; list: Array<string> };
+  features?: Array<TFeature>;
+  description?: string;
+  images?: {
+    primary: { Large: { Height: number; URL: string; Width: number } };
+    variant: Array<{
+      Large: { Height: number; URL: string; Width: number };
+      Medium: { Height: number; URL: string; Width: number };
+      Small: { Height: number; URL: string; Width: number };
+    }>;
+  };
+  price?: string;
+  title?: string;
+  businessType?: string;
+  location?: string;
+};
 
 export type TPosts = {
   show: boolean;

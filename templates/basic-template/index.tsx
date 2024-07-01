@@ -4,19 +4,30 @@ import ServiceCard from "@/components/ui/card/service-card";
 import CTA from "@/components/cta";
 import TopBar from "@/components/top-bar";
 import { generateUniqueId } from "@/lib/utils/function";
-import { TBanner, TColors, THero, TPosts } from "@/types";
+import {
+  TAiContent,
+  TBanner,
+  TColors,
+  TFeature,
+  THero,
+  TPosts,
+  TServices,
+} from "@/types";
 import Link from "next/link";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/select-template-carousel";
 
-type BasicTemplateProps = {
-  banner: TBanner;
-  hero: THero;
-  colors: TColors;
-  services: any[];
-  posts:TPosts;
+type TProps = {
+  aiContent: TAiContent;
+  posts: TPosts;
 };
-
-export default function BasicTemplate(props: BasicTemplateProps) {
-  const { banner, hero, colors, services, posts } = props;
+export default function BasicTemplate(props: TProps) {
+  const { aiContent, posts } = props;
 
   return (
     <>
@@ -27,19 +38,19 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               <div className="flex flex-wrap items-center">
                 <div
                   className="text-black-300 flex w-auto items-center gap-2 text-xl font-medium"
-                  style={{ color: colors.primary }}
+                  style={{ color: aiContent.colors.primary }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {banner.logo && (
+                  {aiContent.banner.logo && (
                     <Image
-                      src={banner.logo.link}
-                      alt={banner.logo.alt}
+                      src={aiContent.banner.logo.link}
+                      alt={aiContent.banner.logo.alt}
                       className={`h-8 w-auto `}
                       height={32}
                       width={200}
                     />
                   )}
-                  <Link href="#">{banner.businessName}</Link>
+                  <Link href="#">{aiContent.banner.businessName}</Link>
                 </div>
               </div>
             </div>
@@ -48,11 +59,11 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 <div className="w-auto lg:block">
                   <div className="-m-2 flex flex-wrap">
                     <div className={`flex w-full gap-5 p-2 md:w-auto`}>
-                      {banner.button.list.map((data, i) => (
+                      {aiContent.banner.button.list.map((data, i) => (
                         <div key={i}>
                           <CTA
                             text={data.label}
-                            bgColor={colors.secondary}
+                            bgColor={aiContent.colors.secondary}
                             link={data.link ?? ""}
                             external={data.type === "External"}
                           />
@@ -70,25 +81,27 @@ export default function BasicTemplate(props: BasicTemplateProps) {
         <div className="container mx-auto px-4">
           <div className="rounded-3xl bg-white px-8 py-16 pb-10">
             <div className="mx-auto max-w-7xl">
-              <div className={`-m-8 mb-10 flex flex-wrap justify-between pr-2 `}>
-                <div className="max-md:w-full p-8 w-1/2">
+              <div
+                className={`-m-8 mb-10 flex flex-wrap justify-between pr-2 `}
+              >
+                <div className="w-1/2 p-8 max-md:w-full">
                   <div className="md:max-w-lg">
                     <h2
                       className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl `}
-                      style={{ color: colors.primary }}
+                      style={{ color: aiContent.colors.primary }}
                     >
-                      {hero.heading}
+                      {aiContent.hero.heading}
                     </h2>
                     <p className={`mb-8 text-xl font-bold `}>
-                      {hero.subheading}
+                      {aiContent.hero.subheading}
                     </p>
                     <div className="-m-2 flex flex-wrap">
-                      <div className={`w-full p-2 md:w-auto flex gap-5`}>
-                        {hero.button.list.map((button) => (
+                      <div className={`flex w-full gap-5 p-2 md:w-auto`}>
+                        {aiContent.hero.button.list.map((button) => (
                           <div key={button.name}>
                             <CTA
                               text={button.label}
-                              bgColor={colors.secondary}
+                              bgColor={aiContent.colors.secondary}
                               link={button.link ?? ""}
                               external={button.type === "External"}
                             />
@@ -98,34 +111,136 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     </div>
                   </div>
                 </div>
-                <div className={`max-md:w-full p-8 w-1/2  `}>
+                <div
+                  className={`$w-1/4 max-h-96 max-w-96 overflow-hidden  py-2 max-sm:w-full`}
+                >
                   <Image
-                    src={hero.image.imageUrl}
+                    src={aiContent.hero.image.imageUrl}
                     width={256}
                     height={256}
                     alt="Hero Image"
-                    className={`mx-auto rounded-3xl object-contain md:mr-0`}
+                    className={`$ mx-auto h-full w-full rounded-3xl object-cover md:mr-0`}
                   />
                 </div>
               </div>
-              <div className="rounded-3xl bg-gray-100 p-8 md:p-12">
-                <div className="-m-8 flex flex-wrap">
-                  {services.map((service) => (
-                    <ServiceCard
-                      id={service["id"]}
-                      key={service["name"]}
-                      name={service["name"]}
-                      description={service["description"]}
-                      color={colors.primary}
+              {aiContent.services.show && (
+                <div className="rounded-3xl bg-gray-100 p-8 md:p-12">
+                  <div className="-m-8 flex flex-wrap">
+                    {aiContent.services.list.map((service) => (
+                      <ServiceCard
+                        id={service["id"]}
+                        key={service["name"]}
+                        name={service["name"]}
+                        description={service["description"]}
+                        color={aiContent.colors.primary}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className={`container mb-20 mt-20`}>
+        {aiContent?.gallery?.show && (
+          <Carousel className="h-full w-full">
+            <CarouselContent>
+              {aiContent?.gallery?.list?.map((image, i) => (
+                <CarouselItem key={i}>
+                  <div
+                    className={` h-[500px] rounded-lg border border-gray-300 shadow-lg`}
+                  >
+                    <Image
+                      src={image}
+                      alt=""
+                      height={1000}
+                      width={1000}
+                      className=" w-full  object-cover"
+                      style={{
+                        height: 500,
+                      }}
                     />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        )}
+      </section>
+
+      <section className={`container mb-20 mt-20`}>
+        {aiContent?.partners?.show && (
+          <div className={`flex flex-col gap-5`}>
+            <h2 className="text-3xl font-bold text-gray-900">
+              {aiContent?.partners?.title}
+            </h2>
+            <p>{aiContent?.partners?.description}</p>
+
+            <div className="inline-edit mt-10 flex-1 px-5 md:px-6">
+              <div
+                className="flex w-full overflow-hidden"
+                style={{
+                  mask: "linear-gradient(90deg, transparent, white 5%, white 95%, transparent)",
+                }}
+              >
+                <div className="marquee flex w-full items-center justify-center gap-10">
+                  {[
+                    ...(aiContent?.partners?.list ?? []),
+                    ...(aiContent?.partners?.list ?? []),
+                  ].map((src, index) => (
+                    <div
+                      key={index}
+                      className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
+                    >
+                      <Image
+                        className="h-full object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                        src={src}
+                        alt={`Logo ${index + 1}`}
+                        height={200}
+                        width={200}
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </section>
-      
+      <section className={`container mb-20 mt-20`}>
+        {aiContent?.testimonials?.show && (
+          <Carousel className="h-full w-full">
+            <CarouselContent>
+              {aiContent?.testimonials?.list?.map((testimonial, i) => (
+                <CarouselItem key={i}>
+                  <div
+                    className={` h-full rounded-lg border border-gray-300 p-8 shadow-lg`}
+                  >
+                    <div className="flex flex-col gap-5">
+                      <div className="h-44 w-44 overflow-hidden">
+                        <Image
+                          src={testimonial.avatar}
+                          alt=""
+                          height={100}
+                          width={100}
+                          className="h-[100px] w-[100px] rounded-full object-cover"
+                        />
+                      </div>
+                      <h3 className="text-3xl font-bold">{testimonial.name}</h3>
+                      <p className="text-xl">{testimonial.content}</p>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        )}
+      </section>
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Posts</h2>
 
