@@ -9,10 +9,11 @@ type TProps = {
   name: string;
   label?: string;
   onChange?: (value: string) => void;
+  contain?:boolean
 };
 
 export default function Uploader(props: TProps) {
-  const { defaultValue, name, label, onChange } = props;
+  const { defaultValue, name, label, onChange,contain } = props;
   const aspectRatio = name === "image" ? "aspect-video" : "aspect-square";
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -140,7 +141,7 @@ export default function Uploader(props: TProps) {
           <Image
             src={data[name] as string}
             alt="Preview"
-            className="h-full w-full rounded-md object-contain"
+            className={`h-full w-full rounded-md ${contain?"object-contain":"object-cover"}`}
             height={400}
             width={400}
           />

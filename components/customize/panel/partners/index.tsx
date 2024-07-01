@@ -283,6 +283,7 @@ const PartnersContent = (props: TProps) => {
                   defaultValue={image}
                   name={"image" + (i + 1)}
                   label={""}
+                  contain={true}
                   onChange={(value) => {
                     dispatch(
                       updateAppState({

@@ -106,6 +106,7 @@ export default function SettingMenu(props: TProps) {
             onClick={() =>
               dispatch(updateAppState({ ...appState, openedSlide: null }))
             }
+            disabled={appState.generate.generating}
           >
             <div className="flex flex-col items-center justify-center gap-2 sm:hidden">
               <div className="flex">
