@@ -26,6 +26,7 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import {
   generateIndividualFeature,
   generateUniqueId,
+  getRandomImageFromUnsplash,
   regenerateIndividual,
 } from "@/lib/utils/function";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -38,6 +39,8 @@ const CustomTestimonial = (props: TProps) => {
   const { setIsOpen, setShowForm, section, showForm, handleChange } = props;
   const [loadingTitle, setLoadingTitle] = useState(false);
   const [loadingDesc, setLoadingDesc] = useState(false);
+  const [loadingAvatar, setLoadingAvatar] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
@@ -167,6 +170,29 @@ const CustomTestimonial = (props: TProps) => {
             <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
               Avatar
             </h3>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedField("avatar");
+                  setLoadingAvatar(true);
+                  getRandomImageFromUnsplash((data?.gender ??"MALE") +" portrait").then((res) => {
+                    setLoadingAvatar(false);
+                    res && setData(((preval:any)=>{return{...preval,avatar:res}}))
+                  });
+                }}
+                className="flex items-center gap-2 "
+              >
+                {(showForm.edit || data?.avatar )? "Regenerate" : "Generate"}
+                {loadingAvatar ? (
+                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                ) : (
+                  <ImPower className=" text-xs " />
+                )}
+                
+              </button>
+              <RegenerateOptions setType={setType} type={type} />
+            </div>
           </div>
           <div>
             <Uploader

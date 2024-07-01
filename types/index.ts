@@ -122,6 +122,7 @@ export type TAiContent = {
       name: string;
       avatar: string;
       content: string;
+      gender:string
     }>;
   };
   partners: {
