@@ -209,7 +209,7 @@ export default function WebsitesForm() {
                   >
                     <BsTrash3 color="red" />
                   </button>
-                  <div className="min-h-80 rounded-t-lg flex justify-center items-center">
+                  <div className="min-h-80 rounded-t-lg flex justify-center items-center h-full">
                     <Image
                       src={site.type === "Amazon" ? JSON.parse(site?.aiResult)?.images?.primary?.Large?.URL ?? "" : JSON.parse(site?.aiResult)?.hero?.image?.imageUrl ?? ""}
                       height={200}
