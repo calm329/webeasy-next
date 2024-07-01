@@ -244,21 +244,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           </div>
         </div>
       </section>
-      <section
-        className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} container mb-20 mt-20`}
-        onClick={() => {
-          if (setIsOpen && setSection) {
-            setIsOpen(true);
-            setSection("Image Gallery");
-            dispatch(
-              updateAppState({
-                ...appState,
-                openedSlide: "Customize",
-              }),
-            );
-          }
-        }}
-      >
+      <section className={`  container mb-20 mt-20`}>
         {appState?.aiContent?.gallery?.list ? (
           appState?.aiContent?.gallery?.show ? (
             <Carousel className="h-full w-full">
@@ -266,7 +252,19 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 {appState?.aiContent?.gallery?.list?.map((image, i) => (
                   <CarouselItem key={i}>
                     <div
-                      className={` h-[500px] rounded-lg border border-gray-300 shadow-lg`}
+                      className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} mx-10 h-[500px] rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
+                      onClick={() => {
+                        if (setIsOpen && setSection) {
+                          setIsOpen(true);
+                          setSection("Image Gallery");
+                          dispatch(
+                            updateAppState({
+                              ...appState,
+                              openedSlide: "Customize",
+                            }),
+                          );
+                        }
+                      }}
                     >
                       <Image
                         src={image}
@@ -286,7 +284,21 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               <CarouselNext />
             </Carousel>
           ) : (
-            <div className="h-[100px]"></div>
+            <div
+              className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              onClick={() => {
+                if (setIsOpen && setSection) {
+                  setIsOpen(true);
+                  setSection("Image Gallery");
+                  dispatch(
+                    updateAppState({
+                      ...appState,
+                      openedSlide: "Customize",
+                    }),
+                  );
+                }
+              }}
+            ></div>
           )
         ) : (
           <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
@@ -302,24 +314,24 @@ export default function BasicTemplate(props: BasicTemplateProps) {
         )}
       </section>
 
-      <section
-        className={`container mb-20 mt-20 ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
-        onClick={() => {
-          if (setIsOpen && setSection) {
-            setIsOpen(true);
-            setSection("Partners");
-            dispatch(
-              updateAppState({
-                ...appState,
-                openedSlide: "Customize",
-              }),
-            );
-          }
-        }}
-      >
+      <section className={`container mb-20 mt-20`}>
         {appState?.aiContent?.partners ? (
           appState?.aiContent?.partners?.show ? (
-            <div className={`flex flex-col gap-5`}>
+            <div
+              className={`flex flex-col gap-5  ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+              onClick={() => {
+                if (setIsOpen && setSection) {
+                  setIsOpen(true);
+                  setSection("Partners");
+                  dispatch(
+                    updateAppState({
+                      ...appState,
+                      openedSlide: "Customize",
+                    }),
+                  );
+                }
+              }}
+            >
               <h2 className="text-3xl font-bold text-gray-900">
                 {appState?.aiContent?.partners?.title}
               </h2>
@@ -396,7 +408,21 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               </div>
             </div>
           ) : (
-            <div className="h-[100px]"></div>
+            <div
+              className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+              onClick={() => {
+                if (setIsOpen && setSection) {
+                  setIsOpen(true);
+                  setSection("Partners");
+                  dispatch(
+                    updateAppState({
+                      ...appState,
+                      openedSlide: "Customize",
+                    }),
+                  );
+                }
+              }}
+            ></div>
           )
         ) : (
           <div className={`flex flex-col gap-5`}>
@@ -448,21 +474,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           </div>
         )}
       </section>
-      <section
-        className={`container mb-20 mt-20 ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
-        onClick={() => {
-          if (setIsOpen && setSection) {
-            setIsOpen(true);
-            setSection("Testimonials");
-            dispatch(
-              updateAppState({
-                ...appState,
-                openedSlide: "Customize",
-              }),
-            );
-          }
-        }}
-      >
+      <section className={`container mb-20 mt-20 `}>
         {appState?.aiContent?.testimonials?.list ? (
           appState?.aiContent?.testimonials?.show ? (
             <Carousel className="h-full w-full">
@@ -471,7 +483,19 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   (testimonial, i) => (
                     <CarouselItem key={i}>
                       <div
-                        className={` h-full rounded-lg border border-gray-300 p-8 shadow-lg`}
+                        className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} h-full rounded-lg border border-gray-300 p-8 shadow-lg`}
+                        onClick={() => {
+                          if (setIsOpen && setSection) {
+                            setIsOpen(true);
+                            setSection("Testimonials");
+                            dispatch(
+                              updateAppState({
+                                ...appState,
+                                openedSlide: "Customize",
+                              }),
+                            );
+                          }
+                        }}
                       >
                         <div className="flex flex-col gap-5">
                           <div className="h-44 w-44 overflow-hidden">
@@ -497,7 +521,21 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               <CarouselNext />
             </Carousel>
           ) : (
-            <div className="h-[100px]"></div>
+            <div
+              className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+              onClick={() => {
+                if (setIsOpen && setSection) {
+                  setIsOpen(true);
+                  setSection("Testimonials");
+                  dispatch(
+                    updateAppState({
+                      ...appState,
+                      openedSlide: "Customize",
+                    }),
+                  );
+                }
+              }}
+            ></div>
           )
         ) : (
           <div className=" h-full rounded-lg border border-gray-300 p-8 shadow-lg">

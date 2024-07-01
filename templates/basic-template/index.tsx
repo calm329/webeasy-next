@@ -149,7 +149,7 @@ export default function BasicTemplate(props: TProps) {
               {aiContent?.gallery?.list?.map((image, i) => (
                 <CarouselItem key={i}>
                   <div
-                    className={` h-[500px] rounded-lg border border-gray-300 shadow-lg`}
+                    className={`mx-10 max-sm:mx-0  h-[500px] rounded-lg border border-gray-300 shadow-lg`}
                   >
                     <Image
                       src={image}
