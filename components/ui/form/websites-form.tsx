@@ -106,7 +106,7 @@ export default function WebsitesForm() {
           .slice(startIndex, endIndex),
       );
     }
-  }, [page, sites, selectedSection]);
+  }, [page, sites, selectedSection,isLoading]);
 
   const getData = async () => {
     try {
