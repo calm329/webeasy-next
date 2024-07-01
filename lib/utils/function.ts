@@ -2205,12 +2205,32 @@ export async function generateTextForCustom(data: {
 
 export async function getRandomImageFromUnsplash(prompt: string) {
   try {
-    const res = await fetch(
-      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}`,
+    const startTime = performance.now()
+    const resUnsplash = await fetch(
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=5`,
     );
-    const data = await res.json();
-    return data.urls.small;
-  } catch (error) {}
+    const data = await resUnsplash.json();
+
+    const dataToBeFiltered = data.map((obj:any)=>{
+      return {
+        description: obj.alt_description,
+      }
+    })
+    const response = await fetch("/api/content/image", {
+      method: "POST",
+      body: JSON.stringify({
+        data: dataToBeFiltered,
+        businessType: prompt
+      }),
+    });
+    const index = await response.json();
+    const endTime = performance.now()
+    console.log(`Image Generation using ai+unplash took ${endTime - startTime} ms`);
+    // console.log("response",res)
+    return data[parseInt(index)].urls.small;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
 }
 
 export async function getLogo(req: {
