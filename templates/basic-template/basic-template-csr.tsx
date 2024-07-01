@@ -244,18 +244,21 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           </div>
         </div>
       </section>
-      <section className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} container mb-20 mt-20`}  onClick={() => {
-                        if (setIsOpen && setSection) {
-                          setIsOpen(true);
-                          setSection("Image Gallery");
-                          dispatch(
-                            updateAppState({
-                              ...appState,
-                              openedSlide: "Customize",
-                            }),
-                          );
-                        }
-                      }}>
+      <section
+        className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} container mb-20 mt-20`}
+        onClick={() => {
+          if (setIsOpen && setSection) {
+            setIsOpen(true);
+            setSection("Image Gallery");
+            dispatch(
+              updateAppState({
+                ...appState,
+                openedSlide: "Customize",
+              }),
+            );
+          }
+        }}
+      >
         {appState?.aiContent?.gallery?.list ? (
           appState?.aiContent?.gallery?.show ? (
             <Carousel className="h-full w-full">
@@ -264,7 +267,6 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   <CarouselItem key={i}>
                     <div
                       className={` h-[500px] rounded-lg border border-gray-300 shadow-lg`}
-                     
                     >
                       <Image
                         src={image}
@@ -283,10 +285,9 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
-          ):
-          <div className="h-[100px]">
-
-          </div>
+          ) : (
+            <div className="h-[100px]"></div>
+          )
         ) : (
           <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
             <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
@@ -372,8 +373,11 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     mask: "linear-gradient(90deg, transparent, white 5%, white 95%, transparent)",
                   }}
                 >
-                  <div className="marquee flex w-full items-center gap-10 justify-center">
-                    {[...appState?.aiContent?.partners?.list?? [], ...appState?.aiContent?.partners?.list?? []].map((src, index) => (
+                  <div className="marquee flex w-full items-center justify-center gap-10">
+                    {[
+                      ...(appState?.aiContent?.partners?.list ?? []),
+                      ...(appState?.aiContent?.partners?.list ?? []),
+                    ].map((src, index) => (
                       <div
                         key={index}
                         className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
@@ -409,14 +413,52 @@ export default function BasicTemplate(props: BasicTemplateProps) {
             <div className="h-[100px]"></div>
           )
         ) : (
-          <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
-            <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
-              <Skeleton
-                className="h-[500px] w-full"
+          <div className={`flex flex-col gap-5`}>
+            <Skeleton className="h-12 w-1/4 " />
+            <div className="flex flex-col gap-1">
+              <Skeleton className="h-8 w-full " />
+              <Skeleton className="h-8 w-full " />
+              <Skeleton className="h-8 w-1/2 " />
+            </div>
+
+            <div className="">
+              <div
+                className="flex h-full w-full overflow-hidden"
                 style={{
-                  height: 500,
+                  mask: "linear-gradient(90deg, transparent, white 5%, white 95%, transparent)",
                 }}
-              />
+              >
+                <div className="marquee flex w-full items-center justify-center gap-10 ">
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <div
+                      key={index}
+                      className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
+                    >
+                      <Skeleton
+                        style={{
+                          height: 100,
+                          width:300
+                        }}
+                       
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <style jsx>{`
+                .marquee {
+                  animation: marquee 15s linear infinite;
+                }
+
+                @keyframes marquee {
+                  from {
+                    transform: translate3d(-50%, 0, 0);
+                  }
+                  to {
+                    transform: translate3d(0, 0, 0);
+                  }
+                }
+              `}</style>
             </div>
           </div>
         )}
