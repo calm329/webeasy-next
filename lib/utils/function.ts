@@ -49,16 +49,16 @@ export const getContent = async (
         method: "POST",
         body: JSON.stringify({
           data: {
-            businessType: appState?.aiContent.businessType,
-            location: appState?.aiContent.location,
-            businessName: appState?.aiContent.banner.businessName,
+            businessType: appState?.aiContent?.businessType,
+            location: appState?.aiContent?.location,
+            businessName: appState?.aiContent?.banner?.businessName,
           },
           fieldName: fieldName?.split(".")
             ? fieldName?.split(".")[0]
             : fieldName ?? "",
           type: type ?? "",
-          services: appState?.aiContent.services,
-          testimonials: appState?.aiContent?.testimonials.list,
+          services: appState?.aiContent?.services,
+          testimonials: appState?.aiContent?.testimonials?.list,
         }),
       });
     } else {

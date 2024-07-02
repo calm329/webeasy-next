@@ -152,6 +152,7 @@ export default function DomainForm() {
         </h2>
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
           <Search placeholder="Search for a domain name..." />
+          <Link href={"/settings/domain/search"} className="shadow rounded border px-5 py-2">Buy</Link> 
         </div>
       </div>
       <div className="px-4 py-4 sm:px-6">

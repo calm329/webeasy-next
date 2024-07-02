@@ -108,7 +108,7 @@ const CustomTestimonial = (props: TProps) => {
 
   useEffect(() => {
     if (showForm.edit) {
-      const testimonials = appState?.aiContent?.testimonials.list?.filter(
+      const testimonials = appState?.aiContent?.testimonials?.list?.filter(
         (testimonial) => testimonial.id === showForm.edit,
       );
       if (testimonials) {
