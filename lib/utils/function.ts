@@ -2210,10 +2210,23 @@ export async function generateTextForCustom(data: {
 export async function getRandomImageFromUnsplash(prompt: string) {
   try {
     const startTime = performance.now();
-    const resUnsplash = await fetch(
-      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=5`,
-    );
-    const data = await resUnsplash.json();
+    const [res1, res2] = await Promise.all([
+     
+      fetch(
+        `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=3&orientation=landscape`,
+      ),
+      fetch(
+        `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=2&orientation=squarish`,
+      ),
+  ]);
+
+    const landscapeImages = await res1.json()
+    const squarishImages = await res2.json();
+  
+  
+    const resUnsplash = [...landscapeImages, ...squarishImages];
+    console.log('resUnsplash',resUnsplash)
+    const data = resUnsplash;
 
     const dataToBeFiltered = data.map((obj: any) => {
       return {
