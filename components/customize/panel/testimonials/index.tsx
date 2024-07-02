@@ -66,7 +66,7 @@ const TestimonialContent = (props: TProps) => {
     }
 
     const updatedItems = reorder(
-      appState.aiContent.testimonials.list,
+      appState.aiContent?.testimonials?.list,
       result.source.index,
       result.destination.index,
     );
@@ -77,7 +77,7 @@ const TestimonialContent = (props: TProps) => {
         aiContent: {
           ...appState.aiContent,
           testimonials: {
-            ...appState.aiContent.testimonials,
+            ...appState.aiContent?.testimonials,
             list: updatedItems,
           },
         },
@@ -92,8 +92,8 @@ const TestimonialContent = (props: TProps) => {
         aiContent: {
           ...appState.aiContent,
           testimonials: {
-            ...appState.aiContent.testimonials,
-            list: appState.aiContent.testimonials.list.filter((testimonial) => {
+            ...appState.aiContent?.testimonials,
+            list: appState.aiContent?.testimonials?.list?.filter((testimonial) => {
               if (testimonial.id !== id) {
                 return testimonial;
               }
@@ -134,19 +134,19 @@ const TestimonialContent = (props: TProps) => {
                 aiContent: {
                   ...appState.aiContent,
                   testimonials: {
-                    ...appState.aiContent.testimonials,
+                    ...appState.aiContent?.testimonials,
                     show: checked,
                   },
                 },
               }),
             )
           }
-          checked={appState.aiContent.testimonials.show}
+          checked={appState.aiContent?.testimonials?.show}
         />
       </div>
 
       <div className="flex flex-col gap-5 border-t p-5 pt-5">
-        {appState.aiContent.testimonials.show && (
+        {appState.aiContent.testimonials?.show && (
           <>
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="droppable">
@@ -157,7 +157,7 @@ const TestimonialContent = (props: TProps) => {
                     style={getListStyle(snapshot.isDraggingOver)}
                     className="flex flex-col gap-5"
                   >
-                    {appState.aiContent.testimonials?.list?.map((item, index) => (
+                    {appState.aiContent?.testimonials?.list?.map((item, index) => (
                       <Draggable
                         key={item.name}
                         draggableId={item.name}

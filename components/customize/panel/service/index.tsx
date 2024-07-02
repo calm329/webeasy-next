@@ -68,7 +68,7 @@ const ServiceContent = (props: TProps) => {
     }
 
     const updatedItems = reorder(
-      appState.aiContent.services.list,
+      appState.aiContent?.services?.list,
       result.source.index,
       result.destination.index,
     );
@@ -79,7 +79,7 @@ const ServiceContent = (props: TProps) => {
         aiContent: {
           ...appState.aiContent,
           services: {
-            ...appState.aiContent.services,
+            ...appState.aiContent?.services,
             list: updatedItems,
           },
         },
@@ -94,8 +94,8 @@ const ServiceContent = (props: TProps) => {
         aiContent: {
           ...appState.aiContent,
           services: {
-            ...appState.aiContent.services,
-            list: appState.aiContent.services.list.filter((service) => {
+            ...appState.aiContent?.services,
+            list: appState.aiContent?.services?.list?.filter((service) => {
               if (service.id !== id) {
                 return service;
               }
@@ -136,14 +136,14 @@ const ServiceContent = (props: TProps) => {
                 aiContent: {
                   ...appState.aiContent,
                   services: {
-                    ...appState.aiContent.services,
+                    ...appState.aiContent?.services,
                     show: checked,
                   },
                 },
               }),
             )
           }
-          checked={appState.aiContent.services.show}
+          checked={appState.aiContent?.services?.show}
         />
       </div>
       <div className="px-5 pb-5">
@@ -170,7 +170,6 @@ const ServiceContent = (props: TProps) => {
                     individual: true,
                   }).then(() => {
                     setLoadingTitle(false);
-                    
                   });
                 }}
               >
@@ -197,7 +196,7 @@ const ServiceContent = (props: TProps) => {
                   aiContent: {
                     ...appState.aiContent,
                     services: {
-                      ...appState.aiContent.services,
+                      ...appState.aiContent?.services,
                       title: e.target.value,
                     },
                   },
@@ -205,7 +204,7 @@ const ServiceContent = (props: TProps) => {
               );
             }}
             ref={inputRef}
-            value={appState.aiContent.services.title}
+            value={appState.aiContent?.services?.title}
           />
         </div>
 
@@ -232,7 +231,6 @@ const ServiceContent = (props: TProps) => {
                     individual: true,
                   }).then(() => {
                     setLoadingDescription(false);
-                    
                   });
                 }}
               >
@@ -257,7 +255,7 @@ const ServiceContent = (props: TProps) => {
                   aiContent: {
                     ...appState.aiContent,
                     services: {
-                      ...appState.aiContent.services,
+                      ...appState.aiContent?.services,
                       description: e.target.value,
                     },
                   },
@@ -265,12 +263,12 @@ const ServiceContent = (props: TProps) => {
               );
             }}
             ref={textareaRef}
-            value={appState.aiContent.services.description}
+            value={appState.aiContent?.services?.description}
           />
         </div>
       </div>
       <div className="flex flex-col gap-5 border-t p-5 pt-5">
-        {appState.aiContent.services.show && (
+        {appState.aiContent?.services?.show && (
           <>
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="droppable">
@@ -281,7 +279,7 @@ const ServiceContent = (props: TProps) => {
                     style={getListStyle(snapshot.isDraggingOver)}
                     className="flex flex-col gap-5"
                   >
-                    {appState.aiContent.services?.list?.map((item, index) => (
+                    {appState.aiContent?.services?.list?.map((item, index) => (
                       <Draggable
                         key={item.name}
                         draggableId={item.name}
@@ -340,8 +338,8 @@ const ServiceContent = (props: TProps) => {
                 )}
               </Droppable>
             </DragDropContext>
-            {appState.aiContent.services.list &&
-              appState.aiContent.services.list.length !== 9 && (
+            {appState.aiContent?.services?.list &&
+              appState.aiContent?.services?.list?.length !== 9 && (
                 <button
                   className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                   onClick={() => {

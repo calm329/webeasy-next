@@ -84,7 +84,7 @@ const HeroContent = (props: TProps) => {
       return;
     }
     const updatedItems = reorder(
-      appState.aiContent.hero.button.list,
+      appState.aiContent?.hero?.button?.list,
       result.source.index,
       result.destination.index,
     );
@@ -95,9 +95,9 @@ const HeroContent = (props: TProps) => {
         aiContent: {
           ...appState.aiContent,
           hero: {
-            ...appState.aiContent.hero,
+            ...appState.aiContent?.hero,
             button: {
-              ...appState.aiContent.hero.button,
+              ...appState.aiContent?.hero?.button,
               list: updatedItems,
             },
           },
@@ -113,10 +113,10 @@ const HeroContent = (props: TProps) => {
         aiContent: {
           ...appState.aiContent,
           hero: {
-            ...appState.aiContent.hero,
+            ...appState.aiContent?.hero,
             button: {
-              ...appState.aiContent.hero.button,
-              list: appState.aiContent.hero.button.list.filter((button) => {
+              ...appState.aiContent?.hero?.button,
+              list: appState.aiContent?.hero?.button?.list?.filter((button) => {
                 if (button.name !== name) {
                   return button;
                 }
@@ -169,9 +169,9 @@ const HeroContent = (props: TProps) => {
                                       aiContent: {
                                         ...appState.aiContent,
                                         hero: {
-                                          ...appState.aiContent.hero,
+                                          ...appState.aiContent?.hero,
                                           image: {
-                                            ...appState.aiContent.hero.image,
+                                            ...appState.aiContent?.hero?.image,
                                             imageUrl: "" ,
                                           },
                                         },
@@ -186,9 +186,9 @@ const HeroContent = (props: TProps) => {
                                         aiContent: {
                                           ...appState.aiContent,
                                           hero: {
-                                            ...appState.aiContent.hero,
+                                            ...appState.aiContent?.hero,
                                             image: {
-                                              ...appState.aiContent.hero.image,
+                                              ...appState.aiContent?.hero?.image,
                                               imageUrl: image ,
                                             },
                                           },
@@ -222,9 +222,9 @@ const HeroContent = (props: TProps) => {
                                     aiContent: {
                                       ...appState.aiContent,
                                       hero: {
-                                        ...appState.aiContent.hero,
+                                        ...appState.aiContent?.hero,
                                         image: {
-                                          ...appState.aiContent.hero.image,
+                                          ...appState.aiContent?.hero?.image,
                                           show: checked,
                                         },
                                       },
@@ -232,15 +232,15 @@ const HeroContent = (props: TProps) => {
                                   }),
                                 )
                               }
-                              checked={appState.aiContent.hero.image.show}
+                              checked={appState.aiContent?.hero?.image?.show}
                             />
                           </div>
                         </div>
-                        {appState.aiContent.hero.image.show && (
+                        {appState.aiContent?.hero?.image?.show && (
                           <div>
                             <Uploader
                               defaultValue={
-                                appState.aiContent.hero.image.imageUrl
+                                appState.aiContent?.hero?.image?.imageUrl
                               }
                               name={data}
                               label={""}
@@ -298,7 +298,7 @@ const HeroContent = (props: TProps) => {
                             handleChange(data, e.target.value);
                           }}
                           ref={inputRef}
-                          value={appState.aiContent.hero.heading}
+                          value={appState.aiContent?.hero?.heading}
                         />
                       </div>
                     );
@@ -345,7 +345,7 @@ const HeroContent = (props: TProps) => {
                             handleChange(data, e.target.value);
                           }}
                           ref={textareaRef}
-                          value={appState.aiContent.hero.subheading}
+                          value={appState.aiContent?.hero?.subheading}
                         />
                       </div>
                     );
@@ -371,9 +371,9 @@ const HeroContent = (props: TProps) => {
                                   aiContent: {
                                     ...appState.aiContent,
                                     hero: {
-                                      ...appState.aiContent.hero,
+                                      ...appState.aiContent?.hero,
                                       button: {
-                                        ...appState.aiContent.hero.button,
+                                        ...appState.aiContent?.hero?.button,
                                         show: checked,
                                       },
                                     },
@@ -381,10 +381,10 @@ const HeroContent = (props: TProps) => {
                                 }),
                               )
                             }
-                            checked={appState.aiContent.hero.button.show}
+                            checked={appState.aiContent?.hero?.button?.show}
                           />
                         </div>
-                        {appState.aiContent.hero.button.show && (
+                        {appState.aiContent?.hero?.button?.show && (
                           <>
                             <DragDropContext onDragEnd={onDragEnd}>
                               <Droppable droppableId="droppable">
@@ -396,7 +396,7 @@ const HeroContent = (props: TProps) => {
                                       snapshot.isDraggingOver,
                                     )}
                                   >
-                                    {appState.aiContent.hero.button.list.map(
+                                    {appState.aiContent?.hero?.button?.list?.map(
                                       (item, index) => (
                                         <Draggable
                                           key={item.name}
@@ -452,7 +452,7 @@ const HeroContent = (props: TProps) => {
                                 )}
                               </Droppable>
                             </DragDropContext>
-                            {appState.aiContent.hero.button.list.length !==
+                            {appState.aiContent?.hero?.button?.list?.length !==
                               2 && (
                               <button
                                 className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"

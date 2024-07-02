@@ -40,7 +40,7 @@ const DescriptionContent = () => {
               );
             }}
             //   ref={inputRef}
-            value={appState.aiContent.price}
+            value={appState.aiContent?.price}
           />
         </div>
         <div className="flex flex-col border-t pt-5">
@@ -98,7 +98,7 @@ const DescriptionContent = () => {
               );
             }}
             // ref={textareaRef}
-            value={appState.aiContent.description}
+            value={appState.aiContent?.description}
           />
         </div>
       </form>

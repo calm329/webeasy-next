@@ -70,7 +70,7 @@ const PartnersContent = (props: TProps) => {
     }
 
     const updatedItems = reorder(
-      appState.aiContent.partners.list,
+      appState.aiContent?.partners?.list,
       result.source.index,
       result.destination.index,
     );
@@ -81,7 +81,7 @@ const PartnersContent = (props: TProps) => {
         aiContent: {
           ...appState.aiContent,
           partners: {
-            ...appState.aiContent.partners,
+            ...appState.aiContent?.partners,
             list: updatedItems,
           },
         },
@@ -94,10 +94,10 @@ const PartnersContent = (props: TProps) => {
   //     updateAppState({
   //       ...appState,
   //       aiContent: {
-  //         ...appState.aiContent,
-  //         services: {
-  //           ...appState.aiContent.services,
-  //           list: appState.aiContent.services.list.filter((service) => {
+  //         ...appState.aiContent?,
+  //?         services:? {
+  //           ...appState.aiContent?.services?,
+  //?           list: appState.aiContent?.services?.list?.filter((service) => {
   //             if (service.id !== id) {
   //               return service;
   //             }
@@ -138,14 +138,14 @@ const PartnersContent = (props: TProps) => {
                 aiContent: {
                   ...appState.aiContent,
                   partners: {
-                    ...appState.aiContent.partners,
+                    ...appState.aiContent?.partners,
                     show: checked,
                   },
                 },
               }),
             )
           }
-          checked={appState.aiContent.partners.show}
+          checked={appState.aiContent?.partners?.show}
         />
       </div>
       <div className="px-5 pb-5">
@@ -163,9 +163,9 @@ const PartnersContent = (props: TProps) => {
                   setSelectedField("title");
                   generatePartnersTAndD({
                     data: {
-                      businessName: appState.aiContent.banner.businessName,
-                      businessType: appState.aiContent.businessType ?? "",
-                      location: appState.aiContent.location ?? "",
+                      businessName: appState.aiContent?.banner?.businessName,
+                      businessType: appState.aiContent?.businessType ?? "",
+                      location: appState.aiContent?.location ?? "",
                     },
                     fieldName: "partnersTitle",
                     type: "",
@@ -198,7 +198,7 @@ const PartnersContent = (props: TProps) => {
                   aiContent: {
                     ...appState.aiContent,
                     partners: {
-                      ...appState.aiContent.partners,
+                      ...appState.aiContent?.partners,
                       title: e.target.value,
                     },
                   },
@@ -206,7 +206,7 @@ const PartnersContent = (props: TProps) => {
               );
             }}
             ref={inputRef}
-            value={appState.aiContent.partners.title}
+            value={appState.aiContent?.partners?.title}
           />
         </div>
 
@@ -224,9 +224,9 @@ const PartnersContent = (props: TProps) => {
                   setSelectedField("description");
                   generatePartnersTAndD({
                     data: {
-                      businessName: appState.aiContent.banner.businessName,
-                      businessType: appState.aiContent.businessType ?? "",
-                      location: appState.aiContent.location ?? "",
+                      businessName: appState.aiContent?.banner?.businessName,
+                      businessType: appState.aiContent?.businessType ?? "",
+                      location: appState.aiContent?.location ?? "",
                     },
                     fieldName: "partnersDescription",
                     type: "",
@@ -257,7 +257,7 @@ const PartnersContent = (props: TProps) => {
                   aiContent: {
                     ...appState.aiContent,
                     partners: {
-                      ...appState.aiContent.partners,
+                      ...appState.aiContent?.partners,
                       description: e.target.value,
                     },
                   },
@@ -265,13 +265,13 @@ const PartnersContent = (props: TProps) => {
               );
             }}
             ref={textareaRef}
-            value={appState.aiContent.partners.description}
+            value={appState.aiContent?.partners?.description}
           />
         </div>
       </div>
       <div className="flex flex-col gap-5 border-t p-5 pt-5">
         <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
-          {appState.aiContent.partners?.list?.map((image, i) => (
+          {appState.aiContent?.partners?.list?.map((image, i) => (
             <div className="flex flex-col gap-5" key={i}>
               <div className="flex justify-between ">
                 <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
@@ -291,11 +291,11 @@ const PartnersContent = (props: TProps) => {
                         aiContent: {
                           ...appState.aiContent,
                           partners: {
-                            ...appState.aiContent.partners,
+                            ...appState.aiContent?.partners,
                             list: [
-                              ...appState.aiContent.partners.list.slice(0, i),
+                              ...appState.aiContent?.partners?.list?.slice(0, i),
                               value,
-                              ...appState.aiContent.partners.list.slice(i + 1),
+                              ...appState.aiContent?.partners?.list?.slice(i + 1),
                             ],
                           },
                         },

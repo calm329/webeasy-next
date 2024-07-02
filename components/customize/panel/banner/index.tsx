@@ -12,7 +12,7 @@ import { FiLink } from "react-icons/fi";
 import { ImSpinner2 } from "react-icons/im";
 import { IoMdAdd } from "react-icons/io";
 import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
-import { RxDragHandleDots2 } from "react-icons/rx";
+
 import { toast } from "sonner";
 import { DebouncedState } from "usehooks-ts";
 import { appState } from "../../../../lib/store/slices/site-slice";
@@ -29,6 +29,8 @@ import RegenerateOptions from "@/components/regenerate-options";
 import { getLogo, regenerateIndividual } from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
 import CustomContent from "@/lib/content/custom";
+import { RxDragHandleDots2 } from "react-icons/rx";
+
 type TProps = {
   section: TSection;
   handleChange: (name: string, value: string) => void;
@@ -46,7 +48,7 @@ const grid = 2;
 
 const getItemStyle = (
   isDragging: boolean,
-  draggableStyle: any,
+  draggableStyle: any
 ): React.CSSProperties => ({
   userSelect: "none",
   padding: grid * 2,
@@ -81,25 +83,25 @@ const BannerContent = (props: TProps) => {
     }
 
     const updatedItems = reorder(
-      appState.aiContent.banner.button.list,
+      appState?.aiContent?.banner?.button?.list ?? [],
       result.source.index,
-      result.destination.index,
+      result.destination.index
     );
 
     dispatch(
       updateAppState({
         ...appState,
         aiContent: {
-          ...appState.aiContent,
+          ...appState?.aiContent,
           banner: {
-            ...appState.aiContent.banner,
+            ...appState?.aiContent?.banner,
             button: {
-              ...appState.aiContent.banner.button,
+              ...appState?.aiContent?.banner?.button,
               list: updatedItems,
             },
           },
         },
-      }),
+      })
     );
   };
 
@@ -108,33 +110,31 @@ const BannerContent = (props: TProps) => {
       updateAppState({
         ...appState,
         aiContent: {
-          ...appState.aiContent,
+          ...appState?.aiContent,
           banner: {
-            ...appState.aiContent.banner,
+            ...appState?.aiContent?.banner,
             button: {
-              ...appState.aiContent.banner.button,
-              list: appState.aiContent.banner.button.list.filter((button) => {
-                if (button.name !== name) {
-                  return button;
-                }
-              }),
+              ...appState?.aiContent?.banner?.button,
+              list: appState?.aiContent?.banner?.button?.list?.filter(
+                (button) => button.name !== name
+              ),
             },
           },
         },
-      }),
+      })
     );
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    if (appState.focusedField === "businessName") {
+    if (appState?.focusedField === "businessName") {
       inputRef.current?.focus();
     }
   }, [appState]);
   return (
     <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-5">
-        {Object.keys(appState.aiContent?.banner ?? {}).map((data) => (
+        {Object.keys(appState?.aiContent?.banner ?? {}).map((data) => (
           <>
             {(() => {
               switch (data) {
@@ -155,50 +155,41 @@ const BannerContent = (props: TProps) => {
                                 updateAppState({
                                   ...appState,
                                   aiContent: {
-                                    ...appState.aiContent,
+                                    ...appState?.aiContent,
                                     banner: {
-                                      ...appState.aiContent.banner,
+                                      ...appState?.aiContent?.banner,
                                       logo: {
-                                        ...appState.aiContent.banner.logo,
+                                        ...appState?.aiContent?.banner?.logo,
                                         link: "",
                                       },
                                     },
                                   },
-                                }),
+                                })
                               );
                               getLogo({
                                 businessName:
-                                  appState.aiContent?.banner?.businessName,
+                                  appState?.aiContent?.banner?.businessName,
                                 businessType:
-                                  appState.aiContent?.businessType ?? "",
-                                location: appState.aiContent?.location ?? "",
+                                  appState?.aiContent?.businessType ?? "",
+                                location: appState?.aiContent?.location ?? "",
                               }).then((data) => {
                                 setLoading(false);
                                 dispatch(
                                   updateAppState({
                                     ...appState,
                                     aiContent: {
-                                      ...appState.aiContent,
+                                      ...appState?.aiContent,
                                       banner: {
-                                        ...appState.aiContent.banner,
+                                        ...appState?.aiContent?.banner,
                                         logo: {
-                                          ...appState.aiContent.banner.logo,
+                                          ...appState?.aiContent?.banner?.logo,
                                           link: data,
                                         },
                                       },
                                     },
-                                  }),
+                                  })
                                 );
                               });
-                              // regenerateIndividual({
-                              //   appState,
-                              //   dispatch,
-                              //   searchParams,
-                              //   fieldName: data,
-                              //   // type,
-                              // }).then(() => {
-                              //   setLoading(false);
-                              // });
                             }}
                             className="flex items-center gap-2 "
                           >
@@ -215,26 +206,26 @@ const BannerContent = (props: TProps) => {
                                 updateAppState({
                                   ...appState,
                                   aiContent: {
-                                    ...appState.aiContent,
+                                    ...appState?.aiContent,
                                     banner: {
-                                      ...appState.aiContent.banner,
+                                      ...appState?.aiContent?.banner,
                                       logo: {
-                                        ...appState.aiContent.banner.logo,
+                                        ...appState?.aiContent?.banner?.logo,
                                         show: checked,
                                       },
                                     },
                                   },
-                                }),
+                                })
                               )
                             }
-                            checked={appState.aiContent.banner.logo.show}
+                            checked={appState?.aiContent?.banner?.logo?.show}
                           />
                         </div>
                       </div>
-                      {appState.aiContent.banner.logo.show && (
+                      {appState?.aiContent?.banner?.logo?.show && (
                         <div>
                           <Uploader
-                            defaultValue={appState.aiContent.banner.logo.link}
+                            defaultValue={appState?.aiContent?.banner?.logo?.link}
                             name={data as "logo" | "image"}
                             label={""}
                             onChange={(value) => {
@@ -262,7 +253,7 @@ const BannerContent = (props: TProps) => {
                           handleChange(data, e.target.value);
                         }}
                         ref={inputRef}
-                        value={appState.aiContent.banner.businessName}
+                        value={appState?.aiContent?.banner?.businessName}
                       />
                     </div>
                   );
@@ -286,22 +277,22 @@ const BannerContent = (props: TProps) => {
                               updateAppState({
                                 ...appState,
                                 aiContent: {
-                                  ...appState.aiContent,
+                                  ...appState?.aiContent,
                                   banner: {
-                                    ...appState.aiContent.banner,
+                                    ...appState?.aiContent?.banner,
                                     button: {
-                                      ...appState.aiContent.banner.button,
+                                      ...appState?.aiContent?.banner?.button,
                                       show: checked,
                                     },
                                   },
                                 },
-                              }),
+                              })
                             )
                           }
-                          checked={appState.aiContent.banner.button.show}
+                          checked={appState?.aiContent?.banner?.button?.show}
                         />
                       </div>
-                      {appState.aiContent.banner.button.show && (
+                      {appState?.aiContent?.banner?.button?.show && (
                         <>
                           <DragDropContext onDragEnd={onDragEnd}>
                             <Droppable droppableId="droppable">
@@ -311,7 +302,7 @@ const BannerContent = (props: TProps) => {
                                   ref={provided.innerRef}
                                   style={getListStyle(snapshot.isDraggingOver)}
                                 >
-                                  {appState.aiContent.banner.button.list.map(
+                                  {appState?.aiContent?.banner?.button?.list?.map(
                                     (item, index) => (
                                       <Draggable
                                         key={item.name}
@@ -327,7 +318,7 @@ const BannerContent = (props: TProps) => {
                                             {...provided.dragHandleProps}
                                             style={getItemStyle(
                                               snapshot.isDragging,
-                                              provided.draggableProps.style,
+                                              provided.draggableProps.style
                                             )}
                                           >
                                             <div className="flex items-center gap-2">
@@ -358,14 +349,14 @@ const BannerContent = (props: TProps) => {
                                           </div>
                                         )}
                                       </Draggable>
-                                    ),
+                                    )
                                   )}
                                   {provided.placeholder}
                                 </div>
                               )}
                             </Droppable>
                           </DragDropContext>
-                          {appState.aiContent.banner.button.list.length !==
+                          {appState?.aiContent?.banner?.button?.list?.length !==
                             2 && (
                             <button
                               className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
@@ -389,17 +380,6 @@ const BannerContent = (props: TProps) => {
             })()}
           </>
         ))}
-
-        {/* <button
-          type="submit"
-          className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
-          disabled={loading}
-        >
-          {loading && (
-            <ImSpinner2 className="animate-spin text-lg text-white" />
-          )}
-          Save
-        </button> */}
       </form>
     </div>
   );

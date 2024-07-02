@@ -54,7 +54,7 @@ const FeaturesContent = (props: TProps) => {
     }
 
     const updatedItems = reorder(
-      appState.aiContent.features,
+      appState.aiContent?.features,
       result.source.index,
       result.destination.index,
     );
@@ -74,7 +74,7 @@ const FeaturesContent = (props: TProps) => {
         ...appState,
         aiContent: {
           ...appState.aiContent,
-          features: appState.aiContent.features?.filter((feature) => {
+          features: appState.aiContent?.features?.filter((feature) => {
             if (feature.id !== id) {
               return feature;
             }

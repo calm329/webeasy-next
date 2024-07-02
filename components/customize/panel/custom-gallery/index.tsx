@@ -38,7 +38,7 @@ const CustomGalleryContent = (props: TProps) => {
                   aiContent: {
                     ...appState.aiContent,
                     gallery: {
-                      ...appState.aiContent.gallery,
+                      ...appState.aiContent?.gallery,
                       show: checked,
                     },
                   },
@@ -50,7 +50,7 @@ const CustomGalleryContent = (props: TProps) => {
         </div>
       </div>
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
-        {appState.aiContent.gallery?.list.map((image, i) => (
+        {appState.aiContent?.gallery?.list?.map((image, i) => (
           <div className="flex flex-col gap-5" key={i}>
             <div className="flex justify-between ">
               <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
@@ -68,8 +68,8 @@ const CustomGalleryContent = (props: TProps) => {
                     aiContent:{
                       ...appState.aiContent,
                       gallery:{
-                        ...appState.aiContent.gallery,
-                        list: [...appState.aiContent.gallery.list.slice(0, i), value,...appState.aiContent.gallery.list.slice(i + 1)],
+                        ...appState.aiContent?.gallery,
+                        list: [...appState.aiContent?.gallery?.list?.slice(0, i), value,...appState.aiContent?.gallery?.list?.slice(i + 1)],
                       },
                     }
                   }))

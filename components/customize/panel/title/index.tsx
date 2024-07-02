@@ -58,7 +58,7 @@ const TitleContent = () => {
               );
             }}
             //   ref={inputRef}
-            value={appState.aiContent.title}
+            value={appState.aiContent?.title}
           />
         </div>
       </form>
