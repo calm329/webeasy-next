@@ -135,7 +135,7 @@ export async function POST(
       break;
     case "serviceDescription":
       fields = `
-            only generate the ${type ?? ""} data for services[0].description field and please don't add any other field expect the given "services":[
+            only generate the ${type ?? ""} data for services[0].description field and please don't add any other field expect the given and limit the description to 200 characters   "services":[
           {
             "description": "*description*",
           }] and it should not be similar to any description from this data ${JSON.stringify(services)} `;
