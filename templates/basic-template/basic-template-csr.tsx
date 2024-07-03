@@ -247,12 +247,12 @@ export default function BasicTemplate(props: BasicTemplateProps) {
       <section className={`  container mb-20 mt-20`}>
         {appState?.aiContent?.gallery?.list ? (
           appState?.aiContent?.gallery?.show ? (
-            <Carousel className="h-full w-full">
-              <CarouselContent>
+           
+              <div className="grid grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 gap-10 ">
                 {appState?.aiContent?.gallery?.list?.map((image, i) => (
-                  <CarouselItem key={i}>
-                    <div
-                      className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} mx-10 h-[500px] rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
+                  
+                    <div key={image}
+                      className={`${editable && "rounded-xl border-2 border-transparent hover:border-indigo-500"} h-[500px] rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
                       onClick={() => {
                         if (setIsOpen && setSection) {
                           setIsOpen(true);
@@ -277,12 +277,10 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                         }}
                       />
                     </div>
-                  </CarouselItem>
+                 
                 ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+              </div>
+          
           ) : (
             <div
               className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
