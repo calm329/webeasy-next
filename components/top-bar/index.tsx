@@ -55,7 +55,7 @@ export default function TopBar(props: TopBarProps) {
                   <Image
                     src={banner.logo.link}
                     alt={banner.logo.alt}
-                    className={`h-8 w-auto ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
+                    className={`h-8 w-8 ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
                     onClick={() => {
                       if (
                         setIsOpen &&
