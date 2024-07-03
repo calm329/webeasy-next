@@ -16,6 +16,35 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      async profile(profile) {
+        // This is called after Google login, we can check if the user exists and link accounts if necessary
+        let user = await prisma.user.findUnique({
+          where: { email: profile.email },
+        });
+        console.log("User found",user,profile)
+        if (!user) {
+          // If the user does not exist, create a new one
+          user = await prisma.user.create({
+            data: {
+              email: profile.email,
+              name: profile.name,
+              googleId: profile.sub,
+            },
+          });
+        } else if (!user.googleId) {
+          // If the user exists but doesn't have a linked Google account, link it
+          await prisma.user.update({
+            where: { email: profile.email },
+            data: { googleId: profile.sub },
+          });
+        }
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        };
+      },
     }),
     Credentials({
       id: "email",
@@ -59,7 +88,35 @@ export const authOptions: AuthOptions = {
   ],
   debug: true,
   adapter: PrismaAdapter(prisma) as any,
-  callbacks: {},
+  callbacks: {async signIn({ user, account, profile }) {
+    console.log("Data received",account,profile)
+    if (account?.provider === "google") {
+      const existingUser = await prisma.user.findUnique({
+        where: { email: profile?.email },
+      });
+
+      if (existingUser) {
+        if (!existingUser.googleId) {
+          // Link the Google account
+          await prisma.user.update({
+            where: { email: profile?.email },
+            data: { googleId: profile?.sub },
+          });
+        }
+      } else {
+        // Create a new user if not existing
+        await prisma.user.create({
+          data: {
+            email: profile?.email,
+            name: profile?.name,
+            googleId: profile?.sub,
+          },
+        });
+      }
+    }
+
+    return true;
+  },},
   session: {
     strategy: "jwt",
   },

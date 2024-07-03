@@ -29,6 +29,7 @@ model User {
   sites         Site[]
   accounts      Account[]
   sessions      Session[]
+  googleId      String?         @unique
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
