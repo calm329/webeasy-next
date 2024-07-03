@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import prisma from "./prisma";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
@@ -12,6 +13,10 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
     Credentials({
       id: "email",
       name: "email",
@@ -50,8 +55,9 @@ export const authOptions: AuthOptions = {
           email: user.email,
         };
       },
-    }),
+    })
   ],
+  debug: true,
   adapter: PrismaAdapter(prisma) as any,
   callbacks: {},
   session: {

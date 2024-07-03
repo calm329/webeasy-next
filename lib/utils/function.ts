@@ -2461,7 +2461,7 @@ export const getPhotosFromUnsplash = async (prompt: string) => {
   try {
     console.log("prompt",prompt)
     const res = await fetch(
-      `https://api.unsplash.com/photos?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&page=1&per_page=6`,
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=6`,
     );
     const data = await res.json();
     const fullUrls = data.map((photo: any) => photo.urls.full);

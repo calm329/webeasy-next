@@ -10,10 +10,11 @@ import React, {
 } from "react";
 import SigninForm from "../form/signin-form";
 import RegisterForm from "../form/signup-form";
-import { FaApple, FaFacebook } from "react-icons/fa";
+import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
 import { IoClose } from "react-icons/io5";
+import { signIn } from "next-auth/react";
 type TProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
@@ -102,7 +103,7 @@ export default function AuthModal(props: TProps) {
                       </div>
                     </div>
 
-                    <div className="mt-6 grid grid-cols-2 gap-4">
+                    <div className="mt-6 grid grid-cols-3 gap-4">
                       <Link
                         href="#"
                         className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
@@ -112,6 +113,16 @@ export default function AuthModal(props: TProps) {
                           Facebook
                         </span>
                       </Link>
+
+                      <button
+                        onClick={() => signIn("google")}
+                        className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                      >
+                        <FaGoogle className="size-5 " />
+                        <span className="text-sm font-semibold leading-6">
+                          Google
+                        </span>
+                      </button>
 
                       <Link
                         href="#"
