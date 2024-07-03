@@ -2258,39 +2258,14 @@ export async function getLogo(req: {
   location: string;
 }) {
   try {
-    const myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      "Bearer " + process.env.NEXT_PUBLIC_MIDJOURNEY_API_KEY ?? "",
-    );
-
-    const formdata = new FormData();
-    formdata.append(
-      "prompt",
-      "generate a logo for businessName " + req.businessName,
-    );
-    formdata.append("style_id", "128");
-
-    const response = await fetch(
-      "https://api.vyro.ai/v1/imagine/api/generations",
-      {
-        method: "POST",
-        headers: myHeaders,
-        body: formdata,
-        redirect: "follow",
-      },
-    );
-
-    const blob = await response.blob();
-    const reader = new FileReader();
-    return new Promise((resolve, reject) => {
-      reader.onloadend = () => {
-        const base64Data = reader.result?.toString() || "";
-        resolve(base64Data); // Extracting only the base64 data portion
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
+    const res = await fetch("/api/image", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt: `generate logo for business name ${req.businessName} and businessType ${req.businessType} but don't add living things in it.`,
+      }),
     });
+    const data = await res.json();
+    return data.imageUrl;
   } catch (error) {}
 }
 
