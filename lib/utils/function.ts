@@ -1885,7 +1885,7 @@ export async function generateNewCustomSite(data: {
         ...getAppState(),
         generate: {
           ...getAppState().generate,
-          progress: 5,
+          progress: 10,
         },
       }),
     );
@@ -1925,7 +1925,7 @@ export async function generateNewCustomSite(data: {
         },
         generate: {
           ...getAppState().generate,
-          progress: getAppState().generate.progress + 5,
+          progress: getAppState().generate.progress + 10,
         },
       }),
     );

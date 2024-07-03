@@ -139,7 +139,7 @@ class CustomContentApiService {
                   },
                   generate: {
                     ...getAppState().generate,
-                    progress: getAppState().generate.progress + 10,
+                    progress: getAppState().generate.progress + 5,
                   },
                 }),
               );
@@ -705,6 +705,10 @@ class CustomContentApiService {
                           "/images/partners/logo-ipsum-5.png",
                         ]
                       },
+                    },
+                    generate:{
+                      ...getAppState().generate,
+                        progress: getAppState().generate.progress + 10,
                     }
                   }),
                 );
