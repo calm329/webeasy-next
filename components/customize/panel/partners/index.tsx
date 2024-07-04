@@ -66,7 +66,7 @@ const PartnersContent = (props: TProps) => {
   const [loadingTitle, setLoadingTitle] = useState(false);
 
   const [selectedField, setSelectedField] = useState("");
-
+  const [showLinks, setShowLinks] = useState(false);
   const onDragEnd = (result: DropResult): void => {
     if (!result.destination) {
       return;
@@ -292,6 +292,13 @@ const PartnersContent = (props: TProps) => {
         </div>
       </div>
       <div className="flex flex-col gap-5 border-t p-5 pt-5">
+        <div className="flex justify-between">
+          <h3>Show Link</h3>
+          <Switch
+            onCheckedChange={(checked) => setShowLinks(checked)}
+            checked={showLinks}
+          />
+        </div>
         <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
           {appState.aiContent?.partners?.list?.map((image, i) => (
             <div className="flex flex-col gap-5" key={i}>
@@ -299,15 +306,16 @@ const PartnersContent = (props: TProps) => {
                 <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
                   Image {i + 1}
                 </h3>
-                {appState.aiContent?.partners?.list.length >4 &&
-                <MdDeleteForever
-                  color="red"
-                  size={20}
-                  onClick={() => handleDeletePartners(image)}
-                  className="cursor-pointer"
-                />}
+                {appState.aiContent?.partners?.list.length > 4 && (
+                  <MdDeleteForever
+                    color="red"
+                    size={20}
+                    onClick={() => handleDeletePartners(image)}
+                    className="cursor-pointer"
+                  />
+                )}
               </div>
-              <div>
+              <div className="flex flex-col gap-5 ">
                 <Uploader
                   defaultValue={image}
                   name={"image" + (i + 1)}
@@ -337,6 +345,37 @@ const PartnersContent = (props: TProps) => {
                     );
                   }}
                 />
+                {showLinks && (
+                  <input
+                    type="text"
+                    name={"image" + (i + 1)}
+                    id={"image" + (i + 1)}
+                    className="rounded-md border border-gray-300"
+                    value={image}
+                    onChange={(e) => {
+                      dispatch(
+                        updateAppState({
+                          ...appState,
+                          aiContent: {
+                            ...appState.aiContent,
+                            partners: {
+                              ...appState.aiContent?.partners,
+                              list: appState.aiContent?.partners?.list?.map(
+                                (obj) => {
+                                  if (obj === image) {
+                                    return e.target.value;
+                                  } else {
+                                    return obj;
+                                  }
+                                },
+                              ),
+                            },
+                          },
+                        }),
+                      );
+                    }}
+                  />
+                )}
               </div>
             </div>
           ))}
