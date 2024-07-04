@@ -17,8 +17,8 @@ const nextConfig = {
       "images.unsplash.com",
       'oaidalleapiprodscus.blob.core.windows.net',
       'm.media-amazon.com',
-      'cdn.durable.co'
-
+      'cdn.durable.co',
+'lh3.googleusercontent.com'
     ],
   },
 };
