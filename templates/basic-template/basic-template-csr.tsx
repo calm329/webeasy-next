@@ -27,6 +27,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/select-template-carousel";
+import { Card, CardContent } from "@/components/ui/card";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -247,40 +248,37 @@ export default function BasicTemplate(props: BasicTemplateProps) {
       <section className={`  container mb-20 mt-20`}>
         {appState?.aiContent?.gallery?.list ? (
           appState?.aiContent?.gallery?.show ? (
-           
-              <div className="grid grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 gap-10 ">
-                {appState?.aiContent?.gallery?.list?.map((image, i) => (
-                  
-                    <div key={image}
-                      className={`${editable && "rounded-xl border-2 border-transparent hover:border-indigo-500"} h-[500px] rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
-                      onClick={() => {
-                        if (setIsOpen && setSection) {
-                          setIsOpen(true);
-                          setSection("Image Gallery");
-                          dispatch(
-                            updateAppState({
-                              ...appState,
-                              openedSlide: "Customize",
-                            }),
-                          );
-                        }
-                      }}
-                    >
-                      <Image
-                        src={image}
-                        alt=""
-                        height={1000}
-                        width={1000}
-                        className=" w-full  object-cover"
-                        style={{
-                          height: 500,
-                        }}
-                      />
-                    </div>
-                 
-                ))}
-              </div>
-          
+            <div className="grid grid-cols-3 gap-10 max-lg:grid-cols-2 max-sm:grid-cols-1 ">
+              {appState?.aiContent?.gallery?.list?.map((image, i) => (
+                <div
+                  key={image}
+                  className={`${editable && "rounded-xl border-2 border-transparent hover:border-indigo-500"} h-[500px] rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
+                  onClick={() => {
+                    if (setIsOpen && setSection) {
+                      setIsOpen(true);
+                      setSection("Image Gallery");
+                      dispatch(
+                        updateAppState({
+                          ...appState,
+                          openedSlide: "Customize",
+                        }),
+                      );
+                    }
+                  }}
+                >
+                  <Image
+                    src={image}
+                    alt=""
+                    height={1000}
+                    width={1000}
+                    className=" w-full  object-cover"
+                    style={{
+                      height: 500,
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           ) : (
             <div
               className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -377,32 +375,68 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 </div>
               </div> */}
               <div className="inline-edit mt-10 flex-1 px-5 md:px-6">
-                <div
-                  className="flex w-full overflow-hidden"
-                  style={{
-                    mask: "linear-gradient(90deg, transparent, white 5%, white 95%, transparent)",
-                  }}
-                >
-                  <div className="marquee flex w-full items-center justify-center gap-10">
-                    {[
-                      ...(appState?.aiContent?.partners?.list ?? []),
-                      ...(appState?.aiContent?.partners?.list ?? []),
-                    ].map((src, index) => (
-                      <div
-                        key={index}
-                        className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
-                      >
-                        <Image
-                          className="h-full object-contain grayscale transition-all duration-300 hover:grayscale-0"
-                          src={src}
-                          alt={`Logo ${index + 1}`}
-                          height={200}
-                          width={200}
-                        />
-                      </div>
-                    ))}
+                {appState?.aiContent?.partners?.list.length <= 5 ? (
+                  <div className="flex w-full overflow-auto">
+                    <div className=" flex  gap-10">
+                      {(appState?.aiContent?.partners?.list ?? []).map(
+                        (src, index) => (
+                          <div
+                            key={index}
+                            className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
+                          >
+                            <Image
+                              className=" object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                              src={src}
+                              alt={`Logo ${index + 1}`}
+                              height={200}
+                              width={200}
+                              style={{
+                                height: 200,
+                              }}
+                            />
+                          </div>
+                        ),
+                      )}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  
+                  <Carousel className="w-full">
+                    <CarouselContent>
+                      {(appState?.aiContent?.partners?.list ?? []).map(
+                        (src, index) => (
+                          <CarouselItem key={index} className="basis-1/3">
+                            <div className="p-1">
+                              <Card className="border-0">
+                                <CardContent className=" flex border-0  p-6">
+                                  <div className="relative flex h-24  flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl">
+                                    <Image
+                                      className="h-24 object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                                      src={src}
+                                      alt={`Logo ${index + 1}`}
+                                      height={200}
+                                      width={200}
+                                      style={{
+                                        height: 200,
+                                      }}
+                                    />
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </div>
+                          </CarouselItem>
+                        ),
+                      )}
+                    </CarouselContent>
+                    <div onClick={(e)=>e.stopPropagation()}>
+                    <CarouselPrevious  />
+                    </div>
+                    <div onClick={(e)=>e.stopPropagation()}>
+
+                    <CarouselNext />
+                    </div>
+                  </Carousel>
+                )}
               </div>
             </div>
           ) : (

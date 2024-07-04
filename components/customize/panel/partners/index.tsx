@@ -21,7 +21,10 @@ import { IoMdAdd } from "react-icons/io";
 import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
 import { RxDragHandleDots2 } from "react-icons/rx";
 import CustomContent from "../../../../lib/content/custom";
-import { generateCustomServiceTAndD, generatePartnersTAndD } from "@/lib/utils/function";
+import {
+  generateCustomServiceTAndD,
+  generatePartnersTAndD,
+} from "@/lib/utils/function";
 import Image from "next/image";
 import Uploader from "@/components/ui/form/uploader";
 
@@ -118,6 +121,25 @@ const PartnersContent = (props: TProps) => {
       textareaRef.current?.focus();
     }
   }, [appState]);
+
+  const handleDeletePartners = (id: string) => {
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          partners: {
+            ...appState.aiContent?.partners,
+            list: appState.aiContent?.partners?.list?.filter((image) => {
+              if (image !== id) {
+                return image;
+              }
+            }),
+          },
+        },
+      }),
+    );
+  };
 
   return (
     <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
@@ -277,6 +299,13 @@ const PartnersContent = (props: TProps) => {
                 <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
                   Image {i + 1}
                 </h3>
+                {appState.aiContent?.partners?.list.length >4 &&
+                <MdDeleteForever
+                  color="red"
+                  size={20}
+                  onClick={() => handleDeletePartners(image)}
+                  className="cursor-pointer"
+                />}
               </div>
               <div>
                 <Uploader
@@ -293,9 +322,14 @@ const PartnersContent = (props: TProps) => {
                           partners: {
                             ...appState.aiContent?.partners,
                             list: [
-                              ...appState.aiContent?.partners?.list?.slice(0, i),
+                              ...appState.aiContent?.partners?.list?.slice(
+                                0,
+                                i,
+                              ),
                               value,
-                              ...appState.aiContent?.partners?.list?.slice(i + 1),
+                              ...appState.aiContent?.partners?.list?.slice(
+                                i + 1,
+                              ),
                             ],
                           },
                         },
@@ -307,6 +341,30 @@ const PartnersContent = (props: TProps) => {
             </div>
           ))}
         </form>
+
+        {appState.aiContent?.partners?.list &&
+          appState.aiContent?.partners?.list?.length !== 10 && (
+            <button
+              className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+              onClick={(value) => {
+                dispatch(
+                  updateAppState({
+                    ...appState,
+                    aiContent: {
+                      ...appState.aiContent,
+                      partners: {
+                        ...appState.aiContent?.partners,
+                        list: [...appState.aiContent?.partners?.list, ""],
+                      },
+                    },
+                  }),
+                );
+              }}
+            >
+              Add Service
+              <IoMdAdd size={20} />
+            </button>
+          )}
       </div>
     </div>
   );
