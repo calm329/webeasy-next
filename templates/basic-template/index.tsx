@@ -197,7 +197,7 @@ export default function BasicTemplate(props: TProps) {
                     >
                       <Image
                         className="h-full object-contain grayscale transition-all duration-300 hover:grayscale-0"
-                        src={src}
+                        src={src.logo}
                         alt={`Logo ${index + 1}`}
                         height={200}
                         width={200}

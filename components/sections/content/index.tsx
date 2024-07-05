@@ -1,4 +1,5 @@
 import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid'
+import Image from 'next/image'
 
 export default function ContentSection() {
   return (
@@ -52,7 +53,9 @@ export default function ContentSection() {
                 </p>
               </blockquote>
               <figcaption className="mt-8 flex gap-x-4">
-                <img
+                <Image
+                  height={200}
+                  width={200}
                   alt=""
                   src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                   className="mt-1 h-10 w-10 flex-none rounded-full bg-gray-50"

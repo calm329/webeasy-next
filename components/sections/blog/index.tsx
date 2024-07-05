@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const posts = [
   {
     id: 1,
@@ -35,7 +37,9 @@ export default function BlogSection() {
           {posts.map((post) => (
             <article key={post.id} className="flex flex-col items-start justify-between">
               <div className="relative w-full">
-                <img
+                <Image
+                  height={200}
+                  width={200}
                   alt=""
                   src={post.imageUrl}
                   className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 /*
   This example requires some changes to your config:
   
@@ -43,9 +45,9 @@ export default function NewsLetterSection() {
           </div>
           <p className="mt-4 text-sm leading-6 text-gray-900">
             We care about your data. Read our{' '}
-            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+            <Link href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
               privacy&nbsp;policy
-            </a>
+            </Link>
             .
           </p>
         </form>
