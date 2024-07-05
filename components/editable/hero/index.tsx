@@ -1,7 +1,7 @@
 import Image from "next/image";
 import TopBar from "@/components/top-bar";
 import { TColors, TFields, THero, TSection } from "@/types";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import CTA from "@/components/cta";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -9,6 +9,8 @@ import FontPicker from "@/components/font-picker";
 import { appState } from "../../../lib/store/slices/site-slice";
 import { Skeleton } from "@/components/ui/skeleton";
 import TypewriterEffect from "@/components/typewriter-effect";
+import AddSectionButtons from "@/components/add-section/buttons";
+import SectionModal from "@/components/ui/modal/section-modal";
 
 type TProps = {
   hero: THero;
@@ -45,9 +47,10 @@ const EditableHero = (props: TProps) => {
 
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
+  const [sectionModal, setSectionModal] = useState(false);
   return appState.aiContent?.hero ? (
     <div
-      className={`-m-8 mb-10 flex flex-wrap justify-between pr-2 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`relative -m-8 mb-10 flex flex-wrap justify-between pr-2 ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => {
         if (editable && setIsOpen && setSection) {
           setSection("Hero");
@@ -61,6 +64,8 @@ const EditableHero = (props: TProps) => {
         }
       }}
     >
+      <SectionModal open={sectionModal} setOpen={setSectionModal} />
+      <AddSectionButtons setSectionModal={setSectionModal} />
       <div
         className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : " w-2/3"}`}
       >
@@ -208,14 +213,14 @@ const EditableHero = (props: TProps) => {
       {appState.aiContent.hero.image.imageUrl ? (
         hero.image.show && (
           <div
-            className={`overflow-hidden py-2 max-w-96 max-h-96  max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
+            className={`max-h-96 max-w-96 overflow-hidden py-2  max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
           >
             <Image
               src={hero.image.imageUrl}
               width={256}
               height={256}
               alt="Hero Image"
-              className={`${appState.view === "Mobile" ? "" : "mx-auto "} w-full h-full rounded-3xl object-cover md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+              className={`${appState.view === "Mobile" ? "" : "mx-auto "} h-full w-full rounded-3xl object-cover md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
               onClick={() => {
                 if (
                   editable &&

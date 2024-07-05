@@ -3,7 +3,7 @@ import PostCard from "@/components/ui/card/post-card";
 import ServiceCard from "@/components/ui/card/service-card";
 import CTA from "@/components/cta";
 import TopBar from "@/components/top-bar";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   TBanner,
   TColors,
@@ -28,6 +28,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/select-template-carousel";
 import { Card, CardContent } from "@/components/ui/card";
+import AddSectionButtons from "@/components/add-section/buttons";
+import SectionModal from "@/components/ui/modal/section-modal";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -69,9 +71,11 @@ export default function BasicTemplate(props: BasicTemplateProps) {
   } = props;
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
+  const [sectionModal, setSectionModal] = useState(false);
   console.log("services", services);
   return (
     <>
+      <SectionModal open={sectionModal} setOpen={setSectionModal} />
       <section className="bg-white py-6">
         <EditableBanner
           banner={banner}
@@ -100,7 +104,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
               />
 
               <div
-                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} bg-gray-100`}
+                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} group relative bg-gray-100`}
                 onClick={() => {
                   if (setIsOpen && setSection) {
                     setIsOpen(true);
@@ -114,6 +118,10 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   }
                 }}
               >
+                <AddSectionButtons
+                  classNameUp="top-0"
+                  setSectionModal={setSectionModal}
+                />
                 <div className="mb-10 flex flex-col">
                   {services?.title ? (
                     <h2
@@ -245,7 +253,22 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           </div>
         </div>
       </section>
-      <section className={`  container mb-20 mt-20`}>
+      <section
+        className={`${editable && "group relative rounded-xl border-2 border-transparent hover:border-indigo-500"}  container mb-20 mt-20`}
+        onClick={() => {
+          if (setIsOpen && setSection) {
+            setIsOpen(true);
+            setSection("Image Gallery");
+            dispatch(
+              updateAppState({
+                ...appState,
+                openedSlide: "Customize",
+              }),
+            );
+          }
+        }}
+      >
+        <AddSectionButtons classNameUp="top-0" setSectionModal={setSectionModal}/>
         {appState?.aiContent?.gallery?.list ? (
           appState?.aiContent?.gallery?.show ? (
             <div className="grid grid-cols-3 gap-10 max-lg:grid-cols-2 max-sm:grid-cols-1 ">
@@ -310,11 +333,11 @@ export default function BasicTemplate(props: BasicTemplateProps) {
         )}
       </section>
 
-      <section className={`container mb-20 mt-20`}>
+      <section className={`  container mb-20 mt-20`}>
         {appState?.aiContent?.partners ? (
           appState?.aiContent?.partners?.show ? (
             <div
-              className={`flex flex-col gap-5  ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+              className={`group relative flex flex-col gap-5  ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
               onClick={() => {
                 if (setIsOpen && setSection) {
                   setIsOpen(true);
@@ -328,6 +351,7 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                 }
               }}
             >
+              <AddSectionButtons setSectionModal={setSectionModal}/>
               <h2 className="text-3xl font-bold text-gray-900">
                 {appState?.aiContent?.partners?.title}
               </h2>
@@ -400,7 +424,6 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                     </div>
                   </div>
                 ) : (
-                  
                   <Carousel className="w-full">
                     <CarouselContent>
                       {(appState?.aiContent?.partners?.list ?? []).map(
@@ -428,12 +451,11 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                         ),
                       )}
                     </CarouselContent>
-                    <div onClick={(e)=>e.stopPropagation()}>
-                    <CarouselPrevious  />
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <CarouselPrevious />
                     </div>
-                    <div onClick={(e)=>e.stopPropagation()}>
-
-                    <CarouselNext />
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <CarouselNext />
                     </div>
                   </Carousel>
                 )}
@@ -506,16 +528,19 @@ export default function BasicTemplate(props: BasicTemplateProps) {
           </div>
         )}
       </section>
-      <section className={`container mb-20 mt-20 `}>
+      <section
+        className={`group container relative mb-20 mt-20 ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+      >
+        <AddSectionButtons classNameDown="z-10" classNameUp="top-0 z-10"  setSectionModal={setSectionModal}/>
         {appState?.aiContent?.testimonials?.list ? (
           appState?.aiContent?.testimonials?.show ? (
-            <Carousel className="h-full w-full">
-              <CarouselContent>
+            <Carousel className="h-full w-full ">
+              <CarouselContent className=" ">
                 {appState?.aiContent?.testimonials?.list?.map(
                   (testimonial, i) => (
                     <CarouselItem key={i}>
                       <div
-                        className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} h-full rounded-lg border border-gray-300 p-8 shadow-lg`}
+                        className={` h-full rounded-lg border  border-gray-300 p-8 shadow-lg`}
                         onClick={() => {
                           if (setIsOpen && setSection) {
                             setIsOpen(true);

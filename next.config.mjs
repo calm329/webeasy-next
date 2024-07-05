@@ -8,18 +8,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "*.cdninstagram.com",
+        hostname: "**",
       },
     ],
-    domains: [
-      "xhq5zxhb2o7dgubv.public.blob.vercel-storage.com",
-      "tailwindui.com",
-      "images.unsplash.com",
-      'oaidalleapiprodscus.blob.core.windows.net',
-      'm.media-amazon.com',
-      'cdn.durable.co',
-'lh3.googleusercontent.com'
-    ],
+    domains: ["*"],
   },
 };
 
