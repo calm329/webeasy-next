@@ -182,11 +182,9 @@ export default function BasicTemplate(props: TProps) {
             <div className="inline-edit mt-10 flex-1 px-5 md:px-6">
               <div
                 className="flex w-full overflow-hidden"
-                style={{
-                  mask: "linear-gradient(90deg, transparent, white 5%, white 95%, transparent)",
-                }}
+              
               >
-                <div className="marquee flex w-full items-center justify-center gap-10">
+                <div className=" flex w-full items-center justify-center gap-10">
                   {[
                     ...(aiContent?.partners?.list ?? []),
                     ...(aiContent?.partners?.list ?? []),
