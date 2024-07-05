@@ -129,7 +129,12 @@ export type TAiContent = {
     show: boolean;
     title: string;
     description: string;
-    list: Array<string>;
+    list: Array<{
+      id: string;
+      name: string;
+      logo: string;
+      link: string;
+    }>;
   };
   gallery: { show: boolean; list: Array<string> };
   features?: Array<TFeature>;

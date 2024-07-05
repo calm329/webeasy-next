@@ -130,11 +130,7 @@ const PartnersContent = (props: TProps) => {
           ...appState.aiContent,
           partners: {
             ...appState.aiContent?.partners,
-            list: appState.aiContent?.partners?.list?.filter((image) => {
-              if (image !== id) {
-                return image;
-              }
-            }),
+            list: appState.aiContent?.partners?.list?.filter((partner) => partner.id !== id),
           },
         },
       }),
@@ -265,7 +261,7 @@ const PartnersContent = (props: TProps) => {
                   <ImPower className=" text-xs " />
                 )}
               </button>
-              {/* <RegenerateOptions setType={setType} type={type} /> */}
+            
             </div>
           </div>
           <textarea
@@ -300,25 +296,25 @@ const PartnersContent = (props: TProps) => {
           />
         </div>
         <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
-          {appState.aiContent?.partners?.list?.map((image, i) => (
-            <div className="flex flex-col gap-5" key={i}>
+          {appState.aiContent?.partners?.list?.map((partner, i) => (
+            <div className="flex flex-col gap-5" key={partner.id}>
               <div className="flex justify-between ">
                 <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
-                  Image {i + 1}
+                  Partner {i + 1}
                 </h3>
                 {appState.aiContent?.partners?.list.length > 4 && (
                   <MdDeleteForever
                     color="red"
                     size={20}
-                    onClick={() => handleDeletePartners(image)}
+                    onClick={() => handleDeletePartners(partner.id)}
                     className="cursor-pointer"
                   />
                 )}
               </div>
               <div className="flex flex-col gap-5 ">
                 <Uploader
-                  defaultValue={image}
-                  name={"image" + (i + 1)}
+                  defaultValue={partner.logo}
+                  name={"logo" + (i + 1)}
                   label={""}
                   contain={true}
                   onChange={(value) => {
@@ -329,16 +325,13 @@ const PartnersContent = (props: TProps) => {
                           ...appState.aiContent,
                           partners: {
                             ...appState.aiContent?.partners,
-                            list: [
-                              ...appState.aiContent?.partners?.list?.slice(
-                                0,
-                                i,
-                              ),
-                              value,
-                              ...appState.aiContent?.partners?.list?.slice(
-                                i + 1,
-                              ),
-                            ],
+                            list: appState.aiContent?.partners?.list?.map((obj) => {
+                              if (obj.id === partner.id) {
+                                return { ...obj, logo: value };
+                              } else {
+                                return obj;
+                              }
+                            }),
                           },
                         },
                       }),
@@ -348,10 +341,10 @@ const PartnersContent = (props: TProps) => {
                 {showLinks && (
                   <input
                     type="text"
-                    name={"image" + (i + 1)}
-                    id={"image" + (i + 1)}
+                    name={"link" + (i + 1)}
+                    id={"link" + (i + 1)}
                     className="rounded-md border border-gray-300"
-                    value={image}
+                    value={partner.link}
                     onChange={(e) => {
                       dispatch(
                         updateAppState({
@@ -362,8 +355,8 @@ const PartnersContent = (props: TProps) => {
                               ...appState.aiContent?.partners,
                               list: appState.aiContent?.partners?.list?.map(
                                 (obj) => {
-                                  if (obj === image) {
-                                    return e.target.value;
+                                  if (obj.id === partner.id) {
+                                    return { ...obj, link: e.target.value };
                                   } else {
                                     return obj;
                                   }
@@ -385,7 +378,7 @@ const PartnersContent = (props: TProps) => {
           appState.aiContent?.partners?.list?.length !== 10 && (
             <button
               className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-              onClick={(value) => {
+              onClick={() => {
                 dispatch(
                   updateAppState({
                     ...appState,
@@ -393,14 +386,14 @@ const PartnersContent = (props: TProps) => {
                       ...appState.aiContent,
                       partners: {
                         ...appState.aiContent?.partners,
-                        list: [...appState.aiContent?.partners?.list, ""],
+                        list: [...appState.aiContent?.partners?.list, { id: `${Date.now()}`, name: "", link: "", logo: "" }],
                       },
                     },
                   }),
                 );
               }}
             >
-              Add Service
+              Add Partner
               <IoMdAdd size={20} />
             </button>
           )}

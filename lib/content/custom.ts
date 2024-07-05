@@ -698,11 +698,37 @@ class CustomContentApiService {
                         ...parsedData.partners,
                         ...getAppState().aiContent.partners,
                         list:[
-                          "/images/partners/logo-ipsum-1.png",
-                          "/images/partners/logo-ipsum-2.png",
-                          "/images/partners/logo-ipsum-3.png",
-                          "/images/partners/logo-ipsum-4.png",
-                          "/images/partners/logo-ipsum-5.png",
+                          {
+                            id:"0",
+                            name:"",
+                            image:"/images/partners/logo-ipsum-1.png",
+                            redirect:""
+                          }
+                          ,
+                          {
+                            id:"1",
+                            name:"",
+                            image:"/images/partners/logo-ipsum-2.png",
+                            redirect:""
+                          },
+                          {
+                            id:"2",
+                            name:"",
+                            image:"/images/partners/logo-ipsum-3.png",
+                            redirect:""
+                          },
+                          {
+                            id:"3",
+                            name:"",
+                            image:"/images/partners/logo-ipsum-4.png",
+                            redirect:""
+                          },
+                          {
+                            id:"4",
+                            name:"",
+                            image:"/images/partners/logo-ipsum-5.png",
+                            redirect:""
+                          }
                         ]
                       },
                     },
