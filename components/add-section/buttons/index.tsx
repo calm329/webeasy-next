@@ -2,12 +2,16 @@ import React, { Dispatch, SetStateAction } from "react";
 
 type TProps = {
   setSectionModal: Dispatch<SetStateAction<boolean>>;
+  setTriggerSection: Dispatch<SetStateAction<number>>;
+  index:number
   classNameUp?: string;
   classNameDown?: string;
 };
 
 const AddSectionButtons = ({
   setSectionModal,
+  setTriggerSection,
+  index,
   classNameUp,
   classNameDown,
 }: TProps) => {
@@ -18,6 +22,7 @@ const AddSectionButtons = ({
         onClick={(e) => {
           e.stopPropagation();
           setSectionModal(true);
+          setTriggerSection(index)
         }}
       >
         + Add Section
@@ -27,6 +32,7 @@ const AddSectionButtons = ({
         onClick={(e) => {
           e.stopPropagation();
           setSectionModal(true);
+          setTriggerSection(index+1)
         }}
       >
         {" "}

@@ -9,9 +9,14 @@ import SectionForm from "../form/section-form";
 type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  addSectionAtIndex: (index: number, newSection: {
+    title: string;
+    content: JSX.Element;
+}) => void
+triggerSection: number
 };
 export default function SectionModal(props: TProps) {
-  const { open, setOpen } = props;
+  const { open, setOpen,addSectionAtIndex,triggerSection } = props;
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" open={open} className="relative z-10" onClose={setOpen}>
@@ -44,7 +49,7 @@ export default function SectionModal(props: TProps) {
                     <IoClose size={20}/>
                   </button>
                 </div>
-                <SectionForm/>
+                <SectionForm addSectionAtIndex={addSectionAtIndex} triggerSection={triggerSection} setOpen={setOpen}/>
               </Dialog.Panel>
             </Transition.Child>
           </div>

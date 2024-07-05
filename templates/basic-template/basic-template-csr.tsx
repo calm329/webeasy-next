@@ -1,8 +1,4 @@
 import Image from "next/image";
-import PostCard from "@/components/ui/card/post-card";
-import ServiceCard from "@/components/ui/card/service-card";
-import CTA from "@/components/cta";
-import TopBar from "@/components/top-bar";
 import { Dispatch, SetStateAction, useState } from "react";
 import {
   TBanner,
@@ -17,7 +13,6 @@ import EditableBanner from "@/components/editable/banner";
 import EditableHero from "@/components/editable/hero";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { appState } from "../../lib/store/slices/site-slice";
 import { Skeleton } from "@/components/ui/skeleton";
 import TypewriterEffect from "@/components/typewriter-effect";
 import {
@@ -27,9 +22,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/select-template-carousel";
-import { Card, CardContent } from "@/components/ui/card";
 import AddSectionButtons from "@/components/add-section/buttons";
 import SectionModal from "@/components/ui/modal/section-modal";
+import PostCard from "@/components/ui/card/post-card";
+import ServiceCard from "@/components/ui/card/service-card";
+import { Card, CardContent } from "@/components/ui/card";
+import { appState } from "../../lib/store/slices/site-slice";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -55,7 +53,7 @@ type BasicTemplateProps = {
   >;
 };
 
-export default function BasicTemplate(props: BasicTemplateProps) {
+const BasicTemplate = (props: BasicTemplateProps) => {
   const {
     hero,
     banner,
@@ -72,43 +70,306 @@ export default function BasicTemplate(props: BasicTemplateProps) {
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
   const [sectionModal, setSectionModal] = useState(false);
-  console.log("services", services);
-  return (
-    <>
-      <SectionModal open={sectionModal} setOpen={setSectionModal} />
-      <section className="bg-white py-6">
-        <EditableBanner
-          banner={banner}
-          colors={colors}
-          editable={editable}
-          setFocusedField={setFocusedField}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-          showForm={showForm}
-          setShowForm={setShowForm}
-        />
-      </section>
-      <section className=" bg-gray-50 py-10">
-        <div className="container mx-auto px-4">
-          <div className="rounded-3xl bg-white px-8 py-16  pb-10">
-            <div className="mx-auto max-w-7xl">
-              <EditableHero
-                colors={colors}
-                hero={hero}
-                editable={editable}
-                setFocusedField={setFocusedField}
-                setIsOpen={setIsOpen}
-                setSection={setSection}
-                showForm={showForm}
-                setShowForm={setShowForm}
-              />
+  const [triggerSection,setTriggerSection] = useState(0)
+  const [sections, setSections] = useState([
+    {
+      title: "Banner Section",
+      content: (
+        <section className="bg-white py-6">
+          <EditableBanner
+            banner={banner}
+            colors={colors}
+            editable={editable}
+            setFocusedField={setFocusedField}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            showForm={showForm}
+            setShowForm={setShowForm}
+          />
+        </section>
+      ),
+    },
+    {
+      title: "Hero Section",
+      content: (
+        <section className="bg-gray-50 py-10">
+          <div className="container mx-auto px-4">
+            <div className="rounded-3xl bg-white px-8 py-16 pb-10">
+              <div className="mx-auto max-w-7xl">
+                <EditableHero
+                  colors={colors}
+                  setTriggerSection={setTriggerSection}
+                  setSectionModal={setSectionModal}
+                  hero={hero}
+                  editable={editable}
+                  setFocusedField={setFocusedField}
+                  setIsOpen={setIsOpen}
+                  setSection={setSection}
+                  showForm={showForm}
+                  setShowForm={setShowForm}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      ),
+    },
+    {
+      title: "Services Section",
+      content: (
+        <section>
+          <div
+            className={` mx-auto max-w-7xl rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} group relative bg-gray-100`}
+            onClick={() => {
+              if (setIsOpen && setSection) {
+                setIsOpen(true);
+                setSection("Services");
+                dispatch(
+                  updateAppState({
+                    ...appState,
+                    openedSlide: "Customize",
+                  }),
+                );
+              }
+            }}
+          >
+            <AddSectionButtons
+              classNameUp="top-0"
+              setSectionModal={setSectionModal}
+              setTriggerSection={setTriggerSection}
+              index={2}
+            />
+            <div className="mb-10 flex flex-col">
+              {services?.title ? (
+                <h2
+                  className={`mx-auto w-fit text-center text-2xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (
+                      editable &&
+                      setIsOpen &&
+                      setSection &&
+                      setFocusedField &&
+                      setShowForm
+                    ) {
+                      setSection("Services");
+                      setIsOpen(true);
+                      setShowForm({
+                        form: "",
+                        edit: "",
+                        show: false,
+                      });
+                      dispatch(
+                        updateAppState({
+                          ...appState,
+                          focusedField: "title",
+                          openedSlide: "Customize",
+                        }),
+                      );
+                    }
+                  }}
+                >
+                  {appState?.generate?.generating ? (
+                    <TypewriterEffect text={services?.title} />
+                  ) : (
+                    services?.title
+                  )}
+                </h2>
+              ) : (
+                <Skeleton className={`mx-auto h-12 w-40 bg-white `} />
+              )}
+              {services?.description ? (
+                <p
+                  className={`mx-auto mb-6 mt-2 w-fit text-center ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (
+                      editable &&
+                      setIsOpen &&
+                      setSection &&
+                      setFocusedField &&
+                      setShowForm
+                    ) {
+                      setSection("Services");
+                      setIsOpen(true);
+                      setShowForm({
+                        form: "",
+                        edit: "",
+                        show: false,
+                      });
+                      dispatch(
+                        updateAppState({
+                          ...appState,
+                          focusedField: "description",
+                          openedSlide: "Customize",
+                        }),
+                      );
+                    }
+                  }}
+                >
+                  {appState?.generate?.generating ? (
+                    <TypewriterEffect text={services?.description} />
+                  ) : (
+                    services?.description
+                  )}
+                </p>
+              ) : (
+                <Skeleton className="mx-auto mb-6 mt-2 h-8 w-96 bg-white" />
+              )}
+            </div>
 
+            <div className="-m-8 flex flex-wrap">
+              {services?.show &&
+                services?.list?.map((service) => (
+                  <ServiceCard
+                    id={service["id"]}
+                    key={service["name"]}
+                    name={service["name"]}
+                    description={service["description"]}
+                    color={colors?.primary}
+                    editable={editable}
+                    setIsOpen={setIsOpen}
+                    setSection={setSection}
+                    showForm={showForm}
+                    setShowForm={setShowForm}
+                    appState={appState}
+                  />
+                ))}
+
+              {appState?.generate?.generating &&
+                Array.from({ length: 6 })?.map(
+                  (_, i) =>
+                    i > (services?.list ?? [])?.length - 1 && (
+                      <div
+                        key={i}
+                        className={`w-full p-8 md:w-1/3 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                      >
+                        <div className="-m-3 flex flex-wrap">
+                          <div className="w-auto p-3 md:w-full lg:w-auto">
+                            <div className="flex  items-center justify-center rounded-xl ">
+                              <Skeleton className="h-12 w-12 bg-white" />
+                            </div>
+                          </div>
+                          <div className="flex-1 p-3">
+                            <h3 className="font-heading mb-2 text-xl font-black text-gray-900">
+                              <Skeleton className="h-10 w-full bg-white" />
+                            </h3>
+                            <p className="flex flex-col gap-1 text-sm font-bold text-gray-700">
+                              {" "}
+                              <Skeleton className="h-8 w-full bg-white" />{" "}
+                              <Skeleton className="h-8 w-1/2 bg-white" />
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ),
+                )}
+            </div>
+          </div>
+        </section>
+      ),
+    },
+    {
+      title: "Image Gallery Section",
+      content: (
+        <section
+          className={`${editable && "group relative rounded-xl border-2 border-transparent hover:border-indigo-500"}  container mb-20 mt-20`}
+          onClick={() => {
+            if (setIsOpen && setSection) {
+              setIsOpen(true);
+              setSection("Image Gallery");
+              dispatch(
+                updateAppState({
+                  ...appState,
+                  openedSlide: "Customize",
+                }),
+              );
+            }
+          }}
+        >
+          <AddSectionButtons
+            classNameUp="top-0"
+            setSectionModal={setSectionModal}
+            setTriggerSection={setTriggerSection}
+            index={3}
+          />
+          {appState?.aiContent?.gallery?.list ? (
+            appState?.aiContent?.gallery?.show ? (
+              <div className="grid grid-cols-3 gap-10 max-lg:grid-cols-2 max-sm:grid-cols-1 ">
+                {appState?.aiContent?.gallery?.list?.map((image, i) => (
+                  <div
+                    key={image}
+                    className={`${editable && "rounded-xl border-2 border-transparent hover:border-indigo-500"} h-[500px] rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
+                    onClick={() => {
+                      if (setIsOpen && setSection) {
+                        setIsOpen(true);
+                        setSection("Image Gallery");
+                        dispatch(
+                          updateAppState({
+                            ...appState,
+                            openedSlide: "Customize",
+                          }),
+                        );
+                      }
+                    }}
+                  >
+                    <Image
+                      src={image}
+                      alt=""
+                      height={1000}
+                      width={1000}
+                      className=" w-full  object-cover"
+                      style={{
+                        height: 500,
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
               <div
-                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} group relative bg-gray-100`}
+                className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                 onClick={() => {
                   if (setIsOpen && setSection) {
                     setIsOpen(true);
-                    setSection("Services");
+                    setSection("Image Gallery");
+                    dispatch(
+                      updateAppState({
+                        ...appState,
+                        openedSlide: "Customize",
+                      }),
+                    );
+                  }
+                }}
+              ></div>
+            )
+          ) : (
+            <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
+              <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
+                <Skeleton
+                  className="h-[500px] w-full"
+                  style={{
+                    height: 500,
+                  }}
+                />
+              </div>
+            </div>
+          )}
+        </section>
+      ),
+    },
+    {
+      title: "Partners Section",
+      content: (
+        <section className={`  container mb-20 mt-20`}>
+          {appState?.aiContent?.partners ? (
+            appState?.aiContent?.partners?.show ? (
+              <div
+                className={`group relative flex flex-col gap-5  ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+                onClick={() => {
+                  if (setIsOpen && setSection) {
+                    setIsOpen(true);
+                    setSection("Partners");
                     dispatch(
                       updateAppState({
                         ...appState,
@@ -118,535 +379,314 @@ export default function BasicTemplate(props: BasicTemplateProps) {
                   }
                 }}
               >
-                <AddSectionButtons
-                  classNameUp="top-0"
-                  setSectionModal={setSectionModal}
-                />
-                <div className="mb-10 flex flex-col">
-                  {services?.title ? (
-                    <h2
-                      className={`mx-auto w-fit text-center text-2xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (
-                          editable &&
-                          setIsOpen &&
-                          setSection &&
-                          setFocusedField &&
-                          setShowForm
-                        ) {
-                          setSection("Services");
-                          setIsOpen(true);
-                          setShowForm({
-                            form: "",
-                            edit: "",
-                            show: false,
-                          });
-                          dispatch(
-                            updateAppState({
-                              ...appState,
-                              focusedField: "title",
-                              openedSlide: "Customize",
-                            }),
-                          );
-                        }
-                      }}
-                    >
-                      {appState?.generate?.generating ? (
-                        <TypewriterEffect text={services?.title} />
-                      ) : (
-                        services?.title
-                      )}
-                    </h2>
-                  ) : (
-                    <Skeleton className={`mx-auto h-12 w-40 bg-white `} />
-                  )}
-                  {services?.description ? (
-                    <p
-                      className={`mx-auto mb-6 mt-2 w-fit text-center ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (
-                          editable &&
-                          setIsOpen &&
-                          setSection &&
-                          setFocusedField &&
-                          setShowForm
-                        ) {
-                          setSection("Services");
-                          setIsOpen(true);
-                          setShowForm({
-                            form: "",
-                            edit: "",
-                            show: false,
-                          });
-                          dispatch(
-                            updateAppState({
-                              ...appState,
-                              focusedField: "description",
-                              openedSlide: "Customize",
-                            }),
-                          );
-                        }
-                      }}
-                    >
-                      {appState?.generate?.generating ? (
-                        <TypewriterEffect text={services?.description} />
-                      ) : (
-                        services?.description
-                      )}
-                    </p>
-                  ) : (
-                    <Skeleton className="mx-auto mb-6 mt-2 h-8 w-96 bg-white" />
-                  )}
-                </div>
-
-                <div className="-m-8 flex flex-wrap">
-                  {services?.show &&
-                    services?.list?.map((service) => (
-                      <ServiceCard
-                        id={service["id"]}
-                        key={service["name"]}
-                        name={service["name"]}
-                        description={service["description"]}
-                        color={colors?.primary}
-                        editable={editable}
-                        setIsOpen={setIsOpen}
-                        setSection={setSection}
-                        showForm={showForm}
-                        setShowForm={setShowForm}
-                        appState={appState}
-                      />
-                    ))}
-
-                  {appState?.generate?.generating &&
-                    Array.from({ length: 6 })?.map(
-                      (_, i) =>
-                        i > (services?.list ?? [])?.length - 1 && (
-                          <div
-                            key={i}
-                            className={`w-full p-8 md:w-1/3 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                          >
-                            <div className="-m-3 flex flex-wrap">
-                              <div className="w-auto p-3 md:w-full lg:w-auto">
-                                <div className="flex  items-center justify-center rounded-xl ">
-                                  <Skeleton className="h-12 w-12 bg-white" />
-                                </div>
-                              </div>
-                              <div className="flex-1 p-3">
-                                <h3 className="font-heading mb-2 text-xl font-black text-gray-900">
-                                  <Skeleton className="h-10 w-full bg-white" />
-                                </h3>
-                                <p className="flex flex-col gap-1 text-sm font-bold text-gray-700">
-                                  {" "}
-                                  <Skeleton className="h-8 w-full bg-white" />{" "}
-                                  <Skeleton className="h-8 w-1/2 bg-white" />
-                                </p>
-                              </div>
+                <AddSectionButtons setSectionModal={setSectionModal}   setTriggerSection={setTriggerSection}
+            index={4}/>
+                <h2 className="text-3xl font-bold text-gray-900">
+                  {appState?.aiContent?.partners?.title}
+                </h2>
+                <p>{appState?.aiContent?.partners?.description}</p>
+                <div className="inline-edit mt-10 flex-1 px-5 md:px-6">
+                  {appState?.aiContent?.partners?.list.length <= 5 ? (
+                    <div className="flex w-full overflow-auto">
+                      <div className=" flex  gap-10">
+                        {(appState?.aiContent?.partners?.list ?? []).map(
+                          (src, index) => (
+                            <div
+                              key={index}
+                              className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
+                            >
+                              <Image
+                                className=" object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                                src={src}
+                                alt={`Logo ${index + 1}`}
+                                height={200}
+                                width={200}
+                                style={{
+                                  height: 200,
+                                }}
+                              />
                             </div>
-                          </div>
-                        ),
-                    )}
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <Carousel className="w-full">
+                      <CarouselContent>
+                        {(appState?.aiContent?.partners?.list ?? []).map(
+                          (src, index) => (
+                            <CarouselItem key={index} className="basis-1/3">
+                              <div className="p-1">
+                                <Card className="border-0">
+                                  <CardContent className=" flex border-0  p-6">
+                                    <div className="relative flex h-24  flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl">
+                                      <Image
+                                        className="h-24 object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                                        src={src}
+                                        alt={`Logo ${index + 1}`}
+                                        height={200}
+                                        width={200}
+                                        style={{
+                                          height: 200,
+                                        }}
+                                      />
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              </div>
+                            </CarouselItem>
+                          ),
+                        )}
+                      </CarouselContent>
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <CarouselPrevious />
+                      </div>
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <CarouselNext />
+                      </div>
+                    </Carousel>
+                  )}
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section
-        className={`${editable && "group relative rounded-xl border-2 border-transparent hover:border-indigo-500"}  container mb-20 mt-20`}
-        onClick={() => {
-          if (setIsOpen && setSection) {
-            setIsOpen(true);
-            setSection("Image Gallery");
-            dispatch(
-              updateAppState({
-                ...appState,
-                openedSlide: "Customize",
-              }),
-            );
-          }
-        }}
-      >
-        <AddSectionButtons classNameUp="top-0" setSectionModal={setSectionModal}/>
-        {appState?.aiContent?.gallery?.list ? (
-          appState?.aiContent?.gallery?.show ? (
-            <div className="grid grid-cols-3 gap-10 max-lg:grid-cols-2 max-sm:grid-cols-1 ">
-              {appState?.aiContent?.gallery?.list?.map((image, i) => (
-                <div
-                  key={image}
-                  className={`${editable && "rounded-xl border-2 border-transparent hover:border-indigo-500"} h-[500px] rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
-                  onClick={() => {
-                    if (setIsOpen && setSection) {
-                      setIsOpen(true);
-                      setSection("Image Gallery");
-                      dispatch(
-                        updateAppState({
-                          ...appState,
-                          openedSlide: "Customize",
-                        }),
-                      );
-                    }
-                  }}
-                >
-                  <Image
-                    src={image}
-                    alt=""
-                    height={1000}
-                    width={1000}
-                    className=" w-full  object-cover"
-                    style={{
-                      height: 500,
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div
-              className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-              onClick={() => {
-                if (setIsOpen && setSection) {
-                  setIsOpen(true);
-                  setSection("Image Gallery");
-                  dispatch(
-                    updateAppState({
-                      ...appState,
-                      openedSlide: "Customize",
-                    }),
-                  );
-                }
-              }}
-            ></div>
-          )
-        ) : (
-          <div className=" h-[500px] rounded-lg border border-gray-300 p-8 shadow-lg">
-            <div className=" h-[500px] rounded-lg border border-gray-300 shadow-lg">
-              <Skeleton
-                className="h-[500px] w-full"
-                style={{
-                  height: 500,
+            ) : (
+              <div
+                className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+                onClick={() => {
+                  if (setIsOpen && setSection) {
+                    setIsOpen(true);
+                    setSection("Partners");
+                    dispatch(
+                      updateAppState({
+                        ...appState,
+                        openedSlide: "Customize",
+                      }),
+                    );
+                  }
                 }}
-              />
-            </div>
-          </div>
-        )}
-      </section>
+              ></div>
+            )
+          ) : (
+            <div className={`flex flex-col gap-5`}>
+              <Skeleton className="h-12 w-1/4 " />
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-8 w-full " />
+                <Skeleton className="h-8 w-full " />
+                <Skeleton className="h-8 w-1/2 " />
+              </div>
 
-      <section className={`  container mb-20 mt-20`}>
-        {appState?.aiContent?.partners ? (
-          appState?.aiContent?.partners?.show ? (
-            <div
-              className={`group relative flex flex-col gap-5  ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
-              onClick={() => {
-                if (setIsOpen && setSection) {
-                  setIsOpen(true);
-                  setSection("Partners");
-                  dispatch(
-                    updateAppState({
-                      ...appState,
-                      openedSlide: "Customize",
-                    }),
-                  );
-                }
-              }}
-            >
-              <AddSectionButtons setSectionModal={setSectionModal}/>
-              <h2 className="text-3xl font-bold text-gray-900">
-                {appState?.aiContent?.partners?.title}
-              </h2>
-              <p>{appState?.aiContent?.partners?.description}</p>
-              {/* <div className="inline-edit flex-1 px-5 md:px-6 mt-10">
+              <div className="">
                 <div
-                  className="flex w-full overflow-hidden"
+                  className="flex h-full w-full overflow-hidden"
                   style={{
                     mask: "linear-gradient(90deg, transparent, white 5%, white 95%, transparent)",
                   }}
                 >
-                  <div
-                    className="flex w-full  items-center justify-center gap-20"
-                  
-                  >
-                    {images.map((src, index) => (
+                  <div className="marquee flex w-full items-center justify-center gap-10 ">
+                    {Array.from({ length: 6 }).map((_, index) => (
                       <div
                         key={index}
-                        className="relative flex h-12 w-auto flex-shrink-0 rounded-lg transition-all md:h-16  md:rounded-xl lg:rounded-2xl "
+                        className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
                       >
-                        <Image
-                          className="h-full grayscale transition-all duration-300 "
-                          src={src}
-                          alt={`Logo ${index + 1}`}
-                          height={200}
-                          width={200}
-                        />
-                      </div>
-                    ))}
-                    {images.map((src, index) => (
-                      <div
-                        key={index + images.length}
-                        className="relative flex h-12 w-auto flex-shrink-0 rounded-lg transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
-                      >
-                        <Image
-                          className="h-full grayscale transition-all duration-300"
-                          src={src}
-                          alt={`Logo ${index + 1}`}
-                          height={200}
-                          width={200}
+                        <Skeleton
+                          style={{
+                            height: 100,
+                            width: 300,
+                          }}
                         />
                       </div>
                     ))}
                   </div>
                 </div>
-              </div> */}
-              <div className="inline-edit mt-10 flex-1 px-5 md:px-6">
-                {appState?.aiContent?.partners?.list.length <= 5 ? (
-                  <div className="flex w-full overflow-auto">
-                    <div className=" flex  gap-10">
-                      {(appState?.aiContent?.partners?.list ?? []).map(
-                        (src, index) => (
-                          <div
-                            key={index}
-                            className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
-                          >
-                            <Image
-                              className=" object-contain grayscale transition-all duration-300 hover:grayscale-0"
-                              src={src}
-                              alt={`Logo ${index + 1}`}
-                              height={200}
-                              width={200}
-                              style={{
-                                height: 200,
-                              }}
-                            />
-                          </div>
-                        ),
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <Carousel className="w-full">
-                    <CarouselContent>
-                      {(appState?.aiContent?.partners?.list ?? []).map(
-                        (src, index) => (
-                          <CarouselItem key={index} className="basis-1/3">
-                            <div className="p-1">
-                              <Card className="border-0">
-                                <CardContent className=" flex border-0  p-6">
-                                  <div className="relative flex h-24  flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl">
-                                    <Image
-                                      className="h-24 object-contain grayscale transition-all duration-300 hover:grayscale-0"
-                                      src={src}
-                                      alt={`Logo ${index + 1}`}
-                                      height={200}
-                                      width={200}
-                                      style={{
-                                        height: 200,
-                                      }}
-                                    />
-                                  </div>
-                                </CardContent>
-                              </Card>
+                <style jsx>{`
+                  .marquee {
+                    animation: marquee 15s linear infinite;
+                  }
+
+                  @keyframes marquee {
+                    from {
+                      transform: translate3d(-50%, 0, 0);
+                    }
+                    to {
+                      transform: translate3d(0, 0, 0);
+                    }
+                  }
+                `}</style>
+              </div>
+            </div>
+          )}
+        </section>
+      ),
+    },
+    {
+      title: "Testimonial Section",
+      content: (
+        <section
+          className={`group container relative mb-20 mt-20 ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+        >
+          <AddSectionButtons
+            classNameDown="z-10"
+            classNameUp="top-0 z-10"
+            setSectionModal={setSectionModal}
+            setTriggerSection={setTriggerSection}
+            index={5}
+          />
+          {appState?.aiContent?.testimonials?.list ? (
+            appState?.aiContent?.testimonials?.show ? (
+              <Carousel className="h-full w-full ">
+                <CarouselContent className=" ">
+                  {appState?.aiContent?.testimonials?.list?.map(
+                    (testimonial, i) => (
+                      <CarouselItem key={i}>
+                        <div
+                          className={` h-full rounded-lg border  border-gray-300 p-8 shadow-lg`}
+                          onClick={() => {
+                            if (setIsOpen && setSection) {
+                              setIsOpen(true);
+                              setSection("Testimonials");
+                              dispatch(
+                                updateAppState({
+                                  ...appState,
+                                  openedSlide: "Customize",
+                                }),
+                              );
+                            }
+                          }}
+                        >
+                          <div className="flex flex-col gap-5">
+                            <div className="h-44 w-44 overflow-hidden">
+                              <Image
+                                src={testimonial.avatar}
+                                alt=""
+                                height={100}
+                                width={100}
+                                className="h-[100px] w-[100px] rounded-full object-cover"
+                              />
                             </div>
-                          </CarouselItem>
-                        ),
-                      )}
-                    </CarouselContent>
-                    <div onClick={(e) => e.stopPropagation()}>
-                      <CarouselPrevious />
-                    </div>
-                    <div onClick={(e) => e.stopPropagation()}>
-                      <CarouselNext />
-                    </div>
-                  </Carousel>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div
-              className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
-              onClick={() => {
-                if (setIsOpen && setSection) {
-                  setIsOpen(true);
-                  setSection("Partners");
-                  dispatch(
-                    updateAppState({
-                      ...appState,
-                      openedSlide: "Customize",
-                    }),
-                  );
-                }
-              }}
-            ></div>
-          )
-        ) : (
-          <div className={`flex flex-col gap-5`}>
-            <Skeleton className="h-12 w-1/4 " />
-            <div className="flex flex-col gap-1">
-              <Skeleton className="h-8 w-full " />
-              <Skeleton className="h-8 w-full " />
-              <Skeleton className="h-8 w-1/2 " />
-            </div>
-
-            <div className="">
-              <div
-                className="flex h-full w-full overflow-hidden"
-                style={{
-                  mask: "linear-gradient(90deg, transparent, white 5%, white 95%, transparent)",
-                }}
-              >
-                <div className="marquee flex w-full items-center justify-center gap-10 ">
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
-                    >
-                      <Skeleton
-                        style={{
-                          height: 100,
-                          width: 300,
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <style jsx>{`
-                .marquee {
-                  animation: marquee 15s linear infinite;
-                }
-
-                @keyframes marquee {
-                  from {
-                    transform: translate3d(-50%, 0, 0);
-                  }
-                  to {
-                    transform: translate3d(0, 0, 0);
-                  }
-                }
-              `}</style>
-            </div>
-          </div>
-        )}
-      </section>
-      <section
-        className={`group container relative mb-20 mt-20 ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
-      >
-        <AddSectionButtons classNameDown="z-10" classNameUp="top-0 z-10"  setSectionModal={setSectionModal}/>
-        {appState?.aiContent?.testimonials?.list ? (
-          appState?.aiContent?.testimonials?.show ? (
-            <Carousel className="h-full w-full ">
-              <CarouselContent className=" ">
-                {appState?.aiContent?.testimonials?.list?.map(
-                  (testimonial, i) => (
-                    <CarouselItem key={i}>
-                      <div
-                        className={` h-full rounded-lg border  border-gray-300 p-8 shadow-lg`}
-                        onClick={() => {
-                          if (setIsOpen && setSection) {
-                            setIsOpen(true);
-                            setSection("Testimonials");
-                            dispatch(
-                              updateAppState({
-                                ...appState,
-                                openedSlide: "Customize",
-                              }),
-                            );
-                          }
-                        }}
-                      >
-                        <div className="flex flex-col gap-5">
-                          <div className="h-44 w-44 overflow-hidden">
-                            <Image
-                              src={testimonial.avatar}
-                              alt=""
-                              height={100}
-                              width={100}
-                              className="h-[100px] w-[100px] rounded-full object-cover"
-                            />
+                            <h3 className="text-3xl font-bold">
+                              {testimonial.name}
+                            </h3>
+                            <p className="text-xl">{testimonial.content}</p>
                           </div>
-                          <h3 className="text-3xl font-bold">
-                            {testimonial.name}
-                          </h3>
-                          <p className="text-xl">{testimonial.content}</p>
                         </div>
-                      </div>
-                    </CarouselItem>
-                  ),
-                )}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+                      </CarouselItem>
+                    ),
+                  )}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            ) : (
+              <div
+                className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+                onClick={() => {
+                  if (setIsOpen && setSection) {
+                    setIsOpen(true);
+                    setSection("Testimonials");
+                    dispatch(
+                      updateAppState({
+                        ...appState,
+                        openedSlide: "Customize",
+                      }),
+                    );
+                  }
+                }}
+              ></div>
+            )
           ) : (
+            <div className=" h-full rounded-lg border border-gray-300 p-8 shadow-lg">
+              <div className="flex flex-col gap-5">
+                <div className="h-44 w-44 overflow-hidden">
+                  <Skeleton className=" h-[100px] w-[100px] rounded-full object-cover" />
+                </div>
+                <Skeleton className="h-14 w-full " />
+                <Skeleton className="h-10 w-full " />
+              </div>
+            </div>
+          )}
+        </section>
+      ),
+    },
+    {
+      title: "Posts Section",
+      content: (
+        <section>
+          {appState.iPosts.list.length > 0 && (
             <div
-              className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500 "}`}
+              className={`mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
               onClick={() => {
                 if (setIsOpen && setSection) {
                   setIsOpen(true);
-                  setSection("Testimonials");
+                  setSection("Posts");
                   dispatch(
                     updateAppState({
                       ...appState,
                       openedSlide: "Customize",
                     }),
                   );
+                  setShowForm({
+                    form: "",
+                    edit: "",
+                    show: false,
+                  });
                 }
               }}
-            ></div>
-          )
-        ) : (
-          <div className=" h-full rounded-lg border border-gray-300 p-8 shadow-lg">
-            <div className="flex flex-col gap-5">
-              <div className="h-44 w-44 overflow-hidden">
-                <Skeleton className=" h-[100px] w-[100px] rounded-full object-cover" />
-              </div>
-              <Skeleton className="h-14 w-full " />
-              <Skeleton className="h-10 w-full " />
+            >
+              <h2 className="sr-only">Posts</h2>
+              {appState?.iPosts?.show && (
+                <div className="flex flex-wrap gap-5">
+                  {posts.list.map(
+                    (post, i) =>
+                      posts.limit > i && (
+                        <PostCard
+                          key={post.id}
+                          id={post.id}
+                          permalink={editable ? "#" : post.permalink}
+                          media_url={post.media_url}
+                          media_type={post.media_type}
+                          caption={post.caption}
+                          timestamp={post.timestamp}
+                          showHash={posts.showHash}
+                        />
+                      ),
+                  )}
+                </div>
+              )}
             </div>
-          </div>
-        )}
-      </section>
-      <div
-        className={`mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-        onClick={() => {
-          if (setIsOpen && setSection) {
-            setIsOpen(true);
-            setSection("Posts");
-            dispatch(
-              updateAppState({
-                ...appState,
-                openedSlide: "Customize",
-              }),
-            );
-            setShowForm({
-              form: "",
-              edit: "",
-              show: false,
-            });
-          }
-        }}
-      >
-        <h2 className="sr-only">Posts</h2>
-        {appState?.iPosts?.show && (
-          <div className="flex flex-wrap gap-5">
-            {posts.list.map(
-              (post, i) =>
-                posts.limit > i && (
-                  <PostCard
-                    key={post.id}
-                    id={post.id}
-                    permalink={editable ? "#" : post.permalink}
-                    media_url={post.media_url}
-                    media_type={post.media_type}
-                    caption={post.caption}
-                    timestamp={post.timestamp}
-                    showHash={posts.showHash}
-                  />
-                ),
-            )}
-          </div>
-        )}
-      </div>
-    </>
+          )}
+        </section>
+      ),
+    },
+  ]);
+
+  const addSectionAtIndex = (
+    index: number,
+    newSection: {
+      title: string;
+      content: JSX.Element;
+    },
+  ) => {
+    if (index >= 0 && index <= sections.length) {
+      setSections([
+        ...sections.slice(0, index),
+        newSection,
+        ...sections.slice(index),
+      ]);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      {sections.map((section, index) => (
+        <div key={index}>{section.content}</div>
+      ))}
+      <SectionModal
+        open={sectionModal}
+        setOpen={setSectionModal}
+        addSectionAtIndex={addSectionAtIndex}
+        triggerSection= {triggerSection}
+      />
+    </div>
   );
-}
+};
+
+export default BasicTemplate;

@@ -31,6 +31,8 @@ type TProps = {
       show: boolean;
     }>
   >;
+  setSectionModal: Dispatch<SetStateAction<boolean>>;
+  setTriggerSection: Dispatch<SetStateAction<number>>;
 };
 
 const EditableHero = (props: TProps) => {
@@ -43,11 +45,12 @@ const EditableHero = (props: TProps) => {
     setFocusedField,
     showForm,
     setShowForm,
+    setSectionModal,
+    setTriggerSection
   } = props;
 
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
-  const [sectionModal, setSectionModal] = useState(false);
   return appState.aiContent?.hero ? (
     <div
       className={`relative -m-8 mb-10 flex flex-wrap justify-between pr-2 ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -64,8 +67,8 @@ const EditableHero = (props: TProps) => {
         }
       }}
     >
-      <SectionModal open={sectionModal} setOpen={setSectionModal} />
-      <AddSectionButtons setSectionModal={setSectionModal} />
+      
+      <AddSectionButtons setSectionModal={setSectionModal} index={1} setTriggerSection={setTriggerSection}/>
       <div
         className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : " w-2/3"}`}
       >
