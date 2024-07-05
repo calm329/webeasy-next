@@ -70,7 +70,10 @@ const BasicTemplate = (props: BasicTemplateProps) => {
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
   const [sectionModal, setSectionModal] = useState(false);
-  const [triggerSection,setTriggerSection] = useState(0)
+  const [triggerSection, setTriggerSection] = useState({
+    section: "Banner Section",
+    position: 0,
+  });
   const [sections, setSections] = useState([
     {
       title: "Banner Section",
@@ -137,7 +140,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
               classNameUp="top-0"
               setSectionModal={setSectionModal}
               setTriggerSection={setTriggerSection}
-              index={2}
+              sectionTitle="Services Section"
             />
             <div className="mb-10 flex flex-col">
               {services?.title ? (
@@ -291,7 +294,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
             classNameUp="top-0"
             setSectionModal={setSectionModal}
             setTriggerSection={setTriggerSection}
-            index={3}
+            sectionTitle="Image Gallery Section"
           />
           {appState?.aiContent?.gallery?.list ? (
             appState?.aiContent?.gallery?.show ? (
@@ -379,8 +382,11 @@ const BasicTemplate = (props: BasicTemplateProps) => {
                   }
                 }}
               >
-                <AddSectionButtons setSectionModal={setSectionModal}   setTriggerSection={setTriggerSection}
-            index={4}/>
+                <AddSectionButtons
+                  setSectionModal={setSectionModal}
+                  setTriggerSection={setTriggerSection}
+                  sectionTitle="Partners Section"
+                />
                 <h2 className="text-3xl font-bold text-gray-900">
                   {appState?.aiContent?.partners?.title}
                 </h2>
@@ -396,18 +402,18 @@ const BasicTemplate = (props: BasicTemplateProps) => {
                               className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
                             >
                               <Image
-                                        className="h-24 object-contain grayscale transition-all duration-300 hover:grayscale-0"
-                                        src={src.logo}
-                                        alt={`Logo ${index + 1}`}
-                                        height={200}
-                                        width={200}
-                                        style={{
-                                          height: 200,
-                                        }}
-                                        onClick={()=>{
-                                          window.open(src.link, "_blank");
-                                        }}
-                                      />
+                                className="h-24 object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                                src={src.logo}
+                                alt={`Logo ${index + 1}`}
+                                height={200}
+                                width={200}
+                                style={{
+                                  height: 200,
+                                }}
+                                onClick={() => {
+                                  window.open(src.link, "_blank");
+                                }}
+                              />
                             </div>
                           ),
                         )}
@@ -432,7 +438,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
                                         style={{
                                           height: 200,
                                         }}
-                                        onClick={()=>{
+                                        onClick={() => {
                                           window.open(src.link, "_blank");
                                         }}
                                       />
@@ -534,7 +540,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
             classNameUp="top-0 z-10"
             setSectionModal={setSectionModal}
             setTriggerSection={setTriggerSection}
-            index={5}
+            sectionTitle="Testimonial Section"
           />
           {appState?.aiContent?.testimonials?.list ? (
             appState?.aiContent?.testimonials?.show ? (
@@ -680,6 +686,21 @@ const BasicTemplate = (props: BasicTemplateProps) => {
     }
   };
 
+  const addSectionByTitle = (
+    title: string,
+    newSection: {
+      title: string;
+      content: JSX.Element;
+    },
+    position: number,
+  ) => {
+    const index = sections.findIndex((section) => section.title === title);
+    if (index !== -1) {
+      const newIndex = position === 0 ? index : index + 1;
+      addSectionAtIndex(newIndex, newSection);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col">
       {sections.map((section, index) => (
@@ -688,8 +709,8 @@ const BasicTemplate = (props: BasicTemplateProps) => {
       <SectionModal
         open={sectionModal}
         setOpen={setSectionModal}
-        addSectionAtIndex={addSectionAtIndex}
-        triggerSection= {triggerSection}
+        addSectionByTitle={addSectionByTitle}
+        triggerSection={triggerSection}
       />
     </div>
   );

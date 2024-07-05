@@ -21,9 +21,8 @@ import LogoSection from "@/components/sections/logo-clouds";
 import NewsLetterSection from "@/components/sections/newsletter";
 import PricingSection from "@/components/sections/pricing";
 import StatsSection from "@/components/sections/stats";
-import TeamSection from '../../sections/team/index';
+import TeamSection from "../../sections/team/index";
 import TestimonialSection from "@/components/sections/testimonials";
-
 
 const sections = [
   {
@@ -31,122 +30,127 @@ const sections = [
     image: "",
     title: "Blog",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-    Element:<BlogSection/>
+    Element: <BlogSection />,
   },
   {
     id: "",
     image: "",
     title: "Contact",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<ContactSection/>
+    Element: <ContactSection />,
   },
   {
     id: "",
     image: "",
     title: "Content",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<ContentSection/>
+    Element: <ContentSection />,
   },
   {
     id: "",
     image: "",
     title: "CTA",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<CtaSection/>
+    Element: <CtaSection />,
   },
   {
     id: "",
     image: "",
     title: "FAQ",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<FaqSection/>
+    Element: <FaqSection />,
   },
   {
     id: "",
     image: "",
     title: "Feature",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<FeatureSection/>
+    Element: <FeatureSection />,
   },
   {
     id: "",
     image: "",
     title: "Footers",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<FooterSection/>
+    Element: <FooterSection />,
   },
   {
     id: "",
     image: "",
     title: "Header",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<HeaderSection/>
+    Element: <HeaderSection />,
   },
   {
     id: "",
     image: "",
     title: "Hero",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<HeroSection/>
+    Element: <HeroSection />,
   },
   {
     id: "",
     image: "",
     title: "Logo",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<LogoSection/>
+    Element: <LogoSection />,
   },
   {
     id: "",
     image: "",
     title: "NewsLetters",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<NewsLetterSection/>
+    Element: <NewsLetterSection />,
   },
   {
     id: "",
     image: "",
     title: "Pricing",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-     Element:<PricingSection/>
+    Element: <PricingSection />,
   },
   {
     id: "",
     image: "",
     title: "Stats",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-    Element:<StatsSection/>
+    Element: <StatsSection />,
   },
   {
     id: "",
     image: "",
     title: "Team",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-    Element:<TeamSection/>
+    Element: <TeamSection />,
   },
   {
     id: "",
     image: "",
     title: "Testimonials",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-    Element:<TestimonialSection/>
+    Element: <TestimonialSection />,
   },
 ];
 
 type TProps = {
-  addSectionAtIndex: (
-    index: number,
+  addSectionByTitle: (
+    title: string,
     newSection: {
       title: string;
       content: JSX.Element;
     },
+    position: number,
   ) => void;
-  triggerSection:number;
+  triggerSection: {
+    section: string;
+    position: number;
+  };
   setOpen: Dispatch<SetStateAction<boolean>>;
+
 };
 
 const SectionForm = (props: TProps) => {
-  const { addSectionAtIndex,triggerSection ,setOpen} = props;
+  const { addSectionByTitle, triggerSection, setOpen } = props;
   return (
     <div>
       <div className="flex justify-between p-5">
@@ -177,12 +181,16 @@ const SectionForm = (props: TProps) => {
           <div
             key={section.id}
             className="flex cursor-pointer flex-col gap-3 rounded border p-5 hover:bg-gray-50"
-            onClick={()=>{
-                addSectionAtIndex(triggerSection,{
-                    title: section.title,
-                    content: section.Element,
-                })
-                setOpen(false)
+            onClick={() => {
+              addSectionByTitle(
+                triggerSection.section,
+                {
+                  title: section.title,
+                  content: section.Element,
+                },
+                triggerSection.position,
+              );
+              setOpen(false);
             }}
           >
             <h2 className="text-xl font-bold">{section.title}</h2>

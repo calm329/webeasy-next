@@ -9,14 +9,21 @@ import SectionForm from "../form/section-form";
 type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  addSectionAtIndex: (index: number, newSection: {
-    title: string;
-    content: JSX.Element;
-}) => void
-triggerSection: number
+  addSectionByTitle: (
+    title: string,
+    newSection: {
+      title: string;
+      content: JSX.Element;
+    },
+    position: number,
+  ) => void;
+  triggerSection: {
+    section: string;
+    position: number;
+  };
 };
 export default function SectionModal(props: TProps) {
-  const { open, setOpen,addSectionAtIndex,triggerSection } = props;
+  const { open, setOpen, addSectionByTitle, triggerSection } = props;
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" open={open} className="relative z-10" onClose={setOpen}>
@@ -46,10 +53,14 @@ export default function SectionModal(props: TProps) {
               <Dialog.Panel className="relative transform  rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[800px] sm:p-6">
                 <div className="flex w-full ">
                   <button onClick={() => setOpen(false)} className="ml-auto ">
-                    <IoClose size={20}/>
+                    <IoClose size={20} />
                   </button>
                 </div>
-                <SectionForm addSectionAtIndex={addSectionAtIndex} triggerSection={triggerSection} setOpen={setOpen}/>
+                <SectionForm
+                  addSectionByTitle={addSectionByTitle}
+                  triggerSection={triggerSection}
+                  setOpen={setOpen}
+                />
               </Dialog.Panel>
             </Transition.Child>
           </div>

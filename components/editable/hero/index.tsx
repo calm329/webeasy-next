@@ -32,7 +32,12 @@ type TProps = {
     }>
   >;
   setSectionModal: Dispatch<SetStateAction<boolean>>;
-  setTriggerSection: Dispatch<SetStateAction<number>>;
+  setTriggerSection: Dispatch<
+    SetStateAction<{
+      section: string;
+      position: number;
+    }>
+  >;
 };
 
 const EditableHero = (props: TProps) => {
@@ -46,7 +51,7 @@ const EditableHero = (props: TProps) => {
     showForm,
     setShowForm,
     setSectionModal,
-    setTriggerSection
+    setTriggerSection,
   } = props;
 
   const dispatch = useAppDispatch();
@@ -67,8 +72,11 @@ const EditableHero = (props: TProps) => {
         }
       }}
     >
-      
-      <AddSectionButtons setSectionModal={setSectionModal} index={1} setTriggerSection={setTriggerSection}/>
+      <AddSectionButtons
+        setSectionModal={setSectionModal}
+        sectionTitle={"Hero Section"}
+        setTriggerSection={setTriggerSection}
+      />
       <div
         className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : " w-2/3"}`}
       >
