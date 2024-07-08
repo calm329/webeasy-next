@@ -80,115 +80,119 @@ const BasicTemplate = (props: BasicTemplateProps) => {
     section: "Banner Section",
     position: 0,
   });
+
+  const initialSections = [
+    {
+      title: "Banner Section",
+      content: (
+        <EditableBanner
+          banner={banner}
+          colors={colors}
+          editable={editable}
+          setFocusedField={setFocusedField}
+          setIsOpen={setIsOpen}
+          setSection={setSection}
+          showForm={showForm}
+          setShowForm={setShowForm}
+        />
+      ),
+    },
+    {
+      title: "Hero Section",
+      content: (
+        <EditableHero
+          colors={colors}
+          setTriggerSection={setTriggerSection}
+          setSectionModal={setSectionModal}
+          hero={hero}
+          editable={editable}
+          setFocusedField={setFocusedField}
+          setIsOpen={setIsOpen}
+          setSection={setSection}
+          showForm={showForm}
+          setShowForm={setShowForm}
+        />
+      ),
+    },
+    {
+      title: "Services Section",
+      content: (
+        <ServicesSection
+          showForm={showForm}
+          setSectionModal={setSectionModal}
+          setShowForm={setShowForm}
+          setTriggerSection={setTriggerSection}
+          editable={editable}
+          setIsOpen={setIsOpen}
+          setSection={setSection}
+        />
+      ),
+    },
+    {
+      title: "Image Gallery Section",
+      content: (
+        <ImageGallerySection
+          showForm={showForm}
+          setSectionModal={setSectionModal}
+          setShowForm={setShowForm}
+          setTriggerSection={setTriggerSection}
+          editable={editable}
+          setIsOpen={setIsOpen}
+          setSection={setSection}
+        />
+      ),
+    },
+    {
+      title: "Partners Section",
+      content: (
+        <PartnersSection
+          showForm={showForm}
+          setSectionModal={setSectionModal}
+          setShowForm={setShowForm}
+          setTriggerSection={setTriggerSection}
+          editable={editable}
+          setIsOpen={setIsOpen}
+          setSection={setSection}
+        />
+      ),
+    },
+    {
+      title: "Testimonial Section",
+      content: (
+        <CustomTestimonial
+          setSectionModal={setSectionModal}
+          setShowForm={setShowForm}
+          setTriggerSection={setTriggerSection}
+          editable={editable}
+          setIsOpen={setIsOpen}
+          setSection={setSection}
+        />
+      ),
+    },
+    {
+      title: "Posts Section",
+      content: (
+        <PostsSection
+          editable={editable}
+          setIsOpen={setIsOpen}
+          setSection={setSection}
+          setShowForm={setShowForm}
+        />
+      ),
+    },
+  ];
   const [sections, setSections] = useState<
     Array<{
       title: string;
       content: JSX.Element;
     }>
-  >([]);
+  >(initialSections);
 
   useEffect(() => {
-    setSections([
-      {
-        title: "Banner Section",
-        content: (
-          <EditableBanner
-            banner={banner}
-            colors={colors}
-            editable={editable}
-            setFocusedField={setFocusedField}
-            setIsOpen={setIsOpen}
-            setSection={setSection}
-            showForm={showForm}
-            setShowForm={setShowForm}
-          />
-        ),
-      },
-      {
-        title: "Hero Section",
-        content: (
-          <EditableHero
-            colors={colors}
-            setTriggerSection={setTriggerSection}
-            setSectionModal={setSectionModal}
-            hero={hero}
-            editable={editable}
-            setFocusedField={setFocusedField}
-            setIsOpen={setIsOpen}
-            setSection={setSection}
-            showForm={showForm}
-            setShowForm={setShowForm}
-          />
-        ),
-      },
-      {
-        title: "Services Section",
-        content: (
-          <ServicesSection
-            showForm={showForm}
-            setSectionModal={setSectionModal}
-            setShowForm={setShowForm}
-            setTriggerSection={setTriggerSection}
-            editable={editable}
-            setIsOpen={setIsOpen}
-            setSection={setSection}
-          />
-        ),
-      },
-      {
-        title: "Image Gallery Section",
-        content: (
-          <ImageGallerySection
-            showForm={showForm}
-            setSectionModal={setSectionModal}
-            setShowForm={setShowForm}
-            setTriggerSection={setTriggerSection}
-            editable={editable}
-            setIsOpen={setIsOpen}
-            setSection={setSection}
-          />
-        ),
-      },
-      {
-        title: "Partners Section",
-        content: (
-          <PartnersSection
-            showForm={showForm}
-            setSectionModal={setSectionModal}
-            setShowForm={setShowForm}
-            setTriggerSection={setTriggerSection}
-            editable={editable}
-            setIsOpen={setIsOpen}
-            setSection={setSection}
-          />
-        ),
-      },
-      {
-        title: "Testimonial Section",
-        content: (
-          <CustomTestimonial
-            setSectionModal={setSectionModal}
-            setShowForm={setShowForm}
-            setTriggerSection={setTriggerSection}
-            editable={editable}
-            setIsOpen={setIsOpen}
-            setSection={setSection}
-          />
-        ),
-      },
-      {
-        title: "Posts Section",
-        content: (
-          <PostsSection
-            editable={editable}
-            setIsOpen={setIsOpen}
-            setSection={setSection}
-            setShowForm={setShowForm}
-          />
-        ),
-      },
-    ]);
-  }, [banner, colors, hero, services, posts, editable, showForm, appState]);
+    setSections((prevSections) =>
+      prevSections.length === 0 ? initialSections : prevSections,
+    );
+  }, [appState]);
 
   const addSectionAtIndex = (
     index: number,

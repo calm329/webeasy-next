@@ -115,6 +115,7 @@ export type TAiContent = {
     primary: string;
     secondary: string;
   };
+  blog:TBlogs,
   testimonials: {
     show: boolean;
     list: Array<{
@@ -152,6 +153,27 @@ export type TAiContent = {
   businessType?: string;
   location?: string;
 };
+
+export type TBlogs ={
+  title:string,
+  description:string,
+  posts:Array<{
+    id: number,
+    title: string,
+    href: string,
+    description:string,
+    imageUrl:string,
+    date: string,
+    datetime: string,
+    category: { title:  string, href: string },
+    author: {
+      name: string
+      role: string
+      href: string
+      imageUrl:string,
+    },
+  }>
+}
 
 export type TPosts = {
   show: boolean;
