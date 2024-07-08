@@ -157,9 +157,9 @@ const EditableHero = (props: TProps) => {
               }}
             >
               {appState?.generate?.generating ? (
-                <TypewriterEffect text={hero.subheading ?? ""} />
+                <TypewriterEffect text={hero?.subheading ?? ""} />
               ) : (
-                hero.subheading
+                hero?.subheading
               )}
             </p>
           ) : (
@@ -221,13 +221,13 @@ const EditableHero = (props: TProps) => {
           )}
         </div>
       </div>
-      {appState.aiContent.hero.image.imageUrl ? (
-        hero.image.show && (
+      {appState?.aiContent?.hero?.image?.imageUrl ? (
+        hero?.image?.show && (
           <div
             className={`max-h-96 max-w-96 overflow-hidden py-2  max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
           >
             <Image
-              src={hero.image.imageUrl}
+              src={hero?.image?.imageUrl}
               width={256}
               height={256}
               alt="Hero Image"
