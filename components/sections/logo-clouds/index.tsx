@@ -1,8 +1,45 @@
 import Image from "next/image";
-
-export default function LogoSection() {
+import { TSection } from '@/types';
+import { Dispatch, SetStateAction } from "react";
+import AddSectionButtons from "@/components/add-section/buttons";
+type TProps = {
+  editable?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  setShowForm: React.Dispatch<
+    SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  setSectionModal: React.Dispatch<SetStateAction<boolean>>;
+  setTriggerSection: React.Dispatch<
+    SetStateAction<{ section: string; position: number }>
+  >;
+  showForm?: {
+    form: string;
+    edit: string;
+    show: boolean;
+  };
+}
+export default function LogoSection(props:TProps) {
+  const {
+    editable,
+    setIsOpen,
+    setSection,
+    setShowForm,
+    setSectionModal,
+    setTriggerSection,
+    showForm,
+  } = props;
   return (
-    <div className="bg-white py-24 sm:py-32">
+    <div className={`bg-white group relative py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+       <AddSectionButtons
+        sectionTitle="Logo"
+        setSectionModal={setSectionModal}
+        setTriggerSection={setTriggerSection}
+      />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <h2 className="text-lg font-semibold leading-8 text-gray-900">

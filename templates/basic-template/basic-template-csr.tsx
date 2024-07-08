@@ -231,6 +231,13 @@ const BasicTemplate = (props: BasicTemplateProps) => {
         setOpen={setSectionModal}
         addSectionByTitle={addSectionByTitle}
         triggerSection={triggerSection}
+        showForm={showForm}
+        setSectionModal={setSectionModal}
+        setShowForm={setShowForm}
+        setTriggerSection={setTriggerSection}
+        editable={editable}
+        setIsOpen={setIsOpen}
+        setSection={setSection}
       />
     </div>
   );

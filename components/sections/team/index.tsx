@@ -1,3 +1,28 @@
+import AddSectionButtons from '@/components/add-section/buttons';
+import { TSection } from '@/types';
+import { Dispatch, SetStateAction } from "react";
+type TProps = {
+  editable?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  setShowForm: React.Dispatch<
+    SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  setSectionModal: React.Dispatch<SetStateAction<boolean>>;
+  setTriggerSection: React.Dispatch<
+    SetStateAction<{ section: string; position: number }>
+  >;
+  showForm?: {
+    form: string;
+    edit: string;
+    show: boolean;
+  };
+}
+
 const people = [
   {
     name: 'Lindsay Walton',
@@ -10,9 +35,25 @@ const people = [
   // More people...
 ]
 
-export default function TeamSection() {
+export default function TeamSection(props:TProps) {
+  const {
+    editable,
+    setIsOpen,
+    setSection,
+    setShowForm,
+    setSectionModal,
+    setTriggerSection,
+    showForm,
+  } = props;
   return (
-    <div className="bg-white py-24 sm:py-32">
+    <div
+    className={`group relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+  >
+    <AddSectionButtons
+      sectionTitle="Team"
+      setSectionModal={setSectionModal}
+      setTriggerSection={setTriggerSection}
+    />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our team</h2>

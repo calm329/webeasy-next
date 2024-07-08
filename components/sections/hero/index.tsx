@@ -1,10 +1,47 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Link from "next/link";
-
-export default function HeroSection() {
+import { TSection } from '@/types';
+import { Dispatch, SetStateAction } from "react";
+import AddSectionButtons from "@/components/add-section/buttons";
+type TProps = {
+  editable?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  setShowForm: React.Dispatch<
+    SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  setSectionModal: React.Dispatch<SetStateAction<boolean>>;
+  setTriggerSection: React.Dispatch<
+    SetStateAction<{ section: string; position: number }>
+  >;
+  showForm?: {
+    form: string;
+    edit: string;
+    show: boolean;
+  };
+}
+export default function HeroSection(props:TProps) {
+  const {
+    editable,
+    setIsOpen,
+    setSection,
+    setShowForm,
+    setSectionModal,
+    setTriggerSection,
+    showForm,
+  } = props;
   return (
-    <div className="relative isolate overflow-hidden bg-white">
+    <div className="relative group isolate bg-white">
+      <AddSectionButtons
+        sectionTitle="Hero"
+        setSectionModal={setSectionModal}
+        setTriggerSection={setTriggerSection}
+      />
       <svg
         aria-hidden="true"
         className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"

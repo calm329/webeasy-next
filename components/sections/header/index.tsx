@@ -4,7 +4,30 @@ import {
   PhoneIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
-
+import { TSection } from '@/types';
+import { Dispatch, SetStateAction } from "react";
+import AddSectionButtons from "@/components/add-section/buttons";
+type TProps = {
+  editable?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  setShowForm: React.Dispatch<
+    SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  setSectionModal: React.Dispatch<SetStateAction<boolean>>;
+  setTriggerSection: React.Dispatch<
+    SetStateAction<{ section: string; position: number }>
+  >;
+  showForm?: {
+    form: string;
+    edit: string;
+    show: boolean;
+  };
+}
 const cards = [
   {
     name: "Sales",
@@ -26,9 +49,23 @@ const cards = [
   },
 ];
 
-export default function HeaderSection() {
+export default function HeaderSection(props:TProps) {
+  const {
+    editable,
+    setIsOpen,
+    setSection,
+    setShowForm,
+    setSectionModal,
+    setTriggerSection,
+    showForm,
+  } = props;
   return (
-    <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
+    <div className="relative group isolate  bg-gray-900 py-24 sm:py-32">
+       <AddSectionButtons
+        sectionTitle="Header"
+        setSectionModal={setSectionModal}
+        setTriggerSection={setTriggerSection}
+      />
       <Image
         height={200}
         width={200}

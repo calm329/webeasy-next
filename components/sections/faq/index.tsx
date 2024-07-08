@@ -1,6 +1,29 @@
 // import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 // import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
-
+import AddSectionButtons from "@/components/add-section/buttons";
+import { TSection } from "@/types";
+import { Dispatch, SetStateAction } from "react";
+type TProps = {
+  editable?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  setShowForm: React.Dispatch<
+    SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  setSectionModal: React.Dispatch<SetStateAction<boolean>>;
+  setTriggerSection: React.Dispatch<
+    SetStateAction<{ section: string; position: number }>
+  >;
+  showForm?: {
+    form: string;
+    edit: string;
+    show: boolean;
+  };
+};
 const faqs = [
   {
     question: "What's the best thing about Switzerland?",
@@ -8,14 +31,32 @@ const faqs = [
       "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
   },
   // More questions...
-]
+];
 
-export default function FaqSection() {
+export default function FaqSection(props: TProps) {
+  const {
+    editable,
+    setIsOpen,
+    setSection,
+    setShowForm,
+    setSectionModal,
+    setTriggerSection,
+    showForm,
+  } = props;
   return (
-    <div className="bg-white">
+    <div
+      className={`bg-white group relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+    >
+      <AddSectionButtons
+        sectionTitle="FAQ"
+        setSectionModal={setSectionModal}
+        setTriggerSection={setTriggerSection}
+      />
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
         <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
-          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
+          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
+            Frequently asked questions
+          </h2>
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
             {/* {faqs.map((faq) => (
               <Disclosure key={faq.question} as="div" className="pt-6">
@@ -37,5 +78,5 @@ export default function FaqSection() {
         </div>
       </div>
     </div>
-  )
+  );
 }

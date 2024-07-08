@@ -5,6 +5,7 @@ import React, { Dispatch, Fragment, SetStateAction } from "react";
 import { IoClose } from "react-icons/io5";
 import PublishForm from "../form/publish-form";
 import SectionForm from "../form/section-form";
+import { TSection } from "@/types";
 
 type TProps = {
   open: boolean;
@@ -21,9 +22,40 @@ type TProps = {
     section: string;
     position: number;
   };
+  editable?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  setShowForm: React.Dispatch<
+    SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  setSectionModal: React.Dispatch<SetStateAction<boolean>>;
+  setTriggerSection: React.Dispatch<
+    SetStateAction<{ section: string; position: number }>
+  >;
+  showForm?: {
+    form: string;
+    edit: string;
+    show: boolean;
+  };
 };
 export default function SectionModal(props: TProps) {
-  const { open, setOpen, addSectionByTitle, triggerSection } = props;
+  const {
+    open,
+    setOpen,
+    addSectionByTitle,
+    triggerSection,
+    editable,
+    setIsOpen,
+    setSection,
+    setShowForm,
+    setSectionModal,
+    setTriggerSection,
+    showForm,
+  } = props;
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" open={open} className="relative z-10" onClose={setOpen}>
@@ -60,6 +92,13 @@ export default function SectionModal(props: TProps) {
                   addSectionByTitle={addSectionByTitle}
                   triggerSection={triggerSection}
                   setOpen={setOpen}
+                  showForm={showForm}
+                  setSectionModal={setSectionModal}
+                  setShowForm={setShowForm}
+                  setTriggerSection={setTriggerSection}
+                  editable={editable}
+                  setIsOpen={setIsOpen}
+                  setSection={setSection}
                 />
               </Dialog.Panel>
             </Transition.Child>

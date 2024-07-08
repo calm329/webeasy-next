@@ -1,26 +1,55 @@
 import Link from "next/link";
-
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-export default function NewsLetterSection() {
+import { TSection } from "@/types";
+import { Dispatch, SetStateAction } from "react";
+import AddSectionButtons from "@/components/add-section/buttons";
+type TProps = {
+  editable?: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+  setSection?: Dispatch<SetStateAction<TSection>>;
+  setShowForm: React.Dispatch<
+    SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
+  setSectionModal: React.Dispatch<SetStateAction<boolean>>;
+  setTriggerSection: React.Dispatch<
+    SetStateAction<{ section: string; position: number }>
+  >;
+  showForm?: {
+    form: string;
+    edit: string;
+    show: boolean;
+  };
+};
+export default function NewsLetterSection(props: TProps) {
+  const {
+    editable,
+    setIsOpen,
+    setSection,
+    setShowForm,
+    setSectionModal,
+    setTriggerSection,
+    showForm,
+  } = props;
   return (
-    <div className="bg-white py-16 sm:py-24 lg:py-32">
+    <div
+      className={`group relative bg-white py-16 sm:py-24 lg:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+    >
+      <AddSectionButtons
+        sectionTitle="NewsLetters"
+        setSectionModal={setSectionModal}
+        setTriggerSection={setTriggerSection}
+      />
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 lg:grid-cols-12 lg:gap-8 lg:px-8">
         <div className="max-w-xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:col-span-7">
-          <h2 className="inline sm:block lg:inline xl:block">Want product news and updates?</h2>{' '}
-          <p className="inline sm:block lg:inline xl:block">Sign up for our newsletter.</p>
+          <h2 className="inline sm:block lg:inline xl:block">
+            Want product news and updates?
+          </h2>{" "}
+          <p className="inline sm:block lg:inline xl:block">
+            Sign up for our newsletter.
+          </p>
         </div>
         <form className="w-full max-w-md lg:col-span-5 lg:pt-2">
           <div className="flex gap-x-4">
@@ -44,8 +73,11 @@ export default function NewsLetterSection() {
             </button>
           </div>
           <p className="mt-4 text-sm leading-6 text-gray-900">
-            We care about your data. Read our{' '}
-            <Link href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+            We care about your data. Read our{" "}
+            <Link
+              href="#"
+              className="font-semibold text-indigo-600 hover:text-indigo-500"
+            >
               privacy&nbsp;policy
             </Link>
             .
@@ -53,5 +85,5 @@ export default function NewsLetterSection() {
         </form>
       </div>
     </div>
-  )
+  );
 }
