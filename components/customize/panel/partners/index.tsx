@@ -297,7 +297,7 @@ const PartnersContent = (props: TProps) => {
         </div>
         <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
           {appState.aiContent?.partners?.list?.map((partner, i) => (
-            <div className="flex flex-col gap-5" key={partner.id}>
+            <div className="flex flex-col gap-5" key={i}>
               <div className="flex justify-between ">
                 <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
                   Partner {i + 1}
