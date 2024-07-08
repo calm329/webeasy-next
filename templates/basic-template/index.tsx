@@ -28,7 +28,7 @@ type TProps = {
 };
 export default function BasicTemplate(props: TProps) {
   const { aiContent, posts } = props;
-
+  console.log("aiContent?.partners?.list",aiContent?.partners?.list)
   return (
     <>
       <section className="bg-white py-6">
@@ -149,7 +149,7 @@ export default function BasicTemplate(props: TProps) {
               {aiContent?.gallery?.list?.map((image, i) => (
                 <CarouselItem key={i}>
                   <div
-                    className={`mx-10 max-sm:mx-0  h-[500px] rounded-lg border border-gray-300 shadow-lg`}
+                    className={`mx-10 h-[500px]  rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
                   >
                     <Image
                       src={image}
@@ -180,26 +180,22 @@ export default function BasicTemplate(props: TProps) {
             <p>{aiContent?.partners?.description}</p>
 
             <div className="inline-edit mt-10 flex-1 px-5 md:px-6">
-              <div
-                className="flex w-full overflow-hidden"
-              
-              >
+              <div className="flex w-full overflow-hidden">
                 <div className=" flex w-full items-center justify-center gap-10">
-                  {[
-                    ...(aiContent?.partners?.list ?? []),
-                    ...(aiContent?.partners?.list ?? []),
-                  ].map((src, index) => (
+                  {(aiContent?.partners?.list ?? []).map((src, index) => (
                     <div
                       key={index}
                       className="relative flex h-24 w-auto flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl"
                     >
-                      <Image
-                        className="h-full object-contain grayscale transition-all duration-300 hover:grayscale-0"
-                        src={src.logo}
-                        alt={`Logo ${index + 1}`}
-                        height={200}
-                        width={200}
-                      />
+                      <Link href={src.link ?? ""}>
+                        <Image
+                          className="h-full object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                          src={src.logo}
+                          alt={`Logo ${index + 1}`}
+                          height={200}
+                          width={200}
+                        />
+                      </Link>
                     </div>
                   ))}
                 </div>

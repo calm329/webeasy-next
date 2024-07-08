@@ -117,7 +117,7 @@ const PartnersSection = ({
         <h2 className="text-3xl font-bold text-gray-900">
           {partnersContent.title}
         </h2>
-        <p >{partnersContent.description}</p>
+        <p>{partnersContent.description}</p>
         <div className="inline-edit my-10 flex-1 px-5 md:px-6">
           {partnersContent.list.length <= 5 ? (
             <div className="flex w-full overflow-auto">
@@ -133,7 +133,6 @@ const PartnersSection = ({
                       alt={`Logo ${index + 1}`}
                       height={200}
                       width={200}
-                      onClick={() => window.open(src.link, "_blank")}
                     />
                   </div>
                 ))}
