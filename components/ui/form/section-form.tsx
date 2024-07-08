@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import {
   Select,
   SelectContent,
@@ -23,109 +23,125 @@ import PricingSection from "@/components/sections/pricing";
 import StatsSection from "@/components/sections/stats";
 import TeamSection from "../../sections/team/index";
 import TestimonialSection from "@/components/sections/testimonials";
+import Image from "next/image";
 
 const sections = [
   {
-    id: "",
-    image: "",
+    id: "1",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/blog-sections.png",
     title: "Blog",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <BlogSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "2",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/contact-sections.png",
     title: "Contact",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <ContactSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "3",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/content-sections.png",
     title: "Content",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <ContentSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "4",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/cta-sections.png",
     title: "CTA",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <CtaSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "5",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
     title: "FAQ",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <FaqSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "6",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/feature-sections.png",
     title: "Feature",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <FeatureSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "7",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/footers.png",
     title: "Footers",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <FooterSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "8",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/header.png",
     title: "Header",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <HeaderSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "9",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/heroes.png",
     title: "Hero",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <HeroSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "10",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/logo-clouds.png",
     title: "Logo",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <LogoSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "11",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/newsletter-sections.png",
     title: "NewsLetters",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <NewsLetterSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "12",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/pricing.png",
     title: "Pricing",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <PricingSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "13",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/stats-sections.png",
     title: "Stats",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <StatsSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "14",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/team-sections.png",
     title: "Team",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <TeamSection />,
   },
   {
-    id: "",
-    image: "",
+    id: "15",
+    image:
+      "https://tailwindui.com/img/category-thumbnails/marketing/testimonials.png",
     title: "Testimonials",
     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
     Element: <TestimonialSection />,
@@ -146,41 +162,41 @@ type TProps = {
     position: number;
   };
   setOpen: Dispatch<SetStateAction<boolean>>;
-
 };
 
 const SectionForm = (props: TProps) => {
   const { addSectionByTitle, triggerSection, setOpen } = props;
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredSections = sections.filter((section) =>
+    section.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
-      <div className="flex justify-between p-5">
+      <div className="flex justify-between p-5 gap-5 flex-wrap">
         <input
           type="text"
           className="rounded border border-gray-300 text-sm"
-          placeholder="Search Component"
+          placeholder="Search Section..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <Select>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a Section" />
           </SelectTrigger>
           <SelectContent>
-            <SelectGroup>
-              {/* <SelectLabel>Fruits</SelectLabel>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="blueberry">Blueberry</SelectItem>
-              <SelectItem value="grapes">Grapes</SelectItem>
-              <SelectItem value="pineapple">Pineapple</SelectItem> */}
-            </SelectGroup>
+            <SelectGroup></SelectGroup>
           </SelectContent>
         </Select>
       </div>
 
-      <div className="grid max-h-[600px] grid-cols-2 gap-10 overflow-auto px-5">
-        {sections.map((section) => (
+      <div className="grid max-h-[600px] max-md:grid-cols-1 grid-cols-2 gap-10 overflow-auto px-5">
+        {filteredSections.map((section) => (
           <div
             key={section.id}
-            className="flex cursor-pointer flex-col gap-3 rounded border p-5 hover:bg-gray-50"
+            className="flex max-lg:flex-col cursor-pointer gap-3 rounded border p-5 hover:bg-gray-50"
             onClick={() => {
               addSectionByTitle(
                 triggerSection.section,
@@ -193,8 +209,17 @@ const SectionForm = (props: TProps) => {
               setOpen(false);
             }}
           >
-            <h2 className="text-xl font-bold">{section.title}</h2>
-            <p>{section.description}</p>
+            <div className="flex flex-col gap-2">
+              <h2 className="text-xl font-bold">{section.title}</h2>
+              <p className="text-xs">{section.description}</p>
+            </div>
+            <Image
+              alt=""
+              src={section.image}
+              height={200}
+              width={200}
+              className="object-contain"
+            />
           </div>
         ))}
       </div>
