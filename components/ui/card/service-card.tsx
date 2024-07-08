@@ -63,7 +63,7 @@ export default function ServiceCard(props: ServiceCardProps) {
               name
             )}
           </h3>
-          <p className="text-sm font-bold text-gray-700 line-clamp-6">
+          <p className="text-sm font-bold text-gray-700 line-clamp-3">
             {appState?.generate?.generating ? (
               <TypewriterEffect text={description} />
             ) : (
@@ -87,7 +87,7 @@ export default function ServiceCard(props: ServiceCardProps) {
           <h3 className="font-heading mb-2 text-xl font-black text-gray-900">
             {name}
           </h3>
-          <p className="text-sm font-bold text-gray-700">{description}</p>
+          <p className="text-sm font-bold text-gray-700 line-clamp-3">{description}</p>
         </div>
       </div>
     </div>

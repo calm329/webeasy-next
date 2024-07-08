@@ -107,7 +107,7 @@ const ServicesSection = ({
           )}
           {appState.aiContent.services?.description ? (
             <button
-              className={`mx-auto mb-6 mt-2 w-fit text-center ${
+              className={`mx-auto mb-6 mt-2 w-fit text-center line-clamp-3 ${
                 editable && "rounded border-2 border-transparent hover:border-indigo-500"
               }`}
               onClick={handleFieldClick("description")}
