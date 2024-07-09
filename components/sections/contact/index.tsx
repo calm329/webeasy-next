@@ -76,7 +76,7 @@ export default function ContactSection(props: TProps) {
 
   return (
     <button
-      className={`w-full group relative isolate bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`w-full text-left group relative isolate bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={()=>handleClick()}
     >
       <AddSectionButtons

@@ -13,6 +13,7 @@ import FeaturesContent from "@/components/customize/panel/features";
 import CustomGalleryContent from "@/components/customize/panel/custom-gallery";
 import PartnersContent from "@/components/customize/panel/partners";
 import TestimonialContent from "@/components/customize/panel/testimonials";
+import ContactContent from "@/components/customize/panel/contact";
 
 type TProps = {
   open: boolean;
@@ -103,8 +104,30 @@ function SlideOver(props: TProps) {
             )}
             {section === "Title" && <TitleContent />}
             {section === "Description" && <DescriptionContent />}
-            {section === "Features" && <FeaturesContent setShowForm={setShowForm}/>}
+            {section === "Features" && (
+              <FeaturesContent setShowForm={setShowForm} />
+            )}
 
+            {/* {New Section} */}
+            {section === "Contact" && (
+              <ContactContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "CTA" && <TitleContent />}
+            {section === "Faq" && <TitleContent />}
+            {section === "Footer" && <TitleContent />}
+            {section === "Header" && <TitleContent />}
+            {section === "HeroSection" && <TitleContent />}
+            {section === "logoClouds" && <TitleContent />}
+            {section === "newsLetter" && <TitleContent />}
+            {section === "Pricing" && <TitleContent />}
+            {section === "Stats" && <TitleContent />}
+            {section === "Team" && <TitleContent />}
+            {section === "TestimonialSection" && <TitleContent />}
           </CustomizePanel>
         </div>
       </div>
