@@ -1,10 +1,11 @@
 import Image from "next/image";
-import { TSection } from "@/types";
+import { TFields, TSection } from "@/types";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
-import { appState as AS } from '@/lib/store/slices/site-slice';
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppSelector } from "@/lib/store/hooks";
 import CustomContent from "@/lib/content/custom";
+import { useAppDispatch } from "../../../lib/store/hooks";
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -36,10 +37,25 @@ export default function TestimonialSection(props: TProps) {
     setTriggerSection,
     showForm,
   } = props;
-  
-  const appState = useAppSelector(AS);
 
-  
+  const appState = useAppSelector(AS);
+  const dispatch = useAppDispatch();
+  const handleClick = (field?: TFields) => {
+    if (editable && setIsOpen && setSection) {
+      setSection("TestimonialSection");
+      setIsOpen(true);
+
+      setShowForm({ form: "", edit: "", show: false });
+      dispatch(
+        updateAppState({
+          ...appState,
+          focusedField: field,
+          openedSlide: "Customize",
+        }),
+      );
+    }
+  };
+
   useEffect(() => {
     CustomContent.getData({
       data: {
@@ -57,7 +73,10 @@ export default function TestimonialSection(props: TProps) {
   }, []);
 
   return (
-    <section className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} overflow-visible my-10 relative group isolate  bg-white px-6 py-24 sm:py-32 lg:px-8`}>
+    <button
+      className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} group relative isolate my-10 w-full  overflow-visible bg-white px-6 py-24 sm:py-32 lg:px-8`}
+      onClick={() => handleClick()}
+    >
       <AddSectionButtons
         sectionTitle="Testimonials"
         setSectionModal={setSectionModal}
@@ -70,12 +89,14 @@ export default function TestimonialSection(props: TProps) {
           height={100}
           width={100}
           alt=""
-          src= {appState.aiContent?.testimonialsSection?.image ?? ""}
+          src={appState.aiContent?.testimonialsSection?.image ?? ""}
           className={`mx-auto h-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
         />
         <figure className="mt-10">
           <blockquote className="text-center text-xl font-semibold leading-8 text-gray-900 sm:text-2xl sm:leading-9">
-            <p className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}>
+            <p
+              className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
+            >
               {appState.aiContent?.testimonialsSection?.message ?? ""}
             </p>
           </blockquote>
@@ -84,11 +105,16 @@ export default function TestimonialSection(props: TProps) {
               height={200}
               width={200}
               alt=""
-              src= {appState.aiContent?.testimonialsSection?.avatar ?? ""}
+              src={appState.aiContent?.testimonialsSection?.avatar ?? ""}
               className={`mx-auto h-10 w-10 rounded-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             />
             <div className="mt-4 flex items-center justify-center space-x-3 text-base">
-              <div className={`font-semibold text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}> {appState.aiContent?.testimonialsSection?.name ?? ""}</div>
+              <div
+                className={`font-semibold text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              >
+                {" "}
+                {appState.aiContent?.testimonialsSection?.name ?? ""}
+              </div>
               <svg
                 width={3}
                 height={3}
@@ -98,11 +124,15 @@ export default function TestimonialSection(props: TProps) {
               >
                 <circle r={1} cx={1} cy={1} />
               </svg>
-              <div className={`text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>{appState.aiContent?.testimonialsSection?.role ?? ""}</div>
+              <div
+                className={`text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              >
+                {appState.aiContent?.testimonialsSection?.role ?? ""}
+              </div>
             </div>
           </figcaption>
         </figure>
       </div>
-    </section>
+    </button>
   );
 }

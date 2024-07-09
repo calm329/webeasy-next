@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { TSection } from "@/types";
+import { TFields, TSection } from "@/types";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import CustomContent from "@/lib/content/custom";
-import { useAppSelector } from "@/lib/store/hooks";
-import { appState as AS } from "@/lib/store/slices/site-slice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -39,6 +39,17 @@ export default function LogoSection(props: TProps) {
 
   const appState = useAppSelector(AS);
 
+  const dispatch= useAppDispatch()
+  const handleClick = (field?:TFields) => {
+    if (editable && setIsOpen && setSection) {
+      setSection("logoClouds");
+      setIsOpen(true);
+
+      setShowForm({ form: "", edit: "", show: false });
+      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+    }
+  };
+
   useEffect(() => {
     CustomContent.getData({
       data: {
@@ -55,8 +66,9 @@ export default function LogoSection(props: TProps) {
     });
   }, []);
   return (
-    <div
-      className={`group relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+    <button
+      className={`group w-full relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      onClick={()=>handleClick()}
     >
       <AddSectionButtons
         sectionTitle="Logo"
@@ -84,6 +96,6 @@ export default function LogoSection(props: TProps) {
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }

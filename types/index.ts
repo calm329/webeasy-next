@@ -47,7 +47,8 @@ export type TSection =
   | "Title"
   | "Image Gallery"
   | "Partners"
-  | "Testimonials";
+  | "Testimonials"
+  |any;
 
 export type TFields =
   | "logo"

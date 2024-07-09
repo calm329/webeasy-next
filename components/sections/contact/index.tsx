@@ -3,13 +3,14 @@ import {
   EnvelopeIcon,
   PhoneIcon,
 } from "@heroicons/react/24/outline";
-import { TSection } from "@/types";
+import { TFields, TSection } from "@/types";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { useAppSelector } from "@/lib/store/hooks";
 import CustomContent from "@/lib/content/custom";
-import { appState as AS } from "@/lib/store/slices/site-slice";
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useDispatch } from "react-redux";
 
 type TProps = {
   editable?: boolean;
@@ -62,10 +63,21 @@ export default function ContactSection(props: TProps) {
       setLoading(false);
     });
   }, []);
+  const dispatch= useDispatch()
+  const handleClick = (field?:TFields) => {
+    if (editable && setIsOpen && setSection) {
+      setSection("Contact");
+      setIsOpen(true);
+
+      setShowForm({ form: "", edit: "", show: false });
+      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+    }
+  };
 
   return (
-    <div
-      className={`group relative isolate bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+    <button
+      className={`w-full group relative isolate bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      onClick={()=>handleClick()}
     >
       <AddSectionButtons
         sectionTitle="Contact"
@@ -288,6 +300,6 @@ export default function ContactSection(props: TProps) {
           </div>
         </form>
       </div>
-    </div>
+    </button>
   );
 }

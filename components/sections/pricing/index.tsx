@@ -1,9 +1,9 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
-import { TSection } from "@/types";
+import { TFields, TSection } from "@/types";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
-import { useAppSelector } from "@/lib/store/hooks";
-import { appState as AS } from '@/lib/store/slices/site-slice';
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
 import CustomContent from "@/lib/content/custom";
 type TProps = {
   editable?: boolean;
@@ -90,6 +90,16 @@ export default function PricingSection(props: TProps) {
 
 
   const appState = useAppSelector(AS);
+  const dispatch= useAppDispatch()
+  const handleClick = (field?:TFields) => {
+    if (editable && setIsOpen && setSection) {
+      setSection("Pricing");
+      setIsOpen(true);
+
+      setShowForm({ form: "", edit: "", show: false });
+      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+    }
+  };
 
   useEffect(() => {
     CustomContent.getData({
@@ -108,9 +118,10 @@ export default function PricingSection(props: TProps) {
   }, []);
 
   return (
-    <div
-      className={`group relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-    >
+    <button
+      className={`group w-full relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+    onClick={()=>handleClick()}
+   >
       <AddSectionButtons
         sectionTitle="Pricing"
         setSectionModal={setSectionModal}
@@ -198,6 +209,6 @@ export default function PricingSection(props: TProps) {
           ))}
         </div>
       </div>
-    </div>
+    </button>
   );
 }

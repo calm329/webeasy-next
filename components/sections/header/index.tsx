@@ -4,11 +4,11 @@ import {
   PhoneIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import { TSection } from '@/types';
+import { TFields, TSection } from '@/types';
 import { Dispatch, SetStateAction, useEffect } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
-import { useAppSelector } from "@/lib/store/hooks";
-import { appState as AS } from '@/lib/store/slices/site-slice';
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
 import CustomContent from "@/lib/content/custom";
 type TProps = {
   editable?: boolean;
@@ -64,6 +64,16 @@ export default function HeaderSection(props:TProps) {
   } = props;
 
   const appState = useAppSelector(AS);
+  const dispatch= useAppDispatch()
+  const handleClick = (field?:TFields) => {
+    if (editable && setIsOpen && setSection) {
+      setSection("Header");
+      setIsOpen(true);
+
+      setShowForm({ form: "", edit: "", show: false });
+      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+    }
+  };
 
   useEffect(() => {
     CustomContent.getData({
@@ -81,7 +91,7 @@ export default function HeaderSection(props:TProps) {
     });
   }, []);
   return (
-    <div className="relative group isolate  bg-gray-900 py-24 sm:py-32">
+    <button className=" w-full relative group isolate  bg-gray-900 py-24 sm:py-32" onClick={()=>handleClick()}>
        <AddSectionButtons
         sectionTitle="Header"
         setSectionModal={setSectionModal}
@@ -139,6 +149,6 @@ export default function HeaderSection(props:TProps) {
           ))}
         </div>
       </div>
-    </div>
+    </button>
   );
 }

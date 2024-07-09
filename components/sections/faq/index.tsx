@@ -1,11 +1,11 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
 import AddSectionButtons from "@/components/add-section/buttons";
-import { TSection } from "@/types";
+import { TFields, TSection } from "@/types";
 
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { useAppSelector } from '@/lib/store/hooks';
-import { appState as AS } from '@/lib/store/slices/site-slice';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
 import CustomContent from '@/lib/content/custom';
 type TProps = {
   editable?: boolean;
@@ -41,6 +41,16 @@ export default function FaqSection(props: TProps) {
   } = props;
 
   const appState = useAppSelector(AS);
+  const dispatch= useAppDispatch()
+  const handleClick = (field?:TFields) => {
+    if (editable && setIsOpen && setSection) {
+      setSection("Faq");
+      setIsOpen(true);
+
+      setShowForm({ form: "", edit: "", show: false });
+      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+    }
+  };
 
   useEffect(() => {
     CustomContent.getData({
@@ -58,8 +68,9 @@ export default function FaqSection(props: TProps) {
     });
   }, []);
   return (
-    <div
-      className={`bg-white group relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+    <button
+      className={`w-full bg-white group relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      onClick={()=>handleClick()}
     >
       <AddSectionButtons
         sectionTitle="FAQ"
@@ -91,6 +102,6 @@ export default function FaqSection(props: TProps) {
           </dl>
         </div>
       </div>
-    </div>
+    </button>
   );
 }

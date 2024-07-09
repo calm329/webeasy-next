@@ -1,9 +1,9 @@
 import AddSectionButtons from "@/components/add-section/buttons";
 import CustomContent from "@/lib/content/custom";
-import { useAppSelector } from "@/lib/store/hooks";
-import { TSection } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { TFields, TSection } from "@/types";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { appState as AS } from "@/lib/store/slices/site-slice";
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -44,6 +44,16 @@ export default function StatsSection(props: TProps) {
   } = props;
 
   const appState = useAppSelector(AS);
+  const dispatch= useAppDispatch()
+  const handleClick = (field?:TFields) => {
+    if (editable && setIsOpen && setSection) {
+      setSection("Stats");
+      setIsOpen(true);
+
+      setShowForm({ form: "", edit: "", show: false });
+      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+    }
+  };
 
   useEffect(() => {
     CustomContent.getData({
@@ -61,8 +71,9 @@ export default function StatsSection(props: TProps) {
     });
   }, []);
   return (
-    <div
-      className={`group relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+    <button 
+      className={`group w-full relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      onClick={()=>handleClick()}
     >
       <AddSectionButtons
         sectionTitle="Stats"
@@ -93,6 +104,6 @@ export default function StatsSection(props: TProps) {
           </dl>
         </div>
       </div>
-    </div>
+    </button>
   );
 }

@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { TSection } from "@/types";
+import { TFields, TSection } from "@/types";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import CustomContent from "@/lib/content/custom";
 import { useAppSelector } from "@/lib/store/hooks";
-import { appState as AS } from '@/lib/store/slices/site-slice';
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+import { useDispatch } from "react-redux";
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -39,6 +40,17 @@ export default function CtaSection(props: TProps) {
   } = props;
   const appState = useAppSelector(AS);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch()
+  const handleClick = (field:TFields) => {
+    if (editable && setIsOpen && setSection) {
+      setSection("CTA");
+      setIsOpen(true);
+
+      setShowForm({ form: "", edit: "", show: false });
+      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+    }
+  };
+
 
   useEffect(() => {
     CustomContent.getData({
@@ -56,8 +68,9 @@ export default function CtaSection(props: TProps) {
     });
   }, []);
   return (
-    <div
-      className={`bg-white group relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+    <button
+      className={`bg-white group relative w-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      onClick={()=>handleClick("")}
     >
       <AddSectionButtons
         sectionTitle="CTA"
@@ -88,6 +101,6 @@ export default function CtaSection(props: TProps) {
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
