@@ -14,6 +14,16 @@ import FeaturesContent from "@/components/customize/panel/features";
 import CustomGalleryContent from "@/components/customize/panel/custom-gallery";
 import PartnersContent from "@/components/customize/panel/partners";
 import TestimonialContent from "@/components/customize/panel/testimonials";
+import ContactContent from "@/components/customize/panel/contact";
+import CtaContent from "@/components/customize/panel/cta";
+import FaqContent from "@/components/customize/panel/faq";
+import HeaderContent from "@/components/customize/panel/header";
+import HeaderSectionContent from "@/components/customize/panel/hero-section";
+import LogoContent from "@/components/customize/panel/logo";
+import NewsLetterContent from "@/components/customize/panel/news-letter";
+import StatsContent from "@/components/customize/panel/stats";
+import TeamContent from "@/components/customize/panel/team";
+import TestimonialSectionContent from "@/components/customize/panel/testimonial-section";
 type TProps = {
   open: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -102,6 +112,89 @@ export function CustomDrawer(props: TProps) {
             {section === "Description" && <DescriptionContent />}
             {section === "Features" && (
               <FeaturesContent setShowForm={setShowForm} />
+            )}
+             {/* {New Section} */}
+             {section === "Contact" && (
+              <ContactContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "CTA" && (
+              <CtaContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "Faq" && (
+              <FaqContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "Footer" && <TitleContent />}
+            {section === "Header" && (
+              <HeaderContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "HeroSection" && (
+              <HeaderSectionContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "logoClouds" && (
+              <LogoContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "newsLetter" && (
+              <NewsLetterContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "Pricing" && <TitleContent />}
+            {section === "Stats" && (
+              <StatsContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "Team" && (
+              <TeamContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
+            {section === "TestimonialSection" && (
+              <TestimonialSectionContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
             )}
           </CustomizePanel>
         </div>
