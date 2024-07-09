@@ -1,7 +1,8 @@
-// import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
-// import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
 import AddSectionButtons from "@/components/add-section/buttons";
 import { TSection } from "@/types";
+
 import { Dispatch, SetStateAction } from "react";
 type TProps = {
   editable?: boolean;
@@ -58,7 +59,7 @@ export default function FaqSection(props: TProps) {
             Frequently asked questions
           </h2>
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
-            {/* {faqs.map((faq) => (
+            {faqs.map((faq) => (
               <Disclosure key={faq.question} as="div" className="pt-6">
                 <dt>
                   <DisclosureButton className="group flex w-full items-start justify-between text-left text-gray-900">
@@ -73,7 +74,7 @@ export default function FaqSection(props: TProps) {
                   <p className="text-base leading-7 text-gray-600">{faq.answer}</p>
                 </DisclosurePanel>
               </Disclosure>
-            ))} */}
+            ))}
           </dl>
         </div>
       </div>
