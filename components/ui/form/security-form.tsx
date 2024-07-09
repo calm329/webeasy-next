@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import { ImSpinner2 } from "react-icons/im";
 export default function SecurityForm() {
   const { data: session } = useSession();
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   const formSchema = z.object({
     currentPassword: z
@@ -72,6 +73,31 @@ export default function SecurityForm() {
     }
   };
 
+  const handleDelete = async () => {
+    setLoadingDelete(true);
+    try {
+      const res = await fetch("/api/user/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: session?.user?.email }),
+      });
+
+      const response = await res.json();
+
+      if (res.ok) {
+        signOut();
+      } else {
+        toast.error(response.error);
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoadingDelete(false);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-10">
       <form
@@ -126,7 +152,7 @@ export default function SecurityForm() {
         <div className="pt-5">
           <button
             type="submit"
-            className={`mx-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 max-lg:ml-auto max-lg:mr-0"}`}
+            className={`ml-0 mr-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 max-lg:ml-auto max-lg:mr-0"}`}
             disabled={loading}
           >
             {loading && (
@@ -136,6 +162,22 @@ export default function SecurityForm() {
           </button>
         </div>
       </form>
+      <div className="flex flex-col gap-3">
+        <h3 className="text-base font-semibold leading-7 text-gray-900">
+          Delete Your Account
+        </h3>
+        <button
+          className={`ml-0 mr-auto flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 ${loadingDelete ? "bg-red-500" : "bg-red-600 hover:bg-red-500 max-lg:ml-auto max-lg:mr-0"}`}
+          onClick={handleDelete}
+          type="button"
+          disabled={loadingDelete}
+        >
+          {loadingDelete && (
+              <ImSpinner2 className="animate-spin text-lg text-white" />
+            )}
+          Delete Account
+        </button>
+      </div>
     </div>
   );
 }
