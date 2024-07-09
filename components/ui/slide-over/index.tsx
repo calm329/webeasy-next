@@ -18,6 +18,7 @@ import CtaContent from "@/components/customize/panel/cta";
 import FaqContent from "@/components/customize/panel/faq";
 import HeaderContent from "@/components/customize/panel/header";
 import HeaderSectionContent from "@/components/customize/panel/hero-section";
+import LogoContent from "@/components/customize/panel/logo";
 
 type TProps = {
   open: boolean;
@@ -154,7 +155,14 @@ function SlideOver(props: TProps) {
                 setShowForm={setShowForm}
               />
             )}
-            {section === "logoClouds" && <TitleContent />}
+            {section === "logoClouds" && (
+              <LogoContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
             {section === "newsLetter" && <TitleContent />}
             {section === "Pricing" && <TitleContent />}
             {section === "Stats" && <TitleContent />}
