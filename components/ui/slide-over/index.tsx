@@ -21,6 +21,7 @@ import HeaderSectionContent from "@/components/customize/panel/hero-section";
 import LogoContent from "@/components/customize/panel/logo";
 import NewsLetterContent from "@/components/customize/panel/news-letter";
 import StatsContent from "@/components/customize/panel/stats";
+import TeamContent from "@/components/customize/panel/team";
 
 type TProps = {
   open: boolean;
@@ -182,7 +183,14 @@ function SlideOver(props: TProps) {
                 setShowForm={setShowForm}
               />
             )}
-            {section === "Team" && <TitleContent />}
+            {section === "Team" && (
+              <TeamContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
             {section === "TestimonialSection" && <TitleContent />}
           </CustomizePanel>
         </div>

@@ -56,7 +56,7 @@ const getItemStyle = (
 
 const getListStyle = (isDraggingOver: boolean): React.CSSProperties => ({});
 
-const StatsContent = (props: TProps) => {
+const TeamContent = (props: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
   const { section, handleChange, subdomain, setShowForm } = props;
@@ -84,7 +84,7 @@ const StatsContent = (props: TProps) => {
       return;
     }
     // const updatedItems = reorder(
-    //   appState.aiContent?.stats?.list,
+    //   appState.aiContent?.team?.list,
     //   result.source.index,
     //   result.destination.index,
     // );
@@ -94,10 +94,10 @@ const StatsContent = (props: TProps) => {
     //     ...appState,
     //     aiContent: {
     //       ...appState.aiContent,
-    //       stats: {
-    //         ...appState.aiContent?.stats,
+    //       team: {
+    //         ...appState.aiContent?.team,
     //         list: {
-    //           ...appState.aiContent?.stats?.list,
+    //           ...appState.aiContent?.team?.list,
     //           list: updatedItems,
     //         },
     //       },
@@ -112,11 +112,11 @@ const StatsContent = (props: TProps) => {
 //         ...appState,
 //         aiContent: {
 //           ...appState.aiContent,
-//           stats: {
-//             ...appState.aiContent?.stats,
+//           team: {
+//             ...appState.aiContent?.team,
 //             button: {
-//               ...appState.aiContent?.stats?.list,
-//               list: appState.aiContent?.stats?.list?.filter((button: any) => {
+//               ...appState.aiContent?.team?.list,
+//               list: appState.aiContent?.team?.list?.filter((button: any) => {
 //                 if (button.question !== name) {
 //                   return button;
 //                 }
@@ -144,8 +144,8 @@ const StatsContent = (props: TProps) => {
   return (
     <div className="h-[55vh] max-h-[600px]  overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
-        {appState.aiContent?.stats &&
-          Object.keys(appState.aiContent?.stats).map((data) => (
+        {appState.aiContent?.team &&
+          Object.keys(appState.aiContent?.team).map((data) => (
             <>
               {(() => {
                 switch (data) {
@@ -169,8 +169,8 @@ const StatsContent = (props: TProps) => {
                                 ...appState,
                                 aiContent: {
                                   ...appState.aiContent,
-                                  stats: {
-                                    ...appState.aiContent?.stats,
+                                  team: {
+                                    ...appState.aiContent?.team,
                                     title: e.target.value,
                                   },
                                 },
@@ -178,7 +178,7 @@ const StatsContent = (props: TProps) => {
                             );
                           }}
                           ref={inputRef}
-                          value={appState.aiContent?.stats?.title}
+                          value={appState.aiContent?.team?.title}
                         />
                       </div>
                     );
@@ -225,15 +225,15 @@ const StatsContent = (props: TProps) => {
                                     ...appState,
                                     aiContent:{
                                          ...appState.aiContent,
-                                        stats:{
-                                           ...appState.aiContent?.stats,
+                                        team:{
+                                           ...appState.aiContent?.team,
                                             [data]: e.target.value
                                         }
                                     }
                                 }))
                               }}
                               ref={textareaRef}
-                              value={appState.aiContent?.stats?.description}
+                              value={appState.aiContent?.team?.description}
                             />
                           </div>
                         );
@@ -243,9 +243,9 @@ const StatsContent = (props: TProps) => {
                         <div className="flex justify-between gap-10">
                           <div>
                             <h3 className="text-sm font-medium leading-6 text-gray-900">
-                              Stats
+                              Team
                             </h3>
-                            {/* <p className="text-xs text-gray-400 ">Add a Stats</p> */}
+                            {/* <p className="text-xs text-gray-400 ">Add a Price</p> */}
                           </div>
                           {/* <Switch
                             onCheckedChange={(checked) =>
@@ -254,10 +254,10 @@ const StatsContent = (props: TProps) => {
                                   ...appState,
                                   aiContent: {
                                     ...appState.aiContent,
-                                    stats: {
-                                      ...appState.aiContent?.stats,
+                                    team: {
+                                      ...appState.aiContent?.team,
                                       button: {
-                                        ...appState.aiContent?.stats?.list,
+                                        ...appState.aiContent?.team?.list,
                                         show: checked,
                                       },
                                     },
@@ -265,7 +265,7 @@ const StatsContent = (props: TProps) => {
                                 }),
                               )
                             }
-                            checked={appState.aiContent?.stats?.list?.show}
+                            checked={appState.aiContent?.team?.list?.show}
                           /> */}
                         </div>
 
@@ -277,7 +277,7 @@ const StatsContent = (props: TProps) => {
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {appState.aiContent?.stats?.list?.map(
+                                {appState.aiContent?.team?.list?.map(
                                   (item: any, index: any) => (
                                     <Draggable
                                       key={item.name}
@@ -331,7 +331,7 @@ const StatsContent = (props: TProps) => {
                             )}
                           </Droppable>
                         </DragDropContext>
-                        {/* {appState.aiContent?.stats?.list?.length !== 2 && (
+                        {/* {appState.aiContent?.team?.list?.length !== 2 && (
                           <button
                             className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                             onClick={() =>
@@ -357,4 +357,4 @@ const StatsContent = (props: TProps) => {
   );
 };
 
-export default StatsContent;
+export default TeamContent;
