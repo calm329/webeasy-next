@@ -4,8 +4,13 @@ import {
   PhoneIcon,
 } from "@heroicons/react/24/outline";
 import { TSection } from "@/types";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
+import { useAppSelector } from "@/lib/store/hooks";
+import CustomContent from "@/lib/content/custom";
+import { appState as AS } from "@/lib/store/slices/site-slice";
+import { Skeleton } from "@/components/ui/skeleton";
+
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -38,9 +43,29 @@ export default function ContactSection(props: TProps) {
     setTriggerSection,
     showForm,
   } = props;
+  const appState = useAppSelector(AS);
+  const [loading, setLoading] = useState(true);
+  const [contactData, setContactData] = useState<any>(null);
+
+  useEffect(() => {
+    CustomContent.getContact({
+      data: {
+        businessName: appState.aiContent.banner.businessName,
+        businessType: appState.aiContent.businessType ?? "",
+        location: appState.aiContent.location ?? "",
+      },
+      fieldName: "contact",
+      individual: false,
+      type: "list",
+    }).then((data) => {
+      setContactData(data);
+      setLoading(false);
+    });
+  }, []);
+
   return (
     <div
-      className={`relative group isolate bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`group relative isolate bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
     >
       <AddSectionButtons
         sectionTitle="Contact"
@@ -80,12 +105,22 @@ export default function ContactSection(props: TProps) {
               </svg>
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-              Get in touch
+              {loading ? (
+                <Skeleton className="h-14 w-[300px]" />
+              ) : (
+                appState?.aiContent?.contact?.title ?? ""
+              )}
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Proin volutpat consequat porttitor cras nullam gravida at. Orci
-              molestie a eu arcu. Sed ut tincidunt integer elementum id sem.
-              Arcu sed malesuada et magna.
+              {loading ? (
+                <div className="flex flex-col gap-1">
+                  <Skeleton className="h-8 w-full" />
+                  <Skeleton className="h-8 w-full" />
+                  <Skeleton className="h-8 w-1/2" />
+                </div>
+              ) : (
+                appState?.aiContent?.contact?.description ?? ""
+              )}
             </p>
             <dl className="mt-10 space-y-4 text-base leading-7 text-gray-600">
               <div className="flex gap-x-4">
@@ -97,9 +132,11 @@ export default function ContactSection(props: TProps) {
                   />
                 </dt>
                 <dd>
-                  545 Mavis Island
-                  <br />
-                  Chicago, IL 99191
+                  {loading ? (
+                    <Skeleton className="w-[200px] h-8" />
+                  ) : (
+                    "545 Mavis Island<br />Chicago, IL 99191"
+                  )}
                 </dd>
               </div>
               <div className="flex gap-x-4">
@@ -111,12 +148,16 @@ export default function ContactSection(props: TProps) {
                   />
                 </dt>
                 <dd>
-                  <a
-                    href="tel:+1 (555) 234-5678"
-                    className="hover:text-gray-900"
-                  >
-                    +1 (555) 234-5678
-                  </a>
+                  {loading ? (
+                    <Skeleton className="w-[150px] h-8" />
+                  ) : (
+                    <a
+                      href="tel:+1 (555) 234-5678"
+                      className="hover:text-gray-900"
+                    >
+                      +1 (555) 234-5678
+                    </a>
+                  )}
                 </dd>
               </div>
               <div className="flex gap-x-4">
@@ -128,12 +169,16 @@ export default function ContactSection(props: TProps) {
                   />
                 </dt>
                 <dd>
-                  <a
-                    href="mailto:hello@example.com"
-                    className="hover:text-gray-900"
-                  >
-                    hello@example.com
-                  </a>
+                  {loading ? (
+                    <Skeleton className="w-[200px] h-8" />
+                  ) : (
+                    <a
+                      href="mailto:hello@example.com"
+                      className="hover:text-gray-900"
+                    >
+                      hello@example.com
+                    </a>
+                  )}
                 </dd>
               </div>
             </dl>

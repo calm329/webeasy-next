@@ -1,7 +1,7 @@
 import { store } from "../store";
 import { updateAppState } from "../store/slices/site-slice";
 import { getAppState, getRandomImageFromUnsplash } from "../utils/function";
-import { TBanner, TBlogs, TFeature, THero, TServices } from "@/types";
+import { TBanner, TBlogs, TContact, TFeature, THero, TServices } from "@/types";
 
 class CustomContentApiService {
   private url = (api: string) => `/api/content/custom/${api}`;
@@ -815,6 +815,87 @@ class CustomContentApiService {
       }
     });
   }
+
+  public async getContact({
+    individual,
+    type,
+    fieldName,
+    data,
+  }: {
+    individual: boolean;
+    type: string;
+    fieldName: string;
+    data: { businessType: string; businessName: string; location: string };
+  }): Promise<TContact> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(
+          this.url(individual ? fieldName : "contact"),
+          {
+            method: "POST",
+            body: JSON.stringify({
+              data: data,
+              type: type ?? "",
+              services: getAppState().aiContent.services ?? "",
+            }),
+          },
+        );
+
+        const reader = response.body?.getReader();
+        if (!reader) {
+          reject(new Error("ReadableStream not available"));
+          return;
+        }
+        const decoder = new TextDecoder();
+        let completeJson = "";
+
+        const processText = async ({
+          done,
+          value,
+        }: ReadableStreamReadResult<Uint8Array>) => {
+          if (done) {
+            if (completeJson) {
+              try {
+                console.log("completeJson", completeJson);
+                const parsedData = JSON.parse(completeJson);
+
+                store.dispatch(
+                  updateAppState({
+                    ...getAppState(),
+                    aiContent: {
+                      ...getAppState().aiContent,
+                      contact: {
+                        ...parsedData.contact,
+                      },
+                    },
+
+                  }),
+                );
+
+                resolve(parsedData.contact);
+              } catch (error) {
+                console.error("Error parsing final JSON:", error);
+                reject(error);
+              }
+            }
+            reader.releaseLock();
+            return;
+          }
+
+          const chunk = decoder.decode(value, { stream: true });
+          completeJson += chunk;
+
+          reader.read().then(processText).catch(console.error);
+        };
+
+        reader.read().then(processText).catch(console.error);
+      } catch (error) {
+        console.error("Error fetching content:", error);
+        reject(error);
+      }
+    });
+  }
+
 
   public async getPartners({
     individual,

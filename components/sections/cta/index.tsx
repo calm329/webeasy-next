@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { TSection } from "@/types";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
+import CustomContent from "@/lib/content/custom";
+import { useAppSelector } from "@/lib/store/hooks";
+import { appState as AS } from '@/lib/store/slices/site-slice';
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -23,6 +26,7 @@ type TProps = {
     show: boolean;
   };
 };
+
 export default function CtaSection(props: TProps) {
   const {
     editable,
@@ -33,6 +37,24 @@ export default function CtaSection(props: TProps) {
     setTriggerSection,
     showForm,
   } = props;
+  const appState = useAppSelector(AS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    CustomContent.getContact({
+      data: {
+        businessName: appState.aiContent.banner.businessName,
+        businessType: appState.aiContent.businessType ?? "",
+        location: appState.aiContent.location ?? "",
+      },
+      fieldName: "cta",
+      individual: false,
+      type: "list",
+    }).then((data) => {
+      // setBlogs(data);
+      setLoading(false);
+    });
+  }, []);
   return (
     <div
       className={`bg-white group relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}

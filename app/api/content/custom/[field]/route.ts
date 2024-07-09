@@ -15,6 +15,14 @@ export async function POST(
   const { data, mediaCaption, type, services,testimonials } = await request.json();
   let fields = "";
   switch (params.field) {
+    
+    case "contact":
+      fields = `only generate the ${type ?? ""} data for Contact and please don't add any other fields expect the given 
+      "contact":{
+      "title":"**Title of the contact**",
+      "description":"**description of the contact**",
+      }`
+      break;
     case "blog":
       fields = `only generate the ${type ?? ""} data for blog and please don't add any other fields expect the given 
       "blog":{

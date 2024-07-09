@@ -137,6 +137,7 @@ export type TAiContent = {
       link: string;
     }>;
   };
+  contact:TContact
   gallery: { show: boolean; list: Array<string> };
   features?: Array<TFeature>;
   description?: string;
@@ -193,6 +194,13 @@ export type TPosts = {
 export type TFeature = {
   id: string;
   image: string;
+  title: string;
+  description: string;
+};
+
+export type TContact = {
+  // id: string;
+  // image: string;
   title: string;
   description: string;
 };
