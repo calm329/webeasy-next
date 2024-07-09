@@ -1,6 +1,9 @@
 import AddSectionButtons from '@/components/add-section/buttons';
+import CustomContent from '@/lib/content/custom';
 import { TSection } from '@/types';
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { appState as AS } from '@/lib/store/slices/site-slice';
+import { useAppSelector } from '@/lib/store/hooks';
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -45,6 +48,24 @@ export default function TeamSection(props:TProps) {
     setTriggerSection,
     showForm,
   } = props;
+  
+  const appState = useAppSelector(AS);
+  
+  useEffect(() => {
+    CustomContent.getData({
+      data: {
+        businessName: appState.aiContent.banner.businessName,
+        businessType: appState.aiContent.businessType ?? "",
+        location: appState.aiContent.location ?? "",
+      },
+      fieldName: "team",
+      individual: false,
+      type: "list",
+    }).then(() => {
+      // setContactData(data);
+      // setLoading(false);
+    });
+  }, []);
   return (
     <div
     className={`group relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -56,21 +77,20 @@ export default function TeamSection(props:TProps) {
     />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our team</h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            We’re a dynamic group of individuals who are passionate about what we do and dedicated to delivering the
-            best results for our clients.
+          <h2 className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>{appState.aiContent?.team?.title ??""}</h2>
+          <p className={`mt-6 text-lg leading-8 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+          {appState.aiContent?.team?.description ??""}
           </p>
         </div>
         <ul
           role="list"
           className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
         >
-          {people.map((person) => (
+          { (appState.aiContent?.team?.list ??[]).map((person:any) => (
             <li key={person.name}>
-              <img alt="" src={person.imageUrl} className="aspect-[3/2] w-full rounded-2xl object-cover" />
-              <h3 className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">{person.name}</h3>
-              <p className="text-base leading-7 text-gray-600">{person.role}</p>
+              <img alt="" src={person.imageUrl} className={`aspect-[3/2] w-full rounded-2xl object-cover ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`} />
+              <h3 className={`mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>{person.name}</h3>
+              <p className={`text-base leading-7 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>{person.role}</p>
               <ul role="list" className="mt-6 flex gap-x-6">
                 <li>
                   <a href={person.xUrl} className="text-gray-400 hover:text-gray-500">

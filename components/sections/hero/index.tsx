@@ -1,9 +1,12 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Link from "next/link";
-import { TSection } from '@/types';
-import { Dispatch, SetStateAction } from "react";
+import { TSection } from "@/types";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
+import CustomContent from "@/lib/content/custom";
+import { useAppSelector } from "@/lib/store/hooks";
+import { appState as AS } from "@/lib/store/slices/site-slice";
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -24,8 +27,8 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-}
-export default function HeroSection(props:TProps) {
+};
+export default function HeroSection(props: TProps) {
   const {
     editable,
     setIsOpen,
@@ -35,8 +38,26 @@ export default function HeroSection(props:TProps) {
     setTriggerSection,
     showForm,
   } = props;
+
+  const appState = useAppSelector(AS);
+
+  useEffect(() => {
+    CustomContent.getData({
+      data: {
+        businessName: appState.aiContent.banner.businessName,
+        businessType: appState.aiContent.businessType ?? "",
+        location: appState.aiContent.location ?? "",
+      },
+      fieldName: "heroSection",
+      individual: false,
+      type: "list",
+    }).then(() => {
+      // setContactData(data);
+      // setLoading(false);
+    });
+  }, []);
   return (
-    <div className="relative group isolate bg-white">
+    <div className="group relative isolate bg-white">
       <AddSectionButtons
         sectionTitle="Hero"
         setSectionModal={setSectionModal}
@@ -88,26 +109,29 @@ export default function HeroSection(props:TProps) {
               </span>
             </a>
           </div>
-          <h1 className="mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Deploy to the cloud with confidence
+          <h1
+            className={`mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+          >
+            {appState.aiContent?.heroSection?.title ?? ""}
           </h1>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-            lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-            fugiat aliqua.
+          <p
+            className={`mt-6 text-lg leading-8 text-gray-600   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+          >
+            {appState.aiContent?.heroSection?.description ?? ""}
           </p>
           <div className="mt-10 flex items-center gap-x-6">
             <Link
               href="#"
-              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className={`rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             >
-              Get started
+              {appState.aiContent?.heroSection?.button?.label ?? ""}
             </Link>
             <Link
               href="#"
-              className="text-sm font-semibold leading-6 text-gray-900"
+              className={`text-sm font-semibold leading-6 text-gray-900   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             >
-              Learn more <span aria-hidden="true">→</span>
+              {appState.aiContent?.heroSection?.link?.label ?? ""}{" "}
+              <span aria-hidden="true">→</span>
             </Link>
           </div>
         </div>

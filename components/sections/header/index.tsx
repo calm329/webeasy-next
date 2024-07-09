@@ -5,8 +5,11 @@ import {
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { TSection } from '@/types';
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
+import { useAppSelector } from "@/lib/store/hooks";
+import { appState as AS } from '@/lib/store/slices/site-slice';
+import CustomContent from "@/lib/content/custom";
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -59,6 +62,24 @@ export default function HeaderSection(props:TProps) {
     setTriggerSection,
     showForm,
   } = props;
+
+  const appState = useAppSelector(AS);
+
+  useEffect(() => {
+    CustomContent.getData({
+      data: {
+        businessName: appState.aiContent.banner.businessName,
+        businessType: appState.aiContent.businessType ?? "",
+        location: appState.aiContent.location ?? "",
+      },
+      fieldName: "header",
+      individual: false,
+      type: "list",
+    }).then(() => {
+      // setContactData(data);
+      // setLoading(false);
+    });
+  }, []);
   return (
     <div className="relative group isolate  bg-gray-900 py-24 sm:py-32">
        <AddSectionButtons
@@ -93,20 +114,18 @@ export default function HeaderSection(props:TProps) {
       </div>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-            Support center
+          <h2 className={`text-4xl font-bold tracking-tight text-white sm:text-6xl   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+            {appState.aiContent?.header?.title ?? ""}
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
-            Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-            lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-            fugiat aliqua.
+          <p className={`mt-6 text-lg leading-8 text-gray-300   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+          {appState.aiContent?.header?.description ?? ""}
           </p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8">
-          {cards.map((card) => (
+          { (appState.aiContent?.header?.list ?? []).map((card:any) => (
             <div
               key={card.name}
-              className="flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10"
+              className={`flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             >
               <card.icon
                 aria-hidden="true"

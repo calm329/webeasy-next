@@ -3,7 +3,10 @@ import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
 import AddSectionButtons from "@/components/add-section/buttons";
 import { TSection } from "@/types";
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { useAppSelector } from '@/lib/store/hooks';
+import { appState as AS } from '@/lib/store/slices/site-slice';
+import CustomContent from '@/lib/content/custom';
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -25,14 +28,6 @@ type TProps = {
     show: boolean;
   };
 };
-const faqs = [
-  {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  // More questions...
-];
 
 export default function FaqSection(props: TProps) {
   const {
@@ -44,6 +39,24 @@ export default function FaqSection(props: TProps) {
     setTriggerSection,
     showForm,
   } = props;
+
+  const appState = useAppSelector(AS);
+
+  useEffect(() => {
+    CustomContent.getData({
+      data: {
+        businessName: appState.aiContent.banner.businessName,
+        businessType: appState.aiContent.businessType ?? "",
+        location: appState.aiContent.location ?? "",
+      },
+      fieldName: "faq",
+      individual: false,
+      type: "list",
+    }).then(() => {
+      // setContactData(data);
+      // setLoading(false);
+    });
+  }, []);
   return (
     <div
       className={`bg-white group relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -55,12 +68,12 @@ export default function FaqSection(props: TProps) {
       />
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
         <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
-          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
-            Frequently asked questions
+          <h2 className={`text-2xl font-bold leading-10 tracking-tight text-gray-900  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+          {(appState.aiContent?.faq?.title?? [])}
           </h2>
-          <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
-            {faqs.map((faq) => (
-              <Disclosure key={faq.question} as="div" className="pt-6">
+          <dl className={`mt-10 space-y-6 divide-y divide-gray-900/10   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+            {(appState.aiContent?.faq?.list?? [])?.map((faq:any) => (
+              <Disclosure key={faq.question} as="div" className={`pt-6`}>
                 <dt>
                   <DisclosureButton className="group flex w-full items-start justify-between text-left text-gray-900">
                     <span className="text-base font-semibold leading-7">{faq.question}</span>

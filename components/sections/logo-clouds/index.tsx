@@ -1,7 +1,10 @@
 import Image from "next/image";
-import { TSection } from '@/types';
-import { Dispatch, SetStateAction } from "react";
+import { TSection } from "@/types";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
+import CustomContent from "@/lib/content/custom";
+import { useAppSelector } from "@/lib/store/hooks";
+import { appState as AS } from "@/lib/store/slices/site-slice";
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -22,8 +25,8 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-}
-export default function LogoSection(props:TProps) {
+};
+export default function LogoSection(props: TProps) {
   const {
     editable,
     setIsOpen,
@@ -33,58 +36,54 @@ export default function LogoSection(props:TProps) {
     setTriggerSection,
     showForm,
   } = props;
+
+  const appState = useAppSelector(AS);
+
+  useEffect(() => {
+    CustomContent.getData({
+      data: {
+        businessName: appState.aiContent.banner.businessName,
+        businessType: appState.aiContent.businessType ?? "",
+        location: appState.aiContent.location ?? "",
+      },
+      fieldName: "logoClouds",
+      individual: false,
+      type: "list",
+    }).then(() => {
+      // setContactData(data);
+      // setLoading(false);
+    });
+  }, []);
   return (
-    <div className={`bg-white group relative py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
-       <AddSectionButtons
+    <div
+      className={`group relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+    >
+      <AddSectionButtons
         sectionTitle="Logo"
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-none">
-          <h2 className="text-lg font-semibold leading-8 text-gray-900">
-            Trusted by the world’s most innovative teams
+          <h2
+            className={`text-lg font-semibold leading-8 text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+          >
+            {appState.aiContent?.logoClouds?.title ?? ""}
           </h2>
           <div className="mx-auto mt-10 grid grid-cols-4 items-start gap-x-8 gap-y-10 sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:grid-cols-5">
-            <Image
-       
-              alt="Transistor"
-              src="https://tailwindui.com/img/logos/transistor-logo-gray-900.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain object-left lg:col-span-1"
-            />
-            <Image
-              alt="Reform"
-              src="https://tailwindui.com/img/logos/reform-logo-gray-900.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain object-left lg:col-span-1"
-            />
-            <Image
-              alt="Tuple"
-              src="https://tailwindui.com/img/logos/tuple-logo-gray-900.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain object-left lg:col-span-1"
-            />
-            <Image
-              alt="SavvyCal"
-              src="https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain object-left lg:col-span-1"
-            />
-            <Image
-              alt="Statamic"
-              src="https://tailwindui.com/img/logos/statamic-logo-gray-900.svg"
-              width={158}
-              height={48}
-              className="col-span-2 max-h-12 w-full object-contain object-left lg:col-span-1"
-            />
+            {(appState.aiContent?.logoClouds?.list ?? [])?.map((data: any) => (
+              <Image
+                alt="Transistor"
+                key={data.link}
+                src={data.image}
+                width={158}
+                height={48}
+                className={`col-span-2 max-h-12 w-full object-contain object-left lg:col-span-1 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              />
+            ))}
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

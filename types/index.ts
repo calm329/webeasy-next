@@ -107,6 +107,17 @@ export interface AppState {
 }
 
 export type TAiContent = {
+  cta:any;
+  faq:any
+  footer:any
+  header:any
+  heroSection:any
+  logoClouds:any
+  newsLetter:any
+  pricing:any
+  stats:any
+  team:any
+  testimonialsSection:any
   productId?: string;
   banner: TBanner;
   hero: THero;

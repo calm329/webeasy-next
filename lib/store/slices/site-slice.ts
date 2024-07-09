@@ -35,6 +35,17 @@ const initialSite: AppState = {
   status: "Loading",
   iPosts: { limit: 20, show: true, list: [], showHash: true },
   aiContent: {
+    cta:null,
+    faq:null,
+    footer:null,
+    header: null,
+    heroSection:null,
+    logoClouds:null,
+    newsLetter:null,
+    pricing:null,
+    stats:null,
+    team:null,
+    testimonialsSection:null,
     contact:{
       title:"",
       description:"",

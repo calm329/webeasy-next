@@ -77,24 +77,6 @@ const SectionForm = (props: TProps) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const sections = [
-    // {
-    //   id: "1",
-    //   image:
-    //     "https://tailwindui.com/img/category-thumbnails/marketing/blog-sections.png",
-    //   title: "Blog",
-    //   description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-    //   Element: (
-    //     <BlogSection
-    //       showForm={showForm}
-    //       setSectionModal={setSectionModal}
-    //       setShowForm={setShowForm}
-    //       setTriggerSection={setTriggerSection}
-    //       editable={editable}
-    //       setIsOpen={setIsOpen}
-    //       setSection={setSection}
-    //     />
-    //   ),
-    // },
     {
       id: "2",
       image:
@@ -113,24 +95,6 @@ const SectionForm = (props: TProps) => {
         />
       ),
     },
-    // {
-    //   id: "3",
-    //   image:
-    //     "https://tailwindui.com/img/category-thumbnails/marketing/content-sections.png",
-    //   title: "Content",
-    //   description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-    //   Element: (
-    //     <ContentSection
-    //       showForm={showForm}
-    //       setSectionModal={setSectionModal}
-    //       setShowForm={setShowForm}
-    //       setTriggerSection={setTriggerSection}
-    //       editable={editable}
-    //       setIsOpen={setIsOpen}
-    //       setSection={setSection}
-    //     />
-    //   ),
-    // },
     {
       id: "4",
       image:
@@ -167,24 +131,24 @@ const SectionForm = (props: TProps) => {
         />
       ),
     },
-    {
-      id: "6",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/feature-sections.png",
-      title: "Feature",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <FeatureSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
-    },
+    // {
+    //   id: "6",
+    //   image:
+    //     "https://tailwindui.com/img/category-thumbnails/marketing/feature-sections.png",
+    //   title: "Feature",
+    //   description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+    //   Element: (
+    //     <FeatureSection
+    //       showForm={showForm}
+    //       setSectionModal={setSectionModal}
+    //       setShowForm={setShowForm}
+    //       setTriggerSection={setTriggerSection}
+    //       editable={editable}
+    //       setIsOpen={setIsOpen}
+    //       setSection={setSection}
+    //     />
+    //   ),
+    // },
     {
       id: "7",
       image:
