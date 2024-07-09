@@ -104,14 +104,14 @@ export default function ContactSection(props: TProps) {
                 />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+            <h2 className={`text-3xl font-bold tracking-tight text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
               {loading ? (
                 <Skeleton className="h-14 w-[300px]" />
               ) : (
                 appState?.aiContent?.contact?.title ?? ""
               )}
             </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
+            <p className={`mt-6 text-lg leading-8 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
               {loading ? (
                 <div className="flex flex-col gap-1">
                   <Skeleton className="h-8 w-full" />
