@@ -91,7 +91,7 @@ export default function HeaderSection(props:TProps) {
     });
   }, []);
   return (
-    <button className=" w-full relative group isolate  bg-gray-900 py-24 sm:py-32" onClick={()=>handleClick()}>
+    <button className="text-left w-full relative group isolate  bg-gray-900 py-24 sm:py-32" onClick={()=>handleClick()}>
        <AddSectionButtons
         sectionTitle="Header"
         setSectionModal={setSectionModal}

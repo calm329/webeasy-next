@@ -16,6 +16,7 @@ import TestimonialContent from "@/components/customize/panel/testimonials";
 import ContactContent from "@/components/customize/panel/contact";
 import CtaContent from "@/components/customize/panel/cta";
 import FaqContent from "@/components/customize/panel/faq";
+import HeaderContent from "@/components/customize/panel/header";
 
 type TProps = {
   open: boolean;
@@ -119,20 +120,31 @@ function SlideOver(props: TProps) {
                 setShowForm={setShowForm}
               />
             )}
-            {section === "CTA" && <CtaContent
+            {section === "CTA" && (
+              <CtaContent
                 section={section}
                 handleChange={handleChange}
                 subdomain={subdomain}
                 setShowForm={setShowForm}
-              />}
-            {section === "Faq" && <FaqContent
+              />
+            )}
+            {section === "Faq" && (
+              <FaqContent
                 section={section}
                 handleChange={handleChange}
                 subdomain={subdomain}
                 setShowForm={setShowForm}
-              />}
+              />
+            )}
             {section === "Footer" && <TitleContent />}
-            {section === "Header" && <TitleContent />}
+            {section === "Header" && (
+              <HeaderContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
             {section === "HeroSection" && <TitleContent />}
             {section === "logoClouds" && <TitleContent />}
             {section === "newsLetter" && <TitleContent />}
