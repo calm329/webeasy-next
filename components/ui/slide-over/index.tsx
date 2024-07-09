@@ -19,6 +19,7 @@ import FaqContent from "@/components/customize/panel/faq";
 import HeaderContent from "@/components/customize/panel/header";
 import HeaderSectionContent from "@/components/customize/panel/hero-section";
 import LogoContent from "@/components/customize/panel/logo";
+import NewsLetterContent from "@/components/customize/panel/news-letter";
 
 type TProps = {
   open: boolean;
@@ -163,7 +164,14 @@ function SlideOver(props: TProps) {
                 setShowForm={setShowForm}
               />
             )}
-            {section === "newsLetter" && <TitleContent />}
+            {section === "newsLetter" && (
+              <NewsLetterContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />
+            )}
             {section === "Pricing" && <TitleContent />}
             {section === "Stats" && <TitleContent />}
             {section === "Team" && <TitleContent />}
