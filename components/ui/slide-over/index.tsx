@@ -14,6 +14,7 @@ import CustomGalleryContent from "@/components/customize/panel/custom-gallery";
 import PartnersContent from "@/components/customize/panel/partners";
 import TestimonialContent from "@/components/customize/panel/testimonials";
 import ContactContent from "@/components/customize/panel/contact";
+import CtaContent from "@/components/customize/panel/cta";
 
 type TProps = {
   open: boolean;
@@ -117,7 +118,12 @@ function SlideOver(props: TProps) {
                 setShowForm={setShowForm}
               />
             )}
-            {section === "CTA" && <TitleContent />}
+            {section === "CTA" && <CtaContent
+                section={section}
+                handleChange={handleChange}
+                subdomain={subdomain}
+                setShowForm={setShowForm}
+              />}
             {section === "Faq" && <TitleContent />}
             {section === "Footer" && <TitleContent />}
             {section === "Header" && <TitleContent />}
