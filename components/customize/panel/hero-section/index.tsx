@@ -348,6 +348,153 @@ const HeaderSectionContent = (props: TProps) => {
                 //         )} */}
                 //       </div>
                 //     );
+
+                case "button":
+                  return (
+                    <div>
+                      <h1>{data}</h1>
+                      <div className="flex flex-col border-t pt-5">
+                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                          <label htmlFor={"button-label"} className="my-auto">
+                            Label
+                          </label>
+                        </div>
+
+                        <input
+                          type="text"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          id={"button-label"}
+                          placeholder={"Enter Label..."}
+                          onChange={(e) => {
+                            dispatch(
+                              updateAppState({
+                                ...appState,
+                                aiContent: {
+                                  ...appState.aiContent,
+                                  heroSection: {
+                                    ...appState.aiContent?.heroSection,
+                                    [data]: {
+                                      ...appState.aiContent?.heroSection[data],
+                                      label: e.target.value,
+                                    },
+                                  },
+                                },
+                              }),
+                            );
+                          }}
+                          
+                          value={appState.aiContent?.heroSection?.button?.label}
+                        />
+                      </div>
+                      <div className="flex flex-col border-t pt-5">
+                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                          <label htmlFor={"button-link"} className="my-auto">
+                            Link
+                          </label>
+                        </div>
+
+                        <input
+                          type="text"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          id={"button-link"}
+                          placeholder={"Enter Link..."}
+                          onChange={(e) => {
+                            dispatch(
+                              updateAppState({
+                                ...appState,
+                                aiContent: {
+                                  ...appState.aiContent,
+                                  heroSection: {
+                                    ...appState.aiContent?.heroSection,
+                                    [data]: {
+                                      ...appState.aiContent?.heroSection[data],
+                                      link: e.target.value,
+                                    },
+                                  },
+                                },
+                              }),
+                            );
+                          }}
+                          
+                          value={appState.aiContent?.heroSection?.button?.link}
+                        />
+                      </div>
+                    </div>
+                  );
+
+                  case "link":
+                    return (
+                      <div>
+                        <h1>{data}</h1>
+                        <div className="flex flex-col border-t pt-5">
+                          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor={"link-label"} className="my-auto">
+                              Label
+                            </label>
+                          </div>
+
+                          <input
+                            type="text"
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            id={"link-label"}
+                            placeholder={"Enter Label..."}
+                            onChange={(e) => {
+                              dispatch(
+                                updateAppState({
+                                  ...appState,
+                                  aiContent: {
+                                    ...appState.aiContent,
+                                    heroSection: {
+                                      ...appState.aiContent?.heroSection,
+                                      [data]: {
+                                        ...appState.aiContent?.heroSection[data],
+                                        label: e.target.value,
+                                      },
+                                    },
+                                  },
+                                }),
+                              );
+                            }}
+                            
+                            value={appState.aiContent?.heroSection?.link?.label}
+                          />
+                        </div>
+                        <div className="flex flex-col border-t pt-5">
+                          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor={"link-link"} className="my-auto">
+                              Link
+                            </label>
+                          </div>
+
+                          <input
+                            type="text"
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            id={"link-link"}
+                            placeholder={"Enter Link..."}
+                            onChange={(e) => {
+                              dispatch(
+                                updateAppState({
+                                  ...appState,
+                                  aiContent: {
+                                    ...appState.aiContent,
+                                    heroSection: {
+                                      ...appState.aiContent?.heroSection,
+                                      [data]: {
+                                        ...appState.aiContent?.heroSection[data],
+                                        link: e.target.value,
+                                      },
+                                    },
+                                  },
+                                }),
+                              );
+                            }}
+                            
+                            value={appState.aiContent?.heroSection?.link?.link}
+                          />
+                        </div>
+                      </div>
+                    );
+                    
                 }
               })()}
             </>
