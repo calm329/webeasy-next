@@ -123,16 +123,7 @@ export default function NewsLetterSection(props: TProps) {
               Subscribe
             </button>
           </div>
-          <p className="mt-4 text-sm leading-6 text-gray-900">
-            We care about your data. Read our{" "}
-            <Link
-              href="#"
-              className="font-semibold text-indigo-600 hover:text-indigo-500"
-            >
-              privacy&nbsp;policy
-            </Link>
-            .
-          </p>
+          
         </form>
       </div>
     </button>
