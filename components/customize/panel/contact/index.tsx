@@ -52,15 +52,35 @@ const ContactContent = (props: TProps) => {
   const [type, setType] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const addressRef = useRef<HTMLInputElement>(null);
+  const telephoneRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const searchParams = useSearchParams();
   useEffect(() => {
-    if (appState.focusedField === "title") {
-      inputRef.current?.focus();
-    }
+    switch (appState.focusedField) {
+      case "title":
+        inputRef.current?.focus();
+        break;
 
-    if (appState.focusedField === "description") {
-      textareaRef.current?.focus();
+      case "description":
+        textareaRef.current?.focus();
+        break;
+
+      case "address":
+        addressRef.current?.focus();
+        break;
+
+      case "telephone":
+        telephoneRef.current?.focus();
+        break;
+
+      case "email":
+        emailRef.current?.focus();
+        break;
+
+      default:
+        break;
     }
   }, [appState]);
 
@@ -164,7 +184,7 @@ const ContactContent = (props: TProps) => {
                               }),
                             );
                           }}
-                          // ref={inputRef}
+                          ref={addressRef}
                           value={appState.aiContent?.contact?.address?.value}
                         />
                       </div>
@@ -201,7 +221,7 @@ const ContactContent = (props: TProps) => {
                               }),
                             );
                           }}
-                          // ref={inputRef}
+                          ref={telephoneRef}
                           value={appState.aiContent?.contact?.telephone?.value}
                         />
                       </div>
@@ -238,7 +258,7 @@ const ContactContent = (props: TProps) => {
                               }),
                             );
                           }}
-                          // ref={inputRef}
+                          ref={emailRef}
                           value={appState.aiContent?.contact?.email?.value}
                         />
                       </div>

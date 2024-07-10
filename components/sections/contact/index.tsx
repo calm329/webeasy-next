@@ -153,7 +153,13 @@ export default function ContactSection(props: TProps) {
               )}
             </p>
             <dl className="mt-10 space-y-4 text-base leading-7 text-gray-600">
-              <div className="flex gap-x-4">
+              <div
+                className={`flex gap-x-4 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClick("address");
+                }}
+              >
                 <dt className="flex-none">
                   <span className="sr-only">
                     {appState.aiContent?.contact?.address?.label ?? ""}
@@ -171,7 +177,13 @@ export default function ContactSection(props: TProps) {
                   )}
                 </dd>
               </div>
-              <div className="flex gap-x-4">
+              <div
+                className={`flex gap-x-4 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClick("telephone");
+                }}
+              >
                 <dt className="flex-none">
                   <span className="sr-only">
                     {" "}
@@ -187,7 +199,7 @@ export default function ContactSection(props: TProps) {
                     <Skeleton className="h-8 w-[150px]" />
                   ) : (
                     <a
-                      href={`tel:${appState.aiContent?.contact?.telephone?.value ?? ""}`}
+                      href={`${editable ? "#" : "tel:" + (appState.aiContent?.contact?.telephone?.value ?? "")}`}
                       className="hover:text-gray-900"
                     >
                       {appState.aiContent?.contact?.telephone?.value ?? ""}
@@ -195,7 +207,13 @@ export default function ContactSection(props: TProps) {
                   )}
                 </dd>
               </div>
-              <div className="flex gap-x-4">
+              <div
+                className={`flex gap-x-4 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClick("email");
+                }}
+              >
                 <dt className="flex-none">
                   <span className="sr-only">
                     {" "}
@@ -211,7 +229,7 @@ export default function ContactSection(props: TProps) {
                     <Skeleton className="h-8 w-[200px]" />
                   ) : (
                     <a
-                      href={`mailto:${appState.aiContent?.contact?.email?.value ?? ""}`}
+                      href={`${editable ? "#" : "mailto:" + (appState.aiContent?.contact?.email?.value ?? "")}`}
                       className="hover:text-gray-900"
                     >
                       {appState.aiContent?.contact?.email?.value ?? ""}
