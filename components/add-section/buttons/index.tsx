@@ -1,4 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
+import { appState as AS } from '@/lib/store/slices/site-slice';
+import { useAppSelector } from "@/lib/store/hooks";
 
 type TProps = {
   setSectionModal: Dispatch<SetStateAction<boolean>>;
@@ -20,6 +22,7 @@ const AddSectionButtons = ({
   classNameUp,
   classNameDown,
 }: TProps) => {
+  const appState = useAppSelector(AS)
   return (
     <>
       <button
@@ -32,6 +35,7 @@ const AddSectionButtons = ({
             section: sectionTitle,
           });
         }}
+        disabled={appState?.generate?.generating}
       >
         + Add Section
       </button>
@@ -45,6 +49,7 @@ const AddSectionButtons = ({
             section: sectionTitle,
           });
         }}
+        disabled={appState?.generate?.generating}
       >
         {" "}
         + Add Section
