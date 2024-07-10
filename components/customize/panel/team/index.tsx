@@ -83,50 +83,47 @@ const TeamContent = (props: TProps) => {
     if (!result.destination) {
       return;
     }
-    // const updatedItems = reorder(
-    //   appState.aiContent?.team?.list,
-    //   result.source.index,
-    //   result.destination.index,
-    // );
+    const updatedItems = reorder(
+      appState.aiContent?.team?.list,
+      result.source.index,
+      result.destination.index,
+    );
 
-    // dispatch(
-    //   updateAppState({
-    //     ...appState,
-    //     aiContent: {
-    //       ...appState.aiContent,
-    //       team: {
-    //         ...appState.aiContent?.team,
-    //         list: {
-    //           ...appState.aiContent?.team?.list,
-    //           list: updatedItems,
-    //         },
-    //       },
-    //     },
-    //   }),
-    // );
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          team: {
+            ...appState.aiContent?.team,
+            list: updatedItems,
+          },
+        },
+      }),
+    );
   };
 
-//   const handleDeleteButton = (name: string) => {
-//     dispatch(
-//       updateAppState({
-//         ...appState,
-//         aiContent: {
-//           ...appState.aiContent,
-//           team: {
-//             ...appState.aiContent?.team,
-//             button: {
-//               ...appState.aiContent?.team?.list,
-//               list: appState.aiContent?.team?.list?.filter((button: any) => {
-//                 if (button.question !== name) {
-//                   return button;
-//                 }
-//               }),
-//             },
-//           },
-//         },
-//       }),
-//     );
-//   };
+  const handleDeleteTeam = (id: string) => {
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          team: {
+            ...appState.aiContent?.team,
+            button: {
+              ...appState.aiContent?.team?.list,
+              list: appState.aiContent?.team?.list?.filter((team: any) => {
+                if (team.id !== id) {
+                  return team;
+                }
+              }),
+            },
+          },
+        },
+      }),
+    );
+  };
 
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -182,14 +179,14 @@ const TeamContent = (props: TProps) => {
                         />
                       </div>
                     );
-                    case "description":
-                        return (
-                          <div className="flex flex-col border-t pt-5">
-                            <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
-                              <label htmlFor={data} className="my-auto">
-                                {data}
-                              </label>
-                              {/* <div className="flex items-center gap-2">
+                  case "description":
+                    return (
+                      <div className="flex flex-col border-t pt-5">
+                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                          <label htmlFor={data} className="my-auto">
+                            {data}
+                          </label>
+                          {/* <div className="flex items-center gap-2">
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -215,28 +212,30 @@ const TeamContent = (props: TProps) => {
                                 </button>
                                 <RegenerateOptions setType={setType} type={type} />
                               </div> */}
-                            </div>
-                            <textarea
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                              id={data}
-                              placeholder={"Enter Sub-heading"}
-                              onChange={(e) => {
-                                dispatch(updateAppState({
-                                    ...appState,
-                                    aiContent:{
-                                         ...appState.aiContent,
-                                        team:{
-                                           ...appState.aiContent?.team,
-                                            [data]: e.target.value
-                                        }
-                                    }
-                                }))
-                              }}
-                              ref={textareaRef}
-                              value={appState.aiContent?.team?.description}
-                            />
-                          </div>
-                        );
+                        </div>
+                        <textarea
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          id={data}
+                          placeholder={"Enter Sub-heading"}
+                          onChange={(e) => {
+                            dispatch(
+                              updateAppState({
+                                ...appState,
+                                aiContent: {
+                                  ...appState.aiContent,
+                                  team: {
+                                    ...appState.aiContent?.team,
+                                    [data]: e.target.value,
+                                  },
+                                },
+                              }),
+                            );
+                          }}
+                          ref={textareaRef}
+                          value={appState.aiContent?.team?.description}
+                        />
+                      </div>
+                    );
                   case "list":
                     return (
                       <div className="flex flex-col gap-5 border-t pt-5">
@@ -280,14 +279,14 @@ const TeamContent = (props: TProps) => {
                                 {appState.aiContent?.team?.list?.map(
                                   (item: any, index: any) => (
                                     <Draggable
-                                      key={item.name}
-                                      draggableId={item.name}
+                                      key={item.id}
+                                      draggableId={item.id}
                                       index={index}
                                     >
                                       {(provided, snapshot) => (
                                         <div
                                           className=" flex items-center justify-between"
-                                          key={item.name}
+                                          key={item.id}
                                           ref={provided.innerRef}
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
@@ -301,15 +300,15 @@ const TeamContent = (props: TProps) => {
                                             <FiLink />
                                             <h4>{item.name}</h4>
                                           </div>
-                                          {/* <div className="flex items-center gap-2">
+                                          <div className="flex items-center gap-2">
                                             <MdModeEditOutline
                                               color="blue"
                                               size={20}
                                               onClick={() =>
                                                 setShowForm({
-                                                  form: "Button",
+                                                  form: "Team",
                                                   show: true,
-                                                  edit: item.name,
+                                                  edit: item.id,
                                                 })
                                               }
                                             />
@@ -317,10 +316,10 @@ const TeamContent = (props: TProps) => {
                                               color="red"
                                               size={20}
                                               onClick={() =>
-                                                handleDeleteButton(item.name)
+                                                handleDeleteTeam(item.id)
                                               }
                                             />
-                                          </div> */}
+                                          </div>
                                         </div>
                                       )}
                                     </Draggable>

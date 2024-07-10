@@ -7,6 +7,7 @@ import CustomFeature from "@/components/ui/form/custom-feature";
 import CustomTestimonial from "@/components/ui/form/custom-testimonial";
 import CustomFaq from "@/components/ui/form/custom-faq";
 import CustomHeader from "@/components/ui/form/custom-header";
+import CustomStats from "@/components/ui/form/custom-stats";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -92,6 +93,26 @@ const CustomizePanel = (props: TProps) => {
       )}
 
       {showForm.form === "Card" && (
+        <CustomHeader
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+
+      {showForm.form === "Stats" && (
+        <CustomStats
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+
+      {showForm.form === "Team" && (
         <CustomHeader
           handleChange={handleChange}
           section={section}

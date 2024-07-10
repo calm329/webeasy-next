@@ -83,50 +83,47 @@ const StatsContent = (props: TProps) => {
     if (!result.destination) {
       return;
     }
-    // const updatedItems = reorder(
-    //   appState.aiContent?.stats?.list,
-    //   result.source.index,
-    //   result.destination.index,
-    // );
+    const updatedItems = reorder(
+      appState.aiContent?.stats?.list,
+      result.source.index,
+      result.destination.index,
+    );
 
-    // dispatch(
-    //   updateAppState({
-    //     ...appState,
-    //     aiContent: {
-    //       ...appState.aiContent,
-    //       stats: {
-    //         ...appState.aiContent?.stats,
-    //         list: {
-    //           ...appState.aiContent?.stats?.list,
-    //           list: updatedItems,
-    //         },
-    //       },
-    //     },
-    //   }),
-    // );
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          stats: {
+            ...appState.aiContent?.stats,
+            list: updatedItems,
+          },
+        },
+      }),
+    );
   };
 
-//   const handleDeleteButton = (name: string) => {
-//     dispatch(
-//       updateAppState({
-//         ...appState,
-//         aiContent: {
-//           ...appState.aiContent,
-//           stats: {
-//             ...appState.aiContent?.stats,
-//             button: {
-//               ...appState.aiContent?.stats?.list,
-//               list: appState.aiContent?.stats?.list?.filter((button: any) => {
-//                 if (button.question !== name) {
-//                   return button;
-//                 }
-//               }),
-//             },
-//           },
-//         },
-//       }),
-//     );
-//   };
+  const handleDeleteStats = (id: string) => {
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          stats: {
+            ...appState.aiContent?.stats,
+            button: {
+              ...appState.aiContent?.stats?.list,
+              list: appState.aiContent?.stats?.list?.filter((stat: any) => {
+                if (stat.id !== id) {
+                  return stat;
+                }
+              }),
+            },
+          },
+        },
+      }),
+    );
+  };
 
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -280,14 +277,14 @@ const StatsContent = (props: TProps) => {
                                 {appState.aiContent?.stats?.list?.map(
                                   (item: any, index: any) => (
                                     <Draggable
-                                      key={item.name}
-                                      draggableId={item.name}
+                                      key={item.id}
+                                      draggableId={item.id}
                                       index={index}
                                     >
                                       {(provided, snapshot) => (
                                         <div
                                           className=" flex items-center justify-between"
-                                          key={item.name}
+                                          key={item.id}
                                           ref={provided.innerRef}
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
@@ -301,15 +298,15 @@ const StatsContent = (props: TProps) => {
                                             <FiLink />
                                             <h4>{item.name}</h4>
                                           </div>
-                                          {/* <div className="flex items-center gap-2">
+                                          <div className="flex items-center gap-2">
                                             <MdModeEditOutline
                                               color="blue"
                                               size={20}
                                               onClick={() =>
                                                 setShowForm({
-                                                  form: "Button",
+                                                  form: "Stats",
                                                   show: true,
-                                                  edit: item.name,
+                                                  edit: item.id,
                                                 })
                                               }
                                             />
@@ -317,10 +314,10 @@ const StatsContent = (props: TProps) => {
                                               color="red"
                                               size={20}
                                               onClick={() =>
-                                                handleDeleteButton(item.name)
+                                                handleDeleteStats(item.id)
                                               }
                                             />
-                                          </div> */}
+                                          </div>
                                         </div>
                                       )}
                                     </Draggable>

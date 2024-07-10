@@ -41,14 +41,20 @@ export default function HeroSection(props: TProps) {
 
   const appState = useAppSelector(AS);
 
-  const dispatch= useAppDispatch()
-  const handleClick = (field?:TFields) => {
+  const dispatch = useAppDispatch();
+  const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("HeroSection");
       setIsOpen(true);
 
       setShowForm({ form: "", edit: "", show: false });
-      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          focusedField: field,
+          openedSlide: "Customize",
+        }),
+      );
     }
   };
 
@@ -68,7 +74,10 @@ export default function HeroSection(props: TProps) {
     });
   }, []);
   return (
-    <button className="text-left group relative isolate bg-white w-full" onClick={()=>handleClick()}>
+    <button
+      className="group relative isolate w-full bg-white text-left"
+      onClick={() => handleClick()}
+    >
       <AddSectionButtons
         sectionTitle="Hero"
         setSectionModal={setSectionModal}
@@ -99,30 +108,8 @@ export default function HeroSection(props: TProps) {
       </svg>
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
-          <Image
-            height={200}
-            width={200}
-            alt="Your Company"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            className="h-11"
-          />
-          <div className="mt-24 sm:mt-32 lg:mt-16">
-            <a href="#" className="inline-flex space-x-6">
-              <span className="rounded-full bg-indigo-600/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-600/10">
-                What&apos;s new
-              </span>
-              <span className="inline-flex items-center space-x-2 text-sm font-medium leading-6 text-gray-600">
-                <span>Just shipped v1.0</span>
-                <ChevronRightIcon
-                  aria-hidden="true"
-                  className="h-5 w-5 text-gray-400"
-                />
-              </span>
-            </a>
-          </div>
           <h1
             className={`mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-
             onClick={(e) => {
               e.stopPropagation();
               handleClick("title");
@@ -132,7 +119,6 @@ export default function HeroSection(props: TProps) {
           </h1>
           <p
             className={`mt-6 text-lg leading-8 text-gray-600   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-
             onClick={(e) => {
               e.stopPropagation();
               handleClick("description");
