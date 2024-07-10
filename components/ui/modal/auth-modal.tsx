@@ -104,15 +104,16 @@ export default function AuthModal(props: TProps) {
                     </div>
 
                     <div className="mt-6 grid grid-cols-3 gap-4">
-                      <Link
-                        href="#"
+                      <button
+                        // href="#"
+                        onClick={() => signIn("facebook")}
                         className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                       >
                         <FaFacebook className="size-5 text-[#4267B2]" />
                         <span className="text-sm font-semibold leading-6">
                           Facebook
                         </span>
-                      </Link>
+                      </button>
 
                       <button
                         onClick={() => signIn("google")}

@@ -39,7 +39,6 @@ model User {
 
 model Account {
   userId            String
-  user_id           BigInt?
   type              String
   provider          String
   providerAccountId String

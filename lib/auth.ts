@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";  // Import Facebook provider
 import prisma from "./prisma";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
@@ -51,8 +52,12 @@ export const authOptions: AuthOptions = {
       },
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID??"",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET??"",
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID ?? "",  // Add your Facebook client ID
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET ?? "",  // Add your Facebook client secret
     }),
   ],
   adapter: PrismaAdapter(prisma) as any,
