@@ -146,6 +146,10 @@ export default function HeaderSection(props:TProps) {
             <div
               key={card.name}
               className={`flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              onClick={(e)=>{
+                e.stopPropagation();
+                setShowForm({ form: "Card", edit: card.id, show: true });
+              }}
             >
               {/* <card.icon
                 aria-hidden="true"

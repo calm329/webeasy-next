@@ -135,7 +135,7 @@ const CustomHeader = (props: TProps) => {
               }
               className="cursor-pointer"
             />
-            FAQ Settings
+            Card Settings
           </h2>
           <div className="ml-3 flex h-7 items-center">
             <button
