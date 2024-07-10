@@ -134,6 +134,10 @@ export default function TestimonialSection(props: TProps) {
               </svg>
               <div
                 className={`text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClick("role");
+                }}
               >
                 {appState.aiContent?.testimonialsSection?.role ?? ""}
               </div>

@@ -129,15 +129,23 @@ const TestimonialSectionContent = (props: TProps) => {
   //   };
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const roleRef = useRef<HTMLInputElement>(null);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const searchParams = useSearchParams();
   useEffect(() => {
-    if (appState.focusedField === "name") {
-      inputRef.current?.focus();
-    }
-
-    if (appState.focusedField === "message") {
-      textareaRef.current?.focus();
+    switch (appState.focusedField) {
+      case "name":
+        inputRef.current?.focus();
+        break;
+      case "message":
+        textareaRef.current?.focus();
+        break;
+      case "role":
+        roleRef.current?.focus();
+        break;
+      default:
+        break;
     }
   }, [appState]);
 
@@ -284,7 +292,7 @@ const TestimonialSectionContent = (props: TProps) => {
                               }),
                             );
                           }}
-                          // ref={inputRef}
+                          ref={roleRef}
                           value={appState.aiContent?.testimonialsSection?.role}
                         />
                       </div>
