@@ -166,7 +166,7 @@ const CtaContent = (props: TProps) => {
                                 }),
                               );
                             }}
-                            ref={inputRef}
+                            
                             value={appState.aiContent?.cta?.button?.label}
                           />
                         </div>
@@ -199,7 +199,7 @@ const CtaContent = (props: TProps) => {
                                 }),
                               );
                             }}
-                            ref={inputRef}
+                            
                             value={appState.aiContent?.cta?.button?.link}
                           />
                         </div>
@@ -239,7 +239,7 @@ const CtaContent = (props: TProps) => {
                                   }),
                                 );
                               }}
-                              ref={inputRef}
+                              
                               value={appState.aiContent?.cta?.link?.label}
                             />
                           </div>
@@ -272,7 +272,7 @@ const CtaContent = (props: TProps) => {
                                   }),
                                 );
                               }}
-                              ref={inputRef}
+                              
                               value={appState.aiContent?.cta?.link?.link}
                             />
                           </div>

@@ -63,21 +63,27 @@ export default function ContactSection(props: TProps) {
       setLoading(false);
     });
   }, []);
-  const dispatch= useDispatch()
-  const handleClick = (field?:TFields) => {
+  const dispatch = useDispatch();
+  const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("Contact");
       setIsOpen(true);
 
       setShowForm({ form: "", edit: "", show: false });
-      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          focusedField: field,
+          openedSlide: "Customize",
+        }),
+      );
     }
   };
 
   return (
     <button
-      className={`w-full text-left group relative isolate bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-      onClick={()=>handleClick()}
+      className={`group relative isolate w-full bg-white text-left ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      onClick={() => handleClick()}
     >
       <AddSectionButtons
         sectionTitle="Contact"
@@ -116,14 +122,26 @@ export default function ContactSection(props: TProps) {
                 />
               </svg>
             </div>
-            <h2 className={`text-3xl font-bold tracking-tight text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+            <h2
+              className={`text-3xl font-bold tracking-tight text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClick("title");
+              }}
+            >
               {loading ? (
                 <Skeleton className="h-14 w-[300px]" />
               ) : (
                 appState?.aiContent?.contact?.title ?? ""
               )}
             </h2>
-            <p className={`mt-6 text-lg leading-8 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+            <p
+              className={`mt-6 text-lg leading-8 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClick("description");
+              }}
+            >
               {loading ? (
                 <div className="flex flex-col gap-1">
                   <Skeleton className="h-8 w-full" />
@@ -137,7 +155,9 @@ export default function ContactSection(props: TProps) {
             <dl className="mt-10 space-y-4 text-base leading-7 text-gray-600">
               <div className="flex gap-x-4">
                 <dt className="flex-none">
-                  <span className="sr-only">{appState.aiContent?.contact?.address?.label ??""}</span>
+                  <span className="sr-only">
+                    {appState.aiContent?.contact?.address?.label ?? ""}
+                  </span>
                   <BuildingOffice2Icon
                     aria-hidden="true"
                     className="h-7 w-6 text-gray-400"
@@ -145,15 +165,18 @@ export default function ContactSection(props: TProps) {
                 </dt>
                 <dd>
                   {loading ? (
-                    <Skeleton className="w-[200px] h-8" />
+                    <Skeleton className="h-8 w-[200px]" />
                   ) : (
-                    appState.aiContent?.contact?.address?.value ??""
+                    appState.aiContent?.contact?.address?.value ?? ""
                   )}
                 </dd>
               </div>
               <div className="flex gap-x-4">
                 <dt className="flex-none">
-                  <span className="sr-only"> {appState.aiContent?.contact?.telephone?.label ??""}</span>
+                  <span className="sr-only">
+                    {" "}
+                    {appState.aiContent?.contact?.telephone?.label ?? ""}
+                  </span>
                   <PhoneIcon
                     aria-hidden="true"
                     className="h-7 w-6 text-gray-400"
@@ -161,20 +184,23 @@ export default function ContactSection(props: TProps) {
                 </dt>
                 <dd>
                   {loading ? (
-                    <Skeleton className="w-[150px] h-8" />
+                    <Skeleton className="h-8 w-[150px]" />
                   ) : (
                     <a
-                      href={`tel:${appState.aiContent?.contact?.telephone?.value ??""}`}
+                      href={`tel:${appState.aiContent?.contact?.telephone?.value ?? ""}`}
                       className="hover:text-gray-900"
                     >
-                      {appState.aiContent?.contact?.telephone?.value ??""}
+                      {appState.aiContent?.contact?.telephone?.value ?? ""}
                     </a>
                   )}
                 </dd>
               </div>
               <div className="flex gap-x-4">
                 <dt className="flex-none">
-                  <span className="sr-only">     {appState.aiContent?.contact?.email?.label ??""}</span>
+                  <span className="sr-only">
+                    {" "}
+                    {appState.aiContent?.contact?.email?.label ?? ""}
+                  </span>
                   <EnvelopeIcon
                     aria-hidden="true"
                     className="h-7 w-6 text-gray-400"
@@ -182,13 +208,13 @@ export default function ContactSection(props: TProps) {
                 </dt>
                 <dd>
                   {loading ? (
-                    <Skeleton className="w-[200px] h-8" />
+                    <Skeleton className="h-8 w-[200px]" />
                   ) : (
                     <a
-                      href={`mailto:${appState.aiContent?.contact?.email?.value ??""}`}
+                      href={`mailto:${appState.aiContent?.contact?.email?.value ?? ""}`}
                       className="hover:text-gray-900"
                     >
-                      {appState.aiContent?.contact?.email?.value ??""}
+                      {appState.aiContent?.contact?.email?.value ?? ""}
                     </a>
                   )}
                 </dd>

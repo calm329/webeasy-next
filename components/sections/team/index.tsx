@@ -83,7 +83,7 @@ export default function TeamSection(props: TProps) {
   }, []);
   return (
     <button
-      className={`group text-left relative w-full bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`group relative w-full bg-white py-24 text-left sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick()}
     >
       <AddSectionButtons
@@ -95,11 +95,19 @@ export default function TeamSection(props: TProps) {
         <div className="mx-auto max-w-2xl lg:mx-0">
           <h2
             className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick("title");
+            }}
           >
             {appState.aiContent?.team?.title ?? ""}
           </h2>
           <p
             className={`mt-6 text-lg leading-8 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick("description");
+            }}
           >
             {appState.aiContent?.team?.description ?? ""}
           </p>

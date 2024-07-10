@@ -132,11 +132,11 @@ const TestimonialSectionContent = (props: TProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const searchParams = useSearchParams();
   useEffect(() => {
-    if (appState.focusedField === "heading") {
+    if (appState.focusedField === "name") {
       inputRef.current?.focus();
     }
 
-    if (appState.focusedField === "subheading") {
+    if (appState.focusedField === "message") {
       textareaRef.current?.focus();
     }
   }, [appState]);
@@ -284,7 +284,7 @@ const TestimonialSectionContent = (props: TProps) => {
                               }),
                             );
                           }}
-                          ref={inputRef}
+                          // ref={inputRef}
                           value={appState.aiContent?.testimonialsSection?.role}
                         />
                       </div>

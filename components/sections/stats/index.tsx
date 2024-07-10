@@ -44,14 +44,20 @@ export default function StatsSection(props: TProps) {
   } = props;
 
   const appState = useAppSelector(AS);
-  const dispatch= useAppDispatch()
-  const handleClick = (field?:TFields) => {
+  const dispatch = useAppDispatch();
+  const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("Stats");
       setIsOpen(true);
 
       setShowForm({ form: "", edit: "", show: false });
-      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          focusedField: field,
+          openedSlide: "Customize",
+        }),
+      );
     }
   };
 
@@ -71,9 +77,9 @@ export default function StatsSection(props: TProps) {
     });
   }, []);
   return (
-    <button 
-      className={`group w-full relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-      onClick={()=>handleClick()}
+    <button
+      className={`group relative w-full bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      onClick={() => handleClick()}
     >
       <AddSectionButtons
         sectionTitle="Stats"
@@ -83,20 +89,36 @@ export default function StatsSection(props: TProps) {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="text-center">
-            <h2 className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+            <h2
+              className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClick("title");
+              }}
+            >
               {appState.aiContent?.stats?.title ?? ""}
             </h2>
-            <p className={`mt-4 text-lg leading-8 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+            <p
+              className={`mt-4 text-lg leading-8 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClick("description");
+              }}
+            >
               {appState.aiContent?.stats?.description ?? ""}
             </p>
           </div>
           <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
             {(appState.aiContent?.stats?.list ?? []).map((stat: any) => (
               <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
-                <dt className={`text-sm font-semibold leading-6 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+                <dt
+                  className={`text-sm font-semibold leading-6 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                >
                   {stat.name}
                 </dt>
-                <dd className={`order-first text-3xl font-semibold tracking-tight text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+                <dd
+                  className={`order-first text-3xl font-semibold tracking-tight text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                >
                   {stat.value}
                 </dd>
               </div>

@@ -96,6 +96,10 @@ export default function TestimonialSection(props: TProps) {
           <blockquote className="text-center text-xl font-semibold leading-8 text-gray-900 sm:text-2xl sm:leading-9">
             <p
               className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClick("message");
+              }}
             >
               {appState.aiContent?.testimonialsSection?.message ?? ""}
             </p>
@@ -111,6 +115,10 @@ export default function TestimonialSection(props: TProps) {
             <div className="mt-4 flex items-center justify-center space-x-3 text-base">
               <div
                 className={`font-semibold text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClick("name");
+                }}
               >
                 {" "}
                 {appState.aiContent?.testimonialsSection?.name ?? ""}

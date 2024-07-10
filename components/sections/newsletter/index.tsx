@@ -3,7 +3,7 @@ import { TFields, TSection } from "@/types";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import CustomContent from "@/lib/content/custom";
 type TProps = {
   editable?: boolean;
@@ -38,14 +38,20 @@ export default function NewsLetterSection(props: TProps) {
   } = props;
 
   const appState = useAppSelector(AS);
-  const dispatch= useAppDispatch()
-  const handleClick = (field?:TFields) => {
+  const dispatch = useAppDispatch();
+  const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("newsLetter");
       setIsOpen(true);
 
       setShowForm({ form: "", edit: "", show: false });
-      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          focusedField: field,
+          openedSlide: "Customize",
+        }),
+      );
     }
   };
 
@@ -67,8 +73,8 @@ export default function NewsLetterSection(props: TProps) {
 
   return (
     <button
-      className={`w-full group relative bg-white py-16 sm:py-24 lg:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-      onClick={()=>handleClick()}
+      className={`group relative w-full bg-white py-16 sm:py-24 lg:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      onClick={() => handleClick()}
     >
       <AddSectionButtons
         sectionTitle="NewsLetters"
@@ -77,11 +83,23 @@ export default function NewsLetterSection(props: TProps) {
       />
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 lg:grid-cols-12 lg:gap-8 lg:px-8">
         <div className="max-w-xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:col-span-7">
-          <h2 className={`inline sm:block lg:inline xl:block ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
-          {appState.aiContent?.newsLetter?.title ?? ""}
+          <h2
+            className={`inline sm:block lg:inline xl:block ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick("title");
+            }}
+          >
+            {appState.aiContent?.newsLetter?.title ?? ""}
           </h2>{" "}
-          <p className={`inline sm:block lg:inline xl:block ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
-          {appState.aiContent?.newsLetter?.description ?? ""}
+          <p
+            className={`inline sm:block lg:inline xl:block ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick("description");
+            }}
+          >
+            {appState.aiContent?.newsLetter?.description ?? ""}
           </p>
         </div>
         <form className="w-full max-w-md lg:col-span-5 lg:pt-2">

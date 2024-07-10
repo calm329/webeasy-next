@@ -68,7 +68,7 @@ export default function HeroSection(props: TProps) {
     });
   }, []);
   return (
-    <button className="group relative isolate bg-white w-full" onClick={()=>handleClick()}>
+    <button className="text-left group relative isolate bg-white w-full" onClick={()=>handleClick()}>
       <AddSectionButtons
         sectionTitle="Hero"
         setSectionModal={setSectionModal}
@@ -122,11 +122,21 @@ export default function HeroSection(props: TProps) {
           </div>
           <h1
             className={`mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick("title");
+            }}
           >
             {appState.aiContent?.heroSection?.title ?? ""}
           </h1>
           <p
             className={`mt-6 text-lg leading-8 text-gray-600   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick("description");
+            }}
           >
             {appState.aiContent?.heroSection?.description ?? ""}
           </p>

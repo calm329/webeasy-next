@@ -79,10 +79,16 @@ export default function CtaSection(props: TProps) {
       />
       <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+          <h2 className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`} onClick={(e) => {
+                e.stopPropagation();
+                handleClick("title");
+              }}>
             {appState.aiContent?.cta?.title ?? ""}
           </h2>
-          <p className={`mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+          <p className={`mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`} onClick={(e) => {
+                e.stopPropagation();
+                handleClick("description");
+              }}>
           {appState.aiContent?.cta?.description ?? ""}
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">

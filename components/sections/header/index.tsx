@@ -124,10 +124,20 @@ export default function HeaderSection(props:TProps) {
       </div>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className={`text-4xl font-bold tracking-tight text-white sm:text-6xl   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+          <h2 className={`text-4xl font-bold tracking-tight text-white sm:text-6xl   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClick("title");
+          }}
+          >
             {appState.aiContent?.header?.title ?? ""}
           </h2>
-          <p className={`mt-6 text-lg leading-8 text-gray-300   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+          <p className={`mt-6 text-lg leading-8 text-gray-300   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClick("description");
+          }}
+          >
           {appState.aiContent?.header?.description ?? ""}
           </p>
         </div>

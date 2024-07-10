@@ -132,11 +132,11 @@ const StatsContent = (props: TProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const searchParams = useSearchParams();
   useEffect(() => {
-    if (appState.focusedField === "heading") {
+    if (appState.focusedField === "title") {
       inputRef.current?.focus();
     }
 
-    if (appState.focusedField === "subheading") {
+    if (appState.focusedField === "description") {
       textareaRef.current?.focus();
     }
   }, [appState]);

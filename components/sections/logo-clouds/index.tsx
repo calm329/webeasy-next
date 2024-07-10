@@ -79,6 +79,10 @@ export default function LogoSection(props: TProps) {
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <h2
             className={`text-lg font-semibold leading-8 text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick("title");
+            }}
           >
             {appState.aiContent?.logoClouds?.title ?? ""}
           </h2>

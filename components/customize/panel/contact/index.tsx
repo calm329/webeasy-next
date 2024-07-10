@@ -164,7 +164,7 @@ const ContactContent = (props: TProps) => {
                               }),
                             );
                           }}
-                          ref={inputRef}
+                          // ref={inputRef}
                           value={appState.aiContent?.contact?.address?.value}
                         />
                       </div>
@@ -201,7 +201,7 @@ const ContactContent = (props: TProps) => {
                               }),
                             );
                           }}
-                          ref={inputRef}
+                          // ref={inputRef}
                           value={appState.aiContent?.contact?.telephone?.value}
                         />
                       </div>
@@ -238,7 +238,7 @@ const ContactContent = (props: TProps) => {
                               }),
                             );
                           }}
-                          ref={inputRef}
+                          // ref={inputRef}
                           value={appState.aiContent?.contact?.email?.value}
                         />
                       </div>
