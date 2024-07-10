@@ -57,15 +57,15 @@ const CustomTeam = (props: TProps) => {
           ...appState,
           aiContent: {
             ...appState.aiContent,
-            header: {
-              ...appState.aiContent.header,
-              list: appState.aiContent.header.list?.map((item: any) => {
+            team: {
+              ...appState.aiContent.team,
+              list: appState.aiContent.team.list?.map((item: any) => {
                 if (item.id === id) {
                   return {
                     id: item.id,
 
                     name: data.name,
-                    description: data.description,
+                    role: data.role,
                   };
                 } else {
                   return item;
@@ -83,14 +83,14 @@ const CustomTeam = (props: TProps) => {
           ...appState,
           aiContent: {
             ...appState.aiContent,
-            header: {
-              ...appState.aiContent.header,
+            team: {
+              ...appState.aiContent.team,
               list: [
-                ...(appState.aiContent.header.list ?? []),
+                ...(appState.aiContent.team.list ?? []),
                 {
                   id: id,
                   name: data.name,
-                  description: data.description,
+                  role: data.role,
                 },
               ],
             },
@@ -107,11 +107,11 @@ const CustomTeam = (props: TProps) => {
 
   useEffect(() => {
     if (showForm.edit) {
-      const header = appState?.aiContent?.header?.list?.filter(
+      const team = appState?.aiContent?.team?.list?.filter(
         (data: any) => data.id === showForm.edit,
       );
-      if (header) {
-        setData(header[0]);
+      if (team) {
+        setData(team[0]);
       }
     }
   }, [showForm.edit, appState]);
@@ -164,6 +164,46 @@ const CustomTeam = (props: TProps) => {
         </div>
       </div>
       <form className="flex flex-col gap-5 p-5">
+      <div className="flex flex-col gap-5">
+          <div className="flex justify-between ">
+            <h3 className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
+              Image
+            </h3>
+          </div>
+          <div>
+            <Uploader
+              defaultValue={data?.imageUrl ?? ""}
+              name={"imageUrl"}
+              label={""}
+              onChange={(value) => {
+                setData({ ...data, imageUrl: value });
+                if (showForm.edit) {
+                  dispatch(updateAppState({
+                    ...appState,
+                    aiContent: {
+                     ...appState.aiContent,
+                      team: {
+                        ...appState.aiContent.team,
+                        list: appState.aiContent.team.list?.map((item: any) => {
+                          if (item.id === showForm.edit) {
+                            return {
+                             ...item,
+                              imageUrl: value,
+                            };
+                          } else {
+                            return item;
+                          }
+                        }),
+                      },
+                    },
+                  }))
+                }
+                // handleChange("primaryImage", value);
+                // field.onChange(value);
+              }}
+            />
+          </div>
+        </div>
         <div className="flex flex-col ">
           <div className="flex justify-between text-sm font-medium leading-6 text-gray-900">
             <label htmlFor="name">Name</label>
@@ -176,7 +216,7 @@ const CustomTeam = (props: TProps) => {
             onChange={(e) => {
               setData({ ...data, name: e.target.value });
               if (showForm.edit) {
-                const data = appState.aiContent?.header?.list?.map((item: any) => {
+                const data = appState.aiContent?.team?.list?.map((item: any) => {
                     if (item.id === showForm.edit) {
                       return {
                         ...item,
@@ -192,8 +232,8 @@ const CustomTeam = (props: TProps) => {
                     ...appState,
                     aiContent: {
                       ...appState.aiContent,
-                      header: {
-                        ...appState.aiContent.header,
+                      team: {
+                        ...appState.aiContent.team,
                         list: data,
                       },
                     },
@@ -206,27 +246,27 @@ const CustomTeam = (props: TProps) => {
 
         <div className="flex flex-col ">
           <div className="flex justify-between text-sm font-medium leading-6 text-gray-900">
-            <label htmlFor="description"> Description</label>
+            <label htmlFor="role"> role</label>
           </div>
           <textarea
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            id={"description"}
-            value={data?.description ?? ""}
+            id={"role"}
+            value={data?.role ?? ""}
             onChange={(e) => {
-              setData({ ...data, description: e.target.value });
+              setData({ ...data, role: e.target.value });
               if (showForm.edit) {
                 dispatch(
                   updateAppState({
                     ...appState,
                     aiContent: {
                       ...appState.aiContent,
-                      header: {
-                        ...appState.aiContent.header,
-                        list: appState.aiContent.header.list?.map((item: any) => {
+                      team: {
+                        ...appState.aiContent.team,
+                        list: appState.aiContent.team.list?.map((item: any) => {
                           if (item.id === showForm.edit) {
                             return {
                               ...item,
-                              description: e.target.value,
+                              role: e.target.value,
                             };
                           } else {
                             return item;
