@@ -227,9 +227,11 @@ const BasicTemplate = (props: BasicTemplateProps) => {
 
   return (
     <div className="flex min-h-screen flex-col">
-      {sections.map((section, index) => (
-        <div key={index}>{section.content}</div>
-      ))}
+      <div className="flex flex-col gap-10">
+        {sections.map((section, index) => (
+          <div key={index}>{section.content}</div>
+        ))}
+      </div>
       <SectionModal
         open={sectionModal}
         setOpen={setSectionModal}
