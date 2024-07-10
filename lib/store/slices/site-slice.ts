@@ -49,6 +49,18 @@ const initialSite: AppState = {
     contact:{
       title:"",
       description:"",
+      address:{
+        label:"",
+        value:""
+      },
+      telephone:{
+        label:"",
+        value:""
+      },
+      email:{
+        label:"",
+        value:""
+      }
     },
     blog:{
       title: "",
