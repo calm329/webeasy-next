@@ -6,6 +6,7 @@ import CustomService from "@/components/ui/form/custom-service";
 import CustomFeature from "@/components/ui/form/custom-feature";
 import CustomTestimonial from "@/components/ui/form/custom-testimonial";
 import CustomFaq from "@/components/ui/form/custom-faq";
+import CustomHeader from "@/components/ui/form/custom-header";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -82,6 +83,16 @@ const CustomizePanel = (props: TProps) => {
 
       {showForm.form === "FAQ" && (
         <CustomFaq
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+
+      {showForm.form === "Card" && (
+        <CustomHeader
           handleChange={handleChange}
           section={section}
           setIsOpen={setIsOpen}

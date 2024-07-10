@@ -83,50 +83,43 @@ const HeaderContent = (props: TProps) => {
     if (!result.destination) {
       return;
     }
-    // const updatedItems = reorder(
-    //   appState.aiContent?.header?.list,
-    //   result.source.index,
-    //   result.destination.index,
-    // );
+    const updatedItems = reorder(
+      appState.aiContent?.header?.list,
+      result.source.index,
+      result.destination.index,
+    );
 
-    // dispatch(
-    //   updateAppState({
-    //     ...appState,
-    //     aiContent: {
-    //       ...appState.aiContent,
-    //       header: {
-    //         ...appState.aiContent?.header,
-    //         list: {
-    //           ...appState.aiContent?.header?.list,
-    //           list: updatedItems,
-    //         },
-    //       },
-    //     },
-    //   }),
-    // );
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          header: {
+            ...appState.aiContent?.header,
+            list: updatedItems,
+          },
+        },
+      }),
+    );
   };
 
-//   const handleDeleteButton = (name: string) => {
-//     dispatch(
-//       updateAppState({
-//         ...appState,
-//         aiContent: {
-//           ...appState.aiContent,
-//           header: {
-//             ...appState.aiContent?.header,
-//             button: {
-//               ...appState.aiContent?.header?.list,
-//               list: appState.aiContent?.header?.list?.filter((button: any) => {
-//                 if (button.question !== name) {
-//                   return button;
-//                 }
-//               }),
-//             },
-//           },
-//         },
-//       }),
-//     );
-//   };
+  const handleDeleteCard = (id: string) => {
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          header: {
+            ...appState.aiContent?.header,
+            list:appState.aiContent?.header?.list?.filter((card: any) => {
+              if (card.id !== id) {
+                return card;
+              }})
+          },
+        },
+      }),
+    );
+  };
 
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -280,14 +273,14 @@ const HeaderContent = (props: TProps) => {
                                 {appState.aiContent?.header?.list?.map(
                                   (item: any, index: any) => (
                                     <Draggable
-                                      key={item.name}
-                                      draggableId={item.name}
+                                      key={item.id}
+                                      draggableId={item.id}
                                       index={index}
                                     >
                                       {(provided, snapshot) => (
                                         <div
                                           className=" flex items-center justify-between"
-                                          key={item.name}
+                                          key={item.id}
                                           ref={provided.innerRef}
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
@@ -301,15 +294,15 @@ const HeaderContent = (props: TProps) => {
                                             <FiLink />
                                             <h4>{item.name}</h4>
                                           </div>
-                                          {/* <div className="flex items-center gap-2">
+                                          <div className="flex items-center gap-2">
                                             <MdModeEditOutline
                                               color="blue"
                                               size={20}
                                               onClick={() =>
                                                 setShowForm({
-                                                  form: "Button",
+                                                  form: "Card",
                                                   show: true,
-                                                  edit: item.name,
+                                                  edit: item.id,
                                                 })
                                               }
                                             />
@@ -317,10 +310,10 @@ const HeaderContent = (props: TProps) => {
                                               color="red"
                                               size={20}
                                               onClick={() =>
-                                                handleDeleteButton(item.name)
+                                                handleDeleteCard(item.id)
                                               }
                                             />
-                                          </div> */}
+                                          </div>
                                         </div>
                                       )}
                                     </Draggable>
@@ -331,21 +324,21 @@ const HeaderContent = (props: TProps) => {
                             )}
                           </Droppable>
                         </DragDropContext>
-                        {/* {appState.aiContent?.header?.list?.length !== 2 && (
+                      
                           <button
                             className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                             onClick={() =>
                               setShowForm({
-                                form: "Button",
+                                form: "Card",
                                 edit: "",
                                 show: true,
                               })
                             }
                           >
-                            Add Button
+                            Add Card
                             <IoMdAdd size={20} />
                           </button>
-                        )} */}
+                        
                       </div>
                     );
                 }

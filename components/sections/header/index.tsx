@@ -137,10 +137,10 @@ export default function HeaderSection(props:TProps) {
               key={card.name}
               className={`flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             >
-              <card.icon
+              {/* <card.icon
                 aria-hidden="true"
                 className="h-7 w-5 flex-none text-indigo-400"
-              />
+              /> */}
               <div className="text-base leading-7">
                 <h3 className="font-semibold text-white">{card.name}</h3>
                 <p className="mt-2 text-gray-300">{card.description}</p>
