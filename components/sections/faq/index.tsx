@@ -84,7 +84,7 @@ export default function FaqSection(props: TProps) {
           </h2>
           <dl className={`mt-10 space-y-6 divide-y divide-gray-900/10`}>
             {(appState.aiContent?.faq?.list?? [])?.map((faq:any) => (
-              <Disclosure key={faq.question} as="div" className={`pt-6`}>
+              <Disclosure key={faq.id} as="div" className={`pt-6`}>
                 <dt>
                   <DisclosureButton className="group flex w-full items-start justify-between text-left text-gray-900">
                     <span className="text-base font-semibold leading-7">{faq.question}</span>

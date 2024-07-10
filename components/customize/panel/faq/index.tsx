@@ -273,7 +273,7 @@ const FaqContent = (props: TProps) => {
                             )}
                           </Droppable>
                         </DragDropContext>
-                        {appState.aiContent?.faq?.list?.length !== 2 && (
+                        {/* {appState.aiContent?.faq?.list?.length  2 && ( */}
                           <button
                             className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                             onClick={() =>
@@ -287,7 +287,7 @@ const FaqContent = (props: TProps) => {
                             Add Faq
                             <IoMdAdd size={20} />
                           </button>
-                        )}
+                        {/* )} */}
                       </div>
                     );
                 }
