@@ -83,50 +83,46 @@ const FaqContent = (props: TProps) => {
     if (!result.destination) {
       return;
     }
-    // const updatedItems = reorder(
-    //   appState.aiContent?.faq?.list,
-    //   result.source.index,
-    //   result.destination.index,
-    // );
+    const updatedItems = reorder(
+      appState.aiContent?.faq?.list,
+      result.source.index,
+      result.destination.index,
+    );
 
-    // dispatch(
-    //   updateAppState({
-    //     ...appState,
-    //     aiContent: {
-    //       ...appState.aiContent,
-    //       faq: {
-    //         ...appState.aiContent?.faq,
-    //         list: {
-    //           ...appState.aiContent?.faq?.list,
-    //           list: updatedItems,
-    //         },
-    //       },
-    //     },
-    //   }),
-    // );
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          faq: {
+            ...appState.aiContent?.faq,
+            list: updatedItems,
+          },
+        },
+      }),
+    );
   };
 
-//   const handleDeleteButton = (name: string) => {
-//     dispatch(
-//       updateAppState({
-//         ...appState,
-//         aiContent: {
-//           ...appState.aiContent,
-//           faq: {
-//             ...appState.aiContent?.faq,
-//             button: {
-//               ...appState.aiContent?.faq?.list,
-//               list: appState.aiContent?.faq?.list?.filter((button: any) => {
-//                 if (button.question !== name) {
-//                   return button;
-//                 }
-//               }),
-//             },
-//           },
-//         },
-//       }),
-//     );
-//   };
+  const handleDeleteFaq = (id: string) => {
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          faq: {
+            ...appState.aiContent?.faq,
+            
+            list: appState.aiContent?.faq?.list?.filter((faq: any) => {
+              if (faq.id !== id) {
+                return faq;
+              }
+            }),
+            
+          },
+        },
+      }),
+    );
+  };
 
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -226,14 +222,14 @@ const FaqContent = (props: TProps) => {
                                 {appState.aiContent?.faq?.list?.map(
                                   (item: any, index: any) => (
                                     <Draggable
-                                      key={item.question}
-                                      draggableId={item.question}
+                                      key={item.id}
+                                      draggableId={item.id}
                                       index={index}
                                     >
                                       {(provided, snapshot) => (
                                         <div
                                           className=" flex items-center justify-between"
-                                          key={item.question}
+                                          key={item.id}
                                           ref={provided.innerRef}
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
@@ -247,15 +243,15 @@ const FaqContent = (props: TProps) => {
                                             <FiLink />
                                             <h4>{item.question}</h4>
                                           </div>
-                                          {/* <div className="flex items-center gap-2">
+                                          <div className="flex items-center gap-2">
                                             <MdModeEditOutline
                                               color="blue"
                                               size={20}
                                               onClick={() =>
                                                 setShowForm({
-                                                  form: "Button",
+                                                  form: "FAQ",
                                                   show: true,
-                                                  edit: item.question,
+                                                  edit: item.id,
                                                 })
                                               }
                                             />
@@ -263,10 +259,10 @@ const FaqContent = (props: TProps) => {
                                               color="red"
                                               size={20}
                                               onClick={() =>
-                                                handleDeleteButton(item.question)
+                                                handleDeleteFaq(item.id)
                                               }
                                             />
-                                          </div> */}
+                                          </div>
                                         </div>
                                       )}
                                     </Draggable>
@@ -277,21 +273,21 @@ const FaqContent = (props: TProps) => {
                             )}
                           </Droppable>
                         </DragDropContext>
-                        {/* {appState.aiContent?.faq?.list?.length !== 2 && (
+                        {appState.aiContent?.faq?.list?.length !== 2 && (
                           <button
                             className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                             onClick={() =>
                               setShowForm({
-                                form: "Button",
+                                form: "FAQ",
                                 edit: "",
                                 show: true,
                               })
                             }
                           >
-                            Add Button
+                            Add Faq
                             <IoMdAdd size={20} />
                           </button>
-                        )} */}
+                        )}
                       </div>
                     );
                 }

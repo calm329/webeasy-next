@@ -83,7 +83,7 @@ export default function TeamSection(props: TProps) {
   }, []);
   return (
     <button
-      className={`group relative w-full bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`group text-left relative w-full bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick()}
     >
       <AddSectionButtons

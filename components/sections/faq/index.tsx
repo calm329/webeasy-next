@@ -69,7 +69,7 @@ export default function FaqSection(props: TProps) {
   }, []);
   return (
     <button
-      className={`w-full bg-white group relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`w-full text-left bg-white group relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={()=>handleClick()}
     >
       <AddSectionButtons
@@ -82,7 +82,7 @@ export default function FaqSection(props: TProps) {
           <h2 className={`text-2xl font-bold leading-10 tracking-tight text-gray-900  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
           {(appState.aiContent?.faq?.title?? [])}
           </h2>
-          <dl className={`mt-10 space-y-6 divide-y divide-gray-900/10   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+          <dl className={`mt-10 space-y-6 divide-y divide-gray-900/10`}>
             {(appState.aiContent?.faq?.list?? [])?.map((faq:any) => (
               <Disclosure key={faq.question} as="div" className={`pt-6`}>
                 <dt>

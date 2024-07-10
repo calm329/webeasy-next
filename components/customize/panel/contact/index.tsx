@@ -114,19 +114,132 @@ const ContactContent = (props: TProps) => {
                           id={data}
                           placeholder={"Enter Title..."}
                           onChange={(e) => {
-                            dispatch(updateAppState({
+                            dispatch(
+                              updateAppState({
                                 ...appState,
-                                aiContent:{
-                                     ...appState.aiContent,
-                                    contact:{
-                                       ...appState.aiContent?.contact,
-                                        [data]: e.target.value
-                                    }
-                                }
-                            }))
+                                aiContent: {
+                                  ...appState.aiContent,
+                                  contact: {
+                                    ...appState.aiContent?.contact,
+                                    [data]: e.target.value,
+                                  },
+                                },
+                              }),
+                            );
                           }}
                           ref={inputRef}
                           value={appState.aiContent?.contact?.title}
+                        />
+                      </div>
+                    );
+
+                  case "address":
+                    return (
+                      <div className="flex flex-col border-t pt-5">
+                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                          <label htmlFor={data} className="my-auto">
+                            {data}
+                          </label>
+                        </div>
+
+                        <input
+                          type="text"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          id={data}
+                          placeholder={"Enter Title..."}
+                          onChange={(e) => {
+                            dispatch(
+                              updateAppState({
+                                ...appState,
+                                aiContent: {
+                                  ...appState.aiContent,
+                                  contact: {
+                                    ...appState.aiContent?.contact,
+                                    [data]: {
+                                      ...appState.aiContent?.contact[data],
+                                      value: e.target.value,
+                                    },
+                                  },
+                                },
+                              }),
+                            );
+                          }}
+                          ref={inputRef}
+                          value={appState.aiContent?.contact?.address?.value}
+                        />
+                      </div>
+                    );
+
+                  case "telephone":
+                    return (
+                      <div className="flex flex-col border-t pt-5">
+                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                          <label htmlFor={data} className="my-auto">
+                            {data}
+                          </label>
+                        </div>
+
+                        <input
+                          type="text"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          id={data}
+                          placeholder={"Enter Title..."}
+                          onChange={(e) => {
+                            dispatch(
+                              updateAppState({
+                                ...appState,
+                                aiContent: {
+                                  ...appState.aiContent,
+                                  contact: {
+                                    ...appState.aiContent?.contact,
+                                    [data]: {
+                                      ...appState.aiContent?.contact[data],
+                                      value: e.target.value,
+                                    },
+                                  },
+                                },
+                              }),
+                            );
+                          }}
+                          ref={inputRef}
+                          value={appState.aiContent?.contact?.telephone?.value}
+                        />
+                      </div>
+                    );
+
+                  case "email":
+                    return (
+                      <div className="flex flex-col border-t pt-5">
+                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                          <label htmlFor={data} className="my-auto">
+                            {data}
+                          </label>
+                        </div>
+
+                        <input
+                          type="text"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          id={data}
+                          placeholder={"Enter Title..."}
+                          onChange={(e) => {
+                            dispatch(
+                              updateAppState({
+                                ...appState,
+                                aiContent: {
+                                  ...appState.aiContent,
+                                  contact: {
+                                    ...appState.aiContent?.contact,
+                                    [data]: {
+                                      ...appState.aiContent?.contact[data],
+                                      value: e.target.value,
+                                    },
+                                  },
+                                },
+                              }),
+                            );
+                          }}
+                          ref={inputRef}
+                          value={appState.aiContent?.contact?.email?.value}
                         />
                       </div>
                     );
@@ -169,16 +282,18 @@ const ContactContent = (props: TProps) => {
                           id={data}
                           placeholder={"Enter Sub-heading"}
                           onChange={(e) => {
-                            dispatch(updateAppState({
+                            dispatch(
+                              updateAppState({
                                 ...appState,
-                                aiContent:{
-                                     ...appState.aiContent,
-                                    contact:{
-                                       ...appState.aiContent?.contact,
-                                        [data]: e.target.value
-                                    }
-                                }
-                            }))
+                                aiContent: {
+                                  ...appState.aiContent,
+                                  contact: {
+                                    ...appState.aiContent?.contact,
+                                    [data]: e.target.value,
+                                  },
+                                },
+                              }),
+                            );
                           }}
                           ref={textareaRef}
                           value={appState.aiContent?.contact?.description}

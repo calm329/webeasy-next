@@ -137,7 +137,7 @@ export default function ContactSection(props: TProps) {
             <dl className="mt-10 space-y-4 text-base leading-7 text-gray-600">
               <div className="flex gap-x-4">
                 <dt className="flex-none">
-                  <span className="sr-only">Address</span>
+                  <span className="sr-only">{appState.aiContent?.contact?.address?.label ??""}</span>
                   <BuildingOffice2Icon
                     aria-hidden="true"
                     className="h-7 w-6 text-gray-400"
@@ -147,13 +147,13 @@ export default function ContactSection(props: TProps) {
                   {loading ? (
                     <Skeleton className="w-[200px] h-8" />
                   ) : (
-                    "545 Mavis Island<br />Chicago, IL 99191"
+                    appState.aiContent?.contact?.address?.value ??""
                   )}
                 </dd>
               </div>
               <div className="flex gap-x-4">
                 <dt className="flex-none">
-                  <span className="sr-only">Telephone</span>
+                  <span className="sr-only"> {appState.aiContent?.contact?.telephone?.label ??""}</span>
                   <PhoneIcon
                     aria-hidden="true"
                     className="h-7 w-6 text-gray-400"
@@ -164,17 +164,17 @@ export default function ContactSection(props: TProps) {
                     <Skeleton className="w-[150px] h-8" />
                   ) : (
                     <a
-                      href="tel:+1 (555) 234-5678"
+                      href={`tel:${appState.aiContent?.contact?.telephone?.value ??""}`}
                       className="hover:text-gray-900"
                     >
-                      +1 (555) 234-5678
+                      {appState.aiContent?.contact?.telephone?.value ??""}
                     </a>
                   )}
                 </dd>
               </div>
               <div className="flex gap-x-4">
                 <dt className="flex-none">
-                  <span className="sr-only">Email</span>
+                  <span className="sr-only">     {appState.aiContent?.contact?.email?.label ??""}</span>
                   <EnvelopeIcon
                     aria-hidden="true"
                     className="h-7 w-6 text-gray-400"
@@ -185,10 +185,10 @@ export default function ContactSection(props: TProps) {
                     <Skeleton className="w-[200px] h-8" />
                   ) : (
                     <a
-                      href="mailto:hello@example.com"
+                      href={`mailto:${appState.aiContent?.contact?.email?.value ??""}`}
                       className="hover:text-gray-900"
                     >
-                      hello@example.com
+                      {appState.aiContent?.contact?.email?.value ??""}
                     </a>
                   )}
                 </dd>

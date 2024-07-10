@@ -215,6 +215,18 @@ export type TContact = {
   // image: string;
   title: string;
   description: string;
+  address:{
+    label: string;
+    value: string;
+  },
+  telephone:{
+    label: string;
+    value: string;
+  },
+  email:{
+    label: string;
+    value: string;
+  }
 };
 
 export type TServices = {

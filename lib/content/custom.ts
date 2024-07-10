@@ -868,6 +868,18 @@ class CustomContentApiService {
                       ...getAppState().aiContent,
                       contact: {
                         ...parsedData.contact,
+                        address:{
+                          label:"Address",
+                          value:"545 Mavis Island Chicago, IL 99191"
+                        },
+                        telephone:{
+                          label:"Telephone",
+                          value:"+1 (555) 234-5678"
+                        },
+                        email:{
+                          label:"Email",
+                          value:"hello@example.com"
+                        }
                       },
                     },
 
@@ -1060,16 +1072,19 @@ class CustomContentApiService {
               title:"Frequently asked questions",
               list:[
                 {
+                  id:"faq1",
                   question: "What's the best thing about Switzerland?",
                   answer:
                     "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
                 },
                 {
+                  id:"faq2",
                   question: "What's the best thing about Switzerland?",
                   answer:
                     "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
                 },
                 {
+                  id:"faq3",
                   question: "What's the best thing about Switzerland?",
                   answer:
                     "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
