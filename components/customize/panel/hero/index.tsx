@@ -132,7 +132,7 @@ const HeroContent = (props: TProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const searchParams = useSearchParams();
   useEffect(() => {
-    console.log("appState: " + appState.focusedField)
+    console.log("appState: " + appState.focusedField);
     if (appState.focusedField === "title") {
       inputRef.current?.focus();
     }
@@ -154,7 +154,7 @@ const HeroContent = (props: TProps) => {
                     return (
                       <div className="flex flex-col gap-5">
                         <div className="flex justify-between ">
-                          <h3 className=" text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
+                          <h3 className=" flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
                             Hero Image
                           </h3>
                           <div className="flex gap-5">
@@ -173,30 +173,33 @@ const HeroContent = (props: TProps) => {
                                           ...appState.aiContent?.hero,
                                           image: {
                                             ...appState.aiContent?.hero?.image,
-                                            imageUrl: "" ,
+                                            imageUrl: "",
                                           },
                                         },
                                       },
                                     }),
                                   );
-                                  regenerateHeroImage(imageGenerationType).then((image) => {
-                                    setLoadingImage(false);
-                                    dispatch(
-                                      updateAppState({
-                                        ...appState,
-                                        aiContent: {
-                                          ...appState.aiContent,
-                                          hero: {
-                                            ...appState.aiContent?.hero,
-                                            image: {
-                                              ...appState.aiContent?.hero?.image,
-                                              imageUrl: image ,
+                                  regenerateHeroImage(imageGenerationType).then(
+                                    (image) => {
+                                      setLoadingImage(false);
+                                      dispatch(
+                                        updateAppState({
+                                          ...appState,
+                                          aiContent: {
+                                            ...appState.aiContent,
+                                            hero: {
+                                              ...appState.aiContent?.hero,
+                                              image: {
+                                                ...appState.aiContent?.hero
+                                                  ?.image,
+                                                imageUrl: image,
+                                              },
                                             },
                                           },
-                                        },
-                                      }),
-                                    );
-                                  });
+                                        }),
+                                      );
+                                    },
+                                  );
                                 }}
                                 className="flex items-center gap-2 "
                               >
@@ -246,21 +249,22 @@ const HeroContent = (props: TProps) => {
                               name={data}
                               label={""}
                               onChange={(value) => {
-                                console.log("Upload:",data, value)
-                                dispatch(updateAppState({
-                                  ...appState,
-                                  aiContent:{
-                                     ...appState.aiContent,
-                                     hero: {
-                                       ...appState.aiContent?.hero,
-                                       image: {
-                                         ...appState.aiContent?.hero?.image,
-                                         imageUrl: value,
-                                       },
-                                     },
-                                
-                                  }
-                                }))
+                                console.log("Upload:", data, value);
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      hero: {
+                                        ...appState.aiContent?.hero,
+                                        image: {
+                                          ...appState.aiContent?.hero?.image,
+                                          imageUrl: value,
+                                        },
+                                      },
+                                    },
+                                  }),
+                                );
                                 // field.onChange(value);
                               }}
                             />
