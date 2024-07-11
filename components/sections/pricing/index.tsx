@@ -150,6 +150,15 @@ export default function PricingSection(props: TProps) {
                 "flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10",
                 editable && "rounded border-2 border-transparent hover:border-indigo-500"
               )}
+              onClick={(e)=>{
+                e.stopPropagation()
+                setShowForm({
+                  edit: tier.id,
+                  form:"Price",
+                  show: true,
+                  
+                })
+              }}
             >
               <div>
                 <div className="flex items-center justify-between gap-x-4">
