@@ -148,6 +148,7 @@ export default function PricingSection(props: TProps) {
                 tierIdx === 0 ? "lg:rounded-r-none" : "",
                 tierIdx === tiers.length - 1 ? "lg:rounded-l-none" : "",
                 "flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10",
+                editable && "rounded border-2 border-transparent hover:border-indigo-500"
               )}
             >
               <div>
@@ -157,7 +158,7 @@ export default function PricingSection(props: TProps) {
                     className={`${classNames(
                       tier.mostPopular ? "text-indigo-600" : "text-gray-900",
                       "text-lg font-semibold leading-8",
-                    )} ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    )} `}
                   >
                     {tier.name}
                   </h3>
@@ -167,11 +168,11 @@ export default function PricingSection(props: TProps) {
                     </p>
                   ) : null}
                 </div>
-                <p className={`mt-4 text-sm leading-6 text-gray-600  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+                <p className={`mt-4 text-sm leading-6 text-gray-600  `}>
                   {tier.description}
                 </p>
                 <p className="mt-6 flex items-baseline gap-x-1">
-                  <span className={`text-4xl font-bold tracking-tight text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+                  <span className={`text-4xl font-bold tracking-tight text-gray-900 `}>
                     {tier.priceMonthly}
                   </span>
                   <span className="text-sm font-semibold leading-6 text-gray-600">
@@ -183,7 +184,7 @@ export default function PricingSection(props: TProps) {
                   className="mt-8 space-y-3 text-sm leading-6 text-gray-600"
                 >
                   {tier.features.map((feature:any) => (
-                    <li key={feature} className={`flex gap-x-3 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+                    <li key={feature} className={`flex gap-x-3 `}>
                       <CheckIcon
                         aria-hidden="true"
                         className="h-6 w-5 flex-none text-indigo-600"
@@ -203,7 +204,7 @@ export default function PricingSection(props: TProps) {
                   "mt-8 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600",
                 )}
               >
-                Buy plan
+                {tier.button}
               </a>
             </div>
           ))}

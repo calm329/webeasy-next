@@ -1329,6 +1329,7 @@ class CustomContentApiService {
                     "48-hour support response time",
                   ],
                   mostPopular: false,
+                  button:"Buy Plan"
                 },
                 {
                   name: "Startup",
@@ -1344,6 +1345,7 @@ class CustomContentApiService {
                     "Marketing automations",
                   ],
                   mostPopular: true,
+                  button:"Buy Plan"
                 },
                 {
                   name: "Enterprise",
@@ -1359,6 +1361,7 @@ class CustomContentApiService {
                     "Marketing automations",
                   ],
                   mostPopular: false,
+                  button:"Buy Plan"
                 },
               ]
             },

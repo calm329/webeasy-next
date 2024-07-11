@@ -9,6 +9,7 @@ import CustomFaq from "@/components/ui/form/custom-faq";
 import CustomHeader from "@/components/ui/form/custom-header";
 import CustomStats from "@/components/ui/form/custom-stats";
 import CustomTeam from "@/components/ui/form/custom-team";
+import CustomPrice from "@/components/ui/form/custom-price";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -115,6 +116,16 @@ const CustomizePanel = (props: TProps) => {
 
       {showForm.form === "Team" && (
         <CustomTeam
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+
+      {showForm.form === "Price" && (
+        <CustomPrice
           handleChange={handleChange}
           section={section}
           setIsOpen={setIsOpen}
