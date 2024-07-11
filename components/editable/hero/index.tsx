@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import TypewriterEffect from "@/components/typewriter-effect";
 import AddSectionButtons from "@/components/add-section/buttons";
 import SectionModal from "@/components/ui/modal/section-modal";
+import { isImage } from "@/components/ui/form/uploader";
 
 type TProps = {
   hero: THero;
@@ -81,6 +82,8 @@ const EditableHero = ({
       </div>
     </div>
   );
+
+
 
   return (
     <section className="bg-gray-50 py-10">
@@ -163,14 +166,23 @@ const EditableHero = ({
                 {appState.aiContent.hero.image.imageUrl ? (
                   appState.aiContent.hero?.image?.show && (
                     <div className={`max-h-96 max-w-96 overflow-hidden py-2 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}>
-                      <Image
-                        src={appState.aiContent.hero.image.imageUrl}
-                        width={256}
-                        height={256}
-                        alt="Hero Image"
-                        className={`${appState.view === "Mobile" ? "" : "mx-auto"} h-full w-full rounded-3xl object-cover md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                        onClick={() => handleClick("imageUrl")}
-                      />
+                      {isImage(appState.aiContent.hero.image.imageUrl) ? (
+                        <Image
+                          src={appState.aiContent.hero.image.imageUrl}
+                          width={256}
+                          height={256}
+                          alt="Hero Image"
+                          className={`${appState.view === "Mobile" ? "" : "mx-auto"} h-full w-full rounded-3xl object-cover md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                          onClick={() => handleClick("imageUrl")}
+                        />
+                      ) :(
+                        <video
+                          src={appState.aiContent.hero.image.imageUrl}
+                          controls
+                          className={`${appState.view === "Mobile" ? "" : "mx-auto"} h-full w-full rounded-3xl object-cover md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                          onClick={() => handleClick("imageUrl")}
+                        />
+                      )}
                     </div>
                   )
                 ) : (

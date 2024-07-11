@@ -246,7 +246,21 @@ const HeroContent = (props: TProps) => {
                               name={data}
                               label={""}
                               onChange={(value) => {
-                                handleChange(data, value);
+                                console.log("Upload:",data, value)
+                                dispatch(updateAppState({
+                                  ...appState,
+                                  aiContent:{
+                                     ...appState.aiContent,
+                                     hero: {
+                                       ...appState.aiContent?.hero,
+                                       image: {
+                                         ...appState.aiContent?.hero?.image,
+                                         imageUrl: value,
+                                       },
+                                     },
+                                
+                                  }
+                                }))
                                 // field.onChange(value);
                               }}
                             />
