@@ -1,10 +1,14 @@
-import Link from "next/link";
-import { TFields, TSection } from "@/types";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import CustomContent from "@/lib/content/custom";
+import { TFields, TSection } from "@/types";
+import { Dispatch, SetStateAction } from "react";
+
+import {Skeleton} from "@/components/ui/skeleton"; // Import the Skeleton component here
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -26,6 +30,7 @@ type TProps = {
     show: boolean;
   };
 };
+
 export default function NewsLetterSection(props: TProps) {
   const {
     editable,
@@ -39,6 +44,8 @@ export default function NewsLetterSection(props: TProps) {
 
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
+  const [isLoading, setLoading] = useState(true); // State to manage loading state
+
   const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("newsLetter");
@@ -50,13 +57,14 @@ export default function NewsLetterSection(props: TProps) {
           ...appState,
           focusedField: field,
           openedSlide: "Customize",
-        }),
+        })
       );
     }
   };
 
   useEffect(() => {
-    CustomContent.getData({
+    // Simulating data fetching
+    CustomContent.getNewsLetter({
       data: {
         businessName: appState.aiContent.banner.businessName,
         businessType: appState.aiContent.businessType ?? "",
@@ -66,14 +74,15 @@ export default function NewsLetterSection(props: TProps) {
       individual: false,
       type: "list",
     }).then(() => {
-      // setContactData(data);
-      // setLoading(false);
+      setLoading(false); // Set loading to false when data fetch completes
     });
   }, []);
 
   return (
     <button
-      className={`group relative w-full bg-white py-16 sm:py-24 lg:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`group relative w-full text-left bg-white py-16 sm:py-24 lg:py-32 ${
+        editable && "rounded border-2 border-transparent hover:border-indigo-500"
+      }`}
       onClick={() => handleClick()}
     >
       <AddSectionButtons
@@ -82,24 +91,38 @@ export default function NewsLetterSection(props: TProps) {
         setTriggerSection={setTriggerSection}
       />
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 lg:grid-cols-12 lg:gap-8 lg:px-8">
-        <div className="max-w-xl text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:col-span-7">
+        <div className="max-w-xl tracking-tight text-gray-900 flex flex-col gap-5  lg:col-span-7">
           <h2
-            className={`inline sm:block lg:inline xl:block ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+            className={`inline  text-3xl sm:text-4xl font-bold sm:block lg:inline xl:block ${
+              editable &&
+              "rounded border-2 border-transparent hover:border-indigo-500"
+            }`}
             onClick={(e) => {
               e.stopPropagation();
               handleClick("title");
             }}
           >
-            {appState.aiContent?.newsLetter?.title ?? ""}
+            {isLoading ? ( // Conditional rendering based on loading state
+              <Skeleton className="h-8 w-48" /> // Example skeleton size
+            ) : (
+              appState.aiContent?.newsLetter?.title ?? ""
+            )}
           </h2>{" "}
           <p
-            className={`inline sm:block lg:inline xl:block ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+            className={`inline sm:block lg:inline xl:block ${
+              editable &&
+              "rounded border-2 border-transparent hover:border-indigo-500"
+            }`}
             onClick={(e) => {
               e.stopPropagation();
               handleClick("description");
             }}
           >
-            {appState.aiContent?.newsLetter?.description ?? ""}
+            {isLoading ? ( // Conditional rendering based on loading state
+              <Skeleton className="h-6 w-96 mt-2" /> // Example skeleton size
+            ) : (
+              appState.aiContent?.newsLetter?.description ?? ""
+            )}
           </p>
         </div>
         <form className="w-full max-w-md lg:col-span-5 lg:pt-2">
@@ -123,7 +146,6 @@ export default function NewsLetterSection(props: TProps) {
               Subscribe
             </button>
           </div>
-          
         </form>
       </div>
     </button>

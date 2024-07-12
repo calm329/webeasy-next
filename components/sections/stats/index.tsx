@@ -2,8 +2,12 @@ import AddSectionButtons from "@/components/add-section/buttons";
 import CustomContent from "@/lib/content/custom";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { TFields, TSection } from "@/types";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
+
+// Import the Skeleton component
+import { Skeleton } from "@/components/ui/skeleton";
+
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -25,6 +29,7 @@ type TProps = {
     show: boolean;
   };
 };
+
 const stats = [
   { id: 1, name: "Creators on the platform", value: "8,000+" },
   { id: 2, name: "Flat platform fee", value: "3%" },
@@ -45,6 +50,8 @@ export default function StatsSection(props: TProps) {
 
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
+  const [isLoading, setLoading] = useState(true); // State to manage loading state
+
   const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("Stats");
@@ -62,7 +69,8 @@ export default function StatsSection(props: TProps) {
   };
 
   useEffect(() => {
-    CustomContent.getData({
+    // Simulating data fetching
+    CustomContent.getStats({
       data: {
         businessName: appState.aiContent.banner.businessName,
         businessType: appState.aiContent.businessType ?? "",
@@ -72,13 +80,15 @@ export default function StatsSection(props: TProps) {
       individual: false,
       type: "list",
     }).then(() => {
-      // setContactData(data);
-      // setLoading(false);
+      setLoading(false); // Set loading to false when data fetch completes
     });
   }, []);
+
   return (
     <button
-      className={`group relative w-full bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`group relative w-full bg-white py-24 sm:py-32 ${
+        editable && "rounded border-2 border-transparent hover:border-indigo-500"
+      }`}
       onClick={() => handleClick()}
     >
       <AddSectionButtons
@@ -90,39 +100,64 @@ export default function StatsSection(props: TProps) {
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="text-center">
             <h2
-              className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl ${
+                editable && "rounded border-2 border-transparent hover:border-indigo-500"
+              }`}
               onClick={(e) => {
                 e.stopPropagation();
                 handleClick("title");
               }}
             >
-              {appState.aiContent?.stats?.title ?? ""}
+              {isLoading ? (
+                <Skeleton className="h-12 w-64" />
+              ) : (
+                appState.aiContent?.stats?.title ?? ""
+              )}
             </h2>
             <p
-              className={`mt-4 text-lg leading-8 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              className={`mt-4 text-lg leading-8 text-gray-600 ${
+                editable && "rounded border-2 border-transparent hover:border-indigo-500"
+              }`}
               onClick={(e) => {
                 e.stopPropagation();
                 handleClick("description");
               }}
             >
-              {appState.aiContent?.stats?.description ?? ""}
+              {isLoading ? (
+                <Skeleton className="h-6 w-96" />
+              ) : (
+                appState.aiContent?.stats?.description ?? ""
+              )}
             </p>
           </div>
           <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
-            {(appState.aiContent?.stats?.list ?? []).map((stat: any) => (
-              <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
-                <dt
-                  className={`text-sm font-semibold leading-6 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                >
-                  {stat.name}
-                </dt>
-                <dd
-                  className={`order-first text-3xl font-semibold tracking-tight text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                >
-                  {stat.value}
-                </dd>
-              </div>
-            ))}
+            {(isLoading || appState.aiContent?.stats?.list?.length === 0) ? (
+              Array.from({ length: 4 }).map((_, idx) => (
+                <div key={idx} className="flex flex-col bg-gray-400/5 p-8">
+                  <Skeleton className="h-6 w-24 mb-4" />
+                  <Skeleton className="h-8 w-20 mt-6" />
+                </div>
+              ))
+            ) : (
+              appState.aiContent?.stats?.list.map((stat: any) => (
+                <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
+                  <dt
+                    className={`text-sm font-semibold leading-6 text-gray-600 ${
+                      editable && "rounded border-2 border-transparent hover:border-indigo-500"
+                    }`}
+                  >
+                    {stat.name}
+                  </dt>
+                  <dd
+                    className={`order-first text-3xl font-semibold tracking-tight text-gray-900 ${
+                      editable && "rounded border-2 border-transparent hover:border-indigo-500"
+                    }`}
+                  >
+                    {stat.value}
+                  </dd>
+                </div>
+              ))
+            )}
           </dl>
         </div>
       </div>

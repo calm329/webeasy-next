@@ -5,11 +5,13 @@ import {
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { TFields, TSection } from '@/types';
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
 import CustomContent from "@/lib/content/custom";
+import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
+
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -31,28 +33,9 @@ type TProps = {
     show: boolean;
   };
 }
-const cards = [
-  {
-    name: "Sales",
-    description:
-      "Consectetur vel non. Rerum ut consequatur nobis unde. Enim est quo corrupti consequatur.",
-    icon: PhoneIcon,
-  },
-  {
-    name: "Technical Support",
-    description:
-      "Quod possimus sit modi rerum exercitationem quaerat atque tenetur ullam.",
-    icon: LifebuoyIcon,
-  },
-  {
-    name: "Media Inquiries",
-    description:
-      "Ratione et porro eligendi est sed ratione rerum itaque. Placeat accusantium impedit eum odit.",
-    icon: NewspaperIcon,
-  },
-];
 
-export default function HeaderSection(props:TProps) {
+
+export default function HeaderSection(props: TProps) {
   const {
     editable,
     setIsOpen,
@@ -64,8 +47,10 @@ export default function HeaderSection(props:TProps) {
   } = props;
 
   const appState = useAppSelector(AS);
-  const dispatch= useAppDispatch()
-  const handleClick = (field?:TFields) => {
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true); // Add loading state
+
+  const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("Header");
       setIsOpen(true);
@@ -76,7 +61,7 @@ export default function HeaderSection(props:TProps) {
   };
 
   useEffect(() => {
-    CustomContent.getData({
+    CustomContent.getHeader({
       data: {
         businessName: appState.aiContent.banner.businessName,
         businessType: appState.aiContent.businessType ?? "",
@@ -87,12 +72,13 @@ export default function HeaderSection(props:TProps) {
       type: "list",
     }).then(() => {
       // setContactData(data);
-      // setLoading(false);
+      setLoading(false); // Set loading to false when data is fetched
     });
   }, []);
+
   return (
-    <button className="text-left w-full overflow-visible relative group isolate  bg-gray-900 py-24 sm:py-32" onClick={()=>handleClick()}>
-       <AddSectionButtons
+    <button className="text-left w-full overflow-visible relative group isolate  bg-gray-900 py-24 sm:py-32" onClick={() => handleClick()}>
+      <AddSectionButtons
         sectionTitle="Header"
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
@@ -124,43 +110,49 @@ export default function HeaderSection(props:TProps) {
       </div>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className={`text-4xl font-bold tracking-tight text-white sm:text-6xl   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClick("title");
-          }}
+          <h2 className={`text-4xl font-bold tracking-tight text-white sm:text-6xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick("title");
+            }}
           >
-            {appState.aiContent?.header?.title ?? ""}
+            {loading ? <Skeleton className="h-6 w-3/4 mb-2" /> : appState.aiContent?.header?.title ?? ""}
           </h2>
-          <p className={`mt-6 text-lg leading-8 text-gray-300   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClick("description");
-          }}
+          <p className={`mt-6 text-lg leading-8 text-gray-300 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick("description");
+            }}
           >
-          {appState.aiContent?.header?.description ?? ""}
+            {loading ? <Skeleton className="h-4 w-3/4 mb-2" /> : appState.aiContent?.header?.description ?? ""}
           </p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8">
-          { (appState.aiContent?.header?.list ?? []).map((card:any) => (
-            <div
-              key={card.name}
-              className={`flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10   ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-              onClick={(e)=>{
-                e.stopPropagation();
-                setShowForm({ form: "Card", edit: card.id, show: true });
-              }}
-            >
-              {/* <card.icon
-                aria-hidden="true"
-                className="h-7 w-5 flex-none text-indigo-400"
-              /> */}
-              <div className="text-base leading-7">
-                <h3 className="font-semibold text-white">{card.name}</h3>
-                <p className="mt-2 text-gray-300">{card.description}</p>
+          {loading ? (
+            Array.from({ length: 3 }).map((_, idx) => (
+              <Skeleton key={idx} className="h-40 w-full rounded-xl" />
+            ))
+          ) : (
+            (appState.aiContent?.header?.list ?? []).map((card: any) => (
+              <div
+                key={card.name}
+                className={`flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowForm({ form: "Card", edit: card.id, show: true });
+                }}
+              >
+                {/* <card.icon
+                  aria-hidden="true"
+                  className="h-7 w-5 flex-none text-indigo-400"
+                /> */}
+                <div className="text-base leading-7">
+                  <h3 className="font-semibold text-white">{card.name}</h3>
+                  <p className="mt-2 text-gray-300">{card.description}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </button>

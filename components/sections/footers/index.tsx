@@ -2,9 +2,11 @@ import AddSectionButtons from "@/components/add-section/buttons";
 import CustomContent from "@/lib/content/custom";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { TFields, TSection } from "@/types";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
+
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -39,8 +41,10 @@ export default function FooterSection(props: TProps) {
   } = props;
 
   const appState = useAppSelector(AS);
-  const dispatch= useAppDispatch()
-  const handleClick = (field?:TFields) => {
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true); // Add loading state
+
+  const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("Footer");
       setIsOpen(true);
@@ -51,7 +55,7 @@ export default function FooterSection(props: TProps) {
   };
 
   useEffect(() => {
-    CustomContent.getData({
+    CustomContent.getFooter({
       data: {
         businessName: appState.aiContent.banner.businessName,
         businessType: appState.aiContent.businessType ?? "",
@@ -62,14 +66,15 @@ export default function FooterSection(props: TProps) {
       type: "list",
     }).then(() => {
       // setContactData(data);
-      // setLoading(false);
+      setLoading(false); // Set loading to false when data is fetched
     });
   }, []);
+
   return (
     <button
       aria-labelledby="footer-heading"
       className={`group relative w-full bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-      onClick={()=>handleClick()}
+      onClick={() => handleClick()}
     >
       <AddSectionButtons
         sectionTitle="Footers"
@@ -87,11 +92,21 @@ export default function FooterSection(props: TProps) {
                 className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
               >
                 <h3 className={`text-sm font-semibold leading-6 text-gray-900`}>
-                  {appState.aiContent?.footer?.list?.solutions?.title ?? ""}
+                  {loading ? (
+                    <Skeleton className="h-4 w-1/2 mb-2" />
+                  ) : (
+                    appState.aiContent?.footer?.list?.solutions?.title ?? ""
+                  )}
                 </h3>
                 <ul role="list" className="mt-6 space-y-4">
-                  {appState.aiContent?.footer?.list?.solutions?.list?.map(
-                    (item: any) => (
+                  {loading ? (
+                    Array.from({ length: 4 }).map((_, idx) => (
+                      <li key={idx}>
+                        <Skeleton className="h-4 w-3/4 mb-2" />
+                      </li>
+                    ))
+                  ) : (
+                    appState.aiContent?.footer?.list?.solutions?.list?.map((item: any) => (
                       <li key={item.name}>
                         <a
                           href={item.href}
@@ -100,21 +115,29 @@ export default function FooterSection(props: TProps) {
                           {item.name}
                         </a>
                       </li>
-                    ),
+                    ))
                   )}
                 </ul>
               </div>
               <div
                 className={`mt-10 md:mt-0  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
               >
-                <h3
-                  className={`text-sm font-semibold leading-6 text-gray-900 `}
-                >
-                  {appState.aiContent?.footer?.list?.solutions?.title ?? ""}
+                <h3 className={`text-sm font-semibold leading-6 text-gray-900`}>
+                  {loading ? (
+                    <Skeleton className="h-4 w-1/2 mb-2" />
+                  ) : (
+                    appState.aiContent?.footer?.list?.support?.title ?? ""
+                  )}
                 </h3>
                 <ul role="list" className="mt-6 space-y-4">
-                  {appState.aiContent?.footer?.list?.support?.list?.map(
-                    (item: any) => (
+                  {loading ? (
+                    Array.from({ length: 4 }).map((_, idx) => (
+                      <li key={idx}>
+                        <Skeleton className="h-4 w-3/4 mb-2" />
+                      </li>
+                    ))
+                  ) : (
+                    appState.aiContent?.footer?.list?.support?.list?.map((item: any) => (
                       <li key={item.name}>
                         <a
                           href={item.href}
@@ -123,7 +146,7 @@ export default function FooterSection(props: TProps) {
                           {item.name}
                         </a>
                       </li>
-                    ),
+                    ))
                   )}
                 </ul>
               </div>
@@ -133,11 +156,21 @@ export default function FooterSection(props: TProps) {
                 className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
               >
                 <h3 className="text-sm font-semibold leading-6 text-gray-900">
-                  Company
+                  {loading ? (
+                    <Skeleton className="h-4 w-1/2 mb-2" />
+                  ) : (
+                    "Company"
+                  )}
                 </h3>
                 <ul role="list" className="mt-6 space-y-4">
-                  {appState.aiContent?.footer?.list?.company?.list?.map(
-                    (item: any) => (
+                  {loading ? (
+                    Array.from({ length: 4 }).map((_, idx) => (
+                      <li key={idx}>
+                        <Skeleton className="h-4 w-3/4 mb-2" />
+                      </li>
+                    ))
+                  ) : (
+                    appState.aiContent?.footer?.list?.company?.list?.map((item: any) => (
                       <li key={item.name}>
                         <a
                           href={item.href}
@@ -146,7 +179,7 @@ export default function FooterSection(props: TProps) {
                           {item.name}
                         </a>
                       </li>
-                    ),
+                    ))
                   )}
                 </ul>
               </div>
@@ -154,11 +187,21 @@ export default function FooterSection(props: TProps) {
                 className={`mt-10 md:mt-0  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
               >
                 <h3 className="text-sm font-semibold leading-6 text-gray-900">
-                  Legal
+                  {loading ? (
+                    <Skeleton className="h-4 w-1/2 mb-2" />
+                  ) : (
+                    "Legal"
+                  )}
                 </h3>
                 <ul role="list" className="mt-6 space-y-4">
-                  {appState.aiContent?.footer?.list?.legal?.list?.map(
-                    (item: any) => (
+                  {loading ? (
+                    Array.from({ length: 4 }).map((_, idx) => (
+                      <li key={idx}>
+                        <Skeleton className="h-4 w-3/4 mb-2" />
+                      </li>
+                    ))
+                  ) : (
+                    appState.aiContent?.footer?.list?.legal?.list?.map((item: any) => (
                       <li key={item.name}>
                         <a
                           href={item.href}
@@ -167,7 +210,7 @@ export default function FooterSection(props: TProps) {
                           {item.name}
                         </a>
                       </li>
-                    ),
+                    ))
                   )}
                 </ul>
               </div>
@@ -175,10 +218,18 @@ export default function FooterSection(props: TProps) {
           </div>
           <div className="mt-10 xl:mt-0">
             <h3 className="text-sm font-semibold leading-6 text-gray-900">
-              {appState.aiContent?.footer?.title ?? ""}
+              {loading ? (
+                <Skeleton className="h-4 w-1/2 mb-2" />
+              ) : (
+                appState.aiContent?.footer?.title ?? ""
+              )}
             </h3>
             <p className="mt-2 text-sm leading-6 text-gray-600">
-              {appState.aiContent?.footer?.description ?? ""}
+              {loading ? (
+                <Skeleton className="h-4 w-3/4 mb-2" />
+              ) : (
+                appState.aiContent?.footer?.description ?? ""
+              )}
             </p>
             <form className="mt-6 sm:flex sm:max-w-md">
               <label htmlFor="email-address" className="sr-only">
@@ -206,16 +257,22 @@ export default function FooterSection(props: TProps) {
         </div>
         <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 md:flex md:items-center md:justify-between lg:mt-24">
           <div className="flex space-x-6 md:order-2">
-            {appState.aiContent?.footer?.list?.social?.map((item: any) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-gray-400 hover:text-gray-500"
-              >
-                <span className="sr-only">{item.name}</span>
-                {/* <item.icon aria-hidden="true" className="h-6 w-6" /> */}
-              </Link>
-            ))}
+            {loading ? (
+              Array.from({ length: 4 }).map((_, idx) => (
+                <Skeleton key={idx} className="h-6 w-6" />
+              ))
+            ) : (
+              appState.aiContent?.footer?.list?.social?.map((item: any) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-400 hover:text-gray-500"
+                >
+                  <span className="sr-only">{item.name}</span>
+                  {/* <item.icon aria-hidden="true" className="h-6 w-6" /> */}
+                </Link>
+              ))
+            )}
           </div>
           <p className="mt-8 text-xs leading-5 text-gray-500 md:order-1 md:mt-0">
             &copy; 2020 Your Company, Inc. All rights reserved.

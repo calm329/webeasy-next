@@ -15,7 +15,187 @@ export async function POST(
   const { data, mediaCaption, type, services,testimonials } = await request.json();
   let fields = "";
   switch (params.field) {
-    
+    case "testimonialsSection":
+      fields = `only generate the ${type?? ""} data for testimonialsSection and please don't add any other fields expect the given 
+      "testimonialsSection": {
+                "image":"https://tailwindui.com/img/logos/workcation-logo-indigo-600.svg",
+                "message":"**message**",
+                "avatar":"https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+                "name":"**name**",
+                "role":"**role**",
+                
+              } only generate the one testimonial and don't create a array of the given object only return the object`
+    break;
+    case "team":
+    fields = `only generate the ${type?? ""} data for team and please don't add any other fields expect the given 
+    "team": {
+           "title":"**title**",
+            "description":"**description**",
+            "list": Array<
+              {
+                  "id":"**unique id**",
+                  "name": '**name**',
+                  "role": '**role**',
+                  "imageUrl":
+                    'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80',
+                  "xUrl": '#',
+                  "linkedinUrl": '#',
+                }
+            >
+          } only generate three objects in the team.list`
+  break;
+    case "stats":
+      fields = `only generate the ${type?? ""} data for stats and please don't add any other fields expect the given 
+      "stats": {
+             "title":"**title**",
+              "description":"**description**",
+              "list": Array<
+                { "id": "**unique id**", "name": "**name**", "value": "**value**" },
+              >
+            } only generate 4 items in the stats.list`
+    break;
+    case "pricing":
+      fields = `only generate the ${type?? ""} data for pricing and please don't add any other fields expect the given 
+      "pricing": {
+              "title":"**title**",
+              "description":"**description**",
+              "list":Array<
+              {
+                  "name": "**name**",
+                  "id": "**unique id**",
+                  "href": "#",
+                  "priceMonthly": "**priceMonthly**",
+                  "description": "**description**",
+                  "features": Array<string>,
+                  "mostPopular": boolean,
+                  "button":"Buy Plan"
+                }
+              >
+            } generate three list of object and 1 index will have mostPopular as true else false`
+                    break;
+    case "newsLetter":
+      fields = `only generate the ${type?? ""} data for newsLetter and please don't add any other fields expect the given 
+      "newsLetter": {
+              "title":"**title**",
+              "description":"**description**"
+            }`
+                    break;
+
+    case "logoClouds":
+      fields = `only generate the ${type?? ""} data for logo and please don't add any other fields expect the given 
+      "logoClouds": {
+                  "title":"**title**"
+        }`
+                    break;
+
+    case "heroSection":
+      fields = `only generate the ${type?? ""} data for heroSection and please don't add any other fields expect the given 
+      "heroSection": {
+                  "title":"**title**",
+                  "description":"**description**",
+                  "button":{
+                    "label":"**label**",
+                    "link":"#",
+                  },
+                  "link":{
+                    "label":"**label**",
+                    "link":"#",
+                  }
+                }`
+                    break;
+    case "header":
+      fields = `only generate the ${type?? ""} data for header and please don't add any other fields expect the given 
+      "header": {
+                "title":"**title**",
+                "description":"**description**",
+                "list":Array<
+                  {
+                    id:"**unique id**",
+                    name: "**name**",
+                    description:
+                      "**description**.",
+                  }
+                >
+              } only generate three header.list object`
+                    break;
+    case "footer":
+      fields = `only generate the ${type?? ""} data for footer and please don't add any other fields expect the given 
+      "footer": {
+              "title":"**title**",
+              "list":{
+                "solutions":{
+                  "title":"**title**",
+                  "list": Array<
+                  { "name": "**name**", "href": "#" },
+                >},
+                "support": {
+                  "title":"**title**",
+                  "list": Array<
+                  { "name": "**name**", "href": "#" },
+                >},
+                "company": {
+                  "title":"**title**",
+                  "list": Array<
+                  { "name": "**name**", "href": "#" },
+                >},
+                "legal": {
+                  "title":"**title**",
+                  "list": Array<
+                  { "name": "**name**", "href": "#" },
+                >},
+                social: [
+                  {
+                    "name": "Facebook",
+                    "href": "#",
+                  },
+                  {
+                    "name": "Instagram",
+                    "href": "#",
+                  },
+                  {
+                    "name": "X",
+                    "href": "#",
+                  },
+                  {
+                    "name": "GitHub",
+                    "href": "#",
+                  },
+                  {
+                    "name": "YouTube",
+                    "href": "#",
+                  },
+                ],
+            }
+            }`
+      break;
+    case "faq":
+      fields = `only generate the ${type ?? ""} data for FAQ section and please don't add any other fields expect the given 
+      "faq": {
+              "title":"**title**",
+              "list":Array<
+                {
+                  id:"**unique id**",
+                  question: "**question**",
+                  answer:
+                    "**answer**",
+                }>
+            } and only generate three question and answers`
+      break;
+    case "cta":
+      fields = `only generate the ${type ?? ""} data for CTA section and please don't add any other fields expect the given 
+      "cta": {
+              "title":"**title**",
+              "description":"**description**",
+              "button":{
+                "label":"**label**",
+                "link":"#",
+              },
+              "link":{
+                "label":"**label**",
+                "link":"#",
+              }
+            }`
+      break;
     case "contact":
       fields = `only generate the ${type ?? ""} data for Contact and please don't add any other fields expect the given 
       "contact":{

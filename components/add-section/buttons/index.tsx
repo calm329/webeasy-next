@@ -26,7 +26,7 @@ const AddSectionButtons = ({
   return (
     <>
       <button
-        className={`z-10  top-0 absolute left-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform rounded-xl border bg-indigo-500 px-5 py-2 text-white group-hover:flex  ${classNameUp}`}
+        className={`z-1  top-0 absolute left-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform rounded-xl border bg-indigo-500 px-5 py-2 text-white group-hover:flex  ${classNameUp}`}
         onClick={(e) => {
           e.stopPropagation();
           setSectionModal(true);
@@ -40,7 +40,7 @@ const AddSectionButtons = ({
         + Add Section
       </button>
       <button
-        className={`z-10 absolute -bottom-10 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform rounded-xl border bg-indigo-500 px-5 py-2 text-white group-hover:flex ${classNameDown}`}
+        className={`z-1 absolute -bottom-10 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform rounded-xl border bg-indigo-500 px-5 py-2 text-white group-hover:flex ${classNameDown}`}
         onClick={(e) => {
           e.stopPropagation();
           setSectionModal(true);

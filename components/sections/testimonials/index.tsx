@@ -1,11 +1,15 @@
 import Image from "next/image";
 import { TFields, TSection } from "@/types";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppSelector } from "@/lib/store/hooks";
 import CustomContent from "@/lib/content/custom";
 import { useAppDispatch } from "../../../lib/store/hooks";
+
+// Import the Skeleton component
+import { Skeleton } from "@/components/ui/skeleton";
+
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -27,6 +31,7 @@ type TProps = {
     show: boolean;
   };
 };
+
 export default function TestimonialSection(props: TProps) {
   const {
     editable,
@@ -40,6 +45,8 @@ export default function TestimonialSection(props: TProps) {
 
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
+  const [isLoading, setLoading] = useState(true); // State to manage loading state
+
   const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("TestimonialSection");
@@ -57,7 +64,7 @@ export default function TestimonialSection(props: TProps) {
   };
 
   useEffect(() => {
-    CustomContent.getData({
+    CustomContent.getTestimonialsSection({
       data: {
         businessName: appState.aiContent.banner.businessName,
         businessType: appState.aiContent.businessType ?? "",
@@ -67,14 +74,13 @@ export default function TestimonialSection(props: TProps) {
       individual: false,
       type: "list",
     }).then(() => {
-      // setContactData(data);
-      // setLoading(false);
+      setLoading(false); // Set loading to false when data fetch completes
     });
   }, []);
 
   return (
     <button
-      className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} group relative isolate my-10 w-full  overflow-visible bg-white px-6 py-24 sm:py-32 lg:px-8`}
+      className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} group relative isolate my-10 w-full overflow-visible bg-white px-6 py-24 sm:py-32 lg:px-8`}
       onClick={() => handleClick()}
     >
       <AddSectionButtons
@@ -85,33 +91,48 @@ export default function TestimonialSection(props: TProps) {
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.indigo.100),white)] opacity-20" />
 
       <div className="mx-auto max-w-2xl lg:max-w-4xl">
-        <Image
-          height={100}
-          width={100}
-          alt=""
-          src={appState.aiContent?.testimonialsSection?.image ?? ""}
-          className={`mx-auto h-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
-        />
+        {/* Image with conditional rendering for skeleton */}
+        {isLoading ? (
+          <Skeleton className="mx-auto h-12 w-12" />
+        ) : (
+          <Image
+            height={100}
+            width={100}
+            alt=""
+            src={appState.aiContent?.testimonialsSection?.image ?? ""}
+            className={`mx-auto h-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
+          />
+        )}
         <figure className="mt-10">
           <blockquote className="text-center text-xl font-semibold leading-8 text-gray-900 sm:text-2xl sm:leading-9">
-            <p
-              className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleClick("message");
-              }}
-            >
-              {appState.aiContent?.testimonialsSection?.message ?? ""}
-            </p>
+            {/* Testimonial message with conditional rendering for skeleton */}
+            {isLoading ? (
+              <Skeleton className="h-16 w-full" />
+            ) : (
+              <p
+                className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClick("message");
+                }}
+              >
+                {appState.aiContent?.testimonialsSection?.message ?? ""}
+              </p>
+            )}
           </blockquote>
           <figcaption className="mt-10">
-            <Image
-              height={200}
-              width={200}
-              alt=""
-              src={appState.aiContent?.testimonialsSection?.avatar ?? ""}
-              className={`mx-auto h-10 w-10 rounded-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-            />
+            {isLoading ? (
+              <Skeleton className="mx-auto h-12 w-12 rounded-full" />
+            ) : (
+              <Image
+                height={200}
+                width={200}
+                alt=""
+                src={appState.aiContent?.testimonialsSection?.avatar ?? ""}
+                className={`mx-auto h-10 w-10 rounded-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+              />
+            )}
+
             <div className="mt-4 flex items-center justify-center space-x-3 text-base">
               <div
                 className={`font-semibold text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -121,7 +142,12 @@ export default function TestimonialSection(props: TProps) {
                 }}
               >
                 {" "}
-                {appState.aiContent?.testimonialsSection?.name ?? ""}
+                {/* Testimonial name with conditional rendering for skeleton */}
+                {isLoading ? (
+                  <Skeleton className="h-6 w-24" />
+                ) : (
+                  appState.aiContent?.testimonialsSection?.name ?? ""
+                )}
               </div>
               <svg
                 width={3}
@@ -139,7 +165,12 @@ export default function TestimonialSection(props: TProps) {
                   handleClick("role");
                 }}
               >
-                {appState.aiContent?.testimonialsSection?.role ?? ""}
+                {/* Testimonial role with conditional rendering for skeleton */}
+                {isLoading ? (
+                  <Skeleton className="h-4 w-16" />
+                ) : (
+                  appState.aiContent?.testimonialsSection?.role ?? ""
+                )}
               </div>
             </div>
           </figcaption>

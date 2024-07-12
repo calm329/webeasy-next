@@ -51,7 +51,7 @@ export default function LogoSection(props: TProps) {
   };
 
   useEffect(() => {
-    CustomContent.getData({
+    CustomContent.getLogoClouds({
       data: {
         businessName: appState.aiContent.banner.businessName,
         businessType: appState.aiContent.businessType ?? "",
