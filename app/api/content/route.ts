@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       fields = `only generate the ${type ?? ""} data for services.list[0].description field "services": {"list": [
           {
             "description": "*description*",
-          }]} and it should not be similar to any description from this data ${JSON.stringify(services)} `;
+          }]} and it should not be similar to any description from this data ${JSON.stringify(services)} and limit the description to 200 characters`;
       break;
     default:
       fields = `

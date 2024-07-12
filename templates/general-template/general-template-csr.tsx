@@ -251,7 +251,7 @@ export default function General(props: TProps) {
                     {appState?.aiContent?.services.title}
                   </h1>
                   <p
-                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} line-clamp-3`}
+                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}  `}
                     onClick={(e) => {
                       e.stopPropagation();
                       if (
@@ -296,7 +296,7 @@ export default function General(props: TProps) {
                     key={data.id}
                   >
                     <Card.Title>{data.name}</Card.Title>
-                    <Card.Description ><p className="line-clamp-3">{data.description}</p></Card.Description>
+                    <Card.Description ><p className=" ">{data.description}</p></Card.Description>
                   </div>
                 ))}
 

@@ -194,7 +194,7 @@ export function Services(props: TProps) {
                       {data.name}
                     </h4>
                     {data.description && (
-                      <p className="mt-1 tracking-tight text-blue-900 line-clamp-3">
+                      <p className="mt-1 tracking-tight text-blue-900  ">
                         {data.description}
                       </p>
                     )}

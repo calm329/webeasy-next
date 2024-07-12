@@ -223,7 +223,7 @@ export default function WebsitesForm() {
                       <h2 className="line-clamp-1 text-xl font-bold">
                         {site?.title}
                       </h2>
-                      <p className="line-clamp-3 text-sm">
+                      <p className="  text-sm">
                         {site?.description}
                       </p>
                     </div>

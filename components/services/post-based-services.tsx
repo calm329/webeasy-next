@@ -83,7 +83,7 @@ export function Services(props: TProps) {
                 {appState?.aiContent?.services.title}
               </h1>
               <p
-                className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} line-clamp-3`}
+                className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}  `}
                 onClick={(e) => {
                   e.stopPropagation();
                   if (editable && setIsOpen && setSection && setShowForm) {
@@ -160,7 +160,7 @@ export function Services(props: TProps) {
                     >
                       {data?.name}
                     </h3>
-                    <p className="mt-4 text-sm text-slate-600 line-clamp-3">
+                    <p className="mt-4 text-sm text-slate-600  ">
                       {data?.description}
                     </p>
                   </div>

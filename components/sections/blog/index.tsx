@@ -166,7 +166,7 @@ export default function BlogSection(props: TProps) {
                         </a>
                       </h3>
                       <p
-                        className={`mt-5 line-clamp-3 text-sm leading-6 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                        className={`mt-5  text-sm leading-6 text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                       >
                         {post.description}
                       </p>
