@@ -2233,6 +2233,7 @@ export async function getRandomImageFromUnsplash(prompt: string) {
       `Image Generation using ai+unplash took ${endTime - startTime} ms`,
     );
     // console.log("response",res)
+    console.log("dataofimages",data,parseInt(index))
     return data[parseInt(index)].urls.small;
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
@@ -2426,6 +2427,7 @@ export const getPhotosFromUnsplash = async (prompt: string) => {
       `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=6`,
     );
     const data = await res.json();
+    console.log("actualimage",data)
     const fullUrls = data.map((photo: any) => photo.urls.full);
     store.dispatch(
       updateAppState({
@@ -2434,6 +2436,7 @@ export const getPhotosFromUnsplash = async (prompt: string) => {
           ...getAppState().aiContent,
           gallery: {
             ...getAppState().aiContent.gallery,
+            show:true,
             list: fullUrls,
           },
         },

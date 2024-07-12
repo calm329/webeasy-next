@@ -103,7 +103,6 @@ const ImageGallerySection = ({
     </div>
   );
 
-  const isGalleryActive = galleryShow ? galleryContent : skeletonContent;
 
   return (
     <section className="flex justify-center">
@@ -117,7 +116,7 @@ const ImageGallerySection = ({
           setTriggerSection={setTriggerSection}
           sectionTitle="Image Gallery Section"
         />
-        {galleryList ? isGalleryActive : skeletonContent}
+        {galleryList ? galleryContent : skeletonContent}
       </button>
     </section>
   );
