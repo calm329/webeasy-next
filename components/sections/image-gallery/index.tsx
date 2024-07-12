@@ -64,7 +64,7 @@ const ImageGallerySection = ({
         {galleryList.map((image, i) => (
           <button
             key={image}
-            className={`${editable && "rounded-xl border-2 border-transparent hover:border-indigo-500"} h-[500px] rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
+            className={`${editable && "rounded-xl border-2 border-transparent hover:border-indigo-500"} h-[400px] w-[400px] rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
             onClick={handleClick}
           >
             <Image
@@ -74,7 +74,8 @@ const ImageGallerySection = ({
               width={1000}
               className="w-full object-cover"
               style={{
-                height: 500,
+                height: 400,
+                width: 400,
               }}
             />
           </button>
