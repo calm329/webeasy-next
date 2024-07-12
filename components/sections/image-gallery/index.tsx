@@ -61,11 +61,11 @@ const ImageGallerySection = ({
 
   if (galleryList && galleryShow) {
     galleryContent = (
-      <div className="grid grid-cols-3 gap-10 max-lg:grid-cols-2 max-sm:grid-cols-1">
+      <div className={`grid  gap-10 ${appState.view === "Tablet" &&"grid-cols-2"} ${appState.view === "Mobile" &&"grid-cols-1"} ${appState.view === "Desktop" &&"grid-cols-3"} max-xl:grid-cols-2 max-md:grid-cols-1`}>
         {galleryList.map((image, i) => (
           <button
             key={image}
-            className={`${editable && "rounded-xl border-2 border-transparent hover:border-indigo-500"} h-[400px] w-[400px] rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
+            className={`${editable && "rounded-xl border-2 border-transparent hover:border-indigo-500"}  max-h-[400px] max-w-[400px] rounded-lg border border-gray-300 shadow-lg aspect-1 max-sm:mx-0`}
             onClick={handleClick}
           >
             <Image
