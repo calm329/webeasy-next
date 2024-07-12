@@ -55,6 +55,7 @@ const PartnersSection = ({
     if (setIsOpen && setSection) {
       setIsOpen(true);
       setSection("Partners");
+      setShowForm({ show: false, edit: "", form: "" });
       dispatch(
         updateAppState({
           ...appState,

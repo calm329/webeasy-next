@@ -45,6 +45,7 @@ const CustomTestimonial = ({
     if (setIsOpen && setSection) {
       setIsOpen(true);
       setSection("Testimonials");
+      console.log("clickcing")
       setShowForm({ show: false, edit: "", form: "" });
       dispatch(
         updateAppState({
