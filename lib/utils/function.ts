@@ -1965,6 +1965,78 @@ export async function generateNewCustomSite(data: {
           fieldName: "",
           type: "",
         }),
+        CustomContent.getCTA({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getContact({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getFAQ({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getFooter({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getHeader({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getHeroSection({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getLogoClouds({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getNewsLetter({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getPricing({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getStats({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getTeam({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getTestimonialsSection({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
       ]);
 
     const endTextTime = performance.now();
