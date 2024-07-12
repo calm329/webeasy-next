@@ -45,6 +45,7 @@ const CustomTestimonial = ({
     if (setIsOpen && setSection) {
       setIsOpen(true);
       setSection("Testimonials");
+      setShowForm({ show: false, edit: "", form: "" });
       dispatch(
         updateAppState({
           ...appState,

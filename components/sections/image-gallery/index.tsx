@@ -44,6 +44,7 @@ const ImageGallerySection = ({
     if (setIsOpen && setSection) {
       setIsOpen(true);
       setSection("Image Gallery");
+      setShowForm({ show: false, edit: "", form: "" });
       dispatch(
         updateAppState({
           ...appState,
