@@ -19,6 +19,7 @@ import AmazonContent from "../content/amazon";
 import { TFeature } from "../../types/index";
 import CustomContent from "../content/custom";
 // import { selectedTemplate } from "../store/slices/template-slice";
+import CustomizeMeta from '../../components/customize/meta/index';
 
 type TParams = {
   regenerate?: boolean;
@@ -2137,6 +2138,9 @@ export async function generateImagesForCustom(data: {
             ...getAppState().aiContent.hero,
             image: "",
           },
+          gallery:"",
+          testimonials:"",
+          partners:""
         },
         generate:{
           ...getAppState().generate,
@@ -2151,6 +2155,13 @@ export async function generateImagesForCustom(data: {
     const [heroImage, logo] = await Promise.all([
       getRandomImageFromUnsplash(data.businessType),
       getLogo(data),
+      getPhotosFromUnsplash(data.businessType),
+      CustomContent.getTestimonials({
+        data:data,
+        fieldName:"",
+        individual:false,
+        type:""
+      })
     ]);
 
     store.dispatch(
@@ -2212,6 +2223,19 @@ export async function generateTextForCustom(data: {
             subheading: "",
           },
           services: "",
+          testimonials:"",
+          testimonialsSection:"",
+          partners: "",
+          cta: "",
+          faq: "",
+          footer: "",
+          header: "",
+          heroSection: "",
+          logoClouds: "",
+          newsletter: "",
+          pricing: "",
+          stats: "",
+          team: "",
         },
         generate: {
           generating: true,
@@ -2235,6 +2259,96 @@ export async function generateTextForCustom(data: {
         type: "",
       }),
       CustomContent.getServices({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getCTA({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getContact({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getFAQ({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getFooter({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getHeader({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getHero({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getHeroSection({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getLogoClouds({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getNewsLetter({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getPartners({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getPricing({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getStats({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getTeam({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getTestimonials({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getTestimonialsSection({
         data,
         individual: false,
         fieldName: "",
