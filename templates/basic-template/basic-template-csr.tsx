@@ -34,6 +34,7 @@ import EditableHero from "@/components/editable/hero";
 import ServicesSection from "@/components/sections/services";
 import ImageGallerySection from "@/components/sections/image-gallery";
 import PartnersSection from "@/components/sections/partners";
+import { usePathname } from "next/navigation";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -80,6 +81,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
     section: "Banner Section",
     position: 0,
   });
+  const pathname = usePathname();
 
   const initialSections = [
     {
@@ -169,17 +171,21 @@ const BasicTemplate = (props: BasicTemplateProps) => {
         />
       ),
     },
-    {
-      title: "Posts Section",
-      content: (
-        <PostsSection
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-          setShowForm={setShowForm}
-        />
-      ),
-    },
+    ...(pathname.split("/")[1] !== "custom"
+      ? [
+          {
+            title: "Posts Section",
+            content: (
+              <PostsSection
+                editable={editable}
+                setIsOpen={setIsOpen}
+                setSection={setSection}
+                setShowForm={setShowForm}
+              />
+            ),
+          },
+        ]
+      : []),
   ];
   const [sections, setSections] = useState<
     Array<{

@@ -89,9 +89,6 @@ export default function SigninForm(props: TProps) {
             localStorage.removeItem("userData");
           }
         }
-        toast.success("Login successful", {
-          position: "top-right",
-        });
         setIsOpen(false);
       }
 
