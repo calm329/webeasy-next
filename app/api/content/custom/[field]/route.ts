@@ -26,6 +26,24 @@ export async function POST(
                 
               } only generate the one testimonial and don't create a array of the given object only return the object`
     break;
+    case "testimonialsSectionmessage":
+      fields = `only generate the ${type?? ""} data for testimonialsSection and please don't add any other fields expect the given 
+      "testimonialsSection": {
+                "message":"**message**", 
+              } only generate the one testimonial and don't create a array of the given object only return the object`
+    break;
+    case "testimonialsSectionname":
+      fields = `only generate the ${type?? ""} data for testimonialsSection and please don't add any other fields expect the given 
+      "testimonialsSection": {
+                "name":"**name**",
+              } only generate the one testimonial and don't create a array of the given object only return the object`
+    break;
+    case "testimonialsSectionrole":
+      fields = `only generate the ${type?? ""} data for testimonialsSection and please don't add any other fields expect the given 
+      "testimonialsSection": {
+                "role":"**role**",
+              } only generate the one testimonial and don't create a array of the given object only return the object`
+    break;
     case "team":
     fields = `only generate the ${type?? ""} data for team and please don't add any other fields expect the given 
     "team": {
