@@ -75,7 +75,7 @@ const ServicesSection = ({
   };
 
   return (
-    <section className="flex justify-center mt-10">
+    <section className="flex justify-center items-center mt-10">
       <button
         className={`mx-auto max-w-7xl rounded-3xl p-8 md:p-12 ${
           editable && "rounded border-2 border-transparent hover:border-indigo-500"
@@ -125,7 +125,7 @@ const ServicesSection = ({
           )}
         </div>
 
-        <div className="-m-8 flex flex-wrap">
+        <div className="-m-8 flex flex-wrap justify-center">
           {appState.aiContent.services?.show &&
             appState.aiContent.services?.list?.map((service) => (
               <ServiceCard

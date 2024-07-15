@@ -89,15 +89,15 @@ const EditableHero = ({
     <section className="bg-gray-50 py-10">
       <div className="container mx-auto px-4">
         <div className="rounded-3xl bg-white px-8 py-16 pb-10">
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-7xl flex flex-col justify-center">
             {appState.aiContent?.hero ? (
               <button
-                className={`relative w-full  -m-8 mb-10 flex max-md:flex-col justify-between pr-2 ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
+                className={`relative items-center mb-10 flex max-md:flex-col justify-between pr-2 ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
                 onClick={() => handleClick("Hero")}
               >
                 <AddSectionButtons setSectionModal={setSectionModal} sectionTitle="Hero Section" setTriggerSection={setTriggerSection} />
                 <div className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-2/3"}`}>
-                  <div className="md:max-w-lg">
+                  <div className="md:max-w-lg flex flex-col">
                     {appState.aiContent?.hero?.heading ? (
                       <button
                         className={` text-left font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -196,7 +196,7 @@ const EditableHero = ({
             ) : (
               <button
                 className={`-m-8 mb-10 flex flex-wrap justify-between pr-2 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                onClick={() => handleClick("Hero")}
+              
               >
                 <div className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-2/3"}`}>
                   <div className="md:max-w-lg">
