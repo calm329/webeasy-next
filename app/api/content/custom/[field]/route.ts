@@ -215,6 +215,18 @@ export async function POST(
       "description":"**description of the contact**",
       }`
       break;
+      case "contacttitle":
+      fields = `only generate the ${type ?? ""} data for Contact and please don't add any other fields expect the given 
+      "contact":{
+      "title":"**Title of the contact**",
+      }`
+      break;
+      case "contactdescription":
+      fields = `only generate the ${type ?? ""} data for Contact and please don't add any other fields expect the given 
+      "contact":{
+      "description":"**description of the contact**",
+      }`
+      break;
     case "blog":
       fields = `only generate the ${type ?? ""} data for blog and please don't add any other fields expect the given 
       "blog":{

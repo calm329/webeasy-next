@@ -29,6 +29,7 @@ import {
   regenerateIndividual,
 } from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
+import CustomContent from "@/lib/content/custom";
 type TProps = {
   section: TSection;
   handleChange: (name: string, value: string) => void;
@@ -99,19 +100,36 @@ const ContactContent = (props: TProps) => {
                           <label htmlFor={data} className="my-auto">
                             {data}
                           </label>
-                          {/* <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2">
                             <button
                               type="button"
                               onClick={() => {
-                             
                                 setLoadingHeading(true);
-                                regenerateIndividual({
-                                  appState,
-                                  dispatch,
-                                  searchParams,
-                                  fieldName: data,
+                                CustomContent.getContact({
+                                  data: {
+                                    location:
+                                      appState?.aiContent?.location ?? "",
+                                    businessName:
+                                      appState?.aiContent?.banner?.businessName,
+                                    businessType:
+                                      appState?.aiContent?.businessType ?? "",
+                                  },
+                                  fieldName: "contact" + data,
+                                  individual: true,
                                   type,
-                                }).then(() => {
+                                }).then((res: any) => {
+                                  dispatch(
+                                    updateAppState({
+                                      ...appState,
+                                      aiContent: {
+                                        ...appState.aiContent,
+                                        contact: {
+                                          ...appState.aiContent?.contact,
+                                          [data]: res[data],
+                                        },
+                                      },
+                                    }),
+                                  );
                                   setLoadingHeading(false);
                                 });
                               }}
@@ -125,7 +143,7 @@ const ContactContent = (props: TProps) => {
                               )}
                             </button>
                             <RegenerateOptions setType={setType} type={type} />
-                          </div> */}
+                          </div>
                         </div>
 
                         <input
@@ -270,18 +288,36 @@ const ContactContent = (props: TProps) => {
                           <label htmlFor={data} className="my-auto">
                             {data}
                           </label>
-                          {/* <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2">
                             <button
                               type="button"
                               onClick={() => {
                                 setLoadingSubHeading(true);
-                                regenerateIndividual({
-                                  appState,
-                                  dispatch,
-                                  searchParams,
-                                  fieldName: data,
+                                CustomContent.getContact({
+                                  data: {
+                                    location:
+                                      appState?.aiContent?.location ?? "",
+                                    businessName:
+                                      appState?.aiContent?.banner?.businessName,
+                                    businessType:
+                                      appState?.aiContent?.businessType ?? "",
+                                  },
+                                  fieldName: "contact" + data,
+                                  individual: true,
                                   type,
-                                }).then(() => {
+                                }).then((res: any) => {
+                                  dispatch(
+                                    updateAppState({
+                                      ...appState,
+                                      aiContent: {
+                                        ...appState.aiContent,
+                                        contact: {
+                                          ...appState.aiContent?.contact,
+                                          [data]: res[data],
+                                        },
+                                      },
+                                    }),
+                                  );
                                   setLoadingSubHeading(false);
                                 });
                               }}
@@ -295,7 +331,7 @@ const ContactContent = (props: TProps) => {
                               )}
                             </button>
                             <RegenerateOptions setType={setType} type={type} />
-                          </div> */}
+                          </div>
                         </div>
                         <textarea
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
