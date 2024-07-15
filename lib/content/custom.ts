@@ -1157,19 +1157,22 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      faq: {
-                        ...parsedData.faq,
-                      },
-                    }
-                  }),
-                );
+                if(!individual){
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        faq: {
+                          ...parsedData.faq,
+                        },
+                      }
+                    }),
+                  );
+                }
+                
 
-                resolve(parsedData.partners);
+                resolve(parsedData.faq);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
                 reject(error);
@@ -1248,7 +1251,7 @@ class CustomContentApiService {
                   }),
                 );
 
-                resolve(parsedData.partners);
+                resolve(parsedData.footer);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
                 reject(error);
@@ -1661,20 +1664,21 @@ class CustomContentApiService {
               try {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
-
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      pricing: {
-                        ...parsedData.pricing,
-                      },
-                    }
-                  }),
-                );
-
-                resolve(parsedData.partners);
+                if(!individual){
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        pricing: {
+                          ...parsedData.pricing,
+                        },
+                      }
+                    }),
+                  );
+                }
+               
+                resolve(parsedData.pricing);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
                 reject(error);
@@ -1741,19 +1745,22 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      stats: {
-                        ...parsedData.stats,
-                      },
-                    }
-                  }),
-                );
+                if(!individual){
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        stats: {
+                          ...parsedData.stats,
+                        },
+                      }
+                    }),
+                  );
+                }
+               
 
-                resolve(parsedData.partners);
+                resolve(parsedData.stats);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
                 reject(error);
@@ -1821,19 +1828,22 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      team: {
-                        ...parsedData.team,
-                      },
-                    }
-                  }),
-                );
+                if(!individual){
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        team: {
+                          ...parsedData.team,
+                        },
+                      }
+                    }),
+                  );
+                }
+               
 
-                resolve(parsedData.partners);
+                resolve(parsedData.team);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
                 reject(error);
@@ -1900,17 +1910,20 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      testimonialsSection: {
-                        ...parsedData.testimonialsSection,
-                      },
-                    }
-                  }),
-                );
+                if(!individual){
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        testimonialsSection: {
+                          ...parsedData.testimonialsSection,
+                        },
+                      }
+                    }),
+                  );
+                }
+               
                 console.log("parsedData.testimonialsSection",parsedData.testimonialsSection)
                 resolve(parsedData.testimonialsSection);
               } catch (error) {

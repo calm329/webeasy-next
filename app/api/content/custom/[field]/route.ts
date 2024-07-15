@@ -90,7 +90,21 @@ export async function POST(
                 }
               >
             } generate three list of object and 1 index will have mostPopular as true else false`
-                    break;
+    break;
+    case "pricingtitle":
+      fields = `only generate the ${type?? ""} data for pricing and please don't add any other fields expect the given 
+      "pricing": {
+              "title":"**title**",
+              
+            } `
+    break;
+    case "pricingdescription":
+      fields = `only generate the ${type?? ""} data for pricing and please don't add any other fields expect the given 
+      "pricing": {
+              
+        "description":"**description**",
+        `
+    break;
     case "newsLetter":
       fields = `only generate the ${type?? ""} data for newsLetter and please don't add any other fields expect the given 
       "newsLetter": {
