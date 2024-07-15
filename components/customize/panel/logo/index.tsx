@@ -29,6 +29,7 @@ import {
   regenerateIndividual,
 } from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
+import CustomContent from "@/lib/content/custom";
 type TProps = {
   section: TSection;
   handleChange: (name: string, value: string) => void;
@@ -157,7 +158,49 @@ const LogoContent = (props: TProps) => {
                             {data}
                           </label>
                         </div>
-
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setLoadingHeading(true);
+                              CustomContent.getLogoClouds({
+                                data: {
+                                  location: appState?.aiContent?.location ?? "",
+                                  businessName:
+                                    appState?.aiContent?.banner?.businessName,
+                                  businessType:
+                                    appState?.aiContent?.businessType ?? "",
+                                },
+                                fieldName: "logoClouds",
+                                individual: true,
+                                type,
+                              }).then((res: any) => {
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      logoClouds: {
+                                        ...appState.aiContent?.logoClouds,
+                                        [data]: res[data],
+                                      },
+                                    },
+                                  }),
+                                );
+                                setLoadingHeading(false);
+                              });
+                            }}
+                            className="flex items-center gap-2 "
+                          >
+                            Regenerate
+                            {loadingHeading ? (
+                              <ImSpinner2 className="animate-spin text-lg text-black" />
+                            ) : (
+                              <ImPower className=" text-xs " />
+                            )}
+                          </button>
+                          <RegenerateOptions setType={setType} type={type} />
+                        </div>
                         <input
                           type="text"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -189,32 +232,6 @@ const LogoContent = (props: TProps) => {
                           <label htmlFor={data} className="my-auto">
                             {data}
                           </label>
-                          {/* <div className="flex items-center gap-2">
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setLoadingSubHeading(true);
-                                    regenerateIndividual({
-                                      appState,
-                                      dispatch,
-                                      searchParams,
-                                      fieldName: data,
-                                      type,
-                                    }).then(() => {
-                                      setLoadingSubHeading(false);
-                                    });
-                                  }}
-                                  className="flex items-center gap-2 "
-                                >
-                                  Regenerate
-                                  {loadingSubHeading ? (
-                                    <ImSpinner2 className="animate-spin text-lg text-black" />
-                                  ) : (
-                                    <ImPower className=" text-xs " />
-                                  )}
-                                </button>
-                                <RegenerateOptions setType={setType} type={type} />
-                              </div> */}
                         </div>
                         <textarea
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -246,7 +263,7 @@ const LogoContent = (props: TProps) => {
                         className="flex flex-col gap-5 px-4 sm:px-6"
                       >
                         {appState.aiContent?.logoClouds?.list?.map(
-                          (image:any, i:any) => (
+                          (image: any, i: any) => (
                             <div className="flex flex-col gap-5" key={i}>
                               <div className="flex justify-between ">
                                 <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
@@ -260,8 +277,13 @@ const LogoContent = (props: TProps) => {
                                   label={""}
                                   contain={true}
                                   onChange={(value) => {
-                                    const updatedList = [...appState.aiContent?.logoClouds?.list];
-                                    const updatedItem = { ...updatedList[i], image: value };
+                                    const updatedList = [
+                                      ...appState.aiContent?.logoClouds?.list,
+                                    ];
+                                    const updatedItem = {
+                                      ...updatedList[i],
+                                      image: value,
+                                    };
                                     updatedList[i] = updatedItem;
 
                                     dispatch(

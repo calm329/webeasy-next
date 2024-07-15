@@ -1513,7 +1513,7 @@ class CustomContentApiService {
                   }),
                 );
 
-                resolve(parsedData.partners);
+                resolve(parsedData.logoClouds);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
                 reject(error);
