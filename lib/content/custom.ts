@@ -1327,7 +1327,7 @@ class CustomContentApiService {
                   }),
                 );
 
-                resolve(parsedData.partners);
+                resolve(parsedData.header);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
                 reject(error);

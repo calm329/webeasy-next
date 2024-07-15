@@ -135,7 +135,19 @@ export async function POST(
                   }
                 >
               } only generate three header.list object`
-                    break;
+    break;
+    case "headertitle":
+      fields = `only generate the ${type?? ""} data for header and please don't add any other fields expect the given 
+      "header": {
+        "title":"**title**",
+      }`
+    break;
+    case "headerdescription":
+      fields = `only generate the ${type?? ""} data for header and please don't add any other fields expect the given 
+      "header": {
+        "description":"**description**",    
+      }`
+    break;
     case "footer":
       fields = `only generate the ${type?? ""} data for footer and please don't add any other fields expect the given 
       "footer": {
