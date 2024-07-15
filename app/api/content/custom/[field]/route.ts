@@ -98,6 +98,19 @@ export async function POST(
               "description":"**description**"
             }`
                     break;
+                    case "newsLettertitle":
+                      fields = `only generate the ${type?? ""} data for newsLetter and please don't add any other fields expect the given 
+                      "newsLetter": {
+                            "title":"**title**",
+                            }`
+                                    break;
+                                    case "newsLetterdescription":
+                                      fields = `only generate the ${type?? ""} data for newsLetter and please don't add any other fields expect the given 
+                                      "newsLetter": {
+                                        
+                                              "description":"**description**"
+                                            }`
+                                                    break;
 
     case "logoClouds":
       fields = `only generate the ${type?? ""} data for logo and please don't add any other fields expect the given 

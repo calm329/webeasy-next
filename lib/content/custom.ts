@@ -1580,19 +1580,22 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      newsLetter: {
-                        ...parsedData.newsLetter,
-                      },
-                    }
-                  }),
-                );
+                if(!individual){
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        newsLetter: {
+                          ...parsedData.newsLetter,
+                        },
+                      }
+                    }),
+                  );
+                }
+             
 
-                resolve(parsedData.partners);
+                resolve(parsedData.newsLetter);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
                 reject(error);
