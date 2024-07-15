@@ -92,7 +92,7 @@ const EditableHero = ({
           <div className="mx-auto max-w-7xl">
             {appState.aiContent?.hero ? (
               <button
-                className={`relative w-full  -m-8 mb-10 flex flex-wrap justify-between pr-2 ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
+                className={`relative w-full  -m-8 mb-10 flex max-md:flex-col justify-between pr-2 ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
                 onClick={() => handleClick("Hero")}
               >
                 <AddSectionButtons setSectionModal={setSectionModal} sectionTitle="Hero Section" setTriggerSection={setTriggerSection} />
@@ -163,14 +163,15 @@ const EditableHero = ({
                     )}
                   </div>
                 </div>
+
                 {appState.aiContent.hero.image.imageUrl ? (
                   appState.aiContent.hero?.image?.show && (
-                    <div className={`max-h-96 max-w-96 overflow-hidden py-2 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}>
+                    <div className={`md:absolute h-full right-2 max-w-96 overflow-hidden py-2 max-md:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}>
                       {isImage(appState.aiContent.hero.image.imageUrl) ? (
                         <Image
                           src={appState.aiContent.hero.image.imageUrl}
-                          width={256}
-                          height={256}
+                          width={500}
+                          height={500}
                           alt="Hero Image"
                           className={`${appState.view === "Mobile" ? "" : "mx-auto"} h-full w-full rounded-3xl object-cover md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                           onClick={() => handleClick("imageUrl")}
@@ -190,6 +191,7 @@ const EditableHero = ({
                     <Skeleton className="h-[256px] w-[256px]" />
                   </div>
                 )}
+               
               </button>
             ) : (
               <button
