@@ -2632,3 +2632,11 @@ export const getPhotosFromUnsplash = async (prompt: string) => {
   } catch (error) {}
 };
 
+export const getAllUnsplashImages = async (prompt: string)=>{
+  const res = await fetch(
+    `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=100`,
+  );
+  const data = await res.json();
+
+  return data
+}
