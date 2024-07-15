@@ -49,12 +49,12 @@ export default function TopBar(props: TopBarProps) {
             style={{ color: colors?.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {banner?.logo?.link ? (
+            {appState.aiContent?.banner?.logo?.link ? (
               editable ? (
-                banner.logo.show && (
+                appState.aiContent?.banner.logo.show && (
                   <Image
-                    src={banner?.logo?.link}
-                    alt={banner?.logo?.alt}
+                    src={appState.aiContent?.banner?.logo?.link}
+                    alt={appState.aiContent?.banner?.logo?.alt}
                     className={`h-8 w-8 ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
                     onClick={() => {
                       if (
@@ -78,10 +78,10 @@ export default function TopBar(props: TopBarProps) {
                   />
                 )
               ) : (
-                banner.logo && (
+                appState.aiContent?.banner.logo && (
                   <Image
-                    src={banner?.logo?.link}
-                    alt={banner?.logo?.alt}
+                    src={appState.aiContent?.banner?.logo?.link}
+                    alt={appState.aiContent?.banner?.logo?.alt}
                     className={`h-8 w-auto `}
                     height={32}
                     width={200}
@@ -92,7 +92,7 @@ export default function TopBar(props: TopBarProps) {
               <Skeleton className="h-8 w-8 bg-white" />
             )}
 
-            {banner?.businessName ? (
+            {appState.aiContent?.banner?.businessName ? (
               editable ? (
                 <button
                   className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -121,14 +121,14 @@ export default function TopBar(props: TopBarProps) {
                     }
                   }}
                 >
-                  {banner?.businessName}
+                  {appState.aiContent?.banner?.businessName}
                 </button>
               ) : (
                 <Link href="#">
                   {appState?.generate?.generating ? (
-                    <TypewriterEffect text={banner.businessName ?? ""} />
+                    <TypewriterEffect text={appState.aiContent?.banner.businessName ?? ""} />
                   ) : (
-                    banner?.businessName
+                    appState.aiContent?.banner?.businessName
                   )}
                 </Link>
               )
@@ -144,9 +144,9 @@ export default function TopBar(props: TopBarProps) {
         <div className="flex flex-wrap items-center">
           <div className="w-auto lg:block">
             <div className="-m-2 flex flex-wrap">
-              {banner?.button ? (
+              {appState.aiContent?.banner?.button ? (
                 editable ? (
-                  banner.button.show && (
+                  appState.aiContent?.banner.button.show && (
                     <div
                       className={`w-full p-2 md:w-auto ${editable && "flex gap-5 rounded border-2 border-transparent hover:border-indigo-500"}`}
                       onClick={() => {
@@ -157,7 +157,7 @@ export default function TopBar(props: TopBarProps) {
                         }
                       }}
                     >
-                      {banner.button.list.map((data, i) => (
+                      {appState.aiContent?.banner.button.list.map((data, i) => (
                         <div
                           key={i}
                           onClick={() =>
@@ -184,7 +184,7 @@ export default function TopBar(props: TopBarProps) {
                   )
                 ) : (
                   <div className={`flex w-full gap-5 p-2 md:w-auto`}>
-                    {banner.button.list.map((data, i) => (
+                    {appState.aiContent?.banner.button.list.map((data, i) => (
                       <div key={i}>
                         <CTA
                           text={data.label}
