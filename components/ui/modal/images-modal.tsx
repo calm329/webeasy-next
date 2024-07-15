@@ -9,9 +9,10 @@ type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   selectedImage: string;
+  action:(data:any)=>void;
 };
 export default function ImagesModal(props: TProps) {
-  const { open, setOpen, selectedImage } = props;
+  const { open, setOpen, selectedImage,action } = props;
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" open={open} className="relative z-10" onClose={setOpen}>
@@ -47,6 +48,7 @@ export default function ImagesModal(props: TProps) {
                 <ImagesListing
                   selectedImage={selectedImage}
                   setOpen={setOpen}
+                  action={action}
                 />
               </Dialog.Panel>
             </Transition.Child>

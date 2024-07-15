@@ -29,6 +29,7 @@ import {
   regenerateIndividual,
 } from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
+import ImagesModal from "@/components/ui/modal/images-modal";
 type TProps = {
   section: TSection;
   handleChange: (name: string, value: string) => void;
@@ -131,6 +132,8 @@ const HeroContent = (props: TProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const searchParams = useSearchParams();
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
   useEffect(() => {
     console.log("appState: " + appState.focusedField);
     if (appState.focusedField === "title") {
@@ -142,8 +145,32 @@ const HeroContent = (props: TProps) => {
     }
   }, [appState]);
 
+  function setImage(data: any) {
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          hero: {
+            ...appState.aiContent?.hero,
+            image:{
+              ...appState.aiContent?.hero?.image,
+              imageUrl:data.urls.small
+            }
+          },
+        },
+      }),
+    );
+  }
+
   return (
     <div className="h-[55vh] max-h-[600px]  overflow-y-auto py-5 transition-all ease-in-out">
+      <ImagesModal
+        open={showImageModal}
+        setOpen={setShowImageModal}
+        selectedImage={selectedImage}
+        action={setImage}
+      />
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
         {appState.aiContent?.hero &&
           Object.keys(appState.aiContent?.hero).map((data) => (
@@ -239,6 +266,11 @@ const HeroContent = (props: TProps) => {
                               checked={appState.aiContent?.hero?.image?.show}
                             />
                           </div>
+                        </div>
+                        <div>
+                          <button type="button" onClick={()=>{
+                            setShowImageModal(true);
+                          }}>Swap</button>
                         </div>
                         {appState.aiContent?.hero?.image?.show && (
                           <div>

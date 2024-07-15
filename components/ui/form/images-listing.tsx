@@ -7,10 +7,11 @@ import Image from "next/image";
 type TProps = {
   selectedImage: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  action: (data:any)=>void;
 };
 
 const ImagesListing = (props: TProps) => {
-  const { selectedImage, setOpen } = props;
+  const { selectedImage, setOpen, action } = props;
   const appState = useAppSelector(AS);
   const [images, setImages] = useState([]);
   const dispatch = useAppDispatch();
@@ -29,24 +30,7 @@ const ImagesListing = (props: TProps) => {
           key={i}
           className="relative h-44 cursor-pointer hover:border hover:border-indigo-600 hover:shadow-xl"
           onClick={() => {
-            dispatch(
-              updateAppState({
-                ...appState,
-                aiContent: {
-                  ...appState.aiContent,
-                  gallery: {
-                    ...appState.aiContent.gallery,
-                    list: appState.aiContent.gallery.list.map((image, i) => {
-                      if (parseInt(selectedImage) === i) {
-                        return data.urls.small;
-                      } else {
-                        return image;
-                      }
-                    }),
-                  },
-                },
-              }),
-            );
+            action(data);
             setOpen(false);
           }}
         >

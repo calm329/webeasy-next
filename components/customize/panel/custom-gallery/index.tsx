@@ -26,9 +26,35 @@ const CustomGalleryContent = (props: TProps) => {
   const dispatch = useAppDispatch();
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
+
+  function setImage(data: any) {
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          gallery: {
+            ...appState.aiContent.gallery,
+            list: appState.aiContent.gallery.list.map((image, i) => {
+              if (parseInt(selectedImage) === i) {
+                return data.urls.small;
+              } else {
+                return image;
+              }
+            }),
+          },
+        },
+      }),
+    );
+  }
   return (
     <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
-      <ImagesModal open={showImageModal} setOpen={setShowImageModal} selectedImage={selectedImage}/>
+      <ImagesModal
+        open={showImageModal}
+        setOpen={setShowImageModal}
+        selectedImage={selectedImage}
+        action={setImage}
+      />
       <div className="flex justify-between ">
         <h3 className=" flex items-center justify-center px-5 pb-3 text-lg font-medium leading-6 text-gray-900">
           Image Gallery
