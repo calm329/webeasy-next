@@ -1074,19 +1074,22 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      cta: {
-                        ...parsedData.cta,
-                      },
-                    }
-                  }),
-                );
+                if(!individual){
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        cta: {
+                          ...parsedData.cta,
+                        },
+                      }
+                    }),
+                  );
+                }
+               
 
-                resolve(parsedData.partners);
+                resolve(parsedData.cta);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
                 reject(error);
@@ -1929,6 +1932,7 @@ class CustomContentApiService {
       }
     });
   }
+  
 }
 
 const CustomContent = new CustomContentApiService();

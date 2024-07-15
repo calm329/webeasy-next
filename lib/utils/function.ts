@@ -2631,3 +2631,4 @@ export const getPhotosFromUnsplash = async (prompt: string) => {
     return fullUrls;
   } catch (error) {}
 };
+

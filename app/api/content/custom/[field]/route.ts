@@ -196,6 +196,18 @@ export async function POST(
               }
             }`
       break;
+      case "ctatitle":
+        fields = `only generate the ${type ?? ""} data for CTA section and please don't add any other fields expect the given 
+        "cta": {
+                "title":"**title**",
+              }`
+        break;
+        case "ctadescription":
+        fields = `only generate the ${type ?? ""} data for CTA section and please don't add any other fields expect the given 
+        "cta": {
+                "description":"**description**",
+              }`
+        break;
     case "contact":
       fields = `only generate the ${type ?? ""} data for Contact and please don't add any other fields expect the given 
       "contact":{
