@@ -121,6 +121,19 @@ export async function POST(
                   }
                 }`
                     break;
+    case "heroSectiontitle":
+      fields = `only generate the ${type?? ""} data for heroSection and please don't add any other fields expect the given 
+      "heroSection": {
+                  "title":"**title**",
+                }`
+                    break;
+                    case "heroSectiondescription":
+      fields = `only generate the ${type?? ""} data for heroSection and please don't add any other fields expect the given 
+      "heroSection": {
+                  "description":"**description**",
+                 
+                }`
+                    break;
     case "header":
       fields = `only generate the ${type?? ""} data for header and please don't add any other fields expect the given 
       "header": {

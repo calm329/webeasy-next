@@ -29,6 +29,7 @@ import {
   regenerateIndividual,
 } from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
+import CustomContent from "@/lib/content/custom";
 type TProps = {
   section: TSection;
   handleChange: (name: string, value: string) => void;
@@ -106,27 +107,27 @@ const HeaderSectionContent = (props: TProps) => {
     // );
   };
 
-//   const handleDeleteButton = (name: string) => {
-//     dispatch(
-//       updateAppState({
-//         ...appState,
-//         aiContent: {
-//           ...appState.aiContent,
-//           heroSection: {
-//             ...appState.aiContent?.heroSection,
-//             button: {
-//               ...appState.aiContent?.heroSection?.list,
-//               list: appState.aiContent?.heroSection?.list?.filter((button: any) => {
-//                 if (button.question !== name) {
-//                   return button;
-//                 }
-//               }),
-//             },
-//           },
-//         },
-//       }),
-//     );
-//   };
+  //   const handleDeleteButton = (name: string) => {
+  //     dispatch(
+  //       updateAppState({
+  //         ...appState,
+  //         aiContent: {
+  //           ...appState.aiContent,
+  //           heroSection: {
+  //             ...appState.aiContent?.heroSection,
+  //             button: {
+  //               ...appState.aiContent?.heroSection?.list,
+  //               list: appState.aiContent?.heroSection?.list?.filter((button: any) => {
+  //                 if (button.question !== name) {
+  //                   return button;
+  //                 }
+  //               }),
+  //             },
+  //           },
+  //         },
+  //       }),
+  //     );
+  //   };
 
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -157,7 +158,49 @@ const HeaderSectionContent = (props: TProps) => {
                             {data}
                           </label>
                         </div>
-
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setLoadingHeading(true);
+                              CustomContent.getHeroSection({
+                                data: {
+                                  location: appState?.aiContent?.location ?? "",
+                                  businessName:
+                                    appState?.aiContent?.banner?.businessName,
+                                  businessType:
+                                    appState?.aiContent?.businessType ?? "",
+                                },
+                                fieldName: "heroSection" + data,
+                                individual: true,
+                                type,
+                              }).then((res: any) => {
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      heroSection: {
+                                        ...appState.aiContent?.heroSection,
+                                        [data]: res[data],
+                                      },
+                                    },
+                                  }),
+                                );
+                                setLoadingHeading(false);
+                              });
+                            }}
+                            className="flex items-center gap-2 "
+                          >
+                            Regenerate
+                            {loadingHeading ? (
+                              <ImSpinner2 className="animate-spin text-lg text-black" />
+                            ) : (
+                              <ImPower className=" text-xs " />
+                            )}
+                          </button>
+                          <RegenerateOptions setType={setType} type={type} />
+                        </div>
                         <input
                           type="text"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -182,189 +225,62 @@ const HeaderSectionContent = (props: TProps) => {
                         />
                       </div>
                     );
-                    case "description":
-                        return (
-                          <div className="flex flex-col border-t pt-5">
-                            <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
-                              <label htmlFor={data} className="my-auto">
-                                {data}
-                              </label>
-                              {/* <div className="flex items-center gap-2">
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setLoadingSubHeading(true);
-                                    regenerateIndividual({
-                                      appState,
-                                      dispatch,
-                                      searchParams,
-                                      fieldName: data,
-                                      type,
-                                    }).then(() => {
-                                      setLoadingSubHeading(false);
-                                    });
-                                  }}
-                                  className="flex items-center gap-2 "
-                                >
-                                  Regenerate
-                                  {loadingSubHeading ? (
-                                    <ImSpinner2 className="animate-spin text-lg text-black" />
-                                  ) : (
-                                    <ImPower className=" text-xs " />
-                                  )}
-                                </button>
-                                <RegenerateOptions setType={setType} type={type} />
-                              </div> */}
-                            </div>
-                            <textarea
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                              id={data}
-                              placeholder={"Enter Sub-heading"}
-                              onChange={(e) => {
-                                dispatch(updateAppState({
-                                    ...appState,
-                                    aiContent:{
-                                         ...appState.aiContent,
-                                        heroSection:{
-                                           ...appState.aiContent?.heroSection,
-                                            [data]: e.target.value
-                                        }
-                                    }
-                                }))
+                  case "description":
+                    return (
+                      <div className="flex flex-col border-t pt-5">
+                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                          <label htmlFor={data} className="my-auto">
+                            {data}
+                          </label>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setLoadingSubHeading(true);
+                                CustomContent.getHeroSection({
+                                  data: {
+                                    location:
+                                      appState?.aiContent?.location ?? "",
+                                    businessName:
+                                      appState?.aiContent?.banner?.businessName,
+                                    businessType:
+                                      appState?.aiContent?.businessType ?? "",
+                                  },
+                                  fieldName: "heroSection" + data,
+                                  individual: true,
+                                  type,
+                                }).then((res: any) => {
+                                  dispatch(
+                                    updateAppState({
+                                      ...appState,
+                                      aiContent: {
+                                        ...appState.aiContent,
+                                        heroSection: {
+                                          ...appState.aiContent?.heroSection,
+                                          [data]: res[data],
+                                        },
+                                      },
+                                    }),
+                                  );
+                                  setLoadingSubHeading(false);
+                                });
                               }}
-                              ref={textareaRef}
-                              value={appState.aiContent?.heroSection?.description}
-                            />
+                              className="flex items-center gap-2 "
+                            >
+                              Regenerate
+                              {loadingSubHeading ? (
+                                <ImSpinner2 className="animate-spin text-lg text-black" />
+                              ) : (
+                                <ImPower className=" text-xs " />
+                              )}
+                            </button>
+                            <RegenerateOptions setType={setType} type={type} />
                           </div>
-                        );
-                //   case "list":
-                //     return (
-                //       <div className="flex flex-col gap-5 border-t pt-5">
-                //         <div className="flex justify-between gap-10">
-                //           <div>
-                //             <h3 className="text-sm font-medium leading-6 text-gray-900">
-                //               Cards
-                //             </h3>
-                //             <p className="text-xs text-gray-400 ">Add a Card</p>
-                //           </div>
-                //           {/* <Switch
-                //             onCheckedChange={(checked) =>
-                //               dispatch(
-                //                 updateAppState({
-                //                   ...appState,
-                //                   aiContent: {
-                //                     ...appState.aiContent,
-                //                     heroSection: {
-                //                       ...appState.aiContent?.heroSection,
-                //                       button: {
-                //                         ...appState.aiContent?.heroSection?.list,
-                //                         show: checked,
-                //                       },
-                //                     },
-                //                   },
-                //                 }),
-                //               )
-                //             }
-                //             checked={appState.aiContent?.heroSection?.list?.show}
-                //           /> */}
-                //         </div>
-
-                //         <DragDropContext onDragEnd={onDragEnd}>
-                //           <Droppable droppableId="droppable">
-                //             {(provided, snapshot) => (
-                //               <div
-                //                 {...provided.droppableProps}
-                //                 ref={provided.innerRef}
-                //                 style={getListStyle(snapshot.isDraggingOver)}
-                //               >
-                //                 {appState.aiContent?.heroSection?.list?.map(
-                //                   (item: any, index: any) => (
-                //                     <Draggable
-                //                       key={item.name}
-                //                       draggableId={item.name}
-                //                       index={index}
-                //                     >
-                //                       {(provided, snapshot) => (
-                //                         <div
-                //                           className=" flex items-center justify-between"
-                //                           key={item.name}
-                //                           ref={provided.innerRef}
-                //                           {...provided.draggableProps}
-                //                           {...provided.dragHandleProps}
-                //                           style={getItemStyle(
-                //                             snapshot.isDragging,
-                //                             provided.draggableProps.style,
-                //                           )}
-                //                         >
-                //                           <div className="flex items-center gap-2">
-                //                             <RxDragHandleDots2 />
-                //                             <FiLink />
-                //                             <h4>{item.name}</h4>
-                //                           </div>
-                //                           {/* <div className="flex items-center gap-2">
-                //                             <MdModeEditOutline
-                //                               color="blue"
-                //                               size={20}
-                //                               onClick={() =>
-                //                                 setShowForm({
-                //                                   form: "Button",
-                //                                   show: true,
-                //                                   edit: item.name,
-                //                                 })
-                //                               }
-                //                             />
-                //                             <MdDeleteForever
-                //                               color="red"
-                //                               size={20}
-                //                               onClick={() =>
-                //                                 handleDeleteButton(item.name)
-                //                               }
-                //                             />
-                //                           </div> */}
-                //                         </div>
-                //                       )}
-                //                     </Draggable>
-                //                   ),
-                //                 )}
-                //                 {provided.placeholder}
-                //               </div>
-                //             )}
-                //           </Droppable>
-                //         </DragDropContext>
-                //         {/* {appState.aiContent?.heroSection?.list?.length !== 2 && (
-                //           <button
-                //             className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-                //             onClick={() =>
-                //               setShowForm({
-                //                 form: "Button",
-                //                 edit: "",
-                //                 show: true,
-                //               })
-                //             }
-                //           >
-                //             Add Button
-                //             <IoMdAdd size={20} />
-                //           </button>
-                //         )} */}
-                //       </div>
-                //     );
-
-                case "button":
-                  return (
-                    <div>
-                      <h1>{data}</h1>
-                      <div className="flex flex-col border-t pt-5">
-                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
-                          <label htmlFor={"button-label"} className="my-auto">
-                            Label
-                          </label>
                         </div>
-
-                        <input
-                          type="text"
+                        <textarea
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                          id={"button-label"}
-                          placeholder={"Enter Label..."}
+                          id={data}
+                          placeholder={"Enter Sub-heading"}
                           onChange={(e) => {
                             dispatch(
                               updateAppState({
@@ -373,54 +289,207 @@ const HeaderSectionContent = (props: TProps) => {
                                   ...appState.aiContent,
                                   heroSection: {
                                     ...appState.aiContent?.heroSection,
-                                    [data]: {
-                                      ...appState.aiContent?.heroSection[data],
-                                      label: e.target.value,
-                                    },
+                                    [data]: e.target.value,
                                   },
                                 },
                               }),
                             );
                           }}
-                          
-                          value={appState.aiContent?.heroSection?.button?.label}
+                          ref={textareaRef}
+                          value={appState.aiContent?.heroSection?.description}
                         />
                       </div>
-                      <div className="flex flex-col border-t pt-5">
-                        <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
-                          <label htmlFor={"button-link"} className="my-auto">
-                            Link
-                          </label>
-                        </div>
+                    );
+                  //   case "list":
+                  //     return (
+                  //       <div className="flex flex-col gap-5 border-t pt-5">
+                  //         <div className="flex justify-between gap-10">
+                  //           <div>
+                  //             <h3 className="text-sm font-medium leading-6 text-gray-900">
+                  //               Cards
+                  //             </h3>
+                  //             <p className="text-xs text-gray-400 ">Add a Card</p>
+                  //           </div>
+                  //           {/* <Switch
+                  //             onCheckedChange={(checked) =>
+                  //               dispatch(
+                  //                 updateAppState({
+                  //                   ...appState,
+                  //                   aiContent: {
+                  //                     ...appState.aiContent,
+                  //                     heroSection: {
+                  //                       ...appState.aiContent?.heroSection,
+                  //                       button: {
+                  //                         ...appState.aiContent?.heroSection?.list,
+                  //                         show: checked,
+                  //                       },
+                  //                     },
+                  //                   },
+                  //                 }),
+                  //               )
+                  //             }
+                  //             checked={appState.aiContent?.heroSection?.list?.show}
+                  //           /> */}
+                  //         </div>
 
-                        <input
-                          type="text"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                          id={"button-link"}
-                          placeholder={"Enter Link..."}
-                          onChange={(e) => {
-                            dispatch(
-                              updateAppState({
-                                ...appState,
-                                aiContent: {
-                                  ...appState.aiContent,
-                                  heroSection: {
-                                    ...appState.aiContent?.heroSection,
-                                    [data]: {
-                                      ...appState.aiContent?.heroSection[data],
-                                      link: e.target.value,
+                  //         <DragDropContext onDragEnd={onDragEnd}>
+                  //           <Droppable droppableId="droppable">
+                  //             {(provided, snapshot) => (
+                  //               <div
+                  //                 {...provided.droppableProps}
+                  //                 ref={provided.innerRef}
+                  //                 style={getListStyle(snapshot.isDraggingOver)}
+                  //               >
+                  //                 {appState.aiContent?.heroSection?.list?.map(
+                  //                   (item: any, index: any) => (
+                  //                     <Draggable
+                  //                       key={item.name}
+                  //                       draggableId={item.name}
+                  //                       index={index}
+                  //                     >
+                  //                       {(provided, snapshot) => (
+                  //                         <div
+                  //                           className=" flex items-center justify-between"
+                  //                           key={item.name}
+                  //                           ref={provided.innerRef}
+                  //                           {...provided.draggableProps}
+                  //                           {...provided.dragHandleProps}
+                  //                           style={getItemStyle(
+                  //                             snapshot.isDragging,
+                  //                             provided.draggableProps.style,
+                  //                           )}
+                  //                         >
+                  //                           <div className="flex items-center gap-2">
+                  //                             <RxDragHandleDots2 />
+                  //                             <FiLink />
+                  //                             <h4>{item.name}</h4>
+                  //                           </div>
+                  //                           {/* <div className="flex items-center gap-2">
+                  //                             <MdModeEditOutline
+                  //                               color="blue"
+                  //                               size={20}
+                  //                               onClick={() =>
+                  //                                 setShowForm({
+                  //                                   form: "Button",
+                  //                                   show: true,
+                  //                                   edit: item.name,
+                  //                                 })
+                  //                               }
+                  //                             />
+                  //                             <MdDeleteForever
+                  //                               color="red"
+                  //                               size={20}
+                  //                               onClick={() =>
+                  //                                 handleDeleteButton(item.name)
+                  //                               }
+                  //                             />
+                  //                           </div> */}
+                  //                         </div>
+                  //                       )}
+                  //                     </Draggable>
+                  //                   ),
+                  //                 )}
+                  //                 {provided.placeholder}
+                  //               </div>
+                  //             )}
+                  //           </Droppable>
+                  //         </DragDropContext>
+                  //         {/* {appState.aiContent?.heroSection?.list?.length !== 2 && (
+                  //           <button
+                  //             className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                  //             onClick={() =>
+                  //               setShowForm({
+                  //                 form: "Button",
+                  //                 edit: "",
+                  //                 show: true,
+                  //               })
+                  //             }
+                  //           >
+                  //             Add Button
+                  //             <IoMdAdd size={20} />
+                  //           </button>
+                  //         )} */}
+                  //       </div>
+                  //     );
+
+                  case "button":
+                    return (
+                      <div>
+                        <h1>{data}</h1>
+                        <div className="flex flex-col border-t pt-5">
+                          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor={"button-label"} className="my-auto">
+                              Label
+                            </label>
+                          </div>
+
+                          <input
+                            type="text"
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            id={"button-label"}
+                            placeholder={"Enter Label..."}
+                            onChange={(e) => {
+                              dispatch(
+                                updateAppState({
+                                  ...appState,
+                                  aiContent: {
+                                    ...appState.aiContent,
+                                    heroSection: {
+                                      ...appState.aiContent?.heroSection,
+                                      [data]: {
+                                        ...appState.aiContent?.heroSection[
+                                          data
+                                        ],
+                                        label: e.target.value,
+                                      },
                                     },
                                   },
-                                },
-                              }),
-                            );
-                          }}
-                          
-                          value={appState.aiContent?.heroSection?.button?.link}
-                        />
+                                }),
+                              );
+                            }}
+                            value={
+                              appState.aiContent?.heroSection?.button?.label
+                            }
+                          />
+                        </div>
+                        <div className="flex flex-col border-t pt-5">
+                          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor={"button-link"} className="my-auto">
+                              Link
+                            </label>
+                          </div>
+
+                          <input
+                            type="text"
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            id={"button-link"}
+                            placeholder={"Enter Link..."}
+                            onChange={(e) => {
+                              dispatch(
+                                updateAppState({
+                                  ...appState,
+                                  aiContent: {
+                                    ...appState.aiContent,
+                                    heroSection: {
+                                      ...appState.aiContent?.heroSection,
+                                      [data]: {
+                                        ...appState.aiContent?.heroSection[
+                                          data
+                                        ],
+                                        link: e.target.value,
+                                      },
+                                    },
+                                  },
+                                }),
+                              );
+                            }}
+                            value={
+                              appState.aiContent?.heroSection?.button?.link
+                            }
+                          />
+                        </div>
                       </div>
-                    </div>
-                  );
+                    );
 
                   case "link":
                     return (
@@ -447,7 +516,9 @@ const HeaderSectionContent = (props: TProps) => {
                                     heroSection: {
                                       ...appState.aiContent?.heroSection,
                                       [data]: {
-                                        ...appState.aiContent?.heroSection[data],
+                                        ...appState.aiContent?.heroSection[
+                                          data
+                                        ],
                                         label: e.target.value,
                                       },
                                     },
@@ -455,7 +526,6 @@ const HeaderSectionContent = (props: TProps) => {
                                 }),
                               );
                             }}
-                            
                             value={appState.aiContent?.heroSection?.link?.label}
                           />
                         </div>
@@ -480,7 +550,9 @@ const HeaderSectionContent = (props: TProps) => {
                                     heroSection: {
                                       ...appState.aiContent?.heroSection,
                                       [data]: {
-                                        ...appState.aiContent?.heroSection[data],
+                                        ...appState.aiContent?.heroSection[
+                                          data
+                                        ],
                                         link: e.target.value,
                                       },
                                     },
@@ -488,13 +560,11 @@ const HeaderSectionContent = (props: TProps) => {
                                 }),
                               );
                             }}
-                            
                             value={appState.aiContent?.heroSection?.link?.link}
                           />
                         </div>
                       </div>
                     );
-                    
                 }
               })()}
             </>
