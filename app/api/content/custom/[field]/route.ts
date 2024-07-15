@@ -62,6 +62,19 @@ export async function POST(
             >
           } only generate three objects in the team.list`
   break;
+  case "teamtitle":
+    fields = `only generate the ${type?? ""} data for team and please don't add any other fields expect the given 
+    "team": {
+           "title":"**title**",
+  }`
+  break;
+  case "teamdescription":
+    fields = `only generate the ${type?? ""} data for team and please don't add any other fields expect the given 
+    "team": {
+            "description":"**description**",
+
+          }`
+  break;
     case "stats":
       fields = `only generate the ${type?? ""} data for stats and please don't add any other fields expect the given 
       "stats": {
@@ -71,6 +84,22 @@ export async function POST(
                 { "id": "**unique id**", "name": "**name**", "value": "**value**" },
               >
             } only generate 4 items in the stats.list`
+
+    break;
+    case "statstitle":
+      fields = `only generate the ${type?? ""} data for stats and please don't add any other fields expect the given 
+      "stats": {
+             "title":"**title**",
+            } `
+             
+    break;
+    case "statsdescription":
+      fields = `only generate the ${type?? ""} data for stats and please don't add any other fields expect the given 
+      "stats": {
+            
+              "description":"**description**",
+             `
+             
     break;
     case "pricing":
       fields = `only generate the ${type?? ""} data for pricing and please don't add any other fields expect the given 

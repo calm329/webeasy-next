@@ -861,30 +861,33 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      contact: {
-                        ...parsedData.contact,
-                        address:{
-                          label:"Address",
-                          value:"545 Mavis Island Chicago, IL 99191"
+                if(!individual){
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        contact: {
+                          ...parsedData.contact,
+                          address:{
+                            label:"Address",
+                            value:"545 Mavis Island Chicago, IL 99191"
+                          },
+                          telephone:{
+                            label:"Telephone",
+                            value:"+1 (555) 234-5678"
+                          },
+                          email:{
+                            label:"Email",
+                            value:"hello@example.com"
+                          }
                         },
-                        telephone:{
-                          label:"Telephone",
-                          value:"+1 (555) 234-5678"
-                        },
-                        email:{
-                          label:"Email",
-                          value:"hello@example.com"
-                        }
                       },
-                    },
-
-                  }),
-                );
+  
+                    }),
+                  );
+                }
+                
 
                 resolve(parsedData.contact);
               } catch (error) {
@@ -957,6 +960,7 @@ class CustomContentApiService {
                 //   resolve(JSON.parse(completeJson).features);
                 // }
 
+                if(!individual)
                 store.dispatch(
                   updateAppState({
                     ...getAppState(),
@@ -1238,7 +1242,7 @@ class CustomContentApiService {
               try {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
-
+                if(!individual)
                 store.dispatch(
                   updateAppState({
                     ...getAppState(),
@@ -1317,7 +1321,7 @@ class CustomContentApiService {
               try {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
-
+                if(!individual)
                 store.dispatch(
                   updateAppState({
                     ...getAppState(),
@@ -1396,7 +1400,7 @@ class CustomContentApiService {
               try {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
-
+                if(!individual)
                 store.dispatch(
                   updateAppState({
                     ...getAppState(),
@@ -1475,7 +1479,7 @@ class CustomContentApiService {
               try {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
-
+                if(!individual)
                 store.dispatch(
                   updateAppState({
                     ...getAppState(),
