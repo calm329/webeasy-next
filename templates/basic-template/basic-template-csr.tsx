@@ -230,7 +230,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
       addSectionAtIndex(newIndex, newSection);
     }
   };
-
+  console.log("appState.selectedFont",appState.selectedFont)
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-col gap-10">
