@@ -150,6 +150,110 @@ const HeaderSectionContent = (props: TProps) => {
             <>
               {(() => {
                 switch (data) {
+                  case "image":
+                    return (
+                      <div className="flex flex-col gap-5">
+                        <div className="flex justify-between ">
+                          <h3 className=" flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
+                            Image
+                          </h3>
+                          <div className="flex gap-5">
+                            {/* <div className="flex">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelectedField(data);
+                                  setLoadingImage(true);
+                                  dispatch(
+                                    updateAppState({
+                                      ...appState,
+                                      aiContent: {
+                                        ...appState.aiContent,
+                                        hero: {
+                                          ...appState.aiContent?.hero,
+                                          image: {
+                                            ...appState.aiContent?.hero?.image,
+                                            imageUrl: "",
+                                          },
+                                        },
+                                      },
+                                    }),
+                                  );
+                                  regenerateHeroImage(imageGenerationType).then(
+                                    (image) => {
+                                      setLoadingImage(false);
+                                      dispatch(
+                                        updateAppState({
+                                          ...appState,
+                                          aiContent: {
+                                            ...appState.aiContent,
+                                            hero: {
+                                              ...appState.aiContent?.hero,
+                                              image: {
+                                                ...appState.aiContent?.hero
+                                                  ?.image,
+                                                imageUrl: image,
+                                              },
+                                            },
+                                          },
+                                        }),
+                                      );
+                                    },
+                                  );
+                                }}
+                                className="flex items-center gap-2 "
+                              >
+                                Regenerate
+                                {loadingImage ? (
+                                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                                ) : (
+                                  <ImPower className=" text-xs " />
+                                )}
+                              </button>
+                              <RegenerateOptions
+                                setType={setImageGenerationType}
+                                type={imageGenerationType}
+                                types={["Ai Generated", "Stored Image"]}
+                                title="Generation Type"
+                              />
+                            </div> */}
+
+                          </div>
+                        </div>
+                        {/* <div>
+                          <button type="button" onClick={()=>{
+                            setShowImageModal(true);
+                          }}>Swap</button>
+                        </div> */}
+                        
+                          <div>
+                            <Uploader
+                              defaultValue={
+                                appState.aiContent?.heroSection?.image
+                              }
+                              name={data}
+                              label={""}
+                              onChange={(value) => {
+                                console.log("Upload:", data, value);
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      heroSection: {
+                                        ...appState.aiContent?.heroSection,
+                                        image: value,
+                                      },
+                                    },
+                                  }),
+                                );
+                                // field.onChange(value);
+                              }}
+                            />
+                          </div>
+                      
+                      </div>
+                    );
                   case "title":
                     return (
                       <div className="flex flex-col border-t pt-5">

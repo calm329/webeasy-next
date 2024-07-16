@@ -172,7 +172,7 @@ export default function HeroSection(props: TProps) {
               ) : (
                 <Image
                   alt="App screenshot"
-                  src="https://tailwindui.com/img/component-images/project-app-screenshot.png"
+                  src={appState.aiContent?.heroSection?.image}
                   width={2432}
                   height={1442}
                   className="w-[76rem] rounded-md shadow-2xl ring-1 ring-gray-900/10"

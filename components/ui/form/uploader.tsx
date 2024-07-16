@@ -10,16 +10,17 @@ type TProps = {
   label?: string;
   onChange?: (value: string) => void;
   contain?: boolean;
+  multimedia?: boolean;
 };
 
 export const isImage = (url: string) => {
-  const imageFormats = ['jpg', 'jpeg', 'png'];
-  console.log("url: " + imageFormats.some(format => url.includes(format)))
-  return imageFormats.some(format => url.includes(format));
+  const imageFormats = ["jpg", "jpeg", "png"];
+  console.log("url: " + imageFormats.some((format) => url.includes(format)));
+  return imageFormats.some((format) => url.includes(format));
 };
 
 export default function Uploader(props: TProps) {
-  const { defaultValue, name, label, onChange, contain } = props;
+  const { defaultValue, name, label, onChange, contain, multimedia } = props;
   const aspectRatio = "aspect-video"; // Since both images and videos can use this aspect ratio
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -37,11 +38,15 @@ export default function Uploader(props: TProps) {
         !file.type.includes("png") &&
         !file.type.includes("jpg") &&
         !file.type.includes("jpeg") &&
-        !file.type.includes("mp4") &&
-        !file.type.includes("avi") &&
-        !file.type.includes("mov")
+        (!multimedia ||
+          (!file.type.includes("mp4") &&
+            !file.type.includes("avi") &&
+            !file.type.includes("mov")))
       ) {
-        toast.error("Invalid file type (must be .png, .jpg, .jpeg, .mp4, .avi, or .mov)");
+        toast.error(
+          "Invalid file type (must be .png, .jpg, .jpeg" +
+            (multimedia ? ", .mp4, .avi, or .mov)" : ")"),
+        );
       } else {
         fetch("/api/upload", {
           method: "POST",
@@ -64,13 +69,11 @@ export default function Uploader(props: TProps) {
   };
 
   useEffect(() => {
+    console.log("Upload", data[name]);
     if (defaultValue) {
       setData((prev) => ({ ...prev, [name]: defaultValue }));
     }
   }, [defaultValue]);
-
-
-
 
   return (
     <div className="mx-auto flex items-center">
@@ -148,24 +151,36 @@ export default function Uploader(props: TProps) {
           </p>
           <span className="sr-only">Upload</span>
         </div>
-        {data[name] && (
-          isImage(data[name] as string) ? (
-            <Image
-              src={data[name] as string}
-              alt="Preview"
-              className={`h-full w-full rounded-md ${contain ? "object-contain" : "object-cover"}`}
-              height={400}
-              width={400}
-            />
-          ) : (
-            <video
-              src={data[name] as string}
-              controls
-              className={`h-full w-full rounded-md ${contain ? "object-contain" : "object-cover"}`}
-              height={400}
-              width={400}
-            />
-          )
+        {data[name] && !multimedia ? (
+          <Image
+            src={data[name] as string}
+            alt="Preview"
+            className={`h-full w-full rounded-md ${
+              contain ? "object-contain" : "object-cover"
+            }`}
+            height={400}
+            width={400}
+          />
+        ) : isImage(data[name] as string) ? (
+          <Image
+            src={data[name] as string}
+            alt="Preview"
+            className={`h-full w-full rounded-md ${
+              contain ? "object-contain" : "object-cover"
+            }`}
+            height={400}
+            width={400}
+          />
+        ) : (
+          <video
+            src={data[name] as string}
+            controls
+            className={`h-full w-full rounded-md ${
+              contain ? "object-contain" : "object-cover"
+            }`}
+            height={400}
+            width={400}
+          />
         )}
       </label>
 
@@ -175,7 +190,7 @@ export default function Uploader(props: TProps) {
           ref={inputRef}
           name={name}
           type="file"
-          accept="image/*,video/*"
+          accept={multimedia ? "image/*,video/*" : "image/*"}
           className="sr-only"
           onChange={(e) => {
             const file = e.currentTarget.files && e.currentTarget.files[0];
