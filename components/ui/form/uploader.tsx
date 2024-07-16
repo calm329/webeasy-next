@@ -15,8 +15,8 @@ type TProps = {
 
 export const isImage = (url: string) => {
   const imageFormats = ["jpg", "jpeg", "png"];
-  console.log("url: " + imageFormats.some((format) => url.includes(format)));
-  return imageFormats.some((format) => url.includes(format));
+  console.log("url: " + imageFormats.some((format) => url?.includes(format)));
+  return imageFormats.some((format) => url?.includes(format));
 };
 
 export default function Uploader(props: TProps) {
