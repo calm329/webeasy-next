@@ -8,12 +8,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ImSpinner2 } from "react-icons/im";
+import DeleteUserModal from "../modal/delete-user-modal";
 
 export default function SecurityForm() {
   const { data: session } = useSession();
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const formSchema = z.object({
     currentPassword: z
       .string()
@@ -73,33 +74,9 @@ export default function SecurityForm() {
     }
   };
 
-  const handleDelete = async () => {
-    setLoadingDelete(true);
-    try {
-      const res = await fetch("/api/user/delete", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: session?.user?.email }),
-      });
-
-      const response = await res.json();
-
-      if (res.ok) {
-        signOut();
-      } else {
-        toast.error(response.error);
-      }
-    } catch (error) {
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoadingDelete(false);
-    }
-  };
-
   return (
     <div className="flex flex-col gap-10">
+      <DeleteUserModal open={showDeleteModal} setOpen={setShowDeleteModal} />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mt-6 justify-center space-y-6  border-t border-gray-200 text-sm leading-6"
@@ -168,13 +145,13 @@ export default function SecurityForm() {
         </h3>
         <button
           className={`ml-0 mr-auto flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 ${loadingDelete ? "bg-red-500" : "bg-red-600 hover:bg-red-500 max-lg:ml-auto max-lg:mr-0"}`}
-          onClick={handleDelete}
+          onClick={() => setShowDeleteModal(true)}
           type="button"
           disabled={loadingDelete}
         >
           {loadingDelete && (
-              <ImSpinner2 className="animate-spin text-lg text-white" />
-            )}
+            <ImSpinner2 className="animate-spin text-lg text-white" />
+          )}
           Delete Account
         </button>
       </div>
