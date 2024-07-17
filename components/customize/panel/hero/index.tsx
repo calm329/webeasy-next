@@ -306,7 +306,7 @@ const HeroContent = (props: TProps) => {
                               setShowImageModal(true);
                             }}
                           >
-                            Replace
+                            Swap
                           </button>
                         </div>
                       </div>

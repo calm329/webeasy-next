@@ -164,7 +164,7 @@ const CustomGalleryContent = (props: TProps) => {
                 setShowImageModal(true);
               }}
             >
-              Replace
+              Swap
             </button>
           </div>
         ))}
