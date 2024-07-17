@@ -92,7 +92,7 @@ const EditComponent = (props: TProps) => {
         e.stopPropagation();
       }}
     >
-      {/* <button>Restyle</button> */}
+      <button>Restyle</button>
       {/* <button>Regenerate images</button> */}
       <FaArrowUpLong onClick={() => moveSection("up")} />
       <FaArrowDownLong onClick={() => moveSection("down")} />

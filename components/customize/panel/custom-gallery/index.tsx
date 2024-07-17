@@ -1,5 +1,9 @@
 import Uploader from "@/components/ui/form/uploader";
-import { getAppState, regenerateIndividual } from "@/lib/utils/function";
+import {
+  getAppState,
+  getRandomImageFromUnsplash,
+  regenerateIndividual,
+} from "@/lib/utils/function";
 import { TSection } from "@/types";
 import { Switch } from "@/components/ui/switch";
 import React, { useState } from "react";
@@ -26,7 +30,8 @@ const CustomGalleryContent = (props: TProps) => {
   const dispatch = useAppDispatch();
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const [selectedImageId, setSelectedImageId] = useState(0);
   function setImage(data: any) {
     dispatch(
       updateAppState({
@@ -80,18 +85,55 @@ const CustomGalleryContent = (props: TProps) => {
         </div> */}
       </div>
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
-        {appState.aiContent?.gallery?.list?.map((image, i) => (
-          <div className="flex flex-col gap-5" key={i}>
+        {appState.aiContent?.gallery?.list?.map((image, index) => (
+          <div className="flex flex-col gap-5" key={index}>
             <div className="flex justify-between ">
               <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
-                Image {i + 1}
+                Image {index + 1}
               </h3>
-              
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedImageId(index);
+                  setLoading(true);
+                  getRandomImageFromUnsplash(
+                    appState?.aiContent?.businessType ?? "",
+                  ).then((data) => {
+                    setLoading(false);
+                    dispatch(
+                      updateAppState({
+                        ...appState,
+                        aiContent: {
+                          ...appState?.aiContent,
+                          gallery: {
+                            ...appState?.aiContent?.gallery,
+                            list: appState?.aiContent?.gallery?.list?.map((image,i)=>{
+                              if(i=== index){
+                                return data
+                              }else{
+                                return image
+                              }
+                            })
+                          },
+                        },
+                      }),
+                    );
+                  });
+                }}
+                className="flex items-center gap-2 "
+              >
+                Regenerate
+                {(loading && selectedImageId === index) ? (
+                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                ) : (
+                  <ImPower className=" text-xs " />
+                )}
+              </button>
             </div>
             <div>
               <Uploader
                 defaultValue={image}
-                name={"image" + (i + 1)}
+                name={"image" + (index + 1)}
                 label={""}
                 onChange={(value) => {
                   dispatch(
@@ -102,9 +144,9 @@ const CustomGalleryContent = (props: TProps) => {
                         gallery: {
                           ...appState.aiContent?.gallery,
                           list: [
-                            ...appState.aiContent?.gallery?.list?.slice(0, i),
+                            ...appState.aiContent?.gallery?.list?.slice(0, index),
                             value,
-                            ...appState.aiContent?.gallery?.list?.slice(i + 1),
+                            ...appState.aiContent?.gallery?.list?.slice(index + 1),
                           ],
                         },
                       },
@@ -115,15 +157,15 @@ const CustomGalleryContent = (props: TProps) => {
               />
             </div>
             <button
-                type="button"
-                 className="px-5  mr-auto border py-2 rounded-md bg-red-600 text-white font-medium"
-                onClick={() => {
-                  setSelectedImage(i.toString());
-                  setShowImageModal(true);
-                }}
-              >
-                Replace
-              </button>
+              type="button"
+              className="mr-auto  rounded-md border bg-red-600 px-5 py-2 font-medium text-white"
+              onClick={() => {
+                setSelectedImage(index.toString());
+                setShowImageModal(true);
+              }}
+            >
+              Replace
+            </button>
           </div>
         ))}
       </form>
