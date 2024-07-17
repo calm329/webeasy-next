@@ -28,6 +28,17 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 
 export default function FooterSection(props: TProps) {
@@ -39,6 +50,9 @@ export default function FooterSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
+    id,
+    sections,
+    setSections,
   } = props;
 
   const appState = useAppSelector(AS);
@@ -77,9 +91,9 @@ export default function FooterSection(props: TProps) {
       className={`group relative w-full bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick()}
     >
-      <EditComponent />
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       <AddSectionButtons
-        sectionTitle="Footers"
+        id={id}
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />

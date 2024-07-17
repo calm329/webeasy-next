@@ -33,6 +33,17 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 }
 
 
@@ -45,6 +56,9 @@ export default function HeaderSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
+    setSections,
+    sections,
+    id,
   } = props;
 
   const appState = useAppSelector(AS);
@@ -79,9 +93,9 @@ export default function HeaderSection(props: TProps) {
 
   return (
     <button className="text-left w-full overflow-visible relative group isolate  bg-gray-900 py-24 sm:py-32" onClick={() => handleClick()}>
-      <EditComponent />
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       <AddSectionButtons
-        sectionTitle="Header"
+        id={id}
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />

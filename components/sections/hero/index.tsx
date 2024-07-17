@@ -30,6 +30,17 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 
 export default function HeroSection(props: TProps) {
@@ -41,6 +52,9 @@ export default function HeroSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
+    setSections,
+    sections,
+    id,
   } = props;
 
   const appState = useAppSelector(AS);
@@ -84,9 +98,9 @@ export default function HeroSection(props: TProps) {
       className="group relative isolate w-full bg-white text-left"
       onClick={() => handleClick()}
     >
-      <EditComponent />
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       <AddSectionButtons
-        sectionTitle="Hero"
+        id={id}
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />

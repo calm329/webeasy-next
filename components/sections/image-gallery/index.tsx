@@ -6,6 +6,7 @@ import AddSectionButtons from "@/components/add-section/buttons";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import EditComponent from "@/components/edit-component";
+import { generateUniqueId } from "@/lib/utils/function";
 
 type TProps = {
   editable?: boolean;
@@ -27,7 +28,19 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
+generateUniqueId
 
 const ImageGallerySection = ({
   editable,
@@ -37,6 +50,9 @@ const ImageGallerySection = ({
   setSectionModal,
   setTriggerSection,
   showForm,
+  setSections,
+  sections,
+  id,
 }: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
@@ -107,7 +123,7 @@ const ImageGallerySection = ({
 
   return (
     <section className="relative flex justify-center group">
-      <EditComponent/>
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       <button
         className={`${editable && "group relative rounded-xl border-2 border-transparent hover:border-indigo-500"} container mb-20 mt-20`}
         onClick={handleClick}
@@ -116,7 +132,7 @@ const ImageGallerySection = ({
           classNameUp="top-0"
           setSectionModal={setSectionModal}
           setTriggerSection={setTriggerSection}
-          sectionTitle="Image Gallery Section"
+          id={id}
         />
         {galleryList ? galleryContent : skeletonContent}
       </button>

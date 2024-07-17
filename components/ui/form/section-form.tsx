@@ -25,11 +25,13 @@ import TeamSection from "../../sections/team/index";
 import TestimonialSection from "@/components/sections/testimonials";
 import Image from "next/image";
 import { TSection } from "@/types";
+import { generateUniqueId } from "@/lib/utils/function";
 
 type TProps = {
   addSectionByTitle: (
-    title: string,
+    id: string,
     newSection: {
+      id: string;
       title: string;
       content: JSX.Element;
     },
@@ -59,6 +61,21 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<
+    SetStateAction<
+      {
+        id: string;
+        title: string;
+        content: JSX.Element;
+      }[]
+    >
+  >;
+  sections: {
+    id: string;
+    title: string;
+    content: JSX.Element;
+  }[];
+  id: string;
 };
 
 const SectionForm = (props: TProps) => {
@@ -73,249 +90,310 @@ const SectionForm = (props: TProps) => {
     setSectionModal,
     setTriggerSection,
     showForm,
+    sections,
+    setSections,
+    id,
   } = props;
   const [searchQuery, setSearchQuery] = useState("");
 
-  const sections = [
-    {
-      id: "2",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/contact-sections.png",
-      title: "Contact",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <ContactSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+  const newSections = [
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/contact-sections.png",
+        title: "Contact",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <ContactSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    {
-      id: "4",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/cta-sections.png",
-      title: "CTA",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <CtaSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/cta-sections.png",
+        title: "CTA",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <CtaSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    {
-      id: "5",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
-      title: "FAQ",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <FaqSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        title: "FAQ",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <FaqSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    // {
-    //   id: "6",
-    //   image:
-    //     "https://tailwindui.com/img/category-thumbnails/marketing/feature-sections.png",
-    //   title: "Feature",
-    //   description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-    //   Element: (
-    //     <FeatureSection
-    //       showForm={showForm}
-    //       setSectionModal={setSectionModal}
-    //       setShowForm={setShowForm}
-    //       setTriggerSection={setTriggerSection}
-    //       editable={editable}
-    //       setIsOpen={setIsOpen}
-    //       setSection={setSection}
-    //     />
-    //   ),
-    // },
-    {
-      id: "7",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/footers.png",
-      title: "Footers",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <FooterSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/footers.png",
+        title: "Footers",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <FooterSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    {
-      id: "8",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/header.png",
-      title: "Header",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <HeaderSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/header.png",
+        title: "Header",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <HeaderSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    {
-      id: "9",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/heroes.png",
-      title: "Hero",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <HeroSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/heroes.png",
+        title: "Hero",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <HeroSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    {
-      id: "10",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/logo-clouds.png",
-      title: "Logo",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <LogoSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/logo-clouds.png",
+        title: "Logo",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <LogoSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    {
-      id: "11",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/newsletter-sections.png",
-      title: "NewsLetters",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <NewsLetterSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/newsletter-sections.png",
+        title: "NewsLetters",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <NewsLetterSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    {
-      id: "12",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/pricing.png",
-      title: "Pricing",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <PricingSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/pricing.png",
+        title: "Pricing",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <PricingSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    {
-      id: "13",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/stats-sections.png",
-      title: "Stats",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <StatsSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/stats-sections.png",
+        title: "Stats",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <StatsSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    {
-      id: "14",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/team-sections.png",
-      title: "Team",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <TeamSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/team-sections.png",
+        title: "Team",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <TeamSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
-    {
-      id: "15",
-      image:
-        "https://tailwindui.com/img/category-thumbnails/marketing/testimonials.png",
-      title: "Testimonials",
-      description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-      Element: (
-        <TestimonialSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
+    () => {
+      const newId = generateUniqueId();
+      return {
+        id: newId,
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/testimonials.png",
+        title: "Testimonials",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        Element: (
+          <TestimonialSection
+            id={newId}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
     },
   ];
 
-  const filteredSections = sections.filter((section) =>
-    section.title.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredSections = newSections
+    .map((section) => section())
+    .filter((section) =>
+      section.title.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
 
   return (
     <div>
@@ -344,8 +422,9 @@ const SectionForm = (props: TProps) => {
             className="flex cursor-pointer gap-3 rounded border p-5 hover:bg-gray-50 max-lg:flex-col"
             onClick={() => {
               addSectionByTitle(
-                triggerSection.section,
+                id,
                 {
+                  id: section.id,
                   title: section.title,
                   content: section.Element,
                 },

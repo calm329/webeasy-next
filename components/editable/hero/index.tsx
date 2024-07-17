@@ -39,6 +39,17 @@ type TProps = {
       position: number;
     }>
   >;
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 
 const EditableHero = ({
@@ -52,6 +63,9 @@ const EditableHero = ({
   setShowForm,
   setSectionModal,
   setTriggerSection,
+  setSections,
+  sections,
+  id
 }: TProps) => {
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
@@ -90,7 +104,7 @@ const EditableHero = ({
     <section className="bg-gray-50 py-10">
      
       <div className="container mx-auto px-4 relative group">
-      <EditComponent />
+      <EditComponent sections={sections} setSections={setSections} id={id}/>
         <div className="rounded-3xl bg-white px-8 py-16 pb-10">
           <div className="mx-auto max-w-7xl flex flex-col justify-center">
             {appState.aiContent?.hero ? (
@@ -99,7 +113,7 @@ const EditableHero = ({
                 onClick={() => handleClick("Hero")}
               >
                 
-                <AddSectionButtons setSectionModal={setSectionModal} sectionTitle="Hero Section" setTriggerSection={setTriggerSection} />
+                <AddSectionButtons setSectionModal={setSectionModal} id={id} setTriggerSection={setTriggerSection} />
                 <div className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-2/3"}`}>
                   <div className="md:max-w-lg flex flex-col">
                     {appState.aiContent?.hero?.heading ? (

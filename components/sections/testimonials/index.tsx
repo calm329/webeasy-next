@@ -31,6 +31,17 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 
 export default function TestimonialSection(props: TProps) {
@@ -42,6 +53,9 @@ export default function TestimonialSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
+    setSections,
+    sections,
+    id,
   } = props;
 
   const appState = useAppSelector(AS);
@@ -84,9 +98,9 @@ export default function TestimonialSection(props: TProps) {
       className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} group relative isolate my-10 w-full overflow-visible bg-white px-6 py-24 sm:py-32 lg:px-8`}
       onClick={() => handleClick()}
     >
-      <EditComponent />
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       <AddSectionButtons
-        sectionTitle="Testimonials"
+        id={id}
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />

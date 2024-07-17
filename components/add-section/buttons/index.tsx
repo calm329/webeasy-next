@@ -10,7 +10,7 @@ type TProps = {
       position: number;
     }>
   >;
-  sectionTitle: string;
+  id: string;
   classNameUp?: string;
   classNameDown?: string;
 };
@@ -18,7 +18,7 @@ type TProps = {
 const AddSectionButtons = ({
   setSectionModal,
   setTriggerSection,
-  sectionTitle,
+  id,
   classNameUp,
   classNameDown,
 }: TProps) => {
@@ -32,7 +32,7 @@ const AddSectionButtons = ({
           setSectionModal(true);
           setTriggerSection({
             position: 0,
-            section: sectionTitle,
+            section: id,
           });
         }}
         disabled={appState?.generate?.generating}
@@ -46,7 +46,7 @@ const AddSectionButtons = ({
           setSectionModal(true);
           setTriggerSection({
             position: 1,
-            section: sectionTitle,
+            section: id,
           });
         }}
         disabled={appState?.generate?.generating}

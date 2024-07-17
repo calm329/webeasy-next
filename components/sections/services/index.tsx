@@ -28,6 +28,17 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 
 const ServicesSection = ({
@@ -38,6 +49,9 @@ const ServicesSection = ({
   setSectionModal,
   setTriggerSection,
   showForm,
+  sections,
+  setSections,
+  id
 }: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
@@ -77,7 +91,7 @@ const ServicesSection = ({
 
   return (
     <section className="relative group flex justify-center items-center mt-10">
-      <EditComponent/>
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       <button
         className={`mx-auto max-w-7xl rounded-3xl p-8 md:p-12 ${
           editable && "rounded border-2 border-transparent hover:border-indigo-500"
@@ -88,7 +102,7 @@ const ServicesSection = ({
           classNameUp="top-0"
           setSectionModal={setSectionModal}
           setTriggerSection={setTriggerSection}
-          sectionTitle="Services Section"
+          id={id}
         />
         <div className="mb-10 flex flex-col">
           {appState.aiContent.services?.title ? (

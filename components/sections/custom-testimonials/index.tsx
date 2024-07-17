@@ -29,6 +29,17 @@ type TProps = {
   setTriggerSection: React.Dispatch<
     SetStateAction<{ section: string; position: number }>
   >;
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 
 const CustomTestimonial = ({
@@ -38,6 +49,9 @@ const CustomTestimonial = ({
   setShowForm,
   setSectionModal,
   setTriggerSection,
+  sections,
+  setSections,
+  id
 }: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
@@ -118,13 +132,13 @@ const CustomTestimonial = ({
     <section
       className={`group container relative  mb-20 mt-20 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
     >
-      <EditComponent />
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       <AddSectionButtons
         classNameDown="z-10"
         classNameUp="top-0 z-10"
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
-        sectionTitle="Testimonial Section"
+        id={id} 
       />
       {content}
     </section>

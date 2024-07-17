@@ -35,6 +35,7 @@ import ServicesSection from "@/components/sections/services";
 import ImageGallerySection from "@/components/sections/image-gallery";
 import PartnersSection from "@/components/sections/partners";
 import { usePathname } from "next/navigation";
+import { generateUniqueId } from "../../lib/utils/function";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -82,127 +83,180 @@ const BasicTemplate = (props: BasicTemplateProps) => {
     position: 0,
   });
   const pathname = usePathname();
-
-  const initialSections = [
-    {
-      title: "Banner Section",
-      content: (
-        <EditableBanner
-          banner={banner}
-          colors={colors}
-          editable={editable}
-          setFocusedField={setFocusedField}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-          showForm={showForm}
-          setShowForm={setShowForm}
-        />
-      ),
-    },
-    {
-      title: "Hero Section",
-      content: (
-        <EditableHero
-          colors={colors}
-          setTriggerSection={setTriggerSection}
-          setSectionModal={setSectionModal}
-          hero={hero}
-          editable={editable}
-          setFocusedField={setFocusedField}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-          showForm={showForm}
-          setShowForm={setShowForm}
-        />
-      ),
-    },
-    {
-      title: "Services Section",
-      content: (
-        <ServicesSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
-    },
-    {
-      title: "Image Gallery Section",
-      content: (
-        <ImageGallerySection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
-    },
-    {
-      title: "Partners Section",
-      content: (
-        <PartnersSection
-          showForm={showForm}
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
-    },
-    {
-      title: "Testimonial Section",
-      content: (
-        <CustomTestimonial
-          setSectionModal={setSectionModal}
-          setShowForm={setShowForm}
-          setTriggerSection={setTriggerSection}
-          editable={editable}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-        />
-      ),
-    },
-    ...(pathname.split("/")[1] !== "custom"
-      ? [
-          {
-            title: "Posts Section",
-            content: (
-              <PostsSection
-                editable={editable}
-                setIsOpen={setIsOpen}
-                setSection={setSection}
-                setShowForm={setShowForm}
-              />
-            ),
-          },
-        ]
-      : []),
-  ];
   const [sections, setSections] = useState<
     Array<{
-      title: string; 
+      id: string;
+      title: string;
       content: JSX.Element;
     }>
-  >(initialSections);
+  >([]);
+
+  const initialSections = [
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Banner Section",
+        content: (
+          <EditableBanner
+            id={id}
+            banner={banner}
+            colors={colors}
+            editable={editable}
+            setFocusedField={setFocusedField}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            showForm={showForm}
+            setShowForm={setShowForm}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
+    },
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Hero Section",
+        content: (
+          <EditableHero
+            id={id}
+            colors={colors}
+            setTriggerSection={setTriggerSection}
+            setSectionModal={setSectionModal}
+            hero={hero}
+            editable={editable}
+            setFocusedField={setFocusedField}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            showForm={showForm}
+            setShowForm={setShowForm}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
+    },
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Services Section",
+        content: (
+          <ServicesSection
+            id={id}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
+    },
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Image Gallery Section",
+        content: (
+          <ImageGallerySection
+            id={id}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
+    },
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Partners Section",
+        content: (
+          <PartnersSection
+            id={id}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
+    },
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Testimonial Section",
+        content: (
+          <CustomTestimonial
+            id={id}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            sections={sections}
+            setSections={setSections}
+          />
+        ),
+      };
+    },
+    () => {
+      const id = generateUniqueId();
+      if(pathname.split("/")[1] !== "custom"){
+        return({
+          id,
+          title: "Posts Section",
+          content: (
+            <PostsSection
+              id={id}
+              editable={editable}
+              setIsOpen={setIsOpen}
+              setSection={setSection}
+              setShowForm={setShowForm}
+              sections={sections}
+              setSections={setSections}
+            />
+          ),
+        });
+      }else {
+        return null;
+      }
+      
+    },
+  ];
+  const filteredSections = initialSections.map(section => section()).filter(section => section !== null);
 
   useEffect(() => {
     setSections((prevSections) =>
-      prevSections.length === 0 ? initialSections : prevSections,
+      prevSections.length === 0 ? filteredSections : prevSections,
     );
   }, [appState]);
 
   const addSectionAtIndex = (
     index: number,
     newSection: {
+      id:string;
       title: string;
       content: JSX.Element;
     },
@@ -217,20 +271,21 @@ const BasicTemplate = (props: BasicTemplateProps) => {
   };
   console.log("sections", sections);
   const addSectionByTitle = (
-    title: string,
+    id: string,
     newSection: {
+      id:string;
       title: string;
       content: JSX.Element;
     },
     position: number,
   ) => {
-    const index = sections.findIndex((section) => section.title === title);
+    const index = sections.findIndex((section) => section.id === id);
     if (index !== -1) {
       const newIndex = position === 0 ? index : index + 1;
       addSectionAtIndex(newIndex, newSection);
     }
   };
-  console.log("appState.selectedFont",appState.selectedFont)
+  console.log("appState.selectedFont", appState.selectedFont);
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-col gap-10">
@@ -239,6 +294,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
         ))}
       </div>
       <SectionModal
+        id={triggerSection.section}
         open={sectionModal}
         setOpen={setSectionModal}
         addSectionByTitle={addSectionByTitle}
@@ -250,6 +306,8 @@ const BasicTemplate = (props: BasicTemplateProps) => {
         editable={editable}
         setIsOpen={setIsOpen}
         setSection={setSection}
+        sections={sections}
+        setSections={setSections}
       />
     </div>
   );

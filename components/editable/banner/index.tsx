@@ -19,6 +19,17 @@ type TProps = {
     show: boolean;
   };
   setShowForm: React.Dispatch<React.SetStateAction<{ form: string; edit: string; show: boolean }>>;
+  setSections: Dispatch<SetStateAction<{
+    id:string,
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string,
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 
 const EditableBanner: React.FC<TProps> = ({
@@ -29,7 +40,10 @@ const EditableBanner: React.FC<TProps> = ({
   editable,
   setFocusedField,
   showForm,
-  setShowForm
+  setShowForm,
+  sections,
+  setSections,
+  id
 }) => {
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
@@ -46,7 +60,7 @@ const EditableBanner: React.FC<TProps> = ({
 
   return (
     <section className="bg-white py-6 flex justify-center group relative">
-      <EditComponent/>
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       <button
         className={`container mx-auto px-4 ${editable ? "rounded border-2 border-transparent hover:border-indigo-500" : ""}`}
         onClick={handleClick}

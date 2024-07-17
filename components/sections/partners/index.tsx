@@ -36,6 +36,17 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 
 const PartnersSection = ({
@@ -46,6 +57,9 @@ const PartnersSection = ({
   setSectionModal,
   setTriggerSection,
   showForm,
+  sections,
+  setSections,
+  id
 }: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
@@ -114,7 +128,7 @@ const PartnersSection = ({
         <AddSectionButtons
           setSectionModal={setSectionModal}
           setTriggerSection={setTriggerSection}
-          sectionTitle="Partners Section"
+          id={id}
         />
         <h2 className="text-3xl font-bold text-gray-900">
           {partnersContent.title}
@@ -179,7 +193,7 @@ const PartnersSection = ({
 
   return (
     <section className={` container relative mb-20 mt-20 group`}>
-      <EditComponent />
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       {contentToRender}
     </section>
   );

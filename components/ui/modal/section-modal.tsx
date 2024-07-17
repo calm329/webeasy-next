@@ -11,8 +11,9 @@ type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   addSectionByTitle: (
-    title: string,
+    id: string,
     newSection: {
+      id: string;
       title: string;
       content: JSX.Element;
     },
@@ -41,6 +42,21 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<
+    SetStateAction<
+      {
+        id: string;
+        title: string;
+        content: JSX.Element;
+      }[]
+    >
+  >;
+  sections: {
+    id: string;
+    title: string;
+    content: JSX.Element;
+  }[];
+  id: string;
 };
 export default function SectionModal(props: TProps) {
   const {
@@ -55,6 +71,9 @@ export default function SectionModal(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
+    sections,
+    setSections,
+    id,
   } = props;
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -99,6 +118,9 @@ export default function SectionModal(props: TProps) {
                   editable={editable}
                   setIsOpen={setIsOpen}
                   setSection={setSection}
+                  sections={sections}
+                  setSections={setSections}
+                  id={id}
                 />
               </Dialog.Panel>
             </Transition.Child>

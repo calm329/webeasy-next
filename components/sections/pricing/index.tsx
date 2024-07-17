@@ -1,5 +1,5 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import CustomContent from "@/lib/content/custom";
@@ -29,6 +29,17 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 
 function classNames(...classes: any[]) {
@@ -44,6 +55,9 @@ export default function PricingSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
+    setSections,
+    sections,
+    id,
   } = props;
 
   const appState = useAppSelector(AS);
@@ -90,9 +104,9 @@ export default function PricingSection(props: TProps) {
       }`}
       onClick={() => handleClick()}
     >
-      <EditComponent />
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       <AddSectionButtons
-        sectionTitle="Pricing"
+        id={id}
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />

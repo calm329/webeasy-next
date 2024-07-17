@@ -26,6 +26,17 @@ type TProps = {
     edit: string;
     show: boolean;
   };
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 export default function LogoSection(props: TProps) {
   const {
@@ -36,6 +47,9 @@ export default function LogoSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
+    setSections,
+    sections,
+    id
   } = props;
 
   const appState = useAppSelector(AS);
@@ -71,9 +85,9 @@ export default function LogoSection(props: TProps) {
       className={`group w-full relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={()=>handleClick()}
     >
-      <EditComponent />
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       <AddSectionButtons
-        sectionTitle="Logo"
+        id={id}
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />

@@ -41,9 +41,9 @@ export default function ContentSection(props: TProps) {
   } = props;
   return (
     <div className={`relative group ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} isolate  bg-white py-24 sm:py-32`}>
-      <EditComponent />
+      {/* <EditComponent /> */}
       <AddSectionButtons
-        sectionTitle="Content"
+        id="0"
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />

@@ -16,15 +16,26 @@ type TProps = {
       show: boolean;
     }>
   >;
+  setSections: Dispatch<SetStateAction<{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]>>
+  sections:{
+    id:string
+    title: string;
+    content: JSX.Element;
+  }[]
+  id:string
 };
 
 const PostsSection = (props: TProps) => {
   const appState = useAppSelector(AS);
-  const { editable, setIsOpen, setSection, setShowForm } = props;
+  const { editable, setIsOpen, setSection, setShowForm,sections,setSections,id } = props;
   const dispatch = useAppDispatch();
   return (
     <section className="relative group">
-      <EditComponent />
+      <EditComponent id={id} sections={sections} setSections={setSections}/>
       {appState.iPosts.list.length > 0 && (
         <button
           className={`mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}

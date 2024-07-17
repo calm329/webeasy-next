@@ -68,7 +68,7 @@ export default function BlogSection(props: TProps) {
       className={`group relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
     >
       <AddSectionButtons
-        sectionTitle="Blog"
+        id={"0"}
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />
