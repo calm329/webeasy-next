@@ -309,7 +309,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
   };
   console.log("appState.selectedFont", appState.selectedFont);
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col mb-20">
       <div className="flex flex-col gap-10">
         {sections.map((section, index) => (
           <div key={index}>{section.content}</div>
