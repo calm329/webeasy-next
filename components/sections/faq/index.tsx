@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import CustomContent from "@/lib/content/custom";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -86,6 +87,7 @@ export default function FaqSection(props: TProps) {
       className={`group relative w-full bg-white text-left ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick()}
     >
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="FAQ"
         setSectionModal={setSectionModal}

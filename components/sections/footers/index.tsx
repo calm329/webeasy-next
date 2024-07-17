@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -76,6 +77,7 @@ export default function FooterSection(props: TProps) {
       className={`group relative w-full bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick()}
     >
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="Footers"
         setSectionModal={setSectionModal}

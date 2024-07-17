@@ -7,6 +7,7 @@ import { useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
 import { useDispatch } from "react-redux";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -74,6 +75,7 @@ export default function CtaSection(props: TProps) {
       className={`bg-white group relative w-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick("")}
     >
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="CTA"
         setSectionModal={setSectionModal}

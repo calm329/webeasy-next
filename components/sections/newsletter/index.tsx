@@ -8,6 +8,7 @@ import { Dispatch, SetStateAction } from "react";
 
 import {Skeleton} from "@/components/ui/skeleton"; // Import the Skeleton component here
 import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -85,6 +86,7 @@ export default function NewsLetterSection(props: TProps) {
       }`}
       onClick={() => handleClick()}
     >
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="NewsLetters"
         setSectionModal={setSectionModal}

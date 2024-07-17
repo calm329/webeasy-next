@@ -12,6 +12,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/select-template-carousel";
 import Image from "next/image";
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -115,8 +116,9 @@ const CustomTestimonial = ({
 
   return (
     <section
-      className={`group container relative mb-20 mt-20 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`group container relative  mb-20 mt-20 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
     >
+      <EditComponent />
       <AddSectionButtons
         classNameDown="z-10"
         classNameUp="top-0 z-10"

@@ -11,6 +11,7 @@ import CustomContent from "@/lib/content/custom";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDispatch } from "react-redux";
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -85,6 +86,7 @@ export default function ContactSection(props: TProps) {
       className={`group relative isolate w-full bg-white text-left ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick()}
     >
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="Contact"
         setSectionModal={setSectionModal}

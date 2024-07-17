@@ -7,6 +7,7 @@ import Image from "next/image";
 import { TSection } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
+import EditComponent from "@/components/edit-component";
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -40,6 +41,7 @@ export default function ContentSection(props: TProps) {
   } = props;
   return (
     <div className={`relative group ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} isolate  bg-white py-24 sm:py-32`}>
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="Content"
         setSectionModal={setSectionModal}

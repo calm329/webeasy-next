@@ -7,6 +7,7 @@ import { TFields, TSection } from "@/types";
 
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component here
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -89,6 +90,7 @@ export default function PricingSection(props: TProps) {
       }`}
       onClick={() => handleClick()}
     >
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="Pricing"
         setSectionModal={setSectionModal}

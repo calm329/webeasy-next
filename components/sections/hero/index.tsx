@@ -8,6 +8,7 @@ import CustomContent from "@/lib/content/custom";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -83,6 +84,7 @@ export default function HeroSection(props: TProps) {
       className="group relative isolate w-full bg-white text-left"
       onClick={() => handleClick()}
     >
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="Hero"
         setSectionModal={setSectionModal}

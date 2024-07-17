@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { TBanner, TColors, TFields, TSection } from "@/types";
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   banner: TBanner;
@@ -44,7 +45,8 @@ const EditableBanner: React.FC<TProps> = ({
   };
 
   return (
-    <section className="bg-white py-6 flex justify-center">
+    <section className="bg-white py-6 flex justify-center group relative">
+      <EditComponent/>
       <button
         className={`container mx-auto px-4 ${editable ? "rounded border-2 border-transparent hover:border-indigo-500" : ""}`}
         onClick={handleClick}

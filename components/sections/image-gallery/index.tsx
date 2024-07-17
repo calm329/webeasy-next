@@ -5,6 +5,7 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import AddSectionButtons from "@/components/add-section/buttons";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -105,7 +106,8 @@ const ImageGallerySection = ({
 
 
   return (
-    <section className="flex justify-center">
+    <section className="relative flex justify-center group">
+      <EditComponent/>
       <button
         className={`${editable && "group relative rounded-xl border-2 border-transparent hover:border-indigo-500"} container mb-20 mt-20`}
         onClick={handleClick}

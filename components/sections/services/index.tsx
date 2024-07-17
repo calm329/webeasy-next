@@ -6,6 +6,7 @@ import AddSectionButtons from "@/components/add-section/buttons";
 import TypewriterEffect from "@/components/typewriter-effect";
 import { Skeleton } from "@/components/ui/skeleton";
 import ServiceCard from "@/components/ui/card/service-card";
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -75,7 +76,8 @@ const ServicesSection = ({
   };
 
   return (
-    <section className="flex justify-center items-center mt-10">
+    <section className="relative group flex justify-center items-center mt-10">
+      <EditComponent/>
       <button
         className={`mx-auto max-w-7xl rounded-3xl p-8 md:p-12 ${
           editable && "rounded border-2 border-transparent hover:border-indigo-500"

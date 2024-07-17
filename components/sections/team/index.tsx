@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 
 // Import the Skeleton component
 import { Skeleton } from "@/components/ui/skeleton";
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -96,6 +97,7 @@ export default function TeamSection(props: TProps) {
       }`}
       onClick={() => handleClick()}
     >
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="Team"
         setSectionModal={setSectionModal}

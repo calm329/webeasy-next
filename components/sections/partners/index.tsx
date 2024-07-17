@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { TSection } from "@/types";
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -177,7 +178,10 @@ const PartnersSection = ({
   }
 
   return (
-    <section className={`container mb-20 mt-20`}>{contentToRender}</section>
+    <section className={` container relative mb-20 mt-20 group`}>
+      <EditComponent />
+      {contentToRender}
+    </section>
   );
 };
 

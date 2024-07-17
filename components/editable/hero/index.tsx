@@ -11,6 +11,7 @@ import TypewriterEffect from "@/components/typewriter-effect";
 import AddSectionButtons from "@/components/add-section/buttons";
 import SectionModal from "@/components/ui/modal/section-modal";
 import { isImage } from "@/components/ui/form/uploader";
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   hero: THero;
@@ -87,7 +88,9 @@ const EditableHero = ({
 
   return (
     <section className="bg-gray-50 py-10">
-      <div className="container mx-auto px-4">
+     
+      <div className="container mx-auto px-4 relative group">
+      <EditComponent />
         <div className="rounded-3xl bg-white px-8 py-16 pb-10">
           <div className="mx-auto max-w-7xl flex flex-col justify-center">
             {appState.aiContent?.hero ? (
@@ -95,6 +98,7 @@ const EditableHero = ({
                 className={`relative items-center mb-10 flex max-md:flex-col justify-between pr-2 ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
                 onClick={() => handleClick("Hero")}
               >
+                
                 <AddSectionButtons setSectionModal={setSectionModal} sectionTitle="Hero Section" setTriggerSection={setTriggerSection} />
                 <div className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-2/3"}`}>
                   <div className="md:max-w-lg flex flex-col">

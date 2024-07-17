@@ -189,7 +189,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
   ];
   const [sections, setSections] = useState<
     Array<{
-      title: string;
+      title: string; 
       content: JSX.Element;
     }>
   >(initialSections);

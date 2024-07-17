@@ -5,6 +5,7 @@ import AddSectionButtons from "@/components/add-section/buttons";
 import CustomContent from "@/lib/content/custom";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
+import EditComponent from "@/components/edit-component";
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -70,6 +71,7 @@ export default function LogoSection(props: TProps) {
       className={`group w-full relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={()=>handleClick()}
     >
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="Logo"
         setSectionModal={setSectionModal}

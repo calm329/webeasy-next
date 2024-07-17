@@ -7,6 +7,7 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 
 // Import the Skeleton component
 import { Skeleton } from "@/components/ui/skeleton";
+import EditComponent from "@/components/edit-component";
 
 type TProps = {
   editable?: boolean;
@@ -91,6 +92,7 @@ export default function StatsSection(props: TProps) {
       }`}
       onClick={() => handleClick()}
     >
+      <EditComponent />
       <AddSectionButtons
         sectionTitle="Stats"
         setSectionModal={setSectionModal}
