@@ -97,6 +97,9 @@ const BasicTemplate = (props: BasicTemplateProps) => {
       return {
         id,
         title: "Banner Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
         content: (
           <EditableBanner
             id={id}
@@ -119,6 +122,9 @@ const BasicTemplate = (props: BasicTemplateProps) => {
       return {
         id,
         title: "Hero Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
         content: (
           <EditableHero
             id={id}
@@ -143,6 +149,9 @@ const BasicTemplate = (props: BasicTemplateProps) => {
       return {
         id,
         title: "Services Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
         content: (
           <ServicesSection
             id={id}
@@ -164,6 +173,9 @@ const BasicTemplate = (props: BasicTemplateProps) => {
       return {
         id,
         title: "Image Gallery Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
         content: (
           <ImageGallerySection
             id={id}
@@ -185,6 +197,9 @@ const BasicTemplate = (props: BasicTemplateProps) => {
       return {
         id,
         title: "Partners Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
         content: (
           <PartnersSection
             id={id}
@@ -206,6 +221,9 @@ const BasicTemplate = (props: BasicTemplateProps) => {
       return {
         id,
         title: "Testimonial Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
         content: (
           <CustomTestimonial
             id={id}
@@ -223,10 +241,13 @@ const BasicTemplate = (props: BasicTemplateProps) => {
     },
     () => {
       const id = generateUniqueId();
-      if(pathname.split("/")[1] !== "custom"){
-        return({
+      if (pathname.split("/")[1] !== "custom") {
+        return {
           id,
           title: "Posts Section",
+          image:
+            "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+          description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
           content: (
             <PostsSection
               id={id}
@@ -238,14 +259,15 @@ const BasicTemplate = (props: BasicTemplateProps) => {
               setSections={setSections}
             />
           ),
-        });
-      }else {
+        };
+      } else {
         return null;
       }
-      
     },
   ];
-  const filteredSections = initialSections.map(section => section()).filter(section => section !== null);
+  const filteredSections = initialSections
+    .map((section) => section())
+    .filter((section) => section !== null);
 
   useEffect(() => {
     setSections((prevSections) =>
@@ -256,7 +278,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
   const addSectionAtIndex = (
     index: number,
     newSection: {
-      id:string;
+      id: string;
       title: string;
       content: JSX.Element;
     },
@@ -273,7 +295,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
   const addSectionByTitle = (
     id: string,
     newSection: {
-      id:string;
+      id: string;
       title: string;
       content: JSX.Element;
     },
@@ -294,6 +316,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
         ))}
       </div>
       <SectionModal
+        initialSections={initialSections}
         id={triggerSection.section}
         open={sectionModal}
         setOpen={setSectionModal}

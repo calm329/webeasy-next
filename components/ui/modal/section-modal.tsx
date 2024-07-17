@@ -57,6 +57,13 @@ type TProps = {
     content: JSX.Element;
   }[];
   id: string;
+  initialSections:(() => {
+    id: string;
+    title: string;
+    content: JSX.Element;
+    image:string;
+    description:string;
+} | null)[]
 };
 export default function SectionModal(props: TProps) {
   const {
@@ -74,6 +81,7 @@ export default function SectionModal(props: TProps) {
     sections,
     setSections,
     id,
+    initialSections
   } = props;
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -108,6 +116,7 @@ export default function SectionModal(props: TProps) {
                   </button>
                 </div>
                 <SectionForm
+                initialSections={initialSections}
                   addSectionByTitle={addSectionByTitle}
                   triggerSection={triggerSection}
                   setOpen={setOpen}

@@ -76,6 +76,14 @@ type TProps = {
     content: JSX.Element;
   }[];
   id: string;
+
+  initialSections:(() => {
+    id: string;
+    title: string;
+    image:string;
+    description:string;
+    content: JSX.Element;
+} | null)[]
 };
 
 const SectionForm = (props: TProps) => {
@@ -93,10 +101,12 @@ const SectionForm = (props: TProps) => {
     sections,
     setSections,
     id,
+    initialSections
   } = props;
   const [searchQuery, setSearchQuery] = useState("");
 
   const newSections = [
+    ...initialSections,
     () => {
       const newId = generateUniqueId();
       return {
@@ -105,7 +115,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/contact-sections.png",
         title: "Contact",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <ContactSection
             id={newId}
             showForm={showForm}
@@ -129,7 +139,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/cta-sections.png",
         title: "CTA",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <CtaSection
             id={newId}
             showForm={showForm}
@@ -150,11 +160,11 @@ const SectionForm = (props: TProps) => {
       const newId = generateUniqueId();
       return {
         id: newId,
+        title: "FAQ",
         image:
           "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
-        title: "FAQ",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <FaqSection
             id={newId}
             showForm={showForm}
@@ -178,7 +188,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/footers.png",
         title: "Footers",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <FooterSection
             id={newId}
             showForm={showForm}
@@ -202,7 +212,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/header.png",
         title: "Header",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <HeaderSection
             id={newId}
             showForm={showForm}
@@ -226,7 +236,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/heroes.png",
         title: "Hero",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <HeroSection
             id={newId}
             showForm={showForm}
@@ -250,7 +260,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/logo-clouds.png",
         title: "Logo",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <LogoSection
             id={newId}
             showForm={showForm}
@@ -274,7 +284,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/newsletter-sections.png",
         title: "NewsLetters",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <NewsLetterSection
             id={newId}
             showForm={showForm}
@@ -298,7 +308,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/pricing.png",
         title: "Pricing",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <PricingSection
             id={newId}
             showForm={showForm}
@@ -322,7 +332,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/stats-sections.png",
         title: "Stats",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <StatsSection
             id={newId}
             showForm={showForm}
@@ -347,7 +357,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/team-sections.png",
         title: "Team",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <TeamSection
             id={newId}
             showForm={showForm}
@@ -371,7 +381,7 @@ const SectionForm = (props: TProps) => {
           "https://tailwindui.com/img/category-thumbnails/marketing/testimonials.png",
         title: "Testimonials",
         description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        Element: (
+        content: (
           <TestimonialSection
             id={newId}
             showForm={showForm}
@@ -390,7 +400,7 @@ const SectionForm = (props: TProps) => {
   ];
 
   const filteredSections = newSections
-    .map((section) => section())
+    .map((section) => section()).filter((section) => section !== null)
     .filter((section) =>
       section.title.toLowerCase().includes(searchQuery.toLowerCase()),
     );
@@ -426,7 +436,7 @@ const SectionForm = (props: TProps) => {
                 {
                   id: section.id,
                   title: section.title,
-                  content: section.Element,
+                  content: section.content,
                 },
                 triggerSection.position,
               );
@@ -435,7 +445,7 @@ const SectionForm = (props: TProps) => {
           >
             <div className="flex flex-col gap-2">
               <h2 className="text-xl font-bold">{section.title}</h2>
-              <p className="text-xs">{section.description}</p>
+              <p className="text-xs">{section?.description ??"Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is"}</p>
             </div>
             <Image
               alt=""
