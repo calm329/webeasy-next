@@ -86,15 +86,7 @@ const CustomGalleryContent = (props: TProps) => {
               <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
                 Image {i + 1}
               </h3>
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedImage(i.toString());
-                  setShowImageModal(true);
-                }}
-              >
-                Swap
-              </button>
+              
             </div>
             <div>
               <Uploader
@@ -122,6 +114,16 @@ const CustomGalleryContent = (props: TProps) => {
                 }}
               />
             </div>
+            <button
+                type="button"
+                 className="px-5  mr-auto border py-2 rounded-md bg-red-600 text-white font-medium"
+                onClick={() => {
+                  setSelectedImage(i.toString());
+                  setShowImageModal(true);
+                }}
+              >
+                Replace
+              </button>
           </div>
         ))}
       </form>

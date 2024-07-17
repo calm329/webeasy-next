@@ -38,7 +38,7 @@ export default function BasicTemplate(props: TProps) {
               <div className="flex flex-wrap items-center">
                 <div
                   className="text-black-300 flex w-auto items-center gap-2 text-xl font-medium"
-                  style={{ color: aiContent.colors.primary }}
+                  style={{ color: aiContent?.colors?.primary }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   {aiContent.banner.logo && (
@@ -63,7 +63,7 @@ export default function BasicTemplate(props: TProps) {
                         <div key={i}>
                           <CTA
                             text={data.label}
-                            bgColor={aiContent.colors.secondary}
+                            bgColor={aiContent?.colors?.secondary}
                             link={data.link ?? ""}
                             external={data.type === "External"}
                           />
@@ -88,7 +88,7 @@ export default function BasicTemplate(props: TProps) {
                   <div className="md:max-w-lg">
                     <h2
                       className={`font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl `}
-                      style={{ color: aiContent.colors.primary }}
+                      style={{ color: aiContent?.colors?.primary }}
                     >
                       {aiContent.hero.heading}
                     </h2>
@@ -101,7 +101,7 @@ export default function BasicTemplate(props: TProps) {
                           <div key={button.name}>
                             <CTA
                               text={button.label}
-                              bgColor={aiContent.colors.secondary}
+                              bgColor={aiContent?.colors?.secondary}
                               link={button.link ?? ""}
                               external={button.type === "External"}
                             />
@@ -132,7 +132,7 @@ export default function BasicTemplate(props: TProps) {
                         key={service["name"]}
                         name={service["name"]}
                         description={service["description"]}
-                        color={aiContent.colors.primary}
+                        color={aiContent?.colors?.primary}
                       />
                     ))}
                   </div>

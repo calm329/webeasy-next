@@ -153,10 +153,10 @@ const HeroContent = (props: TProps) => {
           ...appState.aiContent,
           hero: {
             ...appState.aiContent?.hero,
-            image:{
+            image: {
               ...appState.aiContent?.hero?.image,
-              imageUrl:data.urls.small
-            }
+              imageUrl: data.urls.small,
+            },
           },
         },
       }),
@@ -267,11 +267,7 @@ const HeroContent = (props: TProps) => {
                             />
                           </div>
                         </div>
-                        <div>
-                          <button type="button" onClick={()=>{
-                            setShowImageModal(true);
-                          }}>Swap</button>
-                        </div>
+
                         {appState.aiContent?.hero?.image?.show && (
                           <div>
                             <Uploader
@@ -302,6 +298,17 @@ const HeroContent = (props: TProps) => {
                             />
                           </div>
                         )}
+                        <div>
+                          <button
+                            type="button"
+                            className="px-5 mr-auto border py-2 rounded-md bg-red-600 text-white font-medium"
+                            onClick={() => {
+                              setShowImageModal(true);
+                            }}
+                          >
+                            Replace
+                          </button>
+                        </div>
                       </div>
                     );
                   case "heading":
