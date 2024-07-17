@@ -101,7 +101,7 @@ const PostsContent = () => {
                 );
               }}
             />
-            <Switch
+            {/* <Switch
               onCheckedChange={(checked) => {
                 console.log("checked", checked);
                 dispatch(
@@ -115,7 +115,7 @@ const PostsContent = () => {
                 );
               }}
               checked={appState.iPosts.show}
-            />
+            /> */}
           </div>
         </div>
         <div className="flex justify-between gap-10">

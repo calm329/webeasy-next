@@ -126,7 +126,7 @@ const TestimonialContent = (props: TProps) => {
             Add, Update or delete a Testimonial
           </p>
         </div>
-        <Switch
+        {/* <Switch
           onCheckedChange={(checked) =>
             dispatch(
               updateAppState({
@@ -142,7 +142,7 @@ const TestimonialContent = (props: TProps) => {
             )
           }
           checked={appState.aiContent?.testimonials?.show}
-        />
+        /> */}
       </div>
 
       <div className="flex flex-col gap-5 border-t p-5 pt-5">

@@ -128,7 +128,7 @@ const ServiceContent = (props: TProps) => {
             Add, Update or delete a service
           </p>
         </div>
-        <Switch
+        {/* <Switch
           onCheckedChange={(checked) =>
             dispatch(
               updateAppState({
@@ -144,7 +144,7 @@ const ServiceContent = (props: TProps) => {
             )
           }
           checked={appState.aiContent?.services?.show}
-        />
+        /> */}
       </div>
       <div className="px-5 pb-5">
         <div className="flex flex-col border-t pt-5">

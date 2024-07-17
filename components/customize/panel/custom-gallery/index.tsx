@@ -59,7 +59,7 @@ const CustomGalleryContent = (props: TProps) => {
         <h3 className=" flex items-center justify-center px-5 pb-3 text-lg font-medium leading-6 text-gray-900">
           Image Gallery
         </h3>
-        <div className="flex gap-5">
+        {/* <div className="flex gap-5">
           <Switch
             onCheckedChange={(checked) =>
               dispatch(
@@ -77,7 +77,7 @@ const CustomGalleryContent = (props: TProps) => {
             }
             checked={appState.aiContent?.gallery?.show}
           />
-        </div>
+        </div> */}
       </div>
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
         {appState.aiContent?.gallery?.list?.map((image, i) => (
