@@ -228,8 +228,23 @@ const BannerContent = (props: TProps) => {
                             defaultValue={appState?.aiContent?.banner?.logo?.link}
                             name={data as "logo" | "image"}
                             label={""}
+                            // contain={true}
                             onChange={(value) => {
-                              handleChange(data, value);
+                              dispatch(
+                                updateAppState({
+                                  ...appState,
+                                  aiContent: {
+                                    ...appState?.aiContent,
+                                    banner: {
+                                      ...appState?.aiContent?.banner,
+                                      logo: {
+                                        ...appState?.aiContent?.banner?.logo,
+                                        link: value,
+                                      },
+                                    },
+                                  },
+                                })
+                              );
                             }}
                           />
                         </div>
