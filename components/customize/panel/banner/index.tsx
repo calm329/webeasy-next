@@ -30,6 +30,7 @@ import { getLogo, regenerateIndividual } from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
 import CustomContent from "@/lib/content/custom";
 import { RxDragHandleDots2 } from "react-icons/rx";
+import ImagesModal from "@/components/ui/modal/images-modal";
 
 type TProps = {
   section: TSection;
@@ -48,7 +49,7 @@ const grid = 2;
 
 const getItemStyle = (
   isDragging: boolean,
-  draggableStyle: any
+  draggableStyle: any,
 ): React.CSSProperties => ({
   userSelect: "none",
   padding: grid * 2,
@@ -67,6 +68,8 @@ const BannerContent = (props: TProps) => {
   const dispatch = useAppDispatch();
   const [type, setType] = useState("");
   const [isLinkInValid, setIsLinkInValid] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
   const onLinkInvalid = () => {
     setIsLinkInValid(true);
   };
@@ -85,7 +88,7 @@ const BannerContent = (props: TProps) => {
     const updatedItems = reorder(
       appState?.aiContent?.banner?.button?.list ?? [],
       result.source.index,
-      result.destination.index
+      result.destination.index,
     );
 
     dispatch(
@@ -101,7 +104,7 @@ const BannerContent = (props: TProps) => {
             },
           },
         },
-      })
+      }),
     );
   };
 
@@ -116,14 +119,32 @@ const BannerContent = (props: TProps) => {
             button: {
               ...appState?.aiContent?.banner?.button,
               list: appState?.aiContent?.banner?.button?.list?.filter(
-                (button) => button.name !== name
+                (button) => button.name !== name,
               ),
             },
           },
         },
-      })
+      }),
     );
   };
+
+  function setImage(data: any) {
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          banner: {
+            ...appState.aiContent?.banner,
+            logo: {
+              ...appState.aiContent?.banner?.logo,
+              link: data.urls.small,
+            },
+          },
+        },
+      }),
+    );
+  }
 
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -133,6 +154,12 @@ const BannerContent = (props: TProps) => {
   }, [appState]);
   return (
     <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
+        <ImagesModal
+        open={showImageModal}
+        setOpen={setShowImageModal}
+        selectedImage={selectedImage}
+        action={setImage}
+      />
       <form action="" className="flex flex-col gap-5 px-5">
         {Object.keys(appState?.aiContent?.banner ?? {}).map((data) => (
           <>
@@ -142,64 +169,22 @@ const BannerContent = (props: TProps) => {
                   return (
                     <div className="flex flex-col gap-5">
                       <div className="flex justify-between ">
-                        <h3 className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
+                        <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
                           Logo
                         </h3>
                         <div className="flex gap-5">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedField(data);
-                              setLoading(true);
-                              dispatch(
-                                updateAppState({
-                                  ...appState,
-                                  aiContent: {
-                                    ...appState?.aiContent,
-                                    banner: {
-                                      ...appState?.aiContent?.banner,
-                                      logo: {
-                                        ...appState?.aiContent?.banner?.logo,
-                                        link: "",
-                                      },
-                                    },
-                                  },
-                                })
-                              );
-                              getLogo({
-                                businessName:
-                                  appState?.aiContent?.banner?.businessName,
-                                businessType:
-                                  appState?.aiContent?.businessType ?? "",
-                                location: appState?.aiContent?.location ?? "",
-                              }).then((data) => {
-                                setLoading(false);
-                                dispatch(
-                                  updateAppState({
-                                    ...appState,
-                                    aiContent: {
-                                      ...appState?.aiContent,
-                                      banner: {
-                                        ...appState?.aiContent?.banner,
-                                        logo: {
-                                          ...appState?.aiContent?.banner?.logo,
-                                          link: data,
-                                        },
-                                      },
-                                    },
-                                  })
-                                );
-                              });
-                            }}
-                            className="flex items-center gap-2 "
-                          >
-                            Regenerate
-                            {loading && data === selectedField ? (
-                              <ImSpinner2 className="animate-spin text-lg text-black" />
-                            ) : (
-                              <ImPower className=" text-xs " />
-                            )}
-                          </button>
+                          <div>
+                            <button
+                              type="button"
+                              className="mr-auto rounded-md border bg-red-600 px-5 py-2 font-medium text-white"
+                              onClick={() => {
+                                setShowImageModal(true);
+                              }}
+                            >
+                              Swap
+                            </button>
+                          </div>
+
                           <Switch
                             onCheckedChange={(checked) =>
                               dispatch(
@@ -215,7 +200,7 @@ const BannerContent = (props: TProps) => {
                                       },
                                     },
                                   },
-                                })
+                                }),
                               )
                             }
                             checked={appState?.aiContent?.banner?.logo?.show}
@@ -225,7 +210,9 @@ const BannerContent = (props: TProps) => {
                       {appState?.aiContent?.banner?.logo?.show && (
                         <div>
                           <Uploader
-                            defaultValue={appState?.aiContent?.banner?.logo?.link}
+                            defaultValue={
+                              appState?.aiContent?.banner?.logo?.link
+                            }
                             name={data as "logo" | "image"}
                             label={""}
                             // contain={true}
@@ -243,12 +230,66 @@ const BannerContent = (props: TProps) => {
                                       },
                                     },
                                   },
-                                })
+                                }),
                               );
                             }}
                           />
                         </div>
                       )}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedField(data);
+                          setLoading(true);
+                          dispatch(
+                            updateAppState({
+                              ...appState,
+                              aiContent: {
+                                ...appState?.aiContent,
+                                banner: {
+                                  ...appState?.aiContent?.banner,
+                                  logo: {
+                                    ...appState?.aiContent?.banner?.logo,
+                                    link: "",
+                                  },
+                                },
+                              },
+                            }),
+                          );
+                          getLogo({
+                            businessName:
+                              appState?.aiContent?.banner?.businessName,
+                            businessType:
+                              appState?.aiContent?.businessType ?? "",
+                            location: appState?.aiContent?.location ?? "",
+                          }).then((data) => {
+                            setLoading(false);
+                            dispatch(
+                              updateAppState({
+                                ...appState,
+                                aiContent: {
+                                  ...appState?.aiContent,
+                                  banner: {
+                                    ...appState?.aiContent?.banner,
+                                    logo: {
+                                      ...appState?.aiContent?.banner?.logo,
+                                      link: data,
+                                    },
+                                  },
+                                },
+                              }),
+                            );
+                          });
+                        }}
+                        className="flex items-center gap-2 "
+                      >
+                        Regenerate
+                        {loading && data === selectedField ? (
+                          <ImSpinner2 className="animate-spin text-lg text-black" />
+                        ) : (
+                          <ImPower className=" text-xs " />
+                        )}
+                      </button>
                     </div>
                   );
                 case "businessName":
@@ -301,7 +342,7 @@ const BannerContent = (props: TProps) => {
                                     },
                                   },
                                 },
-                              })
+                              }),
                             )
                           }
                           checked={appState?.aiContent?.banner?.button?.show}
@@ -333,7 +374,7 @@ const BannerContent = (props: TProps) => {
                                             {...provided.dragHandleProps}
                                             style={getItemStyle(
                                               snapshot.isDragging,
-                                              provided.draggableProps.style
+                                              provided.draggableProps.style,
                                             )}
                                           >
                                             <div className="flex items-center gap-2">
@@ -364,7 +405,7 @@ const BannerContent = (props: TProps) => {
                                           </div>
                                         )}
                                       </Draggable>
-                                    )
+                                    ),
                                   )}
                                   {provided.placeholder}
                                 </div>
