@@ -142,7 +142,7 @@ const PartnersContent = (props: TProps) => {
       <div className="flex justify-between gap-10 px-5 pb-5">
         <div>
           <h3 className="text-sm font-medium leading-6 text-gray-900 ">
-            Partners
+            Logo Cloud
           </h3>
           <p className="text-xs text-gray-400 ">
             {/* Add, Update or delete a service */}
@@ -300,7 +300,7 @@ const PartnersContent = (props: TProps) => {
             <div className="flex flex-col gap-5" key={i}>
               <div className="flex justify-between ">
                 <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
-                  Partner {i + 1}
+                  Logo {i + 1}
                 </h3>
                 {appState.aiContent?.partners?.list.length > 4 && (
                   <MdDeleteForever
