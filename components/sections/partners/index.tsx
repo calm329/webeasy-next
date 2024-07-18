@@ -150,7 +150,7 @@ const PartnersSection = ({
             <Carousel className="w-full">
               <CarouselContent>
                 {partnersContent.list.map((src, index) => (
-                  <CarouselItem key={src.id} className="basis-1/3">
+                  <CarouselItem key={src.id} className="basis-1/5 max-xl:basis-1/4 max-lg:basis-1/3 max-md:basis-1/2 max-sm:basis-1/1">
                     <div className="p-1">
                       <Card className="border-0">
                         <CardContent className="flex border-0 p-6">
