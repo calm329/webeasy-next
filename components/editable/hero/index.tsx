@@ -39,17 +39,21 @@ type TProps = {
       position: number;
     }>
   >;
-  setSections: Dispatch<SetStateAction<{
-    id:string
+  setSections: Dispatch<
+    SetStateAction<
+      {
+        id: string;
+        title: string;
+        content: JSX.Element;
+      }[]
+    >
+  >;
+  sections: {
+    id: string;
     title: string;
     content: JSX.Element;
-  }[]>>
-  sections:{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]
-  id:string
+  }[];
+  id: string;
 };
 
 const EditableHero = ({
@@ -65,7 +69,7 @@ const EditableHero = ({
   setTriggerSection,
   setSections,
   sections,
-  id
+  id,
 }: TProps) => {
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
@@ -76,7 +80,13 @@ const EditableHero = ({
       setIsOpen(true);
       setFocusedField(field);
       setShowForm({ form: "", edit: "", show: false });
-      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          focusedField: field,
+          openedSlide: "Customize",
+        }),
+      );
     }
   };
 
@@ -98,27 +108,29 @@ const EditableHero = ({
     </div>
   );
 
-
-
   return (
     <section className="bg-gray-50 py-10">
-     
-      <div className="container mx-auto px-4 relative group">
-      <EditComponent sections={sections} setSections={setSections} id={id}/>
+      <div className="group container relative mx-auto px-4">
+        <EditComponent sections={sections} setSections={setSections} id={id} />
         <div className="rounded-3xl bg-white px-8 py-16 pb-10">
-          <div className="mx-auto max-w-7xl flex flex-col justify-center">
+          <div className="mx-auto flex max-w-7xl flex-col justify-center">
             {appState.aiContent?.hero ? (
               <button
-                className={`relative items-center mb-10 flex max-md:flex-col justify-between pr-2 ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
+                className={`relative mb-10 flex items-center justify-between pr-2 max-md:flex-col ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
                 onClick={() => handleClick("Hero")}
               >
-                
-                <AddSectionButtons setSectionModal={setSectionModal} id={id} setTriggerSection={setTriggerSection} />
-                <div className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-2/3"}`}>
-                  <div className="md:max-w-lg flex flex-col">
+                <AddSectionButtons
+                  setSectionModal={setSectionModal}
+                  id={id}
+                  setTriggerSection={setTriggerSection}
+                />
+                <div
+                  className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-2/3"}`}
+                >
+                  <div className="flex flex-col md:max-w-lg">
                     {appState.aiContent?.hero?.heading ? (
                       <button
-                        className={` text-left font-heading mb-6 text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                        className={` font-heading mb-6 text-left text-4xl font-black tracking-tight text-gray-300 md:text-5xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                         style={{ color: colors?.primary }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -126,9 +138,11 @@ const EditableHero = ({
                         }}
                       >
                         {appState?.generate?.generating ? (
-                          <TypewriterEffect text={appState.aiContent.hero.heading ?? ""} />
+                          <TypewriterEffect
+                            text={appState.aiContent.hero.heading ?? ""}
+                          />
                         ) : (
-                            appState.aiContent.hero.heading
+                          appState.aiContent.hero.heading
                         )}
                       </button>
                     ) : (
@@ -139,14 +153,16 @@ const EditableHero = ({
 
                     {appState.aiContent?.hero?.subheading ? (
                       <button
-                        className={` text-left mb-8 text-xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                        className={` mb-8 text-left text-xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleClick("subheading");
                         }}
                       >
                         {appState?.generate?.generating ? (
-                          <TypewriterEffect text={appState.aiContent.hero.subheading ?? ""} />
+                          <TypewriterEffect
+                            text={appState.aiContent.hero.subheading ?? ""}
+                          />
                         ) : (
                           appState.aiContent.hero.subheading
                         )}
@@ -158,43 +174,63 @@ const EditableHero = ({
                       </p>
                     )}
 
-                    {appState.aiContent.hero.button ? (
-                      appState.aiContent.hero.button.show && (
-                        <div className="-m-2 flex flex-wrap">
-                          <div className={`w-full p-2 md:w-auto ${editable && "flex gap-5 rounded border-2 border-transparent hover:border-indigo-500 max-sm:flex-col"}`}>
-                            {appState.aiContent.hero.button.list.map((data, i) => (
-                              <button key={data.name} onClick={() => setShowForm({ form: "Button", edit: data.name, show: true })}>
-                                <Cta
-                                  text={data.label}
-                                  bgColor={colors?.secondary}
-                                  link={editable ? "#" : data.link}
-                                  external={editable ? false : data.type === "External"}
-                                  appState={appState}
-                                />
-                              </button>
-                            ))}
+                    {appState.aiContent.hero.button
+                      ? appState.aiContent.hero.button.show && (
+                          <div className="-m-2 flex flex-wrap">
+                            <div
+                              className={`w-full p-2 md:w-auto ${editable && "flex gap-5 rounded border-2 border-transparent hover:border-indigo-500 max-sm:flex-col"}`}
+                            >
+                              {appState.aiContent.hero.button.list.map(
+                                (data, i) => (
+                                  <button
+                                    key={data.name}
+                                    onClick={() =>
+                                      setShowForm({
+                                        form: "Button",
+                                        edit: data.name,
+                                        show: true,
+                                      })
+                                    }
+                                  >
+                                    <Cta
+                                      text={data.label}
+                                      bgColor={colors?.secondary}
+                                      link={editable ? "#" : data.link}
+                                      external={
+                                        editable
+                                          ? false
+                                          : data.type === "External"
+                                      }
+                                      appState={appState}
+                                    />
+                                  </button>
+                                ),
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      )
-                    ) : (
-                      renderButtonSkeleton()
-                    )}
+                        )
+                      : renderButtonSkeleton()}
                   </div>
                 </div>
 
                 {appState.aiContent.hero.image.imageUrl ? (
                   appState.aiContent.hero?.image?.show && (
-                    <div className={`md:absolute h-full right-2 max-w-96 overflow-hidden py-2 max-md:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}>
+                    <div
+                      className={`right-2 h-full max-w-96 overflow-hidden py-2 max-md:w-full md:absolute ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
+                    >
                       {isImage(appState.aiContent.hero.image.imageUrl) ? (
                         <Image
                           src={appState.aiContent.hero.image.imageUrl}
                           width={500}
                           height={500}
                           alt="Hero Image"
+                          style={{
+                            objectPosition: `${appState.aiContent.hero?.image?.horizontalPosition}% ${appState.aiContent.hero?.image?.verticalPosition}%`,
+                          }}
                           className={`${appState.view === "Mobile" ? "" : "mx-auto"} h-full w-full rounded-3xl object-cover md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                           onClick={() => handleClick("imageUrl")}
                         />
-                      ) :(
+                      ) : (
                         <video
                           src={appState.aiContent.hero.image.imageUrl}
                           controls
@@ -205,18 +241,20 @@ const EditableHero = ({
                     </div>
                   )
                 ) : (
-                  <div className={`min-w-72 p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}>
+                  <div
+                    className={`min-w-72 p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
+                  >
                     <Skeleton className="h-[256px] w-[256px]" />
                   </div>
                 )}
-               
               </button>
             ) : (
               <button
                 className={`-m-8 mb-10 flex flex-wrap justify-between pr-2 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-              
               >
-                <div className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-2/3"}`}>
+                <div
+                  className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-2/3"}`}
+                >
                   <div className="md:max-w-lg">
                     <h2 className="font-heading mb-6 flex flex-col gap-2 text-4xl font-black tracking-tight text-gray-300 md:text-5xl">
                       {renderSkeleton()}
@@ -228,7 +266,9 @@ const EditableHero = ({
                     {renderButtonSkeleton()}
                   </div>
                 </div>
-                <div className={`min-w-72 p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}>
+                <div
+                  className={`min-w-72 p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
+                >
                   <Skeleton className="h-[256px] w-[256px]" />
                 </div>
               </button>

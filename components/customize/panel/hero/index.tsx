@@ -301,13 +301,80 @@ const HeroContent = (props: TProps) => {
                         <div>
                           <button
                             type="button"
-                            className="px-5 mr-auto border py-2 rounded-md bg-red-600 text-white font-medium"
+                            className="mr-auto rounded-md border bg-red-600 px-5 py-2 font-medium text-white"
                             onClick={() => {
                               setShowImageModal(true);
                             }}
                           >
                             Swap
                           </button>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">
+                            Image position
+                          </label>
+                          <div className="mt-3 px-5">
+                            <label className="block text-xs font-medium text-gray-700">
+                              Horizontal
+                            </label>
+                            <input
+                              type="range"
+                              min="-100"
+                              max="100"
+                              value={
+                                appState.aiContent?.hero?.image
+                                  ?.horizontalPosition
+                              }
+                              onChange={(e) =>
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      hero: {
+                                        ...appState.aiContent?.hero,
+                                        image: {
+                                          ...appState.aiContent?.hero?.image,
+                                          horizontalPosition: e.target.value,
+                                        },
+                                      },
+                                    },
+                                  }),
+                                )
+                              }
+                              className="w-full"
+                            />
+                            <label className="block text-xs font-medium text-gray-700">
+                              Vertical
+                            </label>
+                            <input
+                              type="range"
+                              min="-100"
+                              max="100"
+                              value={
+                                appState.aiContent?.hero?.image
+                                  ?.verticalPosition
+                              }
+                              onChange={(e) =>
+                                dispatch(
+                                  updateAppState({
+                                    ...appState,
+                                    aiContent: {
+                                      ...appState.aiContent,
+                                      hero: {
+                                        ...appState.aiContent?.hero,
+                                        image: {
+                                          ...appState.aiContent?.hero?.image,
+                                          verticalPosition: e.target.value,
+                                        },
+                                      },
+                                    },
+                                  }),
+                                )
+                              }
+                              className="w-full"
+                            />
+                          </div>
                         </div>
                       </div>
                     );

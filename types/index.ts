@@ -269,6 +269,8 @@ export type THero = {
     imageUrl: string;
     alt: string;
     show: boolean;
+    horizontalPosition:number;
+    verticalPosition:number;
   };
   button: {
     show: boolean;
