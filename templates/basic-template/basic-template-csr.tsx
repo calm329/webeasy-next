@@ -84,9 +84,8 @@ const BasicTemplate = (props: BasicTemplateProps) => {
     position: 0,
   });
   const pathname = usePathname();
-  const [sections, setSections] = useState<
-    Array<TSectionsType>
-  >([]);
+  const [sections, setSections] = useState<Array<TSectionsType>>([]);
+  const isCustom = pathname?.split("/")[1] === "custom";
 
   const initialSections = [
     () => {
@@ -167,27 +166,48 @@ const BasicTemplate = (props: BasicTemplateProps) => {
     },
     () => {
       const id = generateUniqueId();
-      return {
-        id,
-        title: "Image Gallery Section",
-        image:
-          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
-        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        content: (
-          <ImageGallerySection
-            id={id}
-            showForm={showForm}
-            setSectionModal={setSectionModal}
-            setShowForm={setShowForm}
-            setTriggerSection={setTriggerSection}
-            editable={editable}
-            setIsOpen={setIsOpen}
-            setSection={setSection}
-            sections={sections}
-            setSections={setSections}
-          />
-        ),
-      };
+      if (isCustom) {
+        return {
+          id,
+          title: "Image Gallery Section",
+          image:
+            "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+          description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+          content: (
+            <ImageGallerySection
+              id={id}
+              showForm={showForm}
+              setSectionModal={setSectionModal}
+              setShowForm={setShowForm}
+              setTriggerSection={setTriggerSection}
+              editable={editable}
+              setIsOpen={setIsOpen}
+              setSection={setSection}
+              sections={sections}
+              setSections={setSections}
+            />
+          ),
+        };
+      } else {
+        return {
+          id,
+          title: "Posts Section",
+          image:
+            "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+          description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+          content: (
+            <PostsSection
+              id={id}
+              editable={editable}
+              setIsOpen={setIsOpen}
+              setSection={setSection}
+              setShowForm={setShowForm}
+              sections={sections}
+              setSections={setSections}
+            />
+          ),
+        };
+      }
     },
     () => {
       const id = generateUniqueId();
@@ -236,50 +256,24 @@ const BasicTemplate = (props: BasicTemplateProps) => {
         ),
       };
     },
-    () => {
-      const id = generateUniqueId();
-      if (pathname.split("/")[1] !== "custom") {
-        return {
-          id,
-          title: "Posts Section",
-          image:
-            "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
-          description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-          content: (
-            <PostsSection
-              id={id}
-              editable={editable}
-              setIsOpen={setIsOpen}
-              setSection={setSection}
-              setShowForm={setShowForm}
-              sections={sections}
-              setSections={setSections}
-            />
-          ),
-        };
-      } else {
-        return null;
-      }
-    },
   ];
   const filteredSections = initialSections
     .map((section) => section())
     .filter((section) => section !== null);
 
-    useEffect(() => {
-      setSections((prevSections) => {
-        if (prevSections.length === 0) {
-          // Ensure that `filteredSections` does not contain `null` values
-          return filteredSections.filter((section) => section !== null) as TSectionsType[];
-        }
-        return prevSections;
-      });
-    }, [appState]);
+  useEffect(() => {
+    setSections((prevSections) => {
+      if (prevSections.length === 0) {
+        // Ensure that `filteredSections` does not contain `null` values
+        return filteredSections.filter(
+          (section) => section !== null,
+        ) as TSectionsType[];
+      }
+      return prevSections;
+    });
+  }, [appState]);
 
-  const addSectionAtIndex = (
-    index: number,
-    newSection: TSectionsType,
-  ) => {
+  const addSectionAtIndex = (index: number, newSection: TSectionsType) => {
     if (index >= 0 && index <= sections.length) {
       setSections([
         ...sections.slice(0, index),

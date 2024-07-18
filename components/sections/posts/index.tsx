@@ -26,7 +26,7 @@ const PostsSection = (props: TProps) => {
   const { editable, setIsOpen, setSection, setShowForm,sections,setSections,id } = props;
   const dispatch = useAppDispatch();
   return (
-    <section className="relative group">
+    <section className="relative group flex">
       <EditComponent id={id} sections={sections} setSections={setSections}/>
       {appState.iPosts.list.length > 0 && (
         <button
