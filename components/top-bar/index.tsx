@@ -92,7 +92,7 @@ export default function TopBar(props: TopBarProps) {
               <Skeleton className="h-8 w-8 bg-white" />
             )}
 
-            {appState.aiContent?.banner?.businessName ? (
+            {appState.aiContent?.banner?.businessName !== undefined ? (
               editable ? (
                 <button
                   className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
