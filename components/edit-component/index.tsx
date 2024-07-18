@@ -2,7 +2,7 @@ import React, { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { FaArrowDownLong, FaArrowUpLong, FaDeleteLeft } from "react-icons/fa6";
 import { VscLayoutSidebarLeft, VscLayoutSidebarRight } from "react-icons/vsc";
 import { BsThreeDots } from "react-icons/bs";
-import { TSection } from "@/types";
+import { TSection, TSectionsType } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,18 +26,10 @@ import { generateUniqueId } from "@/lib/utils/function";
 type TProps = {
   setSections: Dispatch<
     SetStateAction<
-      {
-        id: string;
-        title: string;
-        content: JSX.Element;
-      }[]
+      TSectionsType[]
     >
   >;
-  sections: {
-    id: string;
-    title: string;
-    content: JSX.Element;
-  }[];
+  sections: TSectionsType[];
   id: string;
 };
 

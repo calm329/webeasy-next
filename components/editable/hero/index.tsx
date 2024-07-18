@@ -1,6 +1,6 @@
 import Image from "next/image";
 import TopBar from "@/components/top-bar";
-import { TColors, TFields, THero, TSection } from "@/types";
+import { TColors, TFields, THero, TSection, TSectionsType } from "@/types";
 import React, { Dispatch, SetStateAction } from "react";
 import Cta from "@/components/cta";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
@@ -41,18 +41,10 @@ type TProps = {
   >;
   setSections: Dispatch<
     SetStateAction<
-      {
-        id: string;
-        title: string;
-        content: JSX.Element;
-      }[]
+    TSectionsType[]
     >
   >;
-  sections: {
-    id: string;
-    title: string;
-    content: JSX.Element;
-  }[];
+  sections: TSectionsType[];
   id: string;
 };
 

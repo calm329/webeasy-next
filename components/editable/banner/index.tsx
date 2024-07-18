@@ -3,7 +3,7 @@ import TopBar from "@/components/top-bar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
-import { TBanner, TColors, TFields, TSection } from "@/types";
+import { TBanner, TColors, TFields, TSection, TSectionsType } from "@/types";
 import EditComponent from "@/components/edit-component";
 
 type TProps = {
@@ -19,16 +19,8 @@ type TProps = {
     show: boolean;
   };
   setShowForm: React.Dispatch<React.SetStateAction<{ form: string; edit: string; show: boolean }>>;
-  setSections: Dispatch<SetStateAction<{
-    id:string,
-    title: string;
-    content: JSX.Element;
-  }[]>>
-  sections:{
-    id:string,
-    title: string;
-    content: JSX.Element;
-  }[]
+  setSections: Dispatch<SetStateAction<TSectionsType[]>>
+  sections:TSectionsType[]
   id:string
 };
 

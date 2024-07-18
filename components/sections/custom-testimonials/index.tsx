@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import React, { Dispatch, SetStateAction } from "react";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
-import { TSection } from "@/types";
+import { TSection, TSectionsType } from "@/types";
 import AddSectionButtons from "@/components/add-section/buttons";
 import {
   Carousel,
@@ -29,16 +29,8 @@ type TProps = {
   setTriggerSection: React.Dispatch<
     SetStateAction<{ section: string; position: number }>
   >;
-  setSections: Dispatch<SetStateAction<{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]>>
-  sections:{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]
+  setSections: Dispatch<SetStateAction<TSectionsType[]>>
+  sections:TSectionsType[]
   id:string
 };
 

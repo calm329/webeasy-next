@@ -13,7 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import AddSectionButtons from "@/components/add-section/buttons";
-import { TSection } from "@/types";
+import { TSection, TSectionsType } from "@/types";
 import EditComponent from "@/components/edit-component";
 
 type TProps = {
@@ -36,16 +36,8 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]>>
-  sections:{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]
+  setSections: Dispatch<SetStateAction<TSectionsType[]>>
+  sections:TSectionsType[]
   id:string
 };
 

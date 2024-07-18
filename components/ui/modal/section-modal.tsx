@@ -5,18 +5,14 @@ import React, { Dispatch, Fragment, SetStateAction } from "react";
 import { IoClose } from "react-icons/io5";
 import PublishForm from "../form/publish-form";
 import SectionForm from "../form/section-form";
-import { TSection } from "@/types";
+import { TSection, TSectionsType } from "@/types";
 
 type TProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   addSectionByTitle: (
     id: string,
-    newSection: {
-      id: string;
-      title: string;
-      content: JSX.Element;
-    },
+    newSection: TSectionsType,
     position: number,
   ) => void;
   triggerSection: {
@@ -44,26 +40,12 @@ type TProps = {
   };
   setSections: Dispatch<
     SetStateAction<
-      {
-        id: string;
-        title: string;
-        content: JSX.Element;
-      }[]
+    TSectionsType[]
     >
   >;
-  sections: {
-    id: string;
-    title: string;
-    content: JSX.Element;
-  }[];
+  sections: TSectionsType[];
   id: string;
-  initialSections:(() => {
-    id: string;
-    title: string;
-    content: JSX.Element;
-    image:string;
-    description:string;
-} | null)[]
+  initialSections:(() => TSectionsType | null)[]
 };
 export default function SectionModal(props: TProps) {
   const {

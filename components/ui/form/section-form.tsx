@@ -24,17 +24,13 @@ import StatsSection from "@/components/sections/stats";
 import TeamSection from "../../sections/team/index";
 import TestimonialSection from "@/components/sections/testimonials";
 import Image from "next/image";
-import { TSection } from "@/types";
+import { TSection, TSectionsType } from "@/types";
 import { generateUniqueId } from "@/lib/utils/function";
 
 type TProps = {
   addSectionByTitle: (
     id: string,
-    newSection: {
-      id: string;
-      title: string;
-      content: JSX.Element;
-    },
+    newSection: TSectionsType,
     position: number,
   ) => void;
   triggerSection: {
@@ -63,27 +59,13 @@ type TProps = {
   };
   setSections: Dispatch<
     SetStateAction<
-      {
-        id: string;
-        title: string;
-        content: JSX.Element;
-      }[]
+    TSectionsType[]
     >
   >;
-  sections: {
-    id: string;
-    title: string;
-    content: JSX.Element;
-  }[];
+  sections: TSectionsType[];
   id: string;
 
-  initialSections:(() => {
-    id: string;
-    title: string;
-    image:string;
-    description:string;
-    content: JSX.Element;
-} | null)[]
+  initialSections:(() => TSectionsType | null)[]
 };
 
 const SectionForm = (props: TProps) => {
@@ -402,7 +384,7 @@ const SectionForm = (props: TProps) => {
   const filteredSections = newSections
     .map((section) => section()).filter((section) => section !== null)
     .filter((section) =>
-      section.title.toLowerCase().includes(searchQuery.toLowerCase()),
+      section?.title?.toLowerCase()?.includes(searchQuery.toLowerCase()),
     );
 
   return (
@@ -428,28 +410,30 @@ const SectionForm = (props: TProps) => {
       <div className="grid max-h-[600px] grid-cols-2 gap-10 overflow-auto px-5 max-md:grid-cols-1">
         {filteredSections.map((section) => (
           <div
-            key={section.id}
+            key={section?.id??''}
             className="flex cursor-pointer gap-3 rounded border p-5 hover:bg-gray-50 max-lg:flex-col"
             onClick={() => {
               addSectionByTitle(
                 id,
                 {
-                  id: section.id,
-                  title: section.title,
-                  content: section.content,
+                  id: section?.id??"",
+                  title: section?.title??"",
+                  content: section?.content ??<></>,
+                  image:section?.image??"",
+                  description:section?.description ??""
                 },
-                triggerSection.position,
+                triggerSection?.position,
               );
               setOpen(false);
             }}
           >
             <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-bold">{section.title}</h2>
+              <h2 className="text-xl font-bold">{section?.title??""}</h2>
               <p className="text-xs">{section?.description ??"Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is"}</p>
             </div>
             <Image
               alt=""
-              src={section.image}
+              src={section?.image ??""}
               height={200}
               width={200}
               className="object-contain"

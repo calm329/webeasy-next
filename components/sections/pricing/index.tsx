@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import CustomContent from "@/lib/content/custom";
-import { TFields, TSection } from "@/types";
+import { TFields, TSection, TSectionsType } from "@/types";
 
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component here
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
@@ -29,16 +29,8 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]>>
-  sections:{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]
+  setSections: Dispatch<SetStateAction<TSectionsType[]>>
+  sections:TSectionsType[]
   id:string
 };
 

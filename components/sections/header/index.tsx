@@ -4,7 +4,7 @@ import {
   PhoneIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import { TFields, TSection } from '@/types';
+import { TFields, TSection, TSectionsType } from '@/types';
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -33,16 +33,8 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]>>
-  sections:{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]
+  setSections: Dispatch<SetStateAction<TSectionsType[]>>
+  sections:TSectionsType[]
   id:string
 }
 

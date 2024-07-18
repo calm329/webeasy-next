@@ -269,8 +269,8 @@ export type THero = {
     imageUrl: string;
     alt: string;
     show: boolean;
-    horizontalPosition:number;
-    verticalPosition:number;
+    horizontalPosition?:number;
+    verticalPosition?:number;
   };
   button: {
     show: boolean;
@@ -343,3 +343,10 @@ export type TSite = {
 };
 
 export type TSiteType = "Instagram" | "Custom" | "Amazon";
+export interface TSectionsType{
+  id: string;
+      title: string;
+      content: JSX.Element;
+      image:string,
+      description:string
+}

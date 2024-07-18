@@ -1,6 +1,6 @@
 import AddSectionButtons from "@/components/add-section/buttons";
 import CustomContent from "@/lib/content/custom";
-import { TFields, TSection } from "@/types";
+import { TFields, TSection, TSectionsType } from "@/types";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -29,16 +29,8 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]>>
-  sections:{
-    id:string
-    title: string;
-    content: JSX.Element;
-  }[]
+  setSections: Dispatch<SetStateAction<TSectionsType[]>>
+  sections:TSectionsType[]
   id:string
 };
 

@@ -7,6 +7,7 @@ import {
   THero,
   TPosts,
   TSection,
+  TSectionsType,
   TServices,
 } from "@/types";
 import EditableBanner from "@/components/editable/banner";
@@ -84,11 +85,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
   });
   const pathname = usePathname();
   const [sections, setSections] = useState<
-    Array<{
-      id: string;
-      title: string;
-      content: JSX.Element;
-    }>
+    Array<TSectionsType>
   >([]);
 
   const initialSections = [
@@ -269,19 +266,19 @@ const BasicTemplate = (props: BasicTemplateProps) => {
     .map((section) => section())
     .filter((section) => section !== null);
 
-  useEffect(() => {
-    setSections((prevSections) =>
-      prevSections.length === 0 ? filteredSections : prevSections,
-    );
-  }, [appState]);
+    useEffect(() => {
+      setSections((prevSections) => {
+        if (prevSections.length === 0) {
+          // Ensure that `filteredSections` does not contain `null` values
+          return filteredSections.filter((section) => section !== null) as TSectionsType[];
+        }
+        return prevSections;
+      });
+    }, [appState]);
 
   const addSectionAtIndex = (
     index: number,
-    newSection: {
-      id: string;
-      title: string;
-      content: JSX.Element;
-    },
+    newSection: TSectionsType,
   ) => {
     if (index >= 0 && index <= sections.length) {
       setSections([
@@ -294,11 +291,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
   console.log("sections", sections);
   const addSectionByTitle = (
     id: string,
-    newSection: {
-      id: string;
-      title: string;
-      content: JSX.Element;
-    },
+    newSection: TSectionsType,
     position: number,
   ) => {
     const index = sections.findIndex((section) => section.id === id);
@@ -309,7 +302,7 @@ const BasicTemplate = (props: BasicTemplateProps) => {
   };
   console.log("appState.selectedFont", appState.selectedFont);
   return (
-    <div className="flex min-h-screen flex-col mb-20">
+    <div className="mb-20 flex min-h-screen flex-col">
       <div className="flex flex-col gap-10">
         {sections.map((section, index) => (
           <div key={index}>{section.content}</div>
