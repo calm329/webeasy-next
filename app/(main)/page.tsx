@@ -3,9 +3,11 @@ import SiteHeader from "@/components/header";
 import AmazonHomeTab from "@/components/home/amazon";
 import CustomHomeTab from "@/components/home/custom";
 import InstagramHomeTab from "@/components/home/instagram";
+import PasswordModal from "@/components/ui/modal/password-modal";
+import { getUserById } from "@/lib/fetchers";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type TSectionObject = Array<{
   id: "CUSTOM" | "AMAZON" | "INSTAGRAM";
@@ -36,12 +38,22 @@ export default function Home() {
   const [selectedTab, setSelectedTab] = useState<
     "CUSTOM" | "AMAZON" | "INSTAGRAM"
   >("CUSTOM");
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  useEffect(()=>{
+    getUserById().then((user)=>{
+      if(user){
+        if(!user?.password){
+          setShowPasswordModal(true);
+        }
+      }
+    })
+  },[])
   return (
     <div className="mx-auto max-w-7xl">
+      <PasswordModal open={showPasswordModal} setOpen={setShowPasswordModal} />
       <SiteHeader showNavigation={true} />
       <div className="flex flex-col justify-center  gap-8 p-5 max-sm:py-0">
         <h1 className="text-6xl font-bold leading-normal max-md:text-3xl max-sm:text-2xl">
-      
           Instant Online Presence Made Easy
         </h1>
         <p className="mx-auto text-xl font-semibold sm:hidden">
@@ -49,7 +61,7 @@ export default function Home() {
         </p>
       </div>
       <div className="">
-        <div className="border-b border-gray-200 mx-10 max-sm:mx-5">
+        <div className="mx-10 border-b border-gray-200 max-sm:mx-5">
           <nav className=" flex " aria-label="Tabs">
             {sections.map((section) => (
               <button

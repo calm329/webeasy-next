@@ -15,6 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IoClose } from "react-icons/io5";
 import { signIn } from "next-auth/react";
+import PasswordModal from "./password-modal";
 type TProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
@@ -24,6 +25,7 @@ export default function AuthModal(props: TProps) {
   const [state, setState] = useState("signin");
   // const [open, setOpen] = useState(false);
   const { setOpen, open } = props;
+
 
   // const enhancedChild = React.cloneElement(children as ReactElement, {
   //   onClick: () => setOpen(true),
@@ -59,6 +61,7 @@ export default function AuthModal(props: TProps) {
               >
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[480px] sm:p-6">
                   <div className="sm:mx-auto sm:w-full sm:max-w-md">
+                    
                     <div className="flex">
                       <Image
                         className="mx-auto h-10 w-auto"
@@ -66,13 +69,9 @@ export default function AuthModal(props: TProps) {
                         alt="Your Company"
                         height={40}
                         width={200}
-                        
                       />
                       <div className="flex ">
-                        <button
-                          onClick={() => setOpen(false)}
-                          className="mb-5"
-                        >
+                        <button onClick={() => setOpen(false)} className="mb-5">
                           <IoClose size={20} />
                         </button>
                       </div>
@@ -116,7 +115,9 @@ export default function AuthModal(props: TProps) {
                       </button>
 
                       <button
-                        onClick={() => signIn("google")}
+                        onClick={() => {
+                          signIn("google")
+                        }}
                         className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                       >
                         <FaGoogle className="size-5 " />

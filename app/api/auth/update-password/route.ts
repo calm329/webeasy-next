@@ -22,18 +22,22 @@ export async function PATCH(req: NextRequest) {
       },
     });
   }
+  console.log("User")
 
-  const isSame = await bcrypt.compare(currentPassword, userData.password);
+  if(userData?.password){
+    const isSame = await bcrypt.compare(currentPassword, userData.password);
 
-  if (!isSame) {
-    return NextResponse.json(
-      { error: "Invalid Current Password" },
-      { status: 401 },
-    );
+    if (!isSame) {
+      return NextResponse.json(
+        { error: "Invalid Current Password" },
+        { status: 401 },
+      );
+    }
   }
+  console.log("User1")
   const salt = await bcrypt.genSalt(12);
   const hashedPassword = await bcrypt.hash(newPassword, salt);
-
+  console.log("User2")
   try {
     const user = await prisma.user.update({
       where: {
