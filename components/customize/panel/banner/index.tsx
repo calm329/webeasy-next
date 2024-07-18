@@ -143,7 +143,7 @@ const BannerContent = (props: TProps) => {
                     <div className="flex flex-col gap-5">
                       <div className="flex justify-between ">
                         <h3 className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
-                          {data}
+                          Logo
                         </h3>
                         <div className="flex gap-5">
                           <button
@@ -256,7 +256,7 @@ const BannerContent = (props: TProps) => {
                     <div className="flex flex-col border-t pt-5">
                       <div className="flex  items-center justify-between text-sm font-medium leading-6 text-gray-900 ">
                         <label htmlFor="businessName" className="block">
-                          {data}
+                          Business Name
                         </label>
                       </div>
 

@@ -138,7 +138,7 @@ const CustomizePanel = (props: TProps) => {
     <div className=" ">
       {!isMobile && (
         <>
-          <div className=" px-4 py-6 sm:px-6">
+          <div className=" px-5 py-6 ">
             <div className="flex items-center justify-between">
               <h2
                 className="text-base font-semibold leading-6 "
