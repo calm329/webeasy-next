@@ -172,20 +172,7 @@ const BannerContent = (props: TProps) => {
                         <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
                           Logo
                         </h3>
-                        <div className="flex gap-5">
-                          <div>
-                            <button
-                              type="button"
-                              className="mr-auto rounded-md border bg-red-600 px-5 py-2 font-medium text-white"
-                              onClick={() => {
-                                setShowImageModal(true);
-                              }}
-                            >
-                              Swap
-                            </button>
-                          </div>
-
-                          <Switch
+                        <Switch
                             onCheckedChange={(checked) =>
                               dispatch(
                                 updateAppState({
@@ -205,7 +192,6 @@ const BannerContent = (props: TProps) => {
                             }
                             checked={appState?.aiContent?.banner?.logo?.show}
                           />
-                        </div>
                       </div>
                       {appState?.aiContent?.banner?.logo?.show && (
                         <div>
@@ -236,6 +222,10 @@ const BannerContent = (props: TProps) => {
                           />
                         </div>
                       )}
+                      <div>
+
+                    
+                      <div className="flex gap-5 justify-between">
                       <button
                         type="button"
                         onClick={() => {
@@ -290,6 +280,21 @@ const BannerContent = (props: TProps) => {
                           <ImPower className=" text-xs " />
                         )}
                       </button>
+                          <div>
+                            <button
+                              type="button"
+                              className=""
+                              onClick={() => {
+                                setShowImageModal(true);
+                              }}
+                            >
+                              Swap
+                            </button>
+                          </div>
+
+                          
+                        </div>
+                      </div>
                     </div>
                   );
                 // case "businessName":
