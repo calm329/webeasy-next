@@ -65,6 +65,7 @@ import { LeaveDrawer } from "../ui/drawer/leave-drawer";
 import LeaveModal from "../ui/modal/leave-modal";
 import AiAssist from "../ai-assist";
 import { fetchUser, UsersData as UD } from "@/lib/store/slices/user-slice";
+import PageSlideOver from "../ui/slide-over/page-slide";
 
 const navigation = [
   { name: "Dashboard", href: "/settings/websites" },
@@ -101,6 +102,7 @@ export default function SiteHeader(props: TProps) {
   const [hideNavigation, setHideNavigation] = useState(false);
   const [showWidgetModal, setWidgetModal] = useState(false);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [showPagesPanel, setShowPagesPanel] = useState(false);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
@@ -182,6 +184,8 @@ export default function SiteHeader(props: TProps) {
       ) : (
         <LeaveModal setOpen={setShowLeaveModal} open={showLeaveModal} />
       )}
+
+      <PageSlideOver setIsOpen={setShowPagesPanel} open={showPagesPanel} />
 
       <nav>
         {!isBottomBar && isSiteBuilderPage(pathname) && (
@@ -299,7 +303,10 @@ export default function SiteHeader(props: TProps) {
           </div>
           {isAuth && isBottomBar && status === "authenticated" && (
             <div className="ml-5 flex gap-2">
-              <div className="flex items-center justify-center gap-5 rounded border border-gray-400 px-5 py-2 pr-2">
+              <div
+                className="flex items-center justify-center gap-5 rounded border border-gray-400 px-5 py-2 pr-2"
+                onClick={() => setShowPagesPanel(true)}
+              >
                 <span>Home</span>
                 <span className="h-5 w-5 text-sm">
                   <ChevronDownIcon />
