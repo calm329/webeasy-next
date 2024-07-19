@@ -319,7 +319,7 @@ const HeroContent = (props: TProps) => {
                             </label>
                             <input
                               type="range"
-                              min="-100"
+                              min="0"
                               max="100"
                               value={
                                 appState.aiContent?.hero?.image
@@ -349,7 +349,7 @@ const HeroContent = (props: TProps) => {
                             </label>
                             <input
                               type="range"
-                              min="-100"
+                              min="0"
                               max="100"
                               value={
                                 appState.aiContent?.hero?.image

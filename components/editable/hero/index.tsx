@@ -218,6 +218,8 @@ const EditableHero = ({
                           alt="Hero Image"
                           style={{
                             objectPosition: `${appState.aiContent.hero?.image?.horizontalPosition}% ${appState.aiContent.hero?.image?.verticalPosition}%`,
+                            objectFit: 'cover', // Ensures the image covers the container
+                            overflow: 'hidden'
                           }}
                           className={`${appState.view === "Mobile" ? "" : "mx-auto"} h-full w-full rounded-3xl object-cover md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                           onClick={() => handleClick("imageUrl")}
