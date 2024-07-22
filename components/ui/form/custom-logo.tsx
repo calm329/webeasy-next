@@ -212,7 +212,7 @@ const CustomPartnerLogo = (props: TProps) => {
               }}
             />
           </div>
-          <div>
+          <div className="flex flex-col">
             <div className="flex justify-between">
               <h3>Show Link</h3>
               <Switch
@@ -225,7 +225,7 @@ const CustomPartnerLogo = (props: TProps) => {
                 type="text"
                 name={showForm.edit ?? "1"}
                 id={showForm.edit ?? "1"}
-                className="rounded-md border border-gray-300"
+                className="rounded-md mt-3 mx-auto border border-gray-300"
                 value={data?.link ??""}
                 onChange={(e) => {
                   setData({ ...data, link: e.target.value });
