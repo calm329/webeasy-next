@@ -136,7 +136,7 @@ const PartnersSection = ({
                     className="relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl"
                   >
                     <Image
-                      className=" object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                      className=" object-contain aspect-1  grayscale transition-all duration-300 hover:grayscale-0"
                       src={src.logo}
                       alt={`Logo ${index + 1}`}
                       height={200}
@@ -154,7 +154,7 @@ const PartnersSection = ({
                     <div className="p-1">
                       <Card className="border-0">
                         <CardContent className="flex border-0 p-6">
-                          <div className="relative flex h-24 flex-shrink-0 rounded-lg p-2 transition-all md:h-16 md:rounded-xl lg:rounded-2xl">
+                          <div className="relative flex flex-shrink-0 rounded-lg p-2 transition-all md:rounded-xl lg:rounded-2xl">
                             <Image
                               className="h-24 object-contain grayscale transition-all duration-300 hover:grayscale-0"
                               src={src.logo}

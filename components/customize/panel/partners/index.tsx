@@ -92,24 +92,6 @@ const PartnersContent = (props: TProps) => {
     );
   };
 
-  // const handleDeleteService = (id: string) => {
-  //   dispatch(
-  //     updateAppState({
-  //       ...appState,
-  //       aiContent: {
-  //         ...appState.aiContent?,
-  //?         services:? {
-  //           ...appState.aiContent?.services?,
-  //?           list: appState.aiContent?.services?.list?.filter((service) => {
-  //             if (service.id !== id) {
-  //               return service;
-  //             }
-  //           }),
-  //         },
-  //       },
-  //     }),
-  //   );
-  // };
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
@@ -122,7 +104,7 @@ const PartnersContent = (props: TProps) => {
     }
   }, [appState]);
 
-  const handleDeletePartners = (id: string) => {
+  const handleDeleteLogo = (id: string) => {
     dispatch(
       updateAppState({
         ...appState,
@@ -130,7 +112,9 @@ const PartnersContent = (props: TProps) => {
           ...appState.aiContent,
           partners: {
             ...appState.aiContent?.partners,
-            list: appState.aiContent?.partners?.list?.filter((partner) => partner.id !== id),
+            list: appState.aiContent?.partners?.list?.filter(
+              (partner) => partner.id !== id,
+            ),
           },
         },
       }),
@@ -144,33 +128,13 @@ const PartnersContent = (props: TProps) => {
           <h3 className="text-sm font-medium leading-6 text-gray-900 ">
             Logo Cloud
           </h3>
-          <p className="text-xs text-gray-400 ">
-            {/* Add, Update or delete a service */}
-          </p>
         </div>
-        {/* <Switch
-          onCheckedChange={(checked) =>
-            dispatch(
-              updateAppState({
-                ...appState,
-                aiContent: {
-                  ...appState.aiContent,
-                  partners: {
-                    ...appState.aiContent?.partners,
-                    show: checked,
-                  },
-                },
-              }),
-            )
-          }
-          checked={appState.aiContent?.partners?.show}
-        /> */}
       </div>
       <div className="px-5 pb-5">
         <div className="flex flex-col border-t pt-5">
           <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
             <label htmlFor={"title"} className="block">
-              {"title"}
+              {"Title"}
             </label>
             <div className="flex items-center gap-2">
               <button
@@ -200,7 +164,6 @@ const PartnersContent = (props: TProps) => {
                   <ImPower className=" text-xs " />
                 )}
               </button>
-              {/* <RegenerateOptions setType={setType} type={type} /> */}
             </div>
           </div>
 
@@ -231,12 +194,12 @@ const PartnersContent = (props: TProps) => {
         <div className="flex flex-col border-t pt-5">
           <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
             <label htmlFor={"description"} className="block">
-              {"description"}
+              {"Description"}
             </label>
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                className="flex items-center gap-2 "
+                className="flex items-center gap-2"
                 onClick={() => {
                   setLoadingDescription(true);
                   setSelectedField("description");
@@ -261,7 +224,6 @@ const PartnersContent = (props: TProps) => {
                   <ImPower className=" text-xs " />
                 )}
               </button>
-            
             </div>
           </div>
           <textarea
@@ -288,115 +250,97 @@ const PartnersContent = (props: TProps) => {
         </div>
       </div>
       <div className="flex flex-col gap-5 border-t p-5 pt-5">
-        <div className="flex justify-between">
-          <h3>Show Link</h3>
-          <Switch
-            onCheckedChange={(checked) => setShowLinks(checked)}
-            checked={showLinks}
-          />
-        </div>
-        <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
-          {appState.aiContent?.partners?.list?.map((partner, i) => (
-            <div className="flex flex-col gap-5" key={i}>
-              <div className="flex justify-between ">
-                <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
-                  Logo {i + 1}
-                </h3>
-                {appState.aiContent?.partners?.list.length > 4 && (
-                  <MdDeleteForever
-                    color="red"
-                    size={20}
-                    onClick={() => handleDeletePartners(partner.id)}
-                    className="cursor-pointer"
-                  />
-                )}
-              </div>
-              <div className="flex flex-col gap-5 ">
-                <Uploader
-                  defaultValue={partner.logo}
-                  name={"logo" + (i + 1)}
-                  label={""}
-                  contain={true}
-                  onChange={(value) => {
-                    dispatch(
-                      updateAppState({
-                        ...appState,
-                        aiContent: {
-                          ...appState.aiContent,
-                          partners: {
-                            ...appState.aiContent?.partners,
-                            list: appState.aiContent?.partners?.list?.map((obj) => {
-                              if (obj.id === partner.id) {
-                                return { ...obj, logo: value };
-                              } else {
-                                return obj;
-                              }
-                            }),
-                          },
-                        },
-                      }),
-                    );
-                  }}
-                />
-                {showLinks && (
-                  <input
-                    type="text"
-                    name={"link" + (i + 1)}
-                    id={"link" + (i + 1)}
-                    className="rounded-md border border-gray-300"
-                    value={partner.link}
-                    onChange={(e) => {
-                      dispatch(
-                        updateAppState({
-                          ...appState,
-                          aiContent: {
-                            ...appState.aiContent,
-                            partners: {
-                              ...appState.aiContent?.partners,
-                              list: appState.aiContent?.partners?.list?.map(
-                                (obj) => {
-                                  if (obj.id === partner.id) {
-                                    return { ...obj, link: e.target.value };
-                                  } else {
-                                    return obj;
-                                  }
-                                },
-                              ),
-                            },
-                          },
-                        }),
-                      );
-                    }}
-                  />
-                )}
-              </div>
+        <div className="flex flex-col gap-5 border-t pt-5">
+          <div className="flex justify-between gap-10">
+            <div>
+              <h3 className="text-sm font-medium leading-6 text-gray-900">
+                Logos
+              </h3>
+              <p className="text-xs text-gray-400 ">
+                Add , update, or delete Logo
+              </p>
             </div>
-          ))}
-        </form>
+          </div>
 
-        {appState.aiContent?.partners?.list &&
-          appState.aiContent?.partners?.list?.length !== 10 && (
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable">
+              {(provided, snapshot) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                >
+                  {appState?.aiContent?.partners?.list?.map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          className=" flex items-center justify-between"
+                          key={item.id}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style,
+                          )}
+                        >
+                          <div className="flex items-center gap-2">
+                            <RxDragHandleDots2 />
+                            <Image
+                              src={item.logo}
+                              alt=""
+                              height={50}
+                              width={50}
+                            />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <MdModeEditOutline
+                              color="blue"
+                              size={20}
+                              onClick={() =>
+                                setShowForm({
+                                  form: "PartnerLogo",
+                                  show: true,
+                                  edit: item.id,
+                                })
+                              }
+                            />
+                            <MdDeleteForever
+                              color="red"
+                              size={20}
+                              onClick={() => handleDeleteLogo(item.id)}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+
+          {appState?.aiContent?.banner?.button?.list?.length !== 2 && (
             <button
               className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-              onClick={() => {
-                dispatch(
-                  updateAppState({
-                    ...appState,
-                    aiContent: {
-                      ...appState.aiContent,
-                      partners: {
-                        ...appState.aiContent?.partners,
-                        list: [...appState.aiContent?.partners?.list, { id: `${Date.now()}`, name: "", link: "", logo: "" }],
-                      },
-                    },
-                  }),
-                );
-              }}
+              onClick={() =>
+                setShowForm({
+                  form: "PartnerLogo",
+                  edit: "",
+                  show: true,
+                })
+              }
             >
-              Add Partner
+              Add Logo
               <IoMdAdd size={20} />
             </button>
           )}
+        </div>
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import CustomHeader from "@/components/ui/form/custom-header";
 import CustomStats from "@/components/ui/form/custom-stats";
 import CustomTeam from "@/components/ui/form/custom-team";
 import CustomPrice from "@/components/ui/form/custom-price";
+import CustomPartnerLogo from "@/components/ui/form/custom-logo";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -48,6 +49,16 @@ const CustomizePanel = (props: TProps) => {
     <>
       {showForm.form === "Button" && (
         <CustomButton
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+          handleChange={handleChange}
+        />
+      )}
+
+      {showForm.form === "PartnerLogo" && (
+        <CustomPartnerLogo
           section={section}
           setIsOpen={setIsOpen}
           setShowForm={setShowForm}

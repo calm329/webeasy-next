@@ -973,32 +973,32 @@ class CustomContentApiService {
                           {
                             id:"0",
                             name:"",
-                            logo:"/images/partners/logo-ipsum-1.png",
+                            logo:"/images/partners/partner-1.png",
                             redirect:""
                           }
                           ,
                           {
                             id:"1",
                             name:"",
-                            logo:"/images/partners/logo-ipsum-2.png",
+                            logo:"/images/partners/partner-2.png",
                             redirect:""
                           },
                           {
                             id:"2",
                             name:"",
-                            logo:"/images/partners/logo-ipsum-3.png",
+                            logo:"/images/partners/partner-3.png",
                             redirect:""
                           },
                           {
                             id:"3",
                             name:"",
-                            logo:"/images/partners/logo-ipsum-4.png",
+                            logo:"/images/partners/partner-4.png",
                             redirect:""
                           },
                           {
                             id:"4",
                             name:"",
-                            logo:"/images/partners/logo-ipsum-5.png",
+                            logo:"/images/partners/partner-5.png",
                             redirect:""
                           }
                         ]
