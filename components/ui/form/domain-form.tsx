@@ -11,9 +11,8 @@ import {
 import { useEffect, useState } from "react";
 import Loader from "../loader";
 import { useMediaQuery } from "usehooks-ts";
-import { DomainDrawer } from "../drawer/domain-drawer";
-import DomainModal from "../modal/domain-modal";
 import { TSite } from "@/types";
+import ResponsiveDialog from "../responsive-dialog/index";
 import {
   Pagination,
   PaginationContent,
@@ -22,6 +21,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../pagination";
+import UpdateDomainForm from "./update-domain-form";
 export default function DomainForm() {
   const [isUpdateSubdomain, setIsUpdateSubdomain] = useState(false);
   const [selectedSubdomain, setSelectedSubdomain] = useState("");
@@ -36,7 +36,7 @@ export default function DomainForm() {
 
   useEffect(() => {
     if (sites) {
-      const filteredSites = sites.filter(site => site.subdomain.length <= 20);
+      const filteredSites = sites.filter((site) => site.subdomain.length <= 20);
       const startIndex = (page - 1) * dataPerPage;
       const endIndex = startIndex + dataPerPage;
       setPaginatedData(filteredSites.slice(startIndex, endIndex));
@@ -56,19 +56,10 @@ export default function DomainForm() {
   }, []);
   return (
     <>
-      {isMobile ? (
-        <DomainDrawer
-          open={isUpdateSubdomain}
-          setOpen={setIsUpdateSubdomain}
-          subdomain={selectedSubdomain}
-        />
-      ) : (
-        <DomainModal
-          open={isUpdateSubdomain}
-          setOpen={setIsUpdateSubdomain}
-          subdomain={selectedSubdomain}
-        />
-      )}
+      <ResponsiveDialog id="domain">
+        <UpdateDomainForm subdomain={selectedSubdomain} />
+      </ResponsiveDialog>
+
       <div className="px-4 py-5 sm:p-6">
         <h2 className="text-base font-semibold leading-7 text-gray-900">
           Current Domains
@@ -80,7 +71,6 @@ export default function DomainForm() {
         ) : (
           <>
             {paginatedData?.map((site) => (
-              
               <div
                 className="flex items-center justify-between  pt-6 sm:flex"
                 key={site.id}
@@ -152,7 +142,12 @@ export default function DomainForm() {
         </h2>
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
           <Search placeholder="Search for a domain name..." />
-          <Link href={"/settings/domain/search"} className="shadow rounded border px-5 py-2">Buy</Link> 
+          <Link
+            href={"/settings/domain/search"}
+            className="rounded border px-5 py-2 shadow"
+          >
+            Buy
+          </Link>
         </div>
       </div>
       <div className="px-4 py-4 sm:px-6">

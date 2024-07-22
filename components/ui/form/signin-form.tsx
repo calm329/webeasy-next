@@ -16,13 +16,10 @@ import {
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { getSitesByUserId } from "@/lib/fetchers";
 import { selectedTemplate as ST } from '@/lib/store/slices/template-slice';
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
-type TProps = {
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-};
-
-export default function SigninForm(props: TProps) {
-  const { setIsOpen } = props;
+export default function SigninForm() {
+  const { closeDialog } = useResponsiveDialog();
   const [loading, setLoading] = useState(false);
   const [encryptedData, setEncryptedData] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -89,7 +86,7 @@ export default function SigninForm(props: TProps) {
             localStorage.removeItem("userData");
           }
         }
-        setIsOpen(false);
+        closeDialog('auth')
       }
 
       if (isSiteBuilderPage(pathname)) {

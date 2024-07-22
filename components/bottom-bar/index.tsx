@@ -2,7 +2,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import SettingMenu from "../header/settings-menu";
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
-import WidgetModal from "../ui/modal/widget-modal";
 import ViewMenu from "../menu/view-menu";
 import PublishMenu from "../menu/publish-menu";
 import { DebouncedState, useMediaQuery } from "usehooks-ts";
@@ -12,7 +11,6 @@ import {
   fetchTemplates,
   TemplatesData as TD,
 } from "@/lib/store/slices/template-slice";
-import { WidgetDrawer } from "../ui/drawer/widget-drawer";
 import { FaUndoAlt, FaRedoAlt } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
@@ -35,33 +33,26 @@ import Image from "next/image";
 import AiAssist from "../ai-assist";
 import { usePathname, useSearchParams } from "next/navigation";
 import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+import ResponsiveDialog from "../ui/responsive-dialog/index";
+import WidgetForm from "../ui/form/widget-form";
 
 type TProps = {
   showNavigation: boolean;
   isAuth?: boolean;
   handleChange?: (name: string, value: string) => void;
   setSelectedTemplate?: Dispatch<SetStateAction<TTemplateName>>;
-  setShowAuthModal: Dispatch<SetStateAction<boolean>>;
   setIsFontOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const BottomToolBar = (props: TProps) => {
-  const [showWidgetModal, setWidgetModal] = useState(false);
-
   const {
-    showNavigation,
-    isAuth,
-    setShowAuthModal,
     handleChange,
-    setSelectedTemplate,
     setIsFontOpen,
   } = props;
-  const matches = useMediaQuery("(max-width: 500px)");
-  const isMobile = useMediaQuery("(max-width: 1024px)");
   const isBottomBar = useMediaQuery("(max-width: 900px)");
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(LD);
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
   const templates = useAppSelector(TD);
@@ -69,6 +60,7 @@ const BottomToolBar = (props: TProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const selectedTemplate = useAppSelector(ST);
+  const { openDialog } = useResponsiveDialog();
   return (
     <div className=" z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white   py-2 shadow-xl ">
       {isBottomBar ? (
@@ -79,7 +71,6 @@ const BottomToolBar = (props: TProps) => {
                 handleChange={handleChange ?? undefined}
                 appState={appState}
                 templates={templates}
-                setShowAuthModal={setShowAuthModal}
                 setIsFontOpen={setIsFontOpen}
               />
             )}
@@ -90,7 +81,7 @@ const BottomToolBar = (props: TProps) => {
               <button
                 type="button"
                 className="rounded-m inline-flex flex-col items-center  justify-center gap-2  px-3 py-2 text-sm font-semibold text-black max-sm:text-xs"
-                onClick={() => setWidgetModal(true)}
+                onClick={() => openDialog("widget")}
               >
                 <ChatBubbleLeftIcon
                   className="ml-0.5 mr-1.5 h-5 w-5 max-sm:m-0"
@@ -101,15 +92,11 @@ const BottomToolBar = (props: TProps) => {
             </span>
           )}
 
-          {isMobile ? (
-            <WidgetDrawer open={showWidgetModal} setOpen={setWidgetModal} />
-          ) : (
-            <WidgetModal open={showWidgetModal} setOpen={setWidgetModal} />
-          )}
+          <ResponsiveDialog id="widget">
+            <WidgetForm />
+          </ResponsiveDialog>
 
-          {/* <ViewMenu /> */}
-
-          <PublishMenu setShowAuthModal={setShowAuthModal} />
+          <PublishMenu />
           {status === "authenticated" && <AiAssist />}
         </div>
       ) : (
@@ -173,7 +160,7 @@ const BottomToolBar = (props: TProps) => {
                     selectedTemplate?.id ?? "",
                   ).then(() => dispatch(clearPastAndFuture()));
                 } else {
-                  setShowAuthModal(true);
+                  openDialog("auth");
                 }
               }}
             />

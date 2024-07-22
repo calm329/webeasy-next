@@ -3,11 +3,13 @@ import SiteHeader from "@/components/header";
 import AmazonHomeTab from "@/components/home/amazon";
 import CustomHomeTab from "@/components/home/custom";
 import InstagramHomeTab from "@/components/home/instagram";
-import PasswordModal from "@/components/ui/modal/password-modal";
 import { getUserById } from "@/lib/fetchers";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import ResponsiveDialog from "../../components/ui/responsive-dialog/index";
+import PasswordForm from "@/components/ui/form/password-form";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
 type TSectionObject = Array<{
   id: "CUSTOM" | "AMAZON" | "INSTAGRAM";
@@ -34,23 +36,24 @@ const sections: TSectionObject = [
 ];
 
 export default function Home() {
-  const pathname = usePathname();
+  const { openDialog } = useResponsiveDialog();
   const [selectedTab, setSelectedTab] = useState<
     "CUSTOM" | "AMAZON" | "INSTAGRAM"
   >("CUSTOM");
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  useEffect(()=>{
-    getUserById().then((user)=>{
-      if(user){
-        if(!user?.password){
-          setShowPasswordModal(true);
+  useEffect(() => {
+    getUserById().then((user) => {
+      if (user) {
+        if (!user?.password) {
+          openDialog("password");
         }
       }
-    })
-  },[])
+    });
+  }, []);
   return (
     <div className="mx-auto max-w-7xl">
-      <PasswordModal open={showPasswordModal} setOpen={setShowPasswordModal} />
+      <ResponsiveDialog id="password">
+        <PasswordForm />
+      </ResponsiveDialog>
       <SiteHeader showNavigation={true} />
       <div className="flex flex-col justify-center  gap-8 p-5 max-sm:py-0">
         <h1 className="text-6xl font-bold leading-normal max-md:text-3xl max-sm:text-2xl">

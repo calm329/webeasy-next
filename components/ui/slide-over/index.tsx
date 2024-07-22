@@ -106,10 +106,7 @@ function SlideOver(props: TProps) {
             )}
             {section === "Image Gallery" && (
               <CustomGalleryContent
-                section={section}
-                handleChange={handleChange}
-                subdomain={subdomain}
-                setShowForm={setShowForm}
+         
               />
             )}
             {section === "Title" && <TitleContent />}

@@ -1,29 +1,12 @@
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {
-  appState as AS,
-  clearPastAndFuture,
-  deleteSite,
-  fetchSitesByDomain,
-  updateAppState,
-} from "@/lib/store/slices/site-slice";
-import { saveState } from "@/lib/utils/function";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import React, { SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
 
-type TProps = {
-  setOpen: React.Dispatch<SetStateAction<boolean>>;
-
-};
-
-const DeleteUser = (props: TProps) => {
-  const { setOpen,  } = props;
-  const dispatch = useAppDispatch();
-  const appState = useAppSelector(AS);
+const DeleteUser = () => {
+  const { closeDialog } = useResponsiveDialog();
   const { data: session } = useSession();
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const handleDelete = async () => {
     setIsLoading(true);
@@ -39,7 +22,7 @@ const DeleteUser = (props: TProps) => {
       const response = await res.json();
 
       if (res.ok) {
-        setOpen(false)
+        closeDialog("deleteUser");
         signOut();
       } else {
         toast.error(response.error);
@@ -70,7 +53,7 @@ const DeleteUser = (props: TProps) => {
         <button
           className="rounded bg-gray-500 px-4 py-2 text-white"
           onClick={() => {
-            setOpen(false);
+            closeDialog("deleteUser");
           }}
         >
           Cancel

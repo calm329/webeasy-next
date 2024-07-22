@@ -29,7 +29,9 @@ import {
   regenerateIndividual,
 } from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
-import ImagesModal from "@/components/ui/modal/images-modal";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
+import ImagesListing from "@/components/ui/form/images-listing";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 type TProps = {
   section: TSection;
   handleChange: (name: string, value: string) => void;
@@ -132,8 +134,7 @@ const HeroContent = (props: TProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const searchParams = useSearchParams();
-  const [showImageModal, setShowImageModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState("");
+  const { openDialog } = useResponsiveDialog();
   useEffect(() => {
     console.log("appState: " + appState.focusedField);
     if (appState.focusedField === "title") {
@@ -165,12 +166,9 @@ const HeroContent = (props: TProps) => {
 
   return (
     <div className="h-[55vh] max-h-[600px]  overflow-y-auto py-5 transition-all ease-in-out">
-      <ImagesModal
-        open={showImageModal}
-        setOpen={setShowImageModal}
-        selectedImage={selectedImage}
-        action={setImage}
-      />
+      <ResponsiveDialog id="imageListing">
+        <ImagesListing action={setImage} />
+      </ResponsiveDialog>
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
         {appState.aiContent?.hero &&
           Object.keys(appState.aiContent?.hero).map((data) => (
@@ -191,7 +189,7 @@ const HeroContent = (props: TProps) => {
                                 type="button"
                                 className="mr-auto rounded-md border bg-red-600 px-5 py-2 font-medium text-white"
                                 onClick={() => {
-                                  setShowImageModal(true);
+                                  openDialog("imageListing");
                                 }}
                               >
                                 Swap

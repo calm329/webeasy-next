@@ -1,3 +1,4 @@
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { loading as LD, updateSite } from "@/lib/store/slices/site-slice";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,14 +10,13 @@ import { z } from "zod";
 
 type TProps =  {
   subdomain: string;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UpdateDomainForm = (props: TProps) => {
   const {
     subdomain,
-    setOpen,
   } = props;
+  const {closeDialog} = useResponsiveDialog()
   const loading = useAppSelector(LD);
   const dispatch = useAppDispatch();
   const formSchema = z.object({
@@ -51,7 +51,7 @@ const UpdateDomainForm = (props: TProps) => {
       toast.success("Domain successfully Updated", {
         position: "top-right",
       });
-      setOpen(false);
+      closeDialog('domain');
     } catch (error) {
       console.error("Error:", error);
       toast.error("Something went wrong", {

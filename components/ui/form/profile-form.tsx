@@ -2,21 +2,19 @@
 
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { getUserById } from "@/lib/fetchers";
 import { useEffect, useState } from "react";
 import Loader from "@/components/ui/loader";
-import { FormField, TFields, TUser } from "@/types";
-import UserModal from "@/components/ui/modal/user-modal";
-import { UserDrawer } from "@/components/ui/drawer/user-drawer";
-import { useMediaQuery } from "usehooks-ts";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchUser, UsersData as UD } from "@/lib/store/slices/user-slice";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
+import UpdateUser from "./update-user";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
 export default function Profileform() {
   const { data: session } = useSession();
   // const [user, setUser] = useState<TUser>(null);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState<TFields>(null);
+  const {openDialog} = useResponsiveDialog()
   const dispatch = useAppDispatch();
   const userData = useAppSelector(UD);
   const getUserData = async () => {
@@ -37,24 +35,12 @@ export default function Profileform() {
     !userData && getUserData();
     // }
   }, []);
-  const matches = useMediaQuery("(max-width: 1024px)");
+  
   return (
     <>
-      {matches ? (
-        <UserDrawer
-          open={open}
-          setOpen={setOpen}
-          user={userData}
-          getUserData={getUserData}
-        />
-      ) : (
-        <UserModal
-          open={open}
-          setOpen={setOpen}
-          user={userData}
-          getUserData={getUserData}
-        />
-      )}
+      <ResponsiveDialog id="updateUser">
+        <UpdateUser getUserData={getUserData} user={userData} />
+      </ResponsiveDialog>
 
       <div>
         {loading ? (
@@ -87,7 +73,7 @@ export default function Profileform() {
                 )}
 
                 <button
-                  onClick={() => setOpen("avatar")}
+                  onClick={() => openDialog("updateUser")}
                   className="cursor-pointer font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   Update
@@ -103,7 +89,7 @@ export default function Profileform() {
                 <button
                   type="button"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  onClick={() => setOpen("name")}
+                  onClick={() => openDialog("updateUser")}
                 >
                   Update
                 </button>
@@ -118,7 +104,7 @@ export default function Profileform() {
                 <button
                   type="button"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  onClick={() => setOpen("email")}
+                  onClick={() => openDialog("updateUser")}
                 >
                   Update
                 </button>

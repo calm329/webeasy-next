@@ -26,15 +26,14 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../pagination";
-import DeleteModal from "../modal/delete-modal";
-import { DeleteDrawer } from "../drawer/delete-drawer";
-import { useMediaQuery } from "usehooks-ts";
 import {
   setSelectedTemplate,
   TemplatesData as TD,
 } from "@/lib/store/slices/template-slice";
 import Image from "next/image";
 import Link from "next/link";
+import ResponsiveDialog from "../responsive-dialog/index";
+import DeleteContent from "@/components/delete-content";
 
 type TSectionObject = Array<{
   logo: React.ReactNode;
@@ -85,8 +84,7 @@ const sortByCreatedAtDescending = (sites: TSites) => {
 };
 
 export default function WebsitesForm() {
-  const [selectedSection, setSelectedSection] =
-    useState<TSectionName>("All");
+  const [selectedSection, setSelectedSection] = useState<TSectionName>("All");
   const searchParams = useSearchParams();
   const router = useRouter();
   const sites = useAppSelector(SD);
@@ -107,7 +105,7 @@ export default function WebsitesForm() {
         selectedSection === "All"
           ? sites
           : sites.filter((site) => site.type === selectedSection);
-      const sortedSites = sortByCreatedAtDescending(filteredSites)??[];
+      const sortedSites = sortByCreatedAtDescending(filteredSites) ?? [];
       const startIndex = (page - 1) * dataPerPage;
       const endIndex = startIndex + dataPerPage;
       setPaginatedData(sortedSites.slice(startIndex, endIndex));
@@ -141,27 +139,16 @@ export default function WebsitesForm() {
   };
 
   const totalPages = Math.ceil(
-    (sites?.filter((site) => selectedSection === "All" || site.type === selectedSection).length || 0) /
-      dataPerPage,
+    (sites?.filter(
+      (site) => selectedSection === "All" || site.type === selectedSection,
+    ).length || 0) / dataPerPage,
   );
-
-  const matches = useMediaQuery("(min-width: 768px)");
 
   return (
     <div className="">
-      {matches ? (
-        <DeleteModal
-          id={selectedItemId}
-          setOpen={setIsDeleting}
-          open={isDeleting}
-        />
-      ) : (
-        <DeleteDrawer
-          id={selectedItemId}
-          setOpen={setIsDeleting}
-          open={isDeleting}
-        />
-      )}
+      <ResponsiveDialog id="delete">
+        <DeleteContent id={selectedItemId} />
+      </ResponsiveDialog>
       <div className="">
         <div className="border-b border-gray-200 ">
           <nav className="flex" aria-label="Tabs">
@@ -187,88 +174,87 @@ export default function WebsitesForm() {
         </div>
       ) : (
         <div className="flex flex-wrap gap-10 px-5 pt-10">
-          {paginatedData?.map(
-            (site) => (
-              <div
-                key={site.id}
-                className="relative flex max-w-80 flex-col items-center justify-between rounded-lg border shadow"
+          {paginatedData?.map((site) => (
+            <div
+              key={site.id}
+              className="relative flex max-w-80 flex-col items-center justify-between rounded-lg border shadow"
+            >
+              <button
+                className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
+                onClick={() => {
+                  setIsDeleting(true);
+                  setSelectedItemId(site.id);
+                }}
               >
-                <button
-                  className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
-                  onClick={() => {
-                    setIsDeleting(true);
-                    setSelectedItemId(site.id);
-                  }}
-                >
-                  <BsTrash3 color="red" />
-                </button>
-                <div className="flex h-full min-h-80 items-center justify-center rounded-t-lg">
-                  <Image
-                    src={
-                      site.type === "Amazon"
-                        ? JSON.parse(site?.aiResult)?.images?.primary?.Large?.URL ?? ""
-                        : JSON.parse(site?.aiResult)?.hero?.image?.imageUrl ?? ""
-                    }
-                    height={200}
-                    width={500}
-                    className="contain"
-                    alt=""
-                  />
+                <BsTrash3 color="red" />
+              </button>
+              <div className="flex h-full min-h-80 items-center justify-center rounded-t-lg">
+                <Image
+                  src={
+                    site.type === "Amazon"
+                      ? JSON.parse(site?.aiResult)?.images?.primary?.Large
+                          ?.URL ?? ""
+                      : JSON.parse(site?.aiResult)?.hero?.image?.imageUrl ?? ""
+                  }
+                  height={200}
+                  width={500}
+                  className="contain"
+                  alt=""
+                />
+              </div>
+              <div className="flex flex-col gap-5 p-5">
+                <div className="flex flex-col gap-2 ">
+                  <h2 className="line-clamp-1 text-xl font-bold">
+                    {site?.title}
+                  </h2>
+                  <p className="text-sm">{site?.description}</p>
                 </div>
-                <div className="flex flex-col gap-5 p-5">
-                  <div className="flex flex-col gap-2 ">
-                    <h2 className="line-clamp-1 text-xl font-bold">
-                      {site?.title}
-                    </h2>
-                    <p className="text-sm">{site?.description}</p>
-                  </div>
 
-                  <div className="flex gap-5">
-                    <button
-                      className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
-                      onClick={() => {
-                        if (templates) {
-                          dispatch(setSelectedTemplate(templates[0]));
-                        }
-                        dispatch(
-                          updateAppState({
-                            ...appState,
-                            view: "Desktop",
-                          }),
-                        );
-                        switch (site.type) {
-                          case "Custom":
-                            router.push("/custom/" + site.id);
-                            break;
-                          case "Instagram":
-                            redirectToAuth(site.id);
-                            break;
-                          case "Amazon":
-                            router.push("/amazon/" + site.id);
-                            break;
-                        }
-                      }}
-                    >
-                      <FaEdit />
-                      Edit
-                    </button>
-                    <Link
-                      href={
-                        site.type === "Amazon"
-                          ? "/preview/amazon?preview_site=" + site.id
-                          : "/preview?preview_site=" + site.id
+                <div className="flex gap-5">
+                  <button
+                    className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
+                    onClick={() => {
+                      if (templates) {
+                        dispatch(setSelectedTemplate(templates[0]));
                       }
-                      target="_blank"
-                      className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
-                    >
-                      <FaExternalLinkAlt />
-                      Preview
-                    </Link>
-                  </div>
+                      dispatch(
+                        updateAppState({
+                          ...appState,
+                          view: "Desktop",
+                        }),
+                      );
+                      switch (site.type) {
+                        case "Custom":
+                          router.push("/custom/" + site.id);
+                          break;
+                        case "Instagram":
+                          redirectToAuth(site.id);
+                          break;
+                        case "Amazon":
+                          router.push("/amazon/" + site.id);
+                          break;
+                      }
+                    }}
+                  >
+                    <FaEdit />
+                    Edit
+                  </button>
+                  <Link
+                    href={
+                      site.type === "Amazon"
+                        ? "/preview/amazon?preview_site=" + site.id
+                        : "/preview?preview_site=" + site.id
+                    }
+                    target="_blank"
+                    className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
+                  >
+                    <FaExternalLinkAlt />
+                    Preview
+                  </Link>
                 </div>
               </div>
-            )
-          )}
+            </div>
+          ))}
           <Pagination>
             <PaginationContent>
               {page > 1 && (

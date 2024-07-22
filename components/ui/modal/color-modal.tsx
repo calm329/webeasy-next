@@ -9,11 +9,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import DynamicForm from "../form/dynamic-form";
-import { checkSiteAvailability, updateSite } from "@/lib/actions";
-import { toast } from "sonner";
-import { DebouncedState } from "use-debounce";
-import { getUsernameFromPosts } from "@/lib/utils";
 import CustomizeColor from "../../customize/color/index";
 
 type TProps = {

@@ -7,35 +7,29 @@ import { useMediaQuery } from "usehooks-ts";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useSession } from "next-auth/react";
-import PublishModal from "../../ui/modal/publish-modal";
-import { PublishDrawer } from "@/components/ui/drawer/publish-drawer";
 import { usePathname } from "next/navigation";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
+import PublishForm from "../../ui/form/publish-form";
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-type TProps = {
-  setShowAuthModal: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export default function PublishMenu(props: TProps) {
-  const pathname = usePathname()
-  const { setShowAuthModal } = props;
+export default function PublishMenu() {
+  const pathname = usePathname();
   const matches = useMediaQuery("(min-width: 768px)");
   const isMobile = useMediaQuery("(max-width: 900px)");
-
+  const { openDialog } = useResponsiveDialog();
   const appState = useAppSelector(AS);
   const { status } = useSession();
   const dispatch = useAppDispatch();
-  const [showPublishModal, setShowPublishModal] = useState(false);
   return (
     <Menu as="div" className={`relative ml-3`}>
-      {matches ? (
-        <PublishModal open={showPublishModal} setOpen={setShowPublishModal} />
-      ) : (
-        <PublishDrawer open={showPublishModal} setOpen={setShowPublishModal} />
-      )}
+      <ResponsiveDialog id="publish">
+        <PublishForm />
+      </ResponsiveDialog>
+
       <Menu.Button
         className={`inline-flex items-center rounded-md  px-3 py-2 text-sm font-semibold text-black max-sm:bg-transparent max-sm:text-xs max-sm:shadow-none max-sm:hover:bg-transparent`}
         onClick={() =>
@@ -92,7 +86,11 @@ export default function PublishMenu(props: TProps) {
           <Menu.Item>
             {({ active }) => (
               <Link
-                href={pathname.startsWith("/amazon")?"/preview/amazon":"/preview"}
+                href={
+                  pathname.startsWith("/amazon")
+                    ? "/preview/amazon"
+                    : "/preview"
+                }
                 target="_blank"
                 className={classNames(
                   active ? "bg-gray-100" : "",
@@ -110,18 +108,18 @@ export default function PublishMenu(props: TProps) {
                   // href={"https://" + appState.subdomain + ".webeasy.ai"}
                   // target="_blank"
                   onClick={() => {
-                    setShowPublishModal(true);
+                    openDialog("publish");
                   }}
                   className={classNames(
                     active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700 w-full text-left",
+                    "block w-full px-4 py-2 text-left text-sm text-gray-700",
                   )}
                 >
                   Publish Website
                 </button>
               ) : (
                 <button
-                  onClick={() => setShowAuthModal(true)}
+                  onClick={() => openDialog("auth")}
                   className={classNames(
                     active ? "bg-gray-100" : "",
                     "block w-full px-4 py-2 text-left text-sm text-gray-700",

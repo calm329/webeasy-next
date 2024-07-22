@@ -2,20 +2,16 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
   appState as AS,
   clearPastAndFuture,
-  fetchSitesByDomain,
   updateAppState,
 } from "@/lib/store/slices/site-slice";
 import { saveState } from "@/lib/utils/function";
 import { useRouter } from "next/navigation";
-import React, { SetStateAction } from "react";
+import React from "react";
 import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
-type TProps = {
-  setOpen: React.Dispatch<SetStateAction<boolean>>;
-};
-ST;
-const BackContent = (props: TProps) => {
-  const { setOpen } = props;
+const BackContent = () => {
+  const { closeDialog} = useResponsiveDialog();
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
   const selectedTemplate = useAppSelector(ST);
@@ -30,7 +26,7 @@ const BackContent = (props: TProps) => {
         <button
           className="mr-2 rounded bg-indigo-600 px-4 py-2 text-white"
           onClick={() => {
-            setOpen(false);
+            closeDialog('back');
             saveState(appState, dispatch, selectedTemplate?.id ?? "").then(
               () => {
                 dispatch(clearPastAndFuture());
@@ -44,7 +40,7 @@ const BackContent = (props: TProps) => {
         <button
           className="rounded bg-gray-500 px-4 py-2 text-white"
           onClick={() => {
-            setOpen(false);
+            closeDialog('back');
             dispatch(clearPastAndFuture());
             dispatch(
               updateAppState({

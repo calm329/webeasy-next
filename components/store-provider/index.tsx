@@ -3,6 +3,7 @@ import { AppStore, store, persistor } from "@/lib/store";
 import { useRef } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { ResponsiveDialogProvider } from "../../lib/context/responsive-dialog-context/index";
 
 export default function StoreProvider({
   children,
@@ -17,7 +18,9 @@ export default function StoreProvider({
 
   return (
     <Provider store={storeRef.current}>
-      <PersistGate persistor={persistor}>{children}</PersistGate>
+      <PersistGate persistor={persistor}>
+        <ResponsiveDialogProvider>{children}</ResponsiveDialogProvider>
+      </PersistGate>
     </Provider>
   );
 }

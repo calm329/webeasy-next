@@ -8,22 +8,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import { LeaveDrawer } from "../ui/drawer/leave-drawer";
-import LeaveModal from "../ui/modal/leave-modal";
+
 import {
-  appState as AS,
-  clearPastAndFuture,
   futureAppState as FAS,
-  fetchSiteById,
-  loading as LD,
   pastAppState as PAS,
-  redo,
-  undo,
-  updateAppState,
 } from "@/lib/store/slices/site-slice";
 import { useAppSelector } from "@/lib/store/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import { isSiteBuilderPage } from "@/lib/utils/function";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
+import LeaveContent from "../leave-content";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -37,25 +32,15 @@ export default function AccountMenu(props: TProps) {
   const { user } = props;
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
-  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const {openDialog} = useResponsiveDialog()
   const match = useMediaQuery("(max-width:1024px)");
   const router = useRouter();
   const pathname = usePathname();
   return (
     <>
-      {match ? (
-        <LeaveDrawer
-          setOpen={setShowLeaveModal}
-          open={showLeaveModal}
-          redirectUrl={"/settings"}
-        />
-      ) : (
-        <LeaveModal
-          setOpen={setShowLeaveModal}
-          open={showLeaveModal}
-          redirectUrl={"/settings"}
-        />
-      )}
+      <ResponsiveDialog id="leave">
+        <LeaveContent redirectUrl={"/settings"} />
+      </ResponsiveDialog>
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full justify-center gap-5 gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50">
@@ -119,7 +104,7 @@ export default function AccountMenu(props: TProps) {
                       ) {
                         router.push("/settings/websites");
                       } else {
-                        setShowLeaveModal(true);
+                        openDialog('leave');
                       }
                     }}
                     className={classNames(
@@ -144,7 +129,7 @@ export default function AccountMenu(props: TProps) {
                       ) {
                         router.push("/settings");
                       } else {
-                        setShowLeaveModal(true);
+                        openDialog('leave');
                       }
                     }}
                     className={classNames(

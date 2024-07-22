@@ -151,74 +151,7 @@ const HeaderContent = (props: TProps) => {
                           <h3 className=" flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
                             background Image
                           </h3>
-                          <div className="flex gap-5">
-                            {/* <div className="flex">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setSelectedField(data);
-                                  setLoadingImage(true);
-                                  dispatch(
-                                    updateAppState({
-                                      ...appState,
-                                      aiContent: {
-                                        ...appState.aiContent,
-                                        hero: {
-                                          ...appState.aiContent?.hero,
-                                          image: {
-                                            ...appState.aiContent?.hero?.image,
-                                            imageUrl: "",
-                                          },
-                                        },
-                                      },
-                                    }),
-                                  );
-                                  regenerateHeroImage(imageGenerationType).then(
-                                    (image) => {
-                                      setLoadingImage(false);
-                                      dispatch(
-                                        updateAppState({
-                                          ...appState,
-                                          aiContent: {
-                                            ...appState.aiContent,
-                                            hero: {
-                                              ...appState.aiContent?.hero,
-                                              image: {
-                                                ...appState.aiContent?.hero
-                                                  ?.image,
-                                                imageUrl: image,
-                                              },
-                                            },
-                                          },
-                                        }),
-                                      );
-                                    },
-                                  );
-                                }}
-                                className="flex items-center gap-2 "
-                              >
-                                Regenerate
-                                {loadingImage ? (
-                                  <ImSpinner2 className="animate-spin text-lg text-black" />
-                                ) : (
-                                  <ImPower className=" text-xs " />
-                                )}
-                              </button>
-                              <RegenerateOptions
-                                setType={setImageGenerationType}
-                                type={imageGenerationType}
-                                types={["Ai Generated", "Stored Image"]}
-                                title="Generation Type"
-                              />
-                            </div> */}
-
-                          </div>
                         </div>
-                        {/* <div>
-                          <button type="button" onClick={()=>{
-                            setShowImageModal(true);
-                          }}>Swap</button>
-                        </div> */}
                         
                           <div>
                             <Uploader

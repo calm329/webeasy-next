@@ -2,7 +2,6 @@ import * as React from "react";
 import CustomizePanel from "@/components/customize/panel";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { FormField, TFields, TSection } from "@/types";
-import { DebouncedState } from "use-debounce";
 import HeroContent from "@/components/customize/panel/hero";
 import BannerContent from "@/components/customize/panel/banner";
 import ServiceContent from "@/components/customize/panel/service";
@@ -102,10 +101,7 @@ export function CustomDrawer(props: TProps) {
             )}
             {section === "Image Gallery" && (
               <CustomGalleryContent
-                section={section}
-                handleChange={handleChange}
-                subdomain={subdomain}
-                setShowForm={setShowForm}
+
               />
             )}
             {section === "Title" && <TitleContent />}

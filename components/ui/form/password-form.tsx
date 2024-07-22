@@ -1,3 +1,4 @@
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import { useAppSelector } from "@/lib/store/hooks";
 import { appState as AS } from "@/lib/store/slices/site-slice";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,12 +9,8 @@ import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
 import { z } from "zod";
 
-type TProps = {
-  setOpen: React.Dispatch<SetStateAction<boolean>>;
-};
-
-const PasswordForm = (props: TProps) => {
-  const { setOpen } = props;
+const PasswordForm = () => {
+  const { closeDialog } = useResponsiveDialog();
   const formSchema = z.object({
     password: z
       .string()
@@ -47,21 +44,21 @@ const PasswordForm = (props: TProps) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          currentPassword:"nothing",
-          newPassword: getValues("password")
+          currentPassword: "nothing",
+          newPassword: getValues("password"),
         }),
       });
 
       if (response.status === 200) {
         toast.success("Password created successfully");
-        setOpen(false);
+        closeDialog("password");
       } else {
         const { error } = await response.json();
         toast.error(error);
       }
     } catch (error) {
       console.log("error:creatingPassword", error);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };

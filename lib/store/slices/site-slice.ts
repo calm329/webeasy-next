@@ -171,33 +171,6 @@ const fetchSitesByUser = createAsyncThunk(
   },
 );
 
-//create site
-// const createSite = createAsyncThunk(
-//   "site/create",
-//   async (
-//     {
-//       aiResult,
-//       posts,
-//       accessToken,
-//       userId,
-//     }: {
-//       aiResult: string;
-//       posts: string;
-//       accessToken: string;
-//       userId: string;
-//     },
-//     thunkApi,
-//   ) => {
-//     try {
-//       return thunkApi.fulfillWithValue(
-//         await SiteApi.create({ aiResult, posts, accessToken, userId }),
-//       );
-//     } catch (error) {
-//       return thunkApi.rejectWithValue(error);
-//     }
-//   },
-// );
-
 //update site
 const updateSite = createAsyncThunk(
   "site/update",

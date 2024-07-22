@@ -1,5 +1,4 @@
 "use client";
-import BackContent from "@/components/back-content";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Dispatch, Fragment, SetStateAction } from "react";
 import { IoClose } from "react-icons/io5";

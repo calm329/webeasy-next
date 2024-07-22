@@ -3,7 +3,6 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import AuthModal from "../ui/modal/auth-modal";
 import AccountMenu from "./account-menu";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -32,12 +31,10 @@ import { FaExternalLinkAlt, FaRedoAlt, FaUndoAlt } from "react-icons/fa";
 import { Menu, Transition } from "@headlessui/react";
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import WidgetModal from "../ui/modal/widget-modal";
 import { useState } from "react";
 import ViewMenu from "../menu/view-menu";
 import PublishMenu from "../menu/publish-menu";
 import BottomToolBar from "../bottom-bar";
-import { WidgetDrawer } from "../ui/drawer/widget-drawer";
 import { isBot } from "next/dist/server/web/spec-extension/user-agent";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
@@ -58,14 +55,18 @@ import {
   undo,
   updateAppState,
 } from "@/lib/store/slices/site-slice";
-import Loader from "../ui/loader";
-import BackModal from "../ui/modal/back-modal";
-import { BackDrawer } from "../ui/drawer/back-drawer";
-import { LeaveDrawer } from "../ui/drawer/leave-drawer";
-import LeaveModal from "../ui/modal/leave-modal";
 import AiAssist from "../ai-assist";
 import { fetchUser, UsersData as UD } from "@/lib/store/slices/user-slice";
 import PageSlideOver from "../ui/slide-over/page-slide";
+// import BackContent from "../modal-content/back";
+import AuthModalContent from "../modal-content/auth";
+import LeaveContent from "../leave-content";
+import ResponsiveDialog from "../ui/responsive-dialog";
+import {
+  ResponsiveDialogProvider,
+  useResponsiveDialog,
+} from "@/lib/context/responsive-dialog-context";
+import WidgetForm from "../ui/form/widget-form";
 
 const navigation = [
   { name: "Dashboard", href: "/settings/websites" },
@@ -96,19 +97,15 @@ export default function SiteHeader(props: TProps) {
   const router = useRouter();
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const matches = useMediaQuery("(max-width: 500px)");
   const [loading, setLoading] = useState(false);
   const [hideNavigation, setHideNavigation] = useState(false);
-  const [showWidgetModal, setWidgetModal] = useState(false);
-  const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showPagesPanel, setShowPagesPanel] = useState(false);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
-  const [showBackModal, setShowBackModal] = useState(false);
   const selectedTemplate = useAppSelector(ST);
   const [templates, setTemplates] = useState<TTemplate | null>(null);
   const userData = useAppSelector(UD);
@@ -154,12 +151,21 @@ export default function SiteHeader(props: TProps) {
     // }
   }, [status]);
   const isBottomBar = useMediaQuery("(min-width: 900px)");
-  const isMobile = useMediaQuery("(max-width: 1024px)");
-
+  const { openDialog, closeDialog } = useResponsiveDialog();
   return (
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
     >
+      <ResponsiveDialog id="auth" dismissible={false} showClose={true}>
+        <AuthModalContent />
+      </ResponsiveDialog>
+      <ResponsiveDialog id="leave" showClose={true}>
+        <LeaveContent />
+      </ResponsiveDialog>
+      <ResponsiveDialog id="widget" showClose={true}>
+        <WidgetForm />
+      </ResponsiveDialog>
+
       {isSiteBuilderPage(pathname) &&
         !appState?.generate?.generating &&
         setIsFontOpen && (
@@ -167,23 +173,9 @@ export default function SiteHeader(props: TProps) {
             showNavigation={showNavigation}
             // appState={appState}
             handleChange={handleChange}
-            isAuth={isAuth}
-            setShowAuthModal={setShowAuthModal}
             setIsFontOpen={setIsFontOpen}
           />
         )}
-
-      {isMobile ? (
-        <BackDrawer setOpen={setShowBackModal} open={showBackModal} />
-      ) : (
-        <BackModal setOpen={setShowBackModal} open={showBackModal} />
-      )}
-
-      {isMobile ? (
-        <LeaveDrawer setOpen={setShowLeaveModal} open={showLeaveModal} />
-      ) : (
-        <LeaveModal setOpen={setShowLeaveModal} open={showLeaveModal} />
-      )}
 
       <PageSlideOver setIsOpen={setShowPagesPanel} open={showPagesPanel} />
 
@@ -253,7 +245,7 @@ export default function SiteHeader(props: TProps) {
                       selectedTemplate?.id ?? "",
                     ).then(() => dispatch(clearPastAndFuture()));
                   } else {
-                    setShowAuthModal(true);
+                    openDialog("auth");
                   }
                 }}
               />
@@ -274,7 +266,7 @@ export default function SiteHeader(props: TProps) {
                 ) {
                   router.push("/");
                 } else {
-                  setShowLeaveModal(true);
+                  openDialog("leave");
                 }
               }}
             >
@@ -327,7 +319,6 @@ export default function SiteHeader(props: TProps) {
                     handleChange={handleChange ?? undefined}
                     appState={appState}
                     templates={templates}
-                    setShowAuthModal={setShowAuthModal}
                     setIsFontOpen={setIsFontOpen}
                   />
                 )}
@@ -339,7 +330,7 @@ export default function SiteHeader(props: TProps) {
                       type="button"
                       className="inline-flex flex-col items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-black"
                       onClick={() => {
-                        setWidgetModal(true);
+                        openDialog('widget');
                         dispatch(
                           updateAppState({ ...appState, openedSlide: null }),
                         );
@@ -354,20 +345,9 @@ export default function SiteHeader(props: TProps) {
                   </span>
                 )}
 
-                {isMobile ? (
-                  <WidgetDrawer
-                    open={showWidgetModal}
-                    setOpen={setWidgetModal}
-                  />
-                ) : (
-                  <WidgetModal
-                    open={showWidgetModal}
-                    setOpen={setWidgetModal}
-                  />
-                )}
                 <ViewMenu />
 
-                <PublishMenu setShowAuthModal={setShowAuthModal} />
+                <PublishMenu />
                 {status === "authenticated" && <AiAssist />}
               </div>
               <div className="-mt-4">
@@ -387,7 +367,7 @@ export default function SiteHeader(props: TProps) {
                   <button
                     className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-lg:hidden"
                     onClick={() => {
-                      setShowAuthModal(true);
+                      openDialog("auth");
                       setMobileMenuOpen(false);
                     }}
                   >
@@ -406,7 +386,7 @@ export default function SiteHeader(props: TProps) {
               <button
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={() => {
-                  setShowAuthModal(true);
+                  openDialog("auth");
                   setMobileMenuOpen(false);
                 }}
               >
@@ -433,7 +413,7 @@ export default function SiteHeader(props: TProps) {
               <button
                 className="flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={() => {
-                  setShowAuthModal(true);
+                  openDialog("auth");
                   setMobileMenuOpen(false);
                 }}
               >
@@ -443,7 +423,6 @@ export default function SiteHeader(props: TProps) {
           </div>
         </div>
       </nav>
-      <AuthModal open={showAuthModal} setOpen={setShowAuthModal} />
       <Dialog
         as="div"
         className="lg:hidden"
@@ -568,7 +547,7 @@ export default function SiteHeader(props: TProps) {
                   <button
                     className="-mx-3 block w-full rounded-lg px-3  py-2  text-start text-base leading-7 text-gray-900 hover:bg-gray-50"
                     onClick={() => {
-                      setShowAuthModal(true);
+                      openDialog("auth");
                       setMobileMenuOpen(false);
                     }}
                   >

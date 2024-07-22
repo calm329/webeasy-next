@@ -10,25 +10,14 @@ import React, { useState } from "react";
 import { ImPower, ImSpinner2 } from "react-icons/im";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { appState } from "../../../../lib/store/slices/site-slice";
-import ImagesModal from "@/components/ui/modal/images-modal";
-type TProps = {
-  section: TSection;
-  handleChange: (name: string, value: string) => void;
-  subdomain: string;
-  setShowForm: React.Dispatch<
-    React.SetStateAction<{
-      form: string;
-      edit: string;
-      show: boolean;
-    }>
-  >;
-};
-const CustomGalleryContent = (props: TProps) => {
-  const { setShowForm, section, subdomain, handleChange } = props;
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
+import ImagesListing from "@/components/ui/form/images-listing";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+
+const CustomGalleryContent = () => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
-  const [showImageModal, setShowImageModal] = useState(false);
+  const { openDialog } = useResponsiveDialog();
   const [selectedImage, setSelectedImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedImageId, setSelectedImageId] = useState(0);
@@ -54,35 +43,13 @@ const CustomGalleryContent = (props: TProps) => {
   }
   return (
     <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
-      <ImagesModal
-        open={showImageModal}
-        setOpen={setShowImageModal}
-        selectedImage={selectedImage}
-        action={setImage}
-      />
+      <ResponsiveDialog id="imageListing">
+        <ImagesListing action={setImage} />
+      </ResponsiveDialog>
       <div className="flex justify-between ">
         <h3 className=" flex items-center justify-center px-5 pb-3 text-lg font-medium leading-6 text-gray-900">
           Image Gallery
         </h3>
-        {/* <div className="flex gap-5">
-          <Switch
-            onCheckedChange={(checked) =>
-              dispatch(
-                updateAppState({
-                  ...appState,
-                  aiContent: {
-                    ...appState.aiContent,
-                    gallery: {
-                      ...appState.aiContent?.gallery,
-                      show: checked,
-                    },
-                  },
-                }),
-              )
-            }
-            checked={appState.aiContent?.gallery?.show}
-          />
-        </div> */}
       </div>
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
         {appState.aiContent?.gallery?.list?.map((image, index) => (
@@ -107,13 +74,15 @@ const CustomGalleryContent = (props: TProps) => {
                           ...appState?.aiContent,
                           gallery: {
                             ...appState?.aiContent?.gallery,
-                            list: appState?.aiContent?.gallery?.list?.map((image,i)=>{
-                              if(i=== index){
-                                return data
-                              }else{
-                                return image
-                              }
-                            })
+                            list: appState?.aiContent?.gallery?.list?.map(
+                              (image, i) => {
+                                if (i === index) {
+                                  return data;
+                                } else {
+                                  return image;
+                                }
+                              },
+                            ),
                           },
                         },
                       }),
@@ -123,7 +92,7 @@ const CustomGalleryContent = (props: TProps) => {
                 className="flex items-center gap-2 "
               >
                 Regenerate
-                {(loading && selectedImageId === index) ? (
+                {loading && selectedImageId === index ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
                   <ImPower className=" text-xs " />
@@ -144,15 +113,19 @@ const CustomGalleryContent = (props: TProps) => {
                         gallery: {
                           ...appState.aiContent?.gallery,
                           list: [
-                            ...appState.aiContent?.gallery?.list?.slice(0, index),
+                            ...appState.aiContent?.gallery?.list?.slice(
+                              0,
+                              index,
+                            ),
                             value,
-                            ...appState.aiContent?.gallery?.list?.slice(index + 1),
+                            ...appState.aiContent?.gallery?.list?.slice(
+                              index + 1,
+                            ),
                           ],
                         },
                       },
                     }),
                   );
-                  // field.onChange(value);
                 }}
               />
             </div>
@@ -161,7 +134,7 @@ const CustomGalleryContent = (props: TProps) => {
               className="mr-auto  rounded-md border bg-red-600 px-5 py-2 font-medium text-white"
               onClick={() => {
                 setSelectedImage(index.toString());
-                setShowImageModal(true);
+                openDialog("imageListing");
               }}
             >
               Swap

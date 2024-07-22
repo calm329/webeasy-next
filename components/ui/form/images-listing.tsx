@@ -3,15 +3,15 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { getAllUnsplashImages } from "@/lib/utils/function";
 import Image from "next/image";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
 type TProps = {
-  selectedImage: string;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  action: (data:any)=>void;
+  action: (data: any) => void;
 };
 
 const ImagesListing = (props: TProps) => {
-  const { selectedImage, setOpen, action } = props;
+  const { action } = props;
+  const { closeDialog } = useResponsiveDialog();
   const appState = useAppSelector(AS);
   const [images, setImages] = useState([]);
   const dispatch = useAppDispatch();
@@ -31,7 +31,7 @@ const ImagesListing = (props: TProps) => {
           className="relative h-44 cursor-pointer hover:border hover:border-indigo-600 hover:shadow-xl"
           onClick={() => {
             action(data);
-            setOpen(false);
+            closeDialog("imageListing");
           }}
         >
           <Image

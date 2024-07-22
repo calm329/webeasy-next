@@ -157,101 +157,33 @@ const HeaderSectionContent = (props: TProps) => {
                           <h3 className=" flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
                             Image
                           </h3>
-                          <div className="flex gap-5">
-                            {/* <div className="flex">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setSelectedField(data);
-                                  setLoadingImage(true);
-                                  dispatch(
-                                    updateAppState({
-                                      ...appState,
-                                      aiContent: {
-                                        ...appState.aiContent,
-                                        hero: {
-                                          ...appState.aiContent?.hero,
-                                          image: {
-                                            ...appState.aiContent?.hero?.image,
-                                            imageUrl: "",
-                                          },
-                                        },
-                                      },
-                                    }),
-                                  );
-                                  regenerateHeroImage(imageGenerationType).then(
-                                    (image) => {
-                                      setLoadingImage(false);
-                                      dispatch(
-                                        updateAppState({
-                                          ...appState,
-                                          aiContent: {
-                                            ...appState.aiContent,
-                                            hero: {
-                                              ...appState.aiContent?.hero,
-                                              image: {
-                                                ...appState.aiContent?.hero
-                                                  ?.image,
-                                                imageUrl: image,
-                                              },
-                                            },
-                                          },
-                                        }),
-                                      );
-                                    },
-                                  );
-                                }}
-                                className="flex items-center gap-2 "
-                              >
-                                Regenerate
-                                {loadingImage ? (
-                                  <ImSpinner2 className="animate-spin text-lg text-black" />
-                                ) : (
-                                  <ImPower className=" text-xs " />
-                                )}
-                              </button>
-                              <RegenerateOptions
-                                setType={setImageGenerationType}
-                                type={imageGenerationType}
-                                types={["Ai Generated", "Stored Image"]}
-                                title="Generation Type"
-                              />
-                            </div> */}
-
-                          </div>
                         </div>
-                        {/* <div>
-                          <button type="button" onClick={()=>{
-                            setShowImageModal(true);
-                          }}>Swap</button>
-                        </div> */}
-                        
-                          <div>
-                            <Uploader
-                              defaultValue={
-                                appState.aiContent?.heroSection?.image
-                              }
-                              name={data}
-                              label={""}
-                              onChange={(value) => {
-                                console.log("Upload:", data, value);
-                                dispatch(
-                                  updateAppState({
-                                    ...appState,
-                                    aiContent: {
-                                      ...appState.aiContent,
-                                      heroSection: {
-                                        ...appState.aiContent?.heroSection,
-                                        image: value,
-                                      },
+
+                        <div>
+                          <Uploader
+                            defaultValue={
+                              appState.aiContent?.heroSection?.image
+                            }
+                            name={data}
+                            label={""}
+                            onChange={(value) => {
+                              console.log("Upload:", data, value);
+                              dispatch(
+                                updateAppState({
+                                  ...appState,
+                                  aiContent: {
+                                    ...appState.aiContent,
+                                    heroSection: {
+                                      ...appState.aiContent?.heroSection,
+                                      image: value,
                                     },
-                                  }),
-                                );
-                                // field.onChange(value);
-                              }}
-                            />
-                          </div>
-                      
+                                  },
+                                }),
+                              );
+                              // field.onChange(value);
+                            }}
+                          />
+                        </div>
                       </div>
                     );
                   case "title":
@@ -260,51 +192,53 @@ const HeaderSectionContent = (props: TProps) => {
                         <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
                           <label htmlFor={data} className="my-auto">
                             {data}
-                          </label>   <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setLoadingHeading(true);
-                              CustomContent.getHeroSection({
-                                data: {
-                                  location: appState?.aiContent?.location ?? "",
-                                  businessName:
-                                    appState?.aiContent?.banner?.businessName,
-                                  businessType:
-                                    appState?.aiContent?.businessType ?? "",
-                                },
-                                fieldName: "heroSection" + data,
-                                individual: true,
-                                type,
-                              }).then((res: any) => {
-                                dispatch(
-                                  updateAppState({
-                                    ...appState,
-                                    aiContent: {
-                                      ...appState.aiContent,
-                                      heroSection: {
-                                        ...appState.aiContent?.heroSection,
-                                        [data]: res[data],
+                          </label>{" "}
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setLoadingHeading(true);
+                                CustomContent.getHeroSection({
+                                  data: {
+                                    location:
+                                      appState?.aiContent?.location ?? "",
+                                    businessName:
+                                      appState?.aiContent?.banner?.businessName,
+                                    businessType:
+                                      appState?.aiContent?.businessType ?? "",
+                                  },
+                                  fieldName: "heroSection" + data,
+                                  individual: true,
+                                  type,
+                                }).then((res: any) => {
+                                  dispatch(
+                                    updateAppState({
+                                      ...appState,
+                                      aiContent: {
+                                        ...appState.aiContent,
+                                        heroSection: {
+                                          ...appState.aiContent?.heroSection,
+                                          [data]: res[data],
+                                        },
                                       },
-                                    },
-                                  }),
-                                );
-                                setLoadingHeading(false);
-                              });
-                            }}
-                            className="flex items-center gap-2 "
-                          >
-                            Regenerate
-                            {loadingHeading ? (
-                              <ImSpinner2 className="animate-spin text-lg text-black" />
-                            ) : (
-                              <ImPower className=" text-xs " />
-                            )}
-                          </button>
-                          <RegenerateOptions setType={setType} type={type} />
+                                    }),
+                                  );
+                                  setLoadingHeading(false);
+                                });
+                              }}
+                              className="flex items-center gap-2 "
+                            >
+                              Regenerate
+                              {loadingHeading ? (
+                                <ImSpinner2 className="animate-spin text-lg text-black" />
+                              ) : (
+                                <ImPower className=" text-xs " />
+                              )}
+                            </button>
+                            <RegenerateOptions setType={setType} type={type} />
+                          </div>
                         </div>
-                        </div>
-                     
+
                         <input
                           type="text"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

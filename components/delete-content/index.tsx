@@ -1,26 +1,19 @@
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
-  appState as AS,
-  clearPastAndFuture,
   deleteSite,
-  fetchSitesByDomain,
-  updateAppState,
 } from "@/lib/store/slices/site-slice";
-import { saveState } from "@/lib/utils/function";
-import { useRouter } from "next/navigation";
-import React, { SetStateAction } from "react";
+
+import React from "react";
 
 type TProps = {
-  setOpen: React.Dispatch<SetStateAction<boolean>>;
   id: string;
 };
 
 const DeleteContent = (props: TProps) => {
-  const { setOpen, id } = props;
+  const { id } = props;
   const dispatch = useAppDispatch();
-  const appState = useAppSelector(AS);
-
-  const router = useRouter();
+  const {closeDialog} = useResponsiveDialog()
   return (
     <div className="rounded  p-4  text-center">
       <div className="mb-4 text-lg">
@@ -32,7 +25,7 @@ const DeleteContent = (props: TProps) => {
           onClick={() => {
             console.log("id", id);
             dispatch(deleteSite({ id }));
-            setOpen(false);
+            closeDialog('delete');
           }}
         >
           Delete
@@ -40,7 +33,7 @@ const DeleteContent = (props: TProps) => {
         <button
           className="rounded bg-gray-500 px-4 py-2 text-white"
           onClick={() => {
-            setOpen(false);
+            closeDialog('delete');
           }}
         >
           Cancel

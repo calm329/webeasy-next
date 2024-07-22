@@ -8,7 +8,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ImSpinner2 } from "react-icons/im";
-import DeleteUserModal from "../modal/delete-user-modal";
+import ResponsiveDialog from "../responsive-dialog/index";
+import DeleteUser from "@/components/delete-user";
 
 export default function SecurityForm() {
   const { data: session } = useSession();
@@ -76,7 +77,9 @@ export default function SecurityForm() {
 
   return (
     <div className="flex flex-col gap-10">
-      <DeleteUserModal open={showDeleteModal} setOpen={setShowDeleteModal} />
+      <ResponsiveDialog id="deleteUser">
+        <DeleteUser />
+      </ResponsiveDialog>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mt-6 justify-center space-y-6  border-t border-gray-200 text-sm leading-6"

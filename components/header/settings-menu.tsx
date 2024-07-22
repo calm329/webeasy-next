@@ -36,13 +36,11 @@ type TProps = {
   handleChange?: (name: string, value: string) => void;
   appState: AppState;
   templates: TTemplate | null;
-  setShowAuthModal: Dispatch<SetStateAction<boolean>>;
   setIsFontOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function SettingMenu(props: TProps) {
-  const { handleChange, appState, templates, setShowAuthModal, setIsFontOpen } =
-    props;
+  const { handleChange, appState, templates, setIsFontOpen } = props;
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [isColorOpen, setIsColorOpen] = useState(false);
@@ -54,6 +52,7 @@ export default function SettingMenu(props: TProps) {
   const pathname = usePathname();
   return (
     <>
+      
       {isMobile ? (
         <SelectTemplateDrawer
           open={isTemplateOpen}
@@ -146,30 +145,7 @@ export default function SettingMenu(props: TProps) {
           <Menu.Items
             className={`absolute left-0 z-20 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${matches && "-top-52"} `}
           >
-            {/* <div className="px-4 py-3">
-            <p className="text-sm">Signed in as</p>
-            <p className="truncate text-sm font-medium text-gray-900">
-              {session?.user?.email}
-            </p>
-          </div> */}
             <div className="py-1">
-              {/* <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
-                    )}
-                    onClick={() =>
-                      status === "unauthenticated"
-                        ? setShowAuthModal(true)
-                        : setOpen(true)
-                    }
-                  >
-                    SEO Configuration
-                  </button>
-                )}
-              </Menu.Item> */}
               {!pathname.startsWith("/amazon") && (
                 <Menu.Item>
                   {({ active }) => (
