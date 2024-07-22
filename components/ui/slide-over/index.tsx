@@ -1,6 +1,5 @@
-import { FormField, TFields, TSection } from "@/types";
-import { Dispatch, SetStateAction, useState } from "react";
-import { DebouncedState } from "use-debounce";
+import { TSection } from "@/types";
+import { Dispatch, SetStateAction } from "react";
 import CustomizePanel from "@/components/customize/panel";
 import HeroContent from "@/components/customize/panel/hero";
 import BannerContent from "@/components/customize/panel/banner";

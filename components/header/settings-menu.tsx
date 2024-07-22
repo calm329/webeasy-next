@@ -10,9 +10,7 @@ import { TMeta, TTemplateName, AppState } from "@/types";
 import ColorModal from "../ui/modal/color-modal";
 import { MetaDrawer } from "../ui/drawer/meta-drawer";
 import { ColorDrawer } from "../ui/drawer/color-drawer";
-import SelectTemplateModal from "../ui/modal/select-template-modal";
 import { TTemplate } from ".";
-import SelectTemplateDrawer from "../ui/drawer/select-template-drawer";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAppState } from "@/lib/store/slices/site-slice";
 import {
@@ -27,6 +25,9 @@ import {
   regenerateText,
 } from "@/lib/utils/function";
 import { usePathname, useSearchParams } from "next/navigation";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
+import SelectTemplateCarousel from "../ui/select-template-carousel/carousel-template";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -44,28 +45,18 @@ export default function SettingMenu(props: TProps) {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [isColorOpen, setIsColorOpen] = useState(false);
-  const [isTemplateOpen, setIsTemplateOpen] = useState(false);
   const matches = useMediaQuery("(max-width: 900px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { openDialog } = useResponsiveDialog();
   return (
     <>
-      
-      {isMobile ? (
-        <SelectTemplateDrawer
-          open={isTemplateOpen}
-          setOpen={setIsTemplateOpen}
-          templates={templates}
-        />
-      ) : (
-        <SelectTemplateModal
-          open={isTemplateOpen}
-          setOpen={setIsTemplateOpen}
-          templates={templates}
-        />
-      )}
+      <ResponsiveDialog id="selectTemplate">
+        <SelectTemplateCarousel />
+      </ResponsiveDialog>
+
       {handleChange &&
         (isMobile ? (
           <MetaDrawer
@@ -155,7 +146,7 @@ export default function SettingMenu(props: TProps) {
                         "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                       )}
                       onClick={() => {
-                        setIsTemplateOpen(true);
+                        openDialog("selectTemplate");
                       }}
                     >
                       Switch Template
