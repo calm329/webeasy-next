@@ -234,30 +234,30 @@ const SectionForm = (props: TProps) => {
         ),
       };
     },
-    () => {
-      const newId = generateUniqueId();
-      return {
-        id: newId,
-        image:
-          "https://tailwindui.com/img/category-thumbnails/marketing/logo-clouds.png",
-        title: "Logo",
-        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
-        content: (
-          <LogoSection
-            id={newId}
-            showForm={showForm}
-            setSectionModal={setSectionModal}
-            setShowForm={setShowForm}
-            setTriggerSection={setTriggerSection}
-            editable={editable}
-            setIsOpen={setIsOpen}
-            setSection={setSection}
-            sections={sections}
-            setSections={setSections}
-          />
-        ),
-      };
-    },
+    // () => {
+    //   const newId = generateUniqueId();
+    //   return {
+    //     id: newId,
+    //     image:
+    //       "https://tailwindui.com/img/category-thumbnails/marketing/logo-clouds.png",
+    //     title: "Logo",
+    //     description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+    //     content: (
+    //       <LogoSection
+    //         id={newId}
+    //         showForm={showForm}
+    //         setSectionModal={setSectionModal}
+    //         setShowForm={setShowForm}
+    //         setTriggerSection={setTriggerSection}
+    //         editable={editable}
+    //         setIsOpen={setIsOpen}
+    //         setSection={setSection}
+    //         sections={sections}
+    //         setSections={setSections}
+    //       />
+    //     ),
+    //   };
+    // },
     () => {
       const newId = generateUniqueId();
       return {
