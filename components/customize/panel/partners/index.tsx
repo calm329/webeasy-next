@@ -305,6 +305,7 @@ const PartnersContent = (props: TProps) => {
                             <MdModeEditOutline
                               color="blue"
                               size={20}
+                              className="cursor-pointer"
                               onClick={() =>
                                 setShowForm({
                                   form: "PartnerLogo",
@@ -316,6 +317,7 @@ const PartnersContent = (props: TProps) => {
                             <MdDeleteForever
                               color="red"
                               size={20}
+                              className="cursor-pointer"
                               onClick={() => {
                                 setSelectedLogo(item.id);
                                 openDialog("delete");
