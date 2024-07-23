@@ -92,7 +92,7 @@ export default function WebsitesForm() {
   const isLoading = useAppSelector(LD);
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
-  const dataPerPage = 4;
+  const dataPerPage = 6;
   const [paginatedData, setPaginatedData] = useState<TSites>(null);
   const { openDialog } = useResponsiveDialog();
   const [selectedItemId, setSelectedItemId] = useState("");
