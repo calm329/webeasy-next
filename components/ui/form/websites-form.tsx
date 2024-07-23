@@ -34,6 +34,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ResponsiveDialog from "../responsive-dialog/index";
 import DeleteContent from "@/components/delete-content";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
 type TSectionObject = Array<{
   logo: React.ReactNode;
@@ -93,7 +94,7 @@ export default function WebsitesForm() {
   const [page, setPage] = useState(1);
   const dataPerPage = 4;
   const [paginatedData, setPaginatedData] = useState<TSites>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const { openDialog } = useResponsiveDialog();
   const [selectedItemId, setSelectedItemId] = useState("");
   const pathname = usePathname();
   const templates = useAppSelector(TD);
@@ -151,7 +152,10 @@ export default function WebsitesForm() {
   return (
     <div className="">
       <ResponsiveDialog id="delete">
-        <DeleteContent action={()=>handleDelete(selectedItemId)} data="site"/>
+        <DeleteContent
+          action={() => handleDelete(selectedItemId)}
+          data="site"
+        />
       </ResponsiveDialog>
       <div className="">
         <div className="border-b border-gray-200 ">
@@ -186,13 +190,13 @@ export default function WebsitesForm() {
               <button
                 className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
                 onClick={() => {
-                  setIsDeleting(true);
                   setSelectedItemId(site.id);
+                  openDialog("delete");
                 }}
               >
                 <BsTrash3 color="red" />
               </button>
-              <div className="flex h-full min-h-80 items-center justify-center rounded-t-lg">
+              <div className="flex h-full max-h-72 w-full items-center justify-center overflow-hidden rounded-t-lg">
                 <Image
                   src={
                     site.type === "Amazon"
@@ -200,9 +204,9 @@ export default function WebsitesForm() {
                           ?.URL ?? ""
                       : JSON.parse(site?.aiResult)?.hero?.image?.imageUrl ?? ""
                   }
-                  height={200}
+                  height={500}
                   width={500}
-                  className="contain"
+                  className="h-full w-full object-cover"
                   alt=""
                 />
               </div>
