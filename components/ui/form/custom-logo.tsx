@@ -173,7 +173,7 @@ const CustomPartnerLogo = (props: TProps) => {
       <form className="flex flex-col gap-5 p-5">
         <div className="flex flex-col gap-5">
           <h1 className="font-bold">
-            {!showForm?.edit ? "Add Logo" : "Edt Logo"}
+            {!showForm?.edit ? "Add Logo" : "Edit Logo"}
           </h1>
           <div className="flex flex-col border-b-2 border-gray-300 pb-5">
             <label className="mx-auto text-center text-sm font-medium leading-6 text-gray-900">

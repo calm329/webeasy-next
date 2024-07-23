@@ -96,7 +96,7 @@ export default function SigninForm() {
       } else if (sites && sites.length > 0) {
         router.push("/settings/websites");
       } else {
-        router.push("/website-builder");
+        router.push("/");
       }
     } catch (error) {
     } finally {
