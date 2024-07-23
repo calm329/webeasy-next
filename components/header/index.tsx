@@ -11,7 +11,7 @@ import { getUsernameFromPosts } from "@/lib/utils";
 import { DebouncedState } from "use-debounce";
 import { useMediaQuery } from "usehooks-ts";
 import { TMeta, TTemplateName, AppState, TUser } from "@/types";
-import { getAllTemplates, getUserById } from "@/lib/fetchers";
+import { getAllTemplates, getSitesByUserId, getUserById } from "@/lib/fetchers";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
@@ -152,6 +152,7 @@ export default function SiteHeader(props: TProps) {
   }, [status]);
   const isBottomBar = useMediaQuery("(min-width: 900px)");
   const { openDialog, closeDialog } = useResponsiveDialog();
+
   return (
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
@@ -259,14 +260,36 @@ export default function SiteHeader(props: TProps) {
         >
           <div className="flex items-center gap-x-12 ">
             <button
-              onClick={() => {
-                if (
-                  (futureAppState.length === 0 && pastAppState.length === 0) ||
-                  !isSiteBuilderPage(pathname)
-                ) {
-                  router.push("/");
+              onClick={async () => {
+                if (status === "authenticated") {
+                  const sites = await getSitesByUserId();
+                  const hasSites = sites.length > 0;
+                  const isSettingsPage = pathname.startsWith("/settings");
+
+                  if (isSiteBuilderPage(pathname)) {
+                    if (
+                      futureAppState.length === 0 &&
+                      pastAppState.length === 0
+                    ) {
+                      router.push("/");
+                    } else {
+                      openDialog("leave");
+                    }
+                  } else {
+                    if (isSettingsPage) {
+                      if (hasSites) {
+                        // Stay on the settings page if the user has sites
+                        return;
+                      } else {
+                        router.push("/");
+                      }
+                    } else {
+                      router.push("/");
+                    }
+                  }
                 } else {
-                  openDialog("leave");
+                  // User is not authenticated, redirect to the general home page
+                  router.push("/");
                 }
               }}
             >
@@ -330,7 +353,7 @@ export default function SiteHeader(props: TProps) {
                       type="button"
                       className="inline-flex flex-col items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-black"
                       onClick={() => {
-                        openDialog('widget');
+                        openDialog("widget");
                         dispatch(
                           updateAppState({ ...appState, openedSlide: null }),
                         );
