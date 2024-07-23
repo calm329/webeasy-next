@@ -12,6 +12,7 @@ import AddSectionButtons from "@/components/add-section/buttons";
 import SectionModal from "@/components/ui/modal/section-modal";
 import { isImage } from "@/components/ui/form/uploader";
 import EditComponent from "@/components/edit-component";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   hero: THero;
@@ -212,7 +213,7 @@ const EditableHero = ({
                     >
                       {isImage(appState.aiContent.hero.image.imageUrl) ? (
                         <Image
-                          src={appState.aiContent.hero.image.imageUrl}
+                          src={appState.aiContent.hero.image.imageUrl || BROKEN_IMAGE}
                           width={500}
                           height={500}
                           alt="Hero Image"

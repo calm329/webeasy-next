@@ -19,6 +19,7 @@ import { isSiteBuilderPage } from "@/lib/utils/function";
 import ResponsiveDialog from "@/components/ui/responsive-dialog";
 import LeaveContent from "../leave-content";
 import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }

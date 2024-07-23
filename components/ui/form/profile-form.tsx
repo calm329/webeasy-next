@@ -56,7 +56,7 @@ export default function Profileform() {
               <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
                 {userData?.image ? (
                   <Image
-                    src={userData?.image}
+                    src={userData?.image }
                     className="aspect-1 h-12 w-12 rounded-full object-cover text-gray-900"
                     alt=""
                     width={100}

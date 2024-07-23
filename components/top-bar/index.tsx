@@ -50,7 +50,7 @@ export default function TopBar(props: TopBarProps) {
             style={{ color: colors?.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {appState.generate.generating ? (
+            {appState.aiContent?.banner.logo ? (
               editable ? (
                 appState.aiContent?.banner.logo.show && (
                   <Image
