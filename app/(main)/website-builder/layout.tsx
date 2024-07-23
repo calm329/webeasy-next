@@ -36,9 +36,7 @@ export default function Layout({
   return (
     <div className="max-w-7xl mx-auto">
       <SiteHeader showNavigation={true} />
-      <div className="flex flex-col justify-center pt-10  px-10 gap-5">
 
-      </div>
      
       <div>{children}</div>
     </div>
