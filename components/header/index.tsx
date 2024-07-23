@@ -273,7 +273,7 @@ export default function SiteHeader(props: TProps) {
               <Image
                 src={"/WebEasy-logo-dark.svg"}
                 alt={"Logo"}
-                className={`${!isAuth && "h-10  max-sm:w-full"}`}
+                className={`${!isAuth && "h-[2.9rem] max-sm:w-full"}`}
                 width={200}
                 height={100}
               />
