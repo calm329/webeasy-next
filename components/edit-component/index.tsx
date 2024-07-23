@@ -79,23 +79,23 @@ const EditComponent = (props: TProps) => {
   };
   return (
     <div
-      className={`${isRightSide ? "right-0" : "left-0"} absolute top-0 z-10 hidden gap-5 rounded-xl border bg-white p-5  shadow group-hover:flex`}
+      className={`${isRightSide ? "right-10" : "left-10"} absolute -top-8 z-10 hidden gap-5 rounded-xl border bg-white p-5  shadow group-hover:flex`}
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
       <button>Restyle</button>
       {/* <button>Regenerate images</button> */}
-      <FaArrowUpLong onClick={() => moveSection("up")} />
-      <FaArrowDownLong onClick={() => moveSection("down")} />
+      <FaArrowUpLong className="cursor-pointer" onClick={() => moveSection("up")} />
+      <FaArrowDownLong className="cursor-pointer" onClick={() => moveSection("down")} />
       {isRightSide ? (
-        <VscLayoutSidebarLeft
+        <VscLayoutSidebarLeft className="cursor-pointer"
           onClick={() => {
             setIsRightSide(false);
           }}
         />
       ) : (
-        <VscLayoutSidebarRight
+        <VscLayoutSidebarRight className="cursor-pointer"
           onClick={() => {
             setIsRightSide(true);
           }}

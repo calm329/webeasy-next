@@ -83,13 +83,14 @@ const ServicesSection = ({
 
   return (
     <section className="relative group flex justify-center items-center mt-10">
-      <EditComponent id={id} sections={sections} setSections={setSections}/>
+    
       <button
         className={`mx-auto max-w-7xl rounded-3xl p-8 md:p-12 ${
           editable && "rounded border-2 border-transparent hover:border-indigo-500"
         } group relative bg-gray-100`}
         onClick={handleSectionClick}
       >
+          <EditComponent id={id} sections={sections} setSections={setSections}/>
         <AddSectionButtons
           classNameUp="top-0"
           setSectionModal={setSectionModal}

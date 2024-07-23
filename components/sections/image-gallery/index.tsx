@@ -116,11 +116,12 @@ const ImageGallerySection = ({
 
   return (
     <section className="relative flex justify-center group">
-      <EditComponent id={id} sections={sections} setSections={setSections}/>
+  
       <button
         className={`${editable && "group relative rounded-xl border-2 border-transparent hover:border-indigo-500"} container mb-20 mt-20`}
         onClick={handleClick}
       >
+            <EditComponent id={id} sections={sections} setSections={setSections}/>
         <AddSectionButtons
           classNameUp="top-0"
           setSectionModal={setSectionModal}

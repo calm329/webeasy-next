@@ -37,9 +37,9 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>
-  sections:TSectionsType[]
-  id:string
+  setSections: Dispatch<SetStateAction<TSectionsType[]>>;
+  sections: TSectionsType[];
+  id: string;
 };
 
 const PartnersSection = ({
@@ -52,7 +52,7 @@ const PartnersSection = ({
   showForm,
   sections,
   setSections,
-  id
+  id,
 }: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
@@ -118,6 +118,7 @@ const PartnersSection = ({
         className={`group relative flex flex-col gap-5 text-left ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
         onClick={handleSectionClick}
       >
+        <EditComponent id={id} sections={sections} setSections={setSections} />
         <AddSectionButtons
           setSectionModal={setSectionModal}
           setTriggerSection={setTriggerSection}
@@ -137,7 +138,7 @@ const PartnersSection = ({
                     className="relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl"
                   >
                     <Image
-                      className=" object-contain aspect-1  grayscale transition-all duration-300 hover:grayscale-0"
+                      className=" aspect-1 object-contain  grayscale transition-all duration-300 hover:grayscale-0"
                       src={src.logo || BROKEN_IMAGE}
                       alt={`Logo ${index + 1}`}
                       height={200}
@@ -151,7 +152,10 @@ const PartnersSection = ({
             <Carousel className="w-full">
               <CarouselContent>
                 {partnersContent.list.map((src, index) => (
-                  <CarouselItem key={src.id} className="basis-1/5 max-xl:basis-1/4 max-lg:basis-1/3 max-md:basis-1/2 max-sm:basis-1/1">
+                  <CarouselItem
+                    key={src.id}
+                    className="max-sm:basis-1/1 basis-1/5 max-xl:basis-1/4 max-lg:basis-1/3 max-md:basis-1/2"
+                  >
                     <div className="p-1">
                       <Card className="border-0">
                         <CardContent className="flex border-0 p-6">
@@ -185,8 +189,7 @@ const PartnersSection = ({
   }
 
   return (
-    <section className={` container relative mb-20 mt-20 group`}>
-      <EditComponent id={id} sections={sections} setSections={setSections}/>
+    <section className={` group container relative mb-20 mt-20`}>
       {contentToRender}
     </section>
   );

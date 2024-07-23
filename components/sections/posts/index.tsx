@@ -27,10 +27,10 @@ const PostsSection = (props: TProps) => {
   const dispatch = useAppDispatch();
   return (
     <section className="relative group flex">
-      <EditComponent id={id} sections={sections} setSections={setSections}/>
+
       {appState.iPosts.list.length > 0 && (
         <button
-          className={`mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+          className={`mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} group relative`}
           onClick={() => {
             if (setIsOpen && setSection) {
               setIsOpen(true);
@@ -49,6 +49,7 @@ const PostsSection = (props: TProps) => {
             }
           }}
         >
+                <EditComponent id={id} sections={sections} setSections={setSections}/>
           <h2 className="sr-only">Posts</h2>
           {appState?.iPosts?.show && (
             <div className="flex flex-wrap gap-5">

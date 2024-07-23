@@ -40,11 +40,7 @@ type TProps = {
       position: number;
     }>
   >;
-  setSections: Dispatch<
-    SetStateAction<
-    TSectionsType[]
-    >
-  >;
+  setSections: Dispatch<SetStateAction<TSectionsType[]>>;
   sections: TSectionsType[];
   id: string;
 };
@@ -103,20 +99,23 @@ const EditableHero = ({
 
   return (
     <section className="bg-gray-50 py-10">
-      <div className="group container relative mx-auto px-4">
+      <div
+        className={`group container relative mx-auto px-4 ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
+        onClick={() => handleClick("Hero")}
+      >
         <EditComponent sections={sections} setSections={setSections} id={id} />
-        <div className="rounded-3xl bg-white px-8 py-16 pb-10">
-          <div className="mx-auto flex max-w-7xl flex-col justify-center">
-            {appState.aiContent?.hero ? (
-              <button
-                className={`relative mb-10 flex items-center justify-between pr-2 max-md:flex-col ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
-                onClick={() => handleClick("Hero")}
-              >
-                <AddSectionButtons
+        <AddSectionButtons
                   setSectionModal={setSectionModal}
                   id={id}
                   setTriggerSection={setTriggerSection}
                 />
+        <div className="rounded-3xl bg-white px-8 py-16 pb-10">
+          <div className="mx-auto flex max-w-7xl flex-col justify-center">
+            {appState.aiContent?.hero ? (
+              <button
+                className={`relative mb-10 flex items-center justify-between pr-2 max-md:flex-col `}
+              >
+                
                 <div
                   className={`p-8 max-sm:w-full ${appState.view === "Mobile" ? "w-full" : "w-2/3"}`}
                 >
@@ -213,14 +212,17 @@ const EditableHero = ({
                     >
                       {isImage(appState.aiContent.hero.image.imageUrl) ? (
                         <Image
-                          src={appState.aiContent.hero.image.imageUrl || BROKEN_IMAGE}
+                          src={
+                            appState.aiContent.hero.image.imageUrl ||
+                            BROKEN_IMAGE
+                          }
                           width={500}
                           height={500}
                           alt="Hero Image"
                           style={{
                             objectPosition: `${appState.aiContent.hero?.image?.horizontalPosition}% ${appState.aiContent.hero?.image?.verticalPosition}%`,
-                            objectFit: 'cover', // Ensures the image covers the container
-                            overflow: 'hidden'
+                            objectFit: "cover", // Ensures the image covers the container
+                            overflow: "hidden",
                           }}
                           className={`${appState.view === "Mobile" ? "" : "mx-auto"} h-full w-full rounded-3xl object-cover md:mr-0 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                           onClick={() => handleClick("imageUrl")}
