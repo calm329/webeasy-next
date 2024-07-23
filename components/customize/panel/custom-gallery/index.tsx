@@ -43,7 +43,7 @@ const CustomGalleryContent = () => {
   }
   return (
     <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
-      <ResponsiveDialog id="imageListing" width={"500"}>
+      <ResponsiveDialog id="imageListing" width={"800px"}>
         <ImagesListing action={setImage} />
       </ResponsiveDialog>
       <div className="flex justify-between ">
