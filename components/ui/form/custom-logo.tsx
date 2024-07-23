@@ -65,7 +65,7 @@ const CustomPartnerLogo = (props: TProps) => {
                 if (item.id === id) {
                   return {
                     id: item.id,
-                    name:data.name,
+                    name: data.name,
                     link: data.link,
                     logo: data.logo,
                   };
@@ -91,7 +91,7 @@ const CustomPartnerLogo = (props: TProps) => {
                 ...(appState.aiContent.partners.list ?? []),
                 {
                   id: id,
-                  name:data.name,
+                  name: data.name,
                   link: data.link,
                   logo: data.logo,
                 },
@@ -123,7 +123,9 @@ const CustomPartnerLogo = (props: TProps) => {
 
   console.log("data", data);
   return (
-    <div className="h-[55vh] max-h-[600px] overflow-auto">
+    <div
+      className={`h-[55vh] ${showLinks ? "max-h-[600px]" : "max-h-[500px]"} overflow-auto`}
+    >
       <div className=" border-b px-4 py-6 sm:px-6">
         <div className="flex items-center justify-between">
           <h2
@@ -171,7 +173,7 @@ const CustomPartnerLogo = (props: TProps) => {
       <form className="flex flex-col gap-5 p-5">
         <div className="flex flex-col gap-5">
           <h1 className="font-bold">
-            {!showForm?.edit ? "Add logo" : "Edt Logo"}
+            {!showForm?.edit ? "Add Logo" : "Edt Logo"}
           </h1>
           <div className="flex flex-col border-b-2 border-gray-300 pb-5">
             <label className="mx-auto text-center text-sm font-medium leading-6 text-gray-900">
@@ -214,7 +216,7 @@ const CustomPartnerLogo = (props: TProps) => {
           </div>
           <div className="flex flex-col">
             <div className="flex justify-between">
-              <h3>Show Link</h3>
+              <h3>Add a Link</h3>
               <Switch
                 onCheckedChange={(checked) => setShowLinks(checked)}
                 checked={showLinks}
@@ -225,8 +227,8 @@ const CustomPartnerLogo = (props: TProps) => {
                 type="text"
                 name={showForm.edit ?? "1"}
                 id={showForm.edit ?? "1"}
-                className="rounded-md mt-3 mx-auto border border-gray-300"
-                value={data?.link ??""}
+                className="mx-auto mt-3 rounded-md border border-gray-300"
+                value={data?.link ?? ""}
                 onChange={(e) => {
                   setData({ ...data, link: e.target.value });
                   if (showForm.edit)
