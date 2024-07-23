@@ -27,6 +27,9 @@ import {
 } from "@/lib/utils/function";
 import Image from "next/image";
 import Uploader from "@/components/ui/form/uploader";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
+import DeleteContent from "../../../delete-content/index";
 
 const grid = 2;
 
@@ -64,9 +67,10 @@ const PartnersContent = (props: TProps) => {
   };
   const [loadingDescription, setLoadingDescription] = useState(false);
   const [loadingTitle, setLoadingTitle] = useState(false);
-
+  const { openDialog } = useResponsiveDialog();
   const [selectedField, setSelectedField] = useState("");
   const [showLinks, setShowLinks] = useState(false);
+  const [selectedLogo, setSelectedLogo] = useState("");
   const onDragEnd = (result: DropResult): void => {
     if (!result.destination) {
       return;
@@ -123,15 +127,14 @@ const PartnersContent = (props: TProps) => {
 
   return (
     <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
-      <div className="flex justify-between gap-10 px-5 pb-5">
-        <div>
-          <h3 className="text-sm font-medium leading-6 text-gray-900 ">
-            Logo Cloud
-          </h3>
-        </div>
-      </div>
+      <ResponsiveDialog id="delete">
+        <DeleteContent
+          action={() => handleDeleteLogo(selectedLogo)}
+          data="logo"
+        />
+      </ResponsiveDialog>
       <div className="px-5 pb-5">
-        <div className="flex flex-col border-t pt-5">
+        <div className="flex flex-col  pt-5">
           <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
             <label htmlFor={"title"} className="block">
               {"Title"}
@@ -249,7 +252,7 @@ const PartnersContent = (props: TProps) => {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-5 border-t p-5 pt-5">
+      <div className="flex flex-col gap-5  p-5 pt-5">
         <div className="flex flex-col gap-5 border-t pt-5">
           <div className="flex justify-between gap-10">
             <div>
@@ -312,7 +315,10 @@ const PartnersContent = (props: TProps) => {
                             <MdDeleteForever
                               color="red"
                               size={20}
-                              onClick={() => handleDeleteLogo(item.id)}
+                              onClick={() => {
+                                setSelectedLogo(item.id);
+                                openDialog("delete");
+                              }}
                             />
                           </div>
                         </div>

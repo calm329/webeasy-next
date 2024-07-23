@@ -155,7 +155,7 @@ const CustomizePanel = (props: TProps) => {
                 className="text-base font-semibold leading-6 "
                 id="slide-over-title"
               >
-                {section === "Partners" ? "Logo Cloud" : section}
+                {section === "Partners" ? "Logo Settings" : section}
               </h2>
               <div className="ml-3 flex h-7 items-center">
                 <button

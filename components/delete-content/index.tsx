@@ -7,24 +7,24 @@ import {
 import React from "react";
 
 type TProps = {
-  id: string;
+  action:()=>void;
+  data:string
 };
 
 const DeleteContent = (props: TProps) => {
-  const { id } = props;
+  const { action,data } = props;
   const dispatch = useAppDispatch();
   const {closeDialog} = useResponsiveDialog()
   return (
     <div className="rounded  p-4  text-center">
       <div className="mb-4 text-lg">
-        Are you sure you want to delete this site?
+        Are you sure you want to delete this {data}?
       </div>
       <div className="flex justify-center">
         <button
           className="mr-2 rounded bg-indigo-600 px-4 py-2 text-white"
           onClick={() => {
-            console.log("id", id);
-            dispatch(deleteSite({ id }));
+            action()
             closeDialog('delete');
           }}
         >

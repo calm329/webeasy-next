@@ -144,10 +144,14 @@ export default function WebsitesForm() {
     ).length || 0) / dataPerPage,
   );
 
+  const handleDelete = (siteId: string) => {
+    dispatch(deleteSite({ id: siteId }));
+  };
+
   return (
     <div className="">
       <ResponsiveDialog id="delete">
-        <DeleteContent id={selectedItemId} />
+        <DeleteContent action={()=>handleDelete(selectedItemId)} data="site"/>
       </ResponsiveDialog>
       <div className="">
         <div className="border-b border-gray-200 ">
