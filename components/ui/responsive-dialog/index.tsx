@@ -24,7 +24,7 @@ interface ResponsiveDialogProps {
 const ResponsiveDialog: React.FC<ResponsiveDialogProps> = ({
   id,
   children,
-  showClose,
+  showClose = true,
   dismissible = true,
   ...props
 }) => {
@@ -46,7 +46,7 @@ const ResponsiveDialog: React.FC<ResponsiveDialogProps> = ({
             as="div"
             open={isOpen}
             className="relative z-10"
-            onClose={() => dismissible && handleClose}
+            onClose={() => dismissible && handleClose()}
           >
             <TransitionChild
               as={Fragment}

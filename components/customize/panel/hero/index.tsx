@@ -166,7 +166,7 @@ const HeroContent = (props: TProps) => {
 
   return (
     <div className="h-[55vh] max-h-[600px]  overflow-y-auto py-5 transition-all ease-in-out">
-      <ResponsiveDialog id="imageListing">
+      <ResponsiveDialog id="imageListing" width={"500"}>
         <ImagesListing action={setImage} />
       </ResponsiveDialog>
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
