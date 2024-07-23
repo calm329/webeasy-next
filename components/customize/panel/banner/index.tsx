@@ -193,7 +193,7 @@ const BannerContent = (props: TProps) => {
                         />
                       </div>
                       {appState?.aiContent?.banner?.logo?.show && (
-                        <div>
+                        <div className="flex flex-col gap-5">
                           <Uploader
                             defaultValue={
                               appState?.aiContent?.banner?.logo?.link
@@ -219,77 +219,80 @@ const BannerContent = (props: TProps) => {
                               );
                             }}
                           />
-                        </div>
-                      )}
-                      <div>
-                        <div className="flex  gap-5">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedField(data);
-                              setLoading(true);
-                              dispatch(
-                                updateAppState({
-                                  ...appState,
-                                  aiContent: {
-                                    ...appState?.aiContent,
-                                    banner: {
-                                      ...appState?.aiContent?.banner,
-                                      logo: {
-                                        ...appState?.aiContent?.banner?.logo,
-                                        link: "",
-                                      },
-                                    },
-                                  },
-                                }),
-                              );
-                              getLogo({
-                                businessName:
-                                  appState?.aiContent?.banner?.businessName,
-                                businessType:
-                                  appState?.aiContent?.businessType ?? "",
-                                location: appState?.aiContent?.location ?? "",
-                              }).then((data) => {
-                                setLoading(false);
-                                dispatch(
-                                  updateAppState({
-                                    ...appState,
-                                    aiContent: {
-                                      ...appState?.aiContent,
-                                      banner: {
-                                        ...appState?.aiContent?.banner,
-                                        logo: {
-                                          ...appState?.aiContent?.banner?.logo,
-                                          link: data,
+                          <div>
+                            <div className="flex  gap-5">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelectedField(data);
+                                  setLoading(true);
+                                  dispatch(
+                                    updateAppState({
+                                      ...appState,
+                                      aiContent: {
+                                        ...appState?.aiContent,
+                                        banner: {
+                                          ...appState?.aiContent?.banner,
+                                          logo: {
+                                            ...appState?.aiContent?.banner
+                                              ?.logo,
+                                            link: "",
+                                          },
                                         },
                                       },
-                                    },
-                                  }),
-                                );
-                              });
-                            }}
-                            className="flex items-center gap-2 "
-                          >
-                            Regenerate
-                            {loading && data === selectedField ? (
-                              <ImSpinner2 className="animate-spin text-lg text-black" />
-                            ) : (
-                              <ImPower className=" text-xs " />
-                            )}
-                          </button>
-                          <div>
-                            <button
-                              type="button"
-                              className=""
-                              onClick={() => {
-                                openDialog("imageListing");
-                              }}
-                            >
-                              Swap
-                            </button>
+                                    }),
+                                  );
+                                  getLogo({
+                                    businessName:
+                                      appState?.aiContent?.banner?.businessName,
+                                    businessType:
+                                      appState?.aiContent?.businessType ?? "",
+                                    location:
+                                      appState?.aiContent?.location ?? "",
+                                  }).then((data) => {
+                                    setLoading(false);
+                                    dispatch(
+                                      updateAppState({
+                                        ...appState,
+                                        aiContent: {
+                                          ...appState?.aiContent,
+                                          banner: {
+                                            ...appState?.aiContent?.banner,
+                                            logo: {
+                                              ...appState?.aiContent?.banner
+                                                ?.logo,
+                                              link: data,
+                                            },
+                                          },
+                                        },
+                                      }),
+                                    );
+                                  });
+                                }}
+                                className="flex items-center gap-2 "
+                              >
+                                Regenerate
+                                {loading && data === selectedField ? (
+                                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                                ) : (
+                                  <ImPower className=" text-xs " />
+                                )}
+                              </button>
+                              <div>
+                                <button
+                                  type="button"
+                                  className=""
+                                  onClick={() => {
+                                    openDialog("imageListing");
+                                  }}
+                                >
+                                  Swap
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   );
                 case "businessName":
@@ -323,8 +326,7 @@ const BannerContent = (props: TProps) => {
                             Buttons
                           </h3>
                           <p className="text-xs text-gray-400 ">
-                            Add a button with a link to a page, phone number,
-                            email or section
+                            Add a button and link it to a page or a section
                           </p>
                         </div>
                         <Switch
@@ -386,6 +388,7 @@ const BannerContent = (props: TProps) => {
                                               <MdModeEditOutline
                                                 color="blue"
                                                 size={20}
+                                                className="cursor-pointer"
                                                 onClick={() =>
                                                   setShowForm({
                                                     form: "Button",
@@ -397,6 +400,7 @@ const BannerContent = (props: TProps) => {
                                               <MdDeleteForever
                                                 color="red"
                                                 size={20}
+                                                className="cursor-pointer"
                                                 onClick={() =>
                                                   handleDeleteButton(item.name)
                                                 }
