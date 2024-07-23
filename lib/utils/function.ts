@@ -19,7 +19,7 @@ import AmazonContent from "../content/amazon";
 import { TFeature } from "../../types/index";
 import CustomContent from "../content/custom";
 // import { selectedTemplate } from "../store/slices/template-slice";
-import CustomizeMeta from '../../components/customize/meta/index';
+import CustomizeMeta from "../../components/customize/meta/index";
 
 type TParams = {
   regenerate?: boolean;
@@ -1282,12 +1282,22 @@ export async function saveState(
   templateId: string,
 ) {
   try {
-    const data = {
-      aiResult: appState.aiContent,
-      font: appState.selectedFont,
-      posts: appState.iPosts,
-      templateId: templateId,
-    };
+    const isCustom = location.pathname?.split("/")[1] === "custom";
+    let data: any;
+    if (isCustom) {
+      data = {
+        aiResult: appState.aiContent,
+        font: appState.selectedFont,
+        templateId: templateId,
+      };
+    } else {
+      data = {
+        aiResult: appState.aiContent,
+        font: appState.selectedFont,
+        posts: appState.iPosts,
+        templateId: templateId,
+      };
+    }
     console.log("Saved state", appState);
     await dispatch(
       updateStateSite({
@@ -2138,14 +2148,14 @@ export async function generateImagesForCustom(data: {
             ...getAppState().aiContent.hero,
             image: "",
           },
-          gallery:"",
-          testimonials:"",
-          partners:""
+          gallery: "",
+          testimonials: "",
+          partners: "",
         },
-        generate:{
+        generate: {
           ...getAppState().generate,
-          generating:true
-        }
+          generating: true,
+        },
       }),
     );
 
@@ -2157,11 +2167,11 @@ export async function generateImagesForCustom(data: {
       getLogo(data),
       getPhotosFromUnsplash(data.businessType),
       CustomContent.getTestimonials({
-        data:data,
-        fieldName:"",
-        individual:false,
-        type:""
-      })
+        data: data,
+        fieldName: "",
+        individual: false,
+        type: "",
+      }),
     ]);
 
     store.dispatch(
@@ -2223,8 +2233,8 @@ export async function generateTextForCustom(data: {
             subheading: "",
           },
           services: "",
-          testimonials:"",
-          testimonialsSection:"",
+          testimonials: "",
+          testimonialsSection: "",
           partners: "",
           cta: "",
           faq: "",
@@ -2396,9 +2406,11 @@ export async function generateTextForCustom(data: {
 export async function getRandomImageFromUnsplash(prompt: string) {
   try {
     const startTime = performance.now();
-    const res1 = await fetch(`https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=5`)
+    const res1 = await fetch(
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=5`,
+    );
     const resUnsplash = await res1.json();
-    console.log('resUnsplash',resUnsplash)
+    console.log("resUnsplash", resUnsplash);
     const data = resUnsplash;
 
     const dataToBeFiltered = data.map((obj: any) => {
@@ -2419,7 +2431,7 @@ export async function getRandomImageFromUnsplash(prompt: string) {
       `Image Generation using ai+unplash took ${endTime - startTime} ms`,
     );
     // console.log("response",res)
-    console.log("dataofimages",data,parseInt(index))
+    console.log("dataofimages", data, parseInt(index));
     return data[parseInt(index)].urls.small;
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
@@ -2608,12 +2620,12 @@ export const validateURL = (url: string) => {
 
 export const getPhotosFromUnsplash = async (prompt: string) => {
   try {
-    console.log("prompt",prompt)
+    console.log("prompt", prompt);
     const res = await fetch(
       `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=6`,
     );
     const data = await res.json();
-    console.log("actualimage",data)
+    console.log("actualimage", data);
     const fullUrls = data.map((photo: any) => photo.urls.full);
     store.dispatch(
       updateAppState({
@@ -2622,7 +2634,7 @@ export const getPhotosFromUnsplash = async (prompt: string) => {
           ...getAppState().aiContent,
           gallery: {
             ...getAppState().aiContent.gallery,
-            show:true,
+            show: true,
             list: fullUrls,
           },
         },
@@ -2632,11 +2644,11 @@ export const getPhotosFromUnsplash = async (prompt: string) => {
   } catch (error) {}
 };
 
-export const getAllUnsplashImages = async (prompt: string)=>{
+export const getAllUnsplashImages = async (prompt: string) => {
   const res = await fetch(
     `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=100`,
   );
   const data = await res.json();
 
-  return data
-}
+  return data;
+};
