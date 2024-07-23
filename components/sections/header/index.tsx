@@ -12,6 +12,7 @@ import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
 import CustomContent from "@/lib/content/custom";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
 import EditComponent from "@/components/edit-component";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   editable?: boolean;
@@ -95,7 +96,7 @@ export default function HeaderSection(props: TProps) {
         height={1000}
         width={1000}
         alt=""
-        src={appState.aiContent?.header?.bg}
+        src={appState.aiContent?.header?.bg || BROKEN_IMAGE}
         className="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center"
       />
       <div className="hidden sm:absolute sm:-top-10 sm:right-1/2 sm:-z-10 sm:mr-10 sm:block sm:transform-gpu sm:blur-3xl">

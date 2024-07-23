@@ -7,6 +7,7 @@ import { Dispatch, SetStateAction } from "react";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 export function BackgroundImage({
   className,
@@ -89,10 +90,10 @@ export function Hero(props: TProps) {
             }
           }}
         >
-          {appState.aiContent.hero?.image?.imageUrl ? (
+          {appState.generate.generating ? (
             hero?.image?.show && (
               <Image
-                src={appState.aiContent.hero?.image?.imageUrl ?? ""}
+                src={appState.aiContent.hero?.image?.imageUrl  || BROKEN_IMAGE}
                 alt=""
                 height={400}
                 width={300}

@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../../lib/store/hooks";
 // Import the Skeleton component
 import { Skeleton } from "@/components/ui/skeleton";
 import EditComponent from "@/components/edit-component";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   editable?: boolean;
@@ -107,7 +108,7 @@ export default function TestimonialSection(props: TProps) {
             height={100}
             width={100}
             alt=""
-            src={appState.aiContent?.testimonialsSection?.image ?? ""}
+            src={appState.aiContent?.testimonialsSection?.image || BROKEN_IMAGE}
             className={`mx-auto h-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} `}
           />
         )}
@@ -136,7 +137,7 @@ export default function TestimonialSection(props: TProps) {
                 height={200}
                 width={200}
                 alt=""
-                src={appState.aiContent?.testimonialsSection?.avatar ?? ""}
+                src={appState.aiContent?.testimonialsSection?.avatar || BROKEN_IMAGE}
                 className={`mx-auto h-10 w-10 rounded-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
               />
             )}

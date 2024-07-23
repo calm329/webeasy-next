@@ -26,6 +26,7 @@ import TestimonialSection from "@/components/sections/testimonials";
 import Image from "next/image";
 import { TSection, TSectionsType } from "@/types";
 import { generateUniqueId } from "@/lib/utils/function";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   addSectionByTitle: (
@@ -433,7 +434,7 @@ const SectionForm = (props: TProps) => {
             </div>
             <Image
               alt=""
-              src={section?.image ??""}
+              src={section?.image || BROKEN_IMAGE}
               height={200}
               width={200}
               className="object-contain"

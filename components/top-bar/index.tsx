@@ -7,6 +7,7 @@ import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { Skeleton } from "../ui/skeleton";
 import TypewriterEffect from "../typewriter-effect";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TopBarProps = {
   banner: TBanner;
@@ -49,11 +50,11 @@ export default function TopBar(props: TopBarProps) {
             style={{ color: colors?.primary }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {appState.aiContent?.banner?.logo?.link ? (
+            {appState.generate.generating ? (
               editable ? (
                 appState.aiContent?.banner.logo.show && (
                   <Image
-                    src={appState.aiContent?.banner?.logo?.link}
+                    src={appState.aiContent?.banner?.logo?.link || BROKEN_IMAGE}
                     alt={appState.aiContent?.banner?.logo?.alt}
                     className={`h-8 w-8 ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
                     onClick={() => {
@@ -80,7 +81,7 @@ export default function TopBar(props: TopBarProps) {
               ) : (
                 appState.aiContent?.banner.logo && (
                   <Image
-                    src={appState.aiContent?.banner?.logo?.link}
+                    src={appState.aiContent?.banner?.logo?.link || BROKEN_IMAGE}
                     alt={appState.aiContent?.banner?.logo?.alt}
                     className={`h-8 w-auto `}
                     height={32}

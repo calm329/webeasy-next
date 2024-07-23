@@ -8,6 +8,7 @@ import { Container } from "@/components/container";
 import { TColors, TFields, TPosts, TSection } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 function ImageClipPaths({
   id,
@@ -102,7 +103,7 @@ export function Posts(props: TProps) {
                     >
                       <Image
                         className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-110"
-                        src={data.media_url}
+                        src={data.media_url || BROKEN_IMAGE}
                         alt=""
                         priority
                         sizes="(min-width: 1280px) 17.5rem, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"

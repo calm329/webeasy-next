@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { getAllUnsplashImages } from "@/lib/utils/function";
 import Image from "next/image";
 import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   action: (data: any) => void;
@@ -36,7 +37,7 @@ const ImagesListing = (props: TProps) => {
         >
           <Image
             alt=""
-            src={data.urls.small}
+            src={data.urls.small || BROKEN_IMAGE}
             height={200}
             width={200}
             className=" absolute h-full w-full object-cover"

@@ -30,6 +30,7 @@ import Uploader from "@/components/ui/form/uploader";
 import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import ResponsiveDialog from "@/components/ui/responsive-dialog";
 import DeleteContent from "../../../delete-content/index";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 const grid = 2;
 
@@ -294,7 +295,7 @@ const PartnersContent = (props: TProps) => {
                           <div className="flex items-center gap-2">
                             <RxDragHandleDots2 />
                             <Image
-                              src={item.logo}
+                              src={item.logo || BROKEN_IMAGE}
                               alt=""
                               height={50}
                               width={50}

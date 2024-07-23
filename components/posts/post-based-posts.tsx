@@ -1,6 +1,7 @@
 import { Container } from "@/components/container";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 import { TColors, TPosts, TSection } from "@/types";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
@@ -92,7 +93,7 @@ export function Posts(props: TProps) {
                         <div className="overflow-hidden rounded-full bg-slate-50">
                           <Image
                             className="h-14 w-14 object-cover"
-                            src={data.media_url}
+                            src={data.media_url || BROKEN_IMAGE}
                             alt=""
                             width={56}
                             height={56}

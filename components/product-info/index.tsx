@@ -1,3 +1,4 @@
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 import Image from "next/image";
 import React from "react";
 
@@ -341,9 +342,8 @@ const ProductInfo = (props:TProps) => {
               src={
                 i === 0
                   ? data?.images?.primary?.Large?.URL ?? ""
-                  : data?.images?.variant[i - 1]?.Large?.URL ??
-                    data?.images?.primary?.Large?.URL ??
-                    ""
+                  : (data?.images?.variant[i - 1]?.Large?.URL ??
+                    data?.images?.primary?.Large?.URL) || BROKEN_IMAGE
               }
               alt=""
               width={200}

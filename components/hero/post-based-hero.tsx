@@ -6,6 +6,7 @@ import { TColors, THero, TSection } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 type TProps = {
   hero: THero;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -55,7 +56,7 @@ export function Hero(props: TProps) {
     >
       {hero?.image?.show && (
         <Image
-          src={hero?.image?.imageUrl}
+          src={hero?.image?.imageUrl  || BROKEN_IMAGE}
           alt=""
           height={400}
           width={300}

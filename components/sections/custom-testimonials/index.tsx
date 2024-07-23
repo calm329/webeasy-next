@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select-template-carousel";
 import Image from "next/image";
 import EditComponent from "@/components/edit-component";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   editable?: boolean;
@@ -75,7 +76,7 @@ const CustomTestimonial = ({
               <div className="flex flex-col gap-5">
                 <div className="h-30 w-30 overflow-hidden">
                   <Image
-                    src={testimonial.avatar}
+                    src={testimonial.avatar || BROKEN_IMAGE}
                     alt={testimonial.name}
                     height={100}
                     width={100}

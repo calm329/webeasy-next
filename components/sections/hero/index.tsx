@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
 import EditComponent from "@/components/edit-component";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   editable?: boolean;
@@ -180,7 +181,7 @@ export default function HeroSection(props: TProps) {
               ) : (
                 <Image
                   alt="App screenshot"
-                  src={appState.aiContent?.heroSection?.image}
+                  src={appState.aiContent?.heroSection?.image || BROKEN_IMAGE}
                   width={2432}
                   height={1442}
                   className="w-[76rem] rounded-md shadow-2xl ring-1 ring-gray-900/10"

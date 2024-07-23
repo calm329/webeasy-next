@@ -6,6 +6,7 @@ import CustomContent from "@/lib/content/custom";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import EditComponent from "@/components/edit-component";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 type TProps = {
   editable?: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -99,7 +100,7 @@ export default function LogoSection(props: TProps) {
               <Image
                 alt="Transistor"
                 key={data.link}
-                src={data.image}
+                src={data.image || BROKEN_IMAGE}
                 width={158}
                 height={48}
                 className={`col-span-2 max-h-12 w-full object-contain object-left lg:col-span-1 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}

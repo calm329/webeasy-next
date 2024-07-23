@@ -54,6 +54,8 @@ export const prompt = {
   },
 };
 
+export const BROKEN_IMAGE = "/images/broken-image.png"
+
 export const domains = [
   ".0db",
   ".0z",

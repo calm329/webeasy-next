@@ -9,6 +9,7 @@ import { TBanner, TColors, TSection } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   banner: TBanner;
@@ -73,7 +74,7 @@ export function Header(props: TProps) {
             >
               {banner?.logo?.show && (
                 <Image
-                  src={banner?.logo?.link ?? ""}
+                  src={banner?.logo?.link  || BROKEN_IMAGE}
                   alt={banner?.logo?.alt ?? ""}
                   height={100}
                   width={100}

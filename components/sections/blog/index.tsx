@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { appState as AS } from "@/lib/store/slices/site-slice";
 import { useAppSelector } from "@/lib/store/hooks";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 const posts = [
   // Your initial posts data
@@ -136,7 +137,7 @@ export default function BlogSection(props: TProps) {
                       height={200}
                       width={200}
                       alt=""
-                      src={post.imageUrl}
+                      src={post.imageUrl || BROKEN_IMAGE}
                       className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
                     />
                     <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
@@ -176,7 +177,7 @@ export default function BlogSection(props: TProps) {
                         height={100}
                         width={100}
                         alt=""
-                        src={post.author.imageUrl}
+                        src={post.author.imageUrl || BROKEN_IMAGE}
                         className={`h-10 w-10 rounded-full bg-gray-100 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                       />
                       <div className="text-sm leading-6">

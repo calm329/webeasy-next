@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import EditComponent from "@/components/edit-component";
 import { generateUniqueId } from "@/lib/utils/function";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   editable?: boolean;
@@ -78,7 +79,7 @@ const ImageGallerySection = ({
             onClick={handleClick}
           >
             <Image
-              src={image}
+              src={image || BROKEN_IMAGE}
               alt=""
               height={1000}
               width={1000}

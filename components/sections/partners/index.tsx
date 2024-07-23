@@ -15,6 +15,7 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { TSection, TSectionsType } from "@/types";
 import EditComponent from "@/components/edit-component";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   editable?: boolean;
@@ -137,7 +138,7 @@ const PartnersSection = ({
                   >
                     <Image
                       className=" object-contain aspect-1  grayscale transition-all duration-300 hover:grayscale-0"
-                      src={src.logo}
+                      src={src.logo || BROKEN_IMAGE}
                       alt={`Logo ${index + 1}`}
                       height={200}
                       width={200}
@@ -157,7 +158,7 @@ const PartnersSection = ({
                           <div className="relative flex flex-shrink-0 rounded-lg p-2 transition-all md:rounded-xl lg:rounded-2xl">
                             <Image
                               className="h-24 object-contain grayscale transition-all duration-300 hover:grayscale-0"
-                              src={src.logo}
+                              src={src.logo || BROKEN_IMAGE}
                               alt={`Logo ${index + 1}`}
                               height={200}
                               width={200}

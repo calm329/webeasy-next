@@ -1,3 +1,4 @@
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -27,7 +28,7 @@ export default function PostCard(props: PostCardProps) {
           />
         ) : (
           <Image
-            src={media_url}
+            src={media_url || BROKEN_IMAGE}
             alt={caption}
             fill
             sizes="100%"
