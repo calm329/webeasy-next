@@ -222,7 +222,7 @@ const BannerContent = (props: TProps) => {
                         </div>
                       )}
                       <div>
-                        <div className="flex justify-between gap-5">
+                        <div className="flex  gap-5">
                           <button
                             type="button"
                             onClick={() => {
