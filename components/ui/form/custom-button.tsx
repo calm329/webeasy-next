@@ -34,8 +34,9 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { randomUUID } from "crypto";
 import { generateUniqueId, validateURL } from "@/lib/utils/function";
+import { Switch } from "@/components/ui/switch";
 
-const linkTypes = ["External", "Section"];
+const linkTypes = ["External", "Section", "Page", "Email", "Phone"];
 
 const CustomButton = (props: TProps) => {
   const { setIsOpen, setShowForm, section, showForm, handleChange } = props;
@@ -193,6 +194,170 @@ const CustomButton = (props: TProps) => {
     }
   }
 
+  function renderFieldByType(type: string) {
+    switch (type) {
+      case "External":
+        return (
+          <div className="flex flex-col ">
+            <label
+              htmlFor="website"
+              className="text-sm font-medium leading-6 text-gray-900 "
+            >
+              Website
+            </label>
+            <input
+              type="text"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              id={"website"}
+              placeholder="https://www.example.com"
+              defaultValue={data?.link ?? ""}
+              onChange={(e) => {
+                const url = e.target.value;
+                setData({ ...data, link: url });
+
+                if (!validateURL(url)) {
+                  setError("Please enter a valid URL.");
+                } else {
+                  setError("");
+                }
+
+                if (showForm.edit) {
+                  handleChange(data.name, {
+                    ...{ ...data, link: url },
+                    fieldType: "button",
+                    section,
+                  });
+                }
+              }}
+            />
+            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+          </div>
+        );
+      case "Section":
+        return (
+          <div className="flex flex-col ">
+            <label
+              htmlFor="linktype"
+              className="text-sm font-medium leading-6 text-gray-900 "
+            >
+              {data?.type}s
+            </label>
+            <Select>
+              <SelectTrigger className="">
+                <SelectValue placeholder={`Select a ${data?.type}`} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {/* Map your options here */}
+                  <SelectItem value="example1">Example 1</SelectItem>
+                  <SelectItem value="example2">Example 2</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        );
+      case "Page":
+        return (
+          <div className="flex flex-col ">
+            <label
+              htmlFor="linktype"
+              className="text-sm font-medium leading-6 text-gray-900 "
+            >
+              {data?.type}s
+            </label>
+            <Select>
+              <SelectTrigger className="">
+                <SelectValue placeholder={`Select a ${data?.type}`} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {/* Map your options here */}
+                  <SelectItem value="example1">Example</SelectItem>
+                  <SelectItem value="example2">Example 2</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        );
+      case "Email":
+        return (
+          <div className="flex flex-col ">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium leading-6 text-gray-900 "
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              id={"email"}
+              placeholder="example@gmail.com"
+              defaultValue={data?.link ?? ""}
+              onChange={(e) => {
+                const url = e.target.value;
+                setData({ ...data, link: url });
+
+                if (!validateURL(url)) {
+                  setError("Please enter a valid URL.");
+                } else {
+                  setError("");
+                }
+
+                if (showForm.edit) {
+                  handleChange(data.name, {
+                    ...{ ...data, link: url },
+                    fieldType: "button",
+                    section,
+                  });
+                }
+              }}
+            />
+            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+          </div>
+        );
+      case "Phone":
+        return (
+          <div className="flex flex-col ">
+            <label
+              htmlFor="tel"
+              className="text-sm font-medium leading-6 text-gray-900 "
+            >
+              Phone
+            </label>
+            <input
+              type="tel"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              id={"tel"}
+              placeholder="1234567890"
+              defaultValue={data?.link ?? ""}
+              onChange={(e) => {
+                const url = e.target.value;
+                setData({ ...data, link: url });
+
+                if (!validateURL(url)) {
+                  setError("Please enter a valid URL.");
+                } else {
+                  setError("");
+                }
+
+                if (showForm.edit) {
+                  handleChange(data.name, {
+                    ...{ ...data, link: url },
+                    fieldType: "button",
+                    section,
+                  });
+                }
+              }}
+            />
+            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+          </div>
+        );
+      default:
+        return null;
+    }
+  }
+
   return (
     <div className="h-[55vh] max-h-[600px] overflow-auto">
       <div className=" border-b px-4 py-6 sm:px-6">
@@ -299,89 +464,15 @@ const CustomButton = (props: TProps) => {
             }}
           />
         </div>
-        {data?.type === "External" ? (
-          <div className="flex flex-col ">
-            <label
-              htmlFor="website"
-              className="text-sm font-medium leading-6 text-gray-900 "
-            >
-              Website
-            </label>
-            <input
-              type="text"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              id={"website"}
-              placeholder="https://www.example.com"
-              defaultValue={data?.link ?? ""}
-              onChange={(e) => {
-                const url = e.target.value;
-                setData({ ...data, link: url });
-
-                if (!validateURL(url)) {
-                  setError("Please enter a valid URL.");
-                } else {
-                  setError("");
-                }
-
-                if (showForm.edit) {
-                  handleChange(data.name, {
-                    ...{ ...data, link: url },
-                    fieldType: "button",
-                    section,
-                  });
-                }
-              }}
-            />
-            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
-          </div>
-        ) : (
-          <div className="flex flex-col ">
-            <label
-              htmlFor="linktype"
-              className="text-sm font-medium leading-6 text-gray-900 "
-            >
-              Sections
-            </label>
-            <Select
-              // defaultValue={data?.type ?? ""}
-              // defaultValue={data?.type ?? "External"}
-              // onValueChange={(value) => {
-              //   setData({ ...data, type: value });
-              //   if (showForm.edit) {
-              //     handleChange(data?.name, {
-              //       ...{ ...data, type: value },
-              //       fieldType: "button",
-              //       section,
-              //     });
-              //   }
-              // }}
-            >
-              <SelectTrigger className="">
-                <SelectValue placeholder="Select a Section" />
-              </SelectTrigger>
-              {/* <SelectContent>
-                <SelectGroup>
-                  {linkTypes.map((type) => (
-                    <SelectItem value={type} key={type}>
-                      {type}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent> */}
-            </Select>
+        {renderFieldByType(data?.type)}
+        {data?.type !== "Phone" && data?.type !== "Section" && (
+          <div className="flex items-center justify-between gap-5 ">
+            <p className="text-sm font-medium leading-6 text-gray-900">
+              Open in a new browser tab
+            </p>
+            <Switch />
           </div>
         )}
-        {/* <button
-          onClick={() => handleButtonSubmit(data.name)}
-          type="button"
-          className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
-          disabled={loading}
-        >
-          {loading && (
-            <ImSpinner2 className="animate-spin text-lg text-white" />
-          )}
-          Save
-        </button> */}
       </form>
     </div>
   );
