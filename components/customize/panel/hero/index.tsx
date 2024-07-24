@@ -33,6 +33,7 @@ import ResponsiveDialog from "@/components/ui/responsive-dialog";
 import ImagesListing from "@/components/ui/form/images-listing";
 import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
+import ImageFieldContainer from "../../editable-field/image";
 type TProps = {
   section: TSection;
   handleChange: (name: string, value: string) => void;
@@ -167,9 +168,6 @@ const HeroContent = (props: TProps) => {
 
   return (
     <div className="h-[55vh] max-h-[600px]  overflow-y-auto py-5 transition-all ease-in-out">
-      <ResponsiveDialog id="imageListing" width={"800px"}>
-        <ImagesListing action={setImage} />
-      </ResponsiveDialog>
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
         {appState.aiContent?.hero &&
           Object.keys(appState.aiContent?.hero).map((data) => (
@@ -178,204 +176,73 @@ const HeroContent = (props: TProps) => {
                 switch (data) {
                   case "image":
                     return (
-                      <div className="flex flex-col gap-5">
-                        <div className="flex justify-between ">
-                          <h3 className=" flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
-                            Hero Image
-                          </h3>
-
-                          <div className="flex gap-5">
-                            <div>
-                              <button
-                                type="button"
-                                className="mr-auto rounded-md border bg-red-600 px-5 py-2 font-medium text-white"
-                                onClick={() => {
-                                  openDialog("imageListing");
-                                }}
-                              >
-                                Swap
-                              </button>
-                            </div>
-
-                            <Switch
-                              onCheckedChange={(checked) =>
-                                dispatch(
-                                  updateAppState({
-                                    ...appState,
-                                    aiContent: {
-                                      ...appState.aiContent,
-                                      hero: {
-                                        ...appState.aiContent?.hero,
-                                        image: {
-                                          ...appState.aiContent?.hero?.image,
-                                          show: checked,
-                                        },
-                                      },
-                                    },
-                                  }),
-                                )
-                              }
-                              checked={appState.aiContent?.hero?.image?.show}
-                            />
-                          </div>
-                        </div>
-
-                        {!appState.generate.generating && (
-                          <div>
-                            <Uploader
-                              defaultValue={
-                                appState.aiContent?.hero?.image?.imageUrl || BROKEN_IMAGE
-                              }
-                              name={data}
-                              label={""}
-                              onChange={(value) => {
-                                console.log("Upload:", data, value);
-                                dispatch(
-                                  updateAppState({
-                                    ...appState,
-                                    aiContent: {
-                                      ...appState.aiContent,
-                                      hero: {
-                                        ...appState.aiContent?.hero,
-                                        image: {
-                                          ...appState.aiContent?.hero?.image,
-                                          imageUrl: value,
-                                        },
-                                      },
-                                    },
-                                  }),
-                                );
-                                // field.onChange(value);
-                              }}
-                            />
-                          </div>
-                        )}
-                        <div className="flex">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedField(data);
-                              setLoadingImage(true);
-                              dispatch(
-                                updateAppState({
-                                  ...appState,
-                                  aiContent: {
-                                    ...appState.aiContent,
-                                    hero: {
-                                      ...appState.aiContent?.hero,
-                                      image: {
-                                        ...appState.aiContent?.hero?.image,
-                                        imageUrl: "",
-                                      },
-                                    },
+                      <ImageFieldContainer
+                        initialValue={
+                          appState?.aiContent?.hero?.image?.imageUrl ||
+                          BROKEN_IMAGE
+                        }
+                        onImageSet={(url) => {
+                          console.log("url", url);
+                          dispatch(
+                            updateAppState({
+                              ...appState,
+                              aiContent: {
+                                ...appState.aiContent,
+                                hero: {
+                                  ...appState.aiContent?.hero,
+                                  image: {
+                                    ...appState.aiContent?.hero?.image,
+                                    imageUrl: url,
                                   },
-                                }),
-                              );
-                              regenerateHeroImage(imageGenerationType).then(
-                                (image) => {
-                                  setLoadingImage(false);
-                                  dispatch(
-                                    updateAppState({
-                                      ...appState,
-                                      aiContent: {
-                                        ...appState.aiContent,
-                                        hero: {
-                                          ...appState.aiContent?.hero,
-                                          image: {
-                                            ...appState.aiContent?.hero?.image,
-                                            imageUrl: image,
-                                          },
-                                        },
-                                      },
-                                    }),
-                                  );
                                 },
-                              );
-                            }}
-                            className="flex items-center gap-2 "
-                          >
-                            Regenerate
-                            {loadingImage ? (
-                              <ImSpinner2 className="animate-spin text-lg text-black" />
-                            ) : (
-                              <ImPower className=" text-xs " />
-                            )}
-                          </button>
-                          <RegenerateOptions
-                            setType={setImageGenerationType}
-                            type={imageGenerationType}
-                            types={["Ai Generated", "Stored Image"]}
-                            title="Generation Type"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700">
-                            Image position
-                          </label>
-                          <div className="mt-3 px-5">
-                            <label className="block text-xs font-medium text-gray-700">
-                              Horizontal
-                            </label>
-                            <input
-                              type="range"
-                              min="0"
-                              max="100"
-                              value={
-                                appState.aiContent?.hero?.image
-                                  ?.horizontalPosition
-                              }
-                              onChange={(e) =>
-                                dispatch(
-                                  updateAppState({
-                                    ...appState,
-                                    aiContent: {
-                                      ...appState.aiContent,
-                                      hero: {
-                                        ...appState.aiContent?.hero,
-                                        image: {
-                                          ...appState.aiContent?.hero?.image,
-                                          horizontalPosition: e.target.value,
-                                        },
-                                      },
-                                    },
-                                  }),
-                                )
-                              }
-                              className="w-full"
-                            />
-                            <label className="block text-xs font-medium text-gray-700">
-                              Vertical
-                            </label>
-                            <input
-                              type="range"
-                              min="0"
-                              max="100"
-                              value={
-                                appState.aiContent?.hero?.image
-                                  ?.verticalPosition
-                              }
-                              onChange={(e) =>
-                                dispatch(
-                                  updateAppState({
-                                    ...appState,
-                                    aiContent: {
-                                      ...appState.aiContent,
-                                      hero: {
-                                        ...appState.aiContent?.hero,
-                                        image: {
-                                          ...appState.aiContent?.hero?.image,
-                                          verticalPosition: e.target.value,
-                                        },
-                                      },
-                                    },
-                                  }),
-                                )
-                              }
-                              className="w-full"
-                            />
-                          </div>
-                        </div>
-                      </div>
+                              },
+                            }),
+                          );
+                        }}
+                        onRegenerate={(image) => {
+                          dispatch(
+                            updateAppState({
+                              ...appState,
+                              aiContent: {
+                                ...appState.aiContent,
+                                hero: {
+                                  ...appState.aiContent?.hero,
+                                  image: {
+                                    ...appState.aiContent?.hero?.image,
+                                    imageUrl: image,
+                                  },
+                                },
+                              },
+                            }),
+                          );
+                        }}
+                        imagePosition={{
+                          horizontal:
+                            appState?.aiContent?.hero?.image
+                              ?.horizontalPosition ?? 0,
+                          vertical:
+                            appState?.aiContent?.hero?.image
+                              ?.verticalPosition ?? 0,
+                        }}
+                        setImagePosition={({ vertical, horizontal }) => {
+                          dispatch(
+                            updateAppState({
+                              ...appState,
+                              aiContent: {
+                                ...appState.aiContent,
+                                hero: {
+                                  ...appState.aiContent?.hero,
+                                  image: {
+                                    ...appState.aiContent?.hero?.image,
+                                    verticalPosition: vertical,
+                                    horizontalPosition: horizontal,
+                                  },
+                                },
+                              },
+                            }),
+                          );
+                        }}
+                      />
                     );
                   case "heading":
                     return (
