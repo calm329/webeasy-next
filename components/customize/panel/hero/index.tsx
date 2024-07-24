@@ -32,6 +32,7 @@ import { useSearchParams } from "next/navigation";
 import ResponsiveDialog from "@/components/ui/responsive-dialog";
 import ImagesListing from "@/components/ui/form/images-listing";
 import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 type TProps = {
   section: TSection;
   handleChange: (name: string, value: string) => void;
@@ -219,11 +220,11 @@ const HeroContent = (props: TProps) => {
                           </div>
                         </div>
 
-                        {appState.aiContent?.hero?.image?.show && (
+                        {!appState.generate.generating && (
                           <div>
                             <Uploader
                               defaultValue={
-                                appState.aiContent?.hero?.image?.imageUrl
+                                appState.aiContent?.hero?.image?.imageUrl || BROKEN_IMAGE
                               }
                               name={data}
                               label={""}

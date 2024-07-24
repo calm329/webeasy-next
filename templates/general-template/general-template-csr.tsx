@@ -300,7 +300,7 @@ export default function General(props: TProps) {
                   </div>
                 ))}
 
-                {appState.generate.generating &&
+                {!appState.generate.generating &&
                   Array.from({ length: 6 })?.map((_, i) => (
                     (services?.length??0) <i &&
                     <div className={`max-w-96 w-96`} key={i}>

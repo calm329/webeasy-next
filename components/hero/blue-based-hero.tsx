@@ -90,7 +90,7 @@ export function Hero(props: TProps) {
             }
           }}
         >
-          {appState.generate.generating ? (
+          {!appState.generate.generating ? (
             hero?.image?.show && (
               <Image
                 src={appState.aiContent.hero?.image?.imageUrl  || BROKEN_IMAGE}
