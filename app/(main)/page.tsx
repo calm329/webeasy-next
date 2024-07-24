@@ -55,7 +55,7 @@ export default function Home() {
         <PasswordForm />
       </ResponsiveDialog>
       <SiteHeader showNavigation={true} />
-      <div className="flex flex-col justify-center  gap-8 p-5 max-sm:py-0">
+      <div className="flex flex-col justify-center  gap-8 p-5 px-8 max-sm:py-0">
         <h1 className="text-6xl font-bold leading-normal max-md:text-3xl max-sm:text-2xl">
           Instant Online Presence Made Easy
         </h1>
@@ -64,7 +64,7 @@ export default function Home() {
         </p>
       </div>
       <div className="">
-        <div className="mx-10 border-b border-gray-200 max-sm:mx-5">
+        <div className="mx-8 border-b border-gray-200 max-sm:mx-5">
           <nav className=" flex " aria-label="Tabs">
             {sections.map((section) => (
               <button
