@@ -196,18 +196,19 @@ export default function WebsitesForm() {
               >
                 <BsTrash3 color="red" />
               </button>
-              <div className="flex h-full max-h-72 w-full items-center justify-center overflow-hidden rounded-t-lg">
-                <Image
+              <div className="flex h-full min-h-72 w-full items-center justify-center overflow-hidden rounded-t-lg">
+                <iframe
                   src={
                     site.type === "Amazon"
-                      ? JSON.parse(site?.aiResult)?.images?.primary?.Large
-                          ?.URL ?? ""
-                      : JSON.parse(site?.aiResult)?.hero?.image?.imageUrl ?? ""
+                      ? "/preview/amazon?preview_site=" + site.id
+                      : "/preview?preview_site=" + site.id
                   }
                   height={500}
                   width={500}
-                  className="h-full w-full object-cover"
-                  alt=""
+                  // className="scale-50"
+                  // alt=""
+                  title="preview"
+                  allowFullScreen
                 />
               </div>
               <div className="flex flex-col gap-5 p-5">
