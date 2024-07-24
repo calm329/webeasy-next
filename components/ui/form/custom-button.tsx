@@ -299,41 +299,79 @@ const CustomButton = (props: TProps) => {
             }}
           />
         </div>
-        <div className="flex flex-col ">
-          <label
-            htmlFor="website"
-            className="text-sm font-medium leading-6 text-gray-900 "
-          >
-            Website
-          </label>
-          <input
-            type="text"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            id={"website"}
-            placeholder="https://www.example.com"
-            defaultValue={data?.link ?? ""}
-            onChange={(e) => {
-              const url = e.target.value;
-              setData({ ...data, link: url });
+        {data?.type === "External" ? (
+          <div className="flex flex-col ">
+            <label
+              htmlFor="website"
+              className="text-sm font-medium leading-6 text-gray-900 "
+            >
+              Website
+            </label>
+            <input
+              type="text"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              id={"website"}
+              placeholder="https://www.example.com"
+              defaultValue={data?.link ?? ""}
+              onChange={(e) => {
+                const url = e.target.value;
+                setData({ ...data, link: url });
 
-              if (!validateURL(url)) {
-                setError("Please enter a valid URL.");
-              } else {
-                setError("");
-              }
+                if (!validateURL(url)) {
+                  setError("Please enter a valid URL.");
+                } else {
+                  setError("");
+                }
 
-              if (showForm.edit) {
-                handleChange(data.name, {
-                  ...{ ...data, link: url },
-                  fieldType: "button",
-                  section,
-                });
-              }
-            }}
-          />
-          {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
-        </div>
-        <button
+                if (showForm.edit) {
+                  handleChange(data.name, {
+                    ...{ ...data, link: url },
+                    fieldType: "button",
+                    section,
+                  });
+                }
+              }}
+            />
+            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+          </div>
+        ) : (
+          <div className="flex flex-col ">
+            <label
+              htmlFor="linktype"
+              className="text-sm font-medium leading-6 text-gray-900 "
+            >
+              Sections
+            </label>
+            <Select
+              // defaultValue={data?.type ?? ""}
+              // defaultValue={data?.type ?? "External"}
+              // onValueChange={(value) => {
+              //   setData({ ...data, type: value });
+              //   if (showForm.edit) {
+              //     handleChange(data?.name, {
+              //       ...{ ...data, type: value },
+              //       fieldType: "button",
+              //       section,
+              //     });
+              //   }
+              // }}
+            >
+              <SelectTrigger className="">
+                <SelectValue placeholder="Select a Section" />
+              </SelectTrigger>
+              {/* <SelectContent>
+                <SelectGroup>
+                  {linkTypes.map((type) => (
+                    <SelectItem value={type} key={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent> */}
+            </Select>
+          </div>
+        )}
+        {/* <button
           onClick={() => handleButtonSubmit(data.name)}
           type="button"
           className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
@@ -343,7 +381,7 @@ const CustomButton = (props: TProps) => {
             <ImSpinner2 className="animate-spin text-lg text-white" />
           )}
           Save
-        </button>
+        </button> */}
       </form>
     </div>
   );
