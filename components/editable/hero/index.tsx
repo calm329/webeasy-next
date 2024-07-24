@@ -205,12 +205,13 @@ const EditableHero = ({
                   </div>
                 </div>
 
-                {appState.aiContent.hero.image.imageUrl ? (
+                {!appState.generate.generating ? (
                   appState.aiContent.hero?.image?.show && (
                     <div
                       className={`right-2 h-full max-w-96 overflow-hidden py-2 max-md:w-full md:absolute ${appState.view === "Mobile" ? "w-full" : "w-1/4"}`}
                     >
-                      {isImage(appState.aiContent.hero.image.imageUrl) ? (
+                      {isImage(appState.aiContent.hero.image.imageUrl ||
+                            BROKEN_IMAGE) ? (
                         <Image
                           src={
                             appState.aiContent.hero.image.imageUrl ||
