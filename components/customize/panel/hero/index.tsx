@@ -242,6 +242,24 @@ const HeroContent = (props: TProps) => {
                             }),
                           );
                         }}
+                        initialSwitchChecked={appState?.aiContent?.hero?.image?.show}
+                        onSwitchChange={(checked)=>{
+                          dispatch(
+                            updateAppState({
+                              ...appState,
+                              aiContent: {
+                               ...appState.aiContent,
+                                hero: {
+                                  ...appState.aiContent?.hero,
+                                  image: {
+                                   ...appState.aiContent?.hero?.image,
+                                    show:checked,
+                                  },
+                                },
+                              },
+                            }),
+                          );
+                        }}
                       />
                     );
                   case "heading":
