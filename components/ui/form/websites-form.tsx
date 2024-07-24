@@ -185,7 +185,7 @@ export default function WebsitesForm() {
           {paginatedData?.map((site) => (
             <div
               key={site.id}
-              className="relative flex max-w-80 flex-col items-center justify-between rounded-lg border shadow"
+              className=" flex max-w-80 flex-col items-center justify-between rounded-lg border shadow"
             >
               <button
                 className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
@@ -196,16 +196,17 @@ export default function WebsitesForm() {
               >
                 <BsTrash3 color="red" />
               </button>
-              <div className="flex h-full min-h-72 w-full items-center justify-center overflow-hidden rounded-t-lg">
+              <div className="flex h-[500px]   items-center justify-center rounded-t-lg w-[1280px] scale-[0.24]  ">
                 <iframe
                   src={
                     site.type === "Amazon"
                       ? "/preview/amazon?preview_site=" + site.id
                       : "/preview?preview_site=" + site.id
                   }
-                  height={500}
-                  width={500}
+                  height={2000}
+                  width={1280}
                   // className="scale-50"
+                  className="w-[1280px] h-[2000px] absolute"
                   // alt=""
                   title="preview"
                   allowFullScreen
