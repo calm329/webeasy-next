@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { getSitesByUserId } from "@/lib/fetchers";
 import { selectedTemplate as ST } from '@/lib/store/slices/template-slice';
 import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+import { sectionsData as SD } from '@/lib/store/slices/section-slice';
 
 export default function SigninForm() {
   const { closeDialog } = useResponsiveDialog();
@@ -47,6 +48,8 @@ export default function SigninForm() {
   const pathname = usePathname();
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
+  const sections = useAppSelector(SD)
+  
   const encryptData = (email: string, password: string) => {
     const encryptedEmail = CryptoJS.AES.encrypt(email, "secretKey").toString();
     const encryptedPassword = CryptoJS.AES.encrypt(
@@ -90,7 +93,7 @@ export default function SigninForm() {
       }
 
       if (isSiteBuilderPage(pathname)) {
-        saveState(appState, dispatch,selectedTemplate?.id ?? "").then(() =>
+        saveState(appState, dispatch,selectedTemplate?.id ?? "",sections).then(() =>
           dispatch(clearPastAndFuture()),
         );
       } else if (sites && sites.length > 0) {

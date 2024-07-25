@@ -1280,36 +1280,46 @@ export async function saveState(
   appState: AppState,
   dispatch: any,
   templateId: string,
+  sections:any
 ) {
   try {
     const isCustom = location.pathname?.split("/")[1] === "custom";
     let data: any;
-    const sections = store.getState().sectionSlice.sections
+    const simplifiedSections = sections.map((section: any) => ({
+      id: section.id,
+      title: section.title,
+    }));
+
+    console.log("sections12",sections)
     if (isCustom) {
       data = {
-        aiResult: {...appState.aiContent,sections},
+        aiResult: appState.aiContent,
         font: appState.selectedFont,
         templateId: templateId,
+        sections:JSON.stringify(simplifiedSections)
       };
     } else {
       data = {
-        aiResult: {...appState.aiContent,sections},
+        aiResult: appState.aiContent,
         font: appState.selectedFont,
         posts: appState.iPosts,
         templateId: templateId,
-        
+        sections:JSON.stringify(simplifiedSections)
       };
     }
-    console.log("Saved state", appState);
-    await dispatch(
+    console.log("Saved state", data);
+    const res = await dispatch(
       updateStateSite({
         subdomain: appState.subdomain,
         data,
         keys: Object.keys(data),
       }),
     ).unwrap();
+    console.log("res",res)
     toast.success("Data saved successfully");
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export function extractASIN(url: string) {

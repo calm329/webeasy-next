@@ -102,6 +102,7 @@ model Site {
   logo       String?
   posts      String?
   aiResult   String
+  sections   String    @default("")
   font       String    @default("")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
 import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+import { sectionsData as SD } from '@/lib/store/slices/section-slice';
 
 const BackContent = () => {
   const { closeDialog} = useResponsiveDialog();
@@ -16,6 +17,7 @@ const BackContent = () => {
   const appState = useAppSelector(AS);
   const selectedTemplate = useAppSelector(ST);
   const router = useRouter();
+  const sections = useAppSelector(SD);
   return (
     <div className="rounded  p-4  text-center">
       <div className="mb-4 text-lg">
@@ -27,7 +29,7 @@ const BackContent = () => {
           className="mr-2 rounded bg-indigo-600 px-4 py-2 text-white"
           onClick={() => {
             closeDialog('back');
-            saveState(appState, dispatch, selectedTemplate?.id ?? "").then(
+            saveState(appState, dispatch, selectedTemplate?.id ?? "",sections).then(
               () => {
                 dispatch(clearPastAndFuture());
                 router.push("/dashboard");

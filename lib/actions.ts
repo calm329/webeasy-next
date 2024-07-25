@@ -240,6 +240,9 @@ export async function updateSite(
         case "title":
           newData["title"] = data[key];
           break;
+        case "sections":
+          newData["sections"] = data[key];
+          break;
         case "description":
           newData["description"] = data[key];
           break;
@@ -277,6 +280,11 @@ export async function updateSite(
       typeof newData.posts === "string"
         ? newData.posts
         : JSON.stringify(newData.posts);
+
+    newData.sections =
+      typeof newData.sections === "string"
+        ? newData.sections
+        : JSON.stringify(newData.sections);
 
     if (user) {
       newData["userId"] = user.id;

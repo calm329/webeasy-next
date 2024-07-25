@@ -189,6 +189,7 @@ const updateSite = createAsyncThunk(
     thunkApi,
   ) => {
     try {
+      console.log("hi")
       return thunkApi.fulfillWithValue(
         await SiteApi.update(subdomain, data, keys),
       );
