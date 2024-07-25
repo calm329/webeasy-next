@@ -1284,18 +1284,20 @@ export async function saveState(
   try {
     const isCustom = location.pathname?.split("/")[1] === "custom";
     let data: any;
+    const sections = store.getState().sectionSlice.sections
     if (isCustom) {
       data = {
-        aiResult: appState.aiContent,
+        aiResult: {...appState.aiContent,sections},
         font: appState.selectedFont,
         templateId: templateId,
       };
     } else {
       data = {
-        aiResult: appState.aiContent,
+        aiResult: {...appState.aiContent,sections},
         font: appState.selectedFont,
         posts: appState.iPosts,
         templateId: templateId,
+        
       };
     }
     console.log("Saved state", appState);
