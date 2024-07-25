@@ -66,6 +66,7 @@ export default function BasicTemplate(props: TProps) {
                             bgColor={aiContent?.colors?.secondary}
                             link={data.link ?? ""}
                             external={data.type === "External"}
+                            type={data.type}
                           />
                         </div>
                       ))}
@@ -104,6 +105,7 @@ export default function BasicTemplate(props: TProps) {
                               bgColor={aiContent?.colors?.secondary}
                               link={button.link ?? ""}
                               external={button.type === "External"}
+                              type={button.type}
                             />
                           </div>
                         ))}

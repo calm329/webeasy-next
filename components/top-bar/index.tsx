@@ -178,6 +178,7 @@ export default function TopBar(props: TopBarProps) {
                               editable ? false : data.type === "External"
                             }
                             appState={appState}
+                            type={data.type}
                           />
                         </div>
                       ))}
@@ -192,6 +193,7 @@ export default function TopBar(props: TopBarProps) {
                           bgColor={colors?.secondary}
                           link={editable ? "#" : data.link ?? ""}
                           external={data.type === "External"}
+                          type={data.type}
                         />
                       </div>
                     ))}

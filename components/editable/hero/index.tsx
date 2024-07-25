@@ -194,6 +194,7 @@ const EditableHero = ({
                                           : data.type === "External"
                                       }
                                       appState={appState}
+                                      type={data.type}
                                     />
                                   </button>
                                 ),
