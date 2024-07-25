@@ -143,7 +143,7 @@ export default function DomainForm() {
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
           <Search placeholder="Search for a domain name..." />
           <Link
-            href={"/settings/domain/search"}
+            href={"/dashboard/domain/search"}
             className="rounded border px-5 py-2 shadow"
           >
             Buy

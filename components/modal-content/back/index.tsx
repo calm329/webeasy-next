@@ -30,7 +30,7 @@ const BackContent = () => {
             saveState(appState, dispatch, selectedTemplate?.id ?? "").then(
               () => {
                 dispatch(clearPastAndFuture());
-                router.push("/settings/websites");
+                router.push("/dashboard");
               },
             );
           }}
@@ -48,7 +48,7 @@ const BackContent = () => {
                 status: "Loading Instagram ....",
               }),
             );
-            router.push("/settings/websites");
+            router.push("/dashboard");
           }}
         >
           Cancel

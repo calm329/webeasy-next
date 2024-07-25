@@ -1,30 +1,30 @@
 "use client";
 import WebsitesForm from "@/components/ui/form/websites-form";
+import SelectSourceContent from "@/components/ui/modal/select-source-modal";
 import SelectSourceModal from "@/components/ui/modal/select-source-modal";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { MdAnalytics, MdDomain } from "react-icons/md";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
 
 const tabs = [
-  { name: "My Websites", href: "/settings/websites", icon: GlobeAltIcon },
+  { name: "My Websites", href: "/dashboard", icon: GlobeAltIcon },
   { name: "Analytics", href: "#", icon: MdAnalytics },
-  { name: "Domains", href: "/settings/domain", icon: MdDomain },
-
+  { name: "Domains", href: "/dashboard/domain", icon: MdDomain },
 ];
 
 export default function MyWebsites() {
-  const [showMobileMenu, setMobileMenuOpen] = useState(false);
-  const [showSelectSourceModal, setSelectSourceModal] = useState(false);
+  const { openDialog } = useResponsiveDialog();
   const pathname = usePathname();
   return (
-    <>
-      <SelectSourceModal
-        open={showSelectSourceModal}
-        setOpen={setSelectSourceModal}
-      />
+    <div className="max-w-[83.5rem] mb-10 mx-auto px-5">
+      <ResponsiveDialog id="source">
+        <SelectSourceContent />
+      </ResponsiveDialog>
       <div className="">
         <div className="border-b border-gray-200 ">
           <nav className=" flex " aria-label="Tabs">
@@ -32,7 +32,7 @@ export default function MyWebsites() {
               <Link
                 href={tab.href}
                 key={tab.name}
-                className={`group w-fit px-5 inline-flex items-center border-b-2   py-4 text-sm font-medium ${pathname === tab.href ? "border-indigo-500 text-indigo-600" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} w-1/2 justify-center gap-2`}
+                className={`group inline-flex w-fit items-center border-b-2 px-5   py-4 text-sm font-medium ${pathname === tab.href ? "border-indigo-500 text-indigo-600" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} w-1/2 justify-center gap-2`}
                 // onClick={() => {
                 //   setSelectedSection(section.name);
                 //   setPage(1);
@@ -55,8 +55,7 @@ export default function MyWebsites() {
               <button
                 type="button"
                 onClick={() => {
-                  setSelectSourceModal(true);
-                  setMobileMenuOpen(false);
+                  openDialog("source");
                 }}
                 className="text-bold flex items-center justify-center rounded-lg border bg-indigo-500 px-5 py-2 text-white"
               >
@@ -70,6 +69,6 @@ export default function MyWebsites() {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }

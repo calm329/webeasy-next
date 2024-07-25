@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 import { MdAnalytics, MdDomain } from "react-icons/md";
 
 const tabs = [
-  { name: "My Websites", href: "/settings/websites", icon: GlobeAltIcon },
+  { name: "My Websites", href: "/dashboard", icon: GlobeAltIcon },
   { name: "Analytics", href: "#", icon: MdAnalytics },
-  { name: "Domains", href: "/settings/domain", icon: MdDomain },
+  { name: "Domains", href: "/dashboard/domain", icon: MdDomain },
 ];
 
 export default function DomainLayout({children}:{children:React.ReactNode}) {

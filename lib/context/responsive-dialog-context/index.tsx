@@ -13,7 +13,8 @@ export type DialogName =
   | "imageListing"
   | "publish"
   | "updateUser"
-  | "selectTemplate";
+  | "selectTemplate"
+  | "source";
 
 // Create a type for the dialog state
 type DialogState = Record<DialogName, boolean>;
@@ -64,6 +65,7 @@ export const ResponsiveDialogProvider: React.FC<
     publish: false,
     updateUser: false,
     selectTemplate: false,
+    source: false,
   };
 
   // State for managing the dialogs

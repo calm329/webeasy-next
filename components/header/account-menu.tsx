@@ -103,7 +103,7 @@ export default function AccountMenu(props: TProps) {
                           pastAppState.length === 0) ||
                         !isSiteBuilderPage(pathname)
                       ) {
-                        router.push("/settings/websites");
+                        router.push("/dashboard");
                       } else {
                         openDialog('leave');
                       }

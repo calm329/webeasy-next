@@ -94,7 +94,7 @@ export default function SigninForm() {
           dispatch(clearPastAndFuture()),
         );
       } else if (sites && sites.length > 0) {
-        router.push("/settings/websites");
+        router.push("/dashboard");
       } else {
         router.push("/");
       }

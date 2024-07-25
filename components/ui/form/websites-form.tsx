@@ -181,90 +181,92 @@ export default function WebsitesForm() {
           <Loader text="Fetching Websites Data" />
         </div>
       ) : (
-        <div className="flex flex-wrap gap-10 px-5 pt-10">
-          {paginatedData?.map((site) => (
-            <div
-              key={site.id}
-              className=" flex max-w-80 flex-col items-center justify-between rounded-lg border shadow"
-            >
-              <button
-                className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
-                onClick={() => {
-                  setSelectedItemId(site.id);
-                  openDialog("delete");
-                }}
+        <div className="flex flex-col gap-10">
+          <div className="mx-auto grid grid-cols-3 gap-10 px-5 pt-10 max-lg:grid-cols-2 max-md:grid-cols-1 max-sm:px-0">
+            {paginatedData?.map((site) => (
+              <div
+                key={site.id}
+                className=" relative flex flex-col  items-center justify-between overflow-hidden rounded-lg border shadow"
               >
-                <BsTrash3 color="red" />
-              </button>
-              <div className="flex h-[500px]   items-center justify-center rounded-t-lg w-[1280px] scale-[0.24]  ">
-                <iframe
-                  src={
-                    site.type === "Amazon"
-                      ? "/preview/amazon?preview_site=" + site.id
-                      : "/preview?preview_site=" + site.id
-                  }
-                  height={2000}
-                  width={1280}
-                  // className="scale-50"
-                  className="w-[1280px] h-[2000px] absolute"
-                  // alt=""
-                  title="preview"
-                  allowFullScreen
-                />
-              </div>
-              <div className="flex flex-col gap-5 p-5">
-                <div className="flex flex-col gap-2 ">
-                  <h2 className="line-clamp-1 text-xl font-bold">
-                    {site?.title}
-                  </h2>
-                  <p className="text-sm">{site?.description}</p>
-                </div>
-
-                <div className="flex gap-5">
-                  <button
-                    className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
-                    onClick={() => {
-                      if (templates) {
-                        dispatch(setSelectedTemplate(templates[0]));
-                      }
-                      dispatch(
-                        updateAppState({
-                          ...appState,
-                          view: "Desktop",
-                        }),
-                      );
-                      switch (site.type) {
-                        case "Custom":
-                          router.push("/custom/" + site.id);
-                          break;
-                        case "Instagram":
-                          redirectToAuth(site.id);
-                          break;
-                        case "Amazon":
-                          router.push("/amazon/" + site.id);
-                          break;
-                      }
-                    }}
-                  >
-                    <FaEdit />
-                    Edit
-                  </button>
-                  <Link
-                    href={
+                <button
+                  className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
+                  onClick={() => {
+                    setSelectedItemId(site.id);
+                    openDialog("delete");
+                  }}
+                >
+                  <BsTrash3 color="red" />
+                </button>
+                <div className="flex h-[500px]   w-[1400px] scale-[0.24] items-center justify-center rounded-t-lg max-xl:w-[1280px] ">
+                  <iframe
+                    src={
                       site.type === "Amazon"
                         ? "/preview/amazon?preview_site=" + site.id
                         : "/preview?preview_site=" + site.id
                     }
-                    target="_blank"
-                    className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
-                  >
-                    <FaExternalLinkAlt />
-                    Preview
-                  </Link>
+                    height={2000}
+                    width={1280}
+                    // className="scale-50"
+                    className="absolute h-[2000px] w-[1400px] max-xl:w-[1280px]"
+                    // alt=""
+                    title="preview"
+                    allowFullScreen
+                  />
+                </div>
+                <div className="flex flex-col gap-5 p-5">
+                  <div className="flex flex-col gap-2 ">
+                    <h2 className="line-clamp-1 text-xl font-bold">
+                      {site?.title}
+                    </h2>
+                    <p className="text-sm">{site?.description}</p>
+                  </div>
+
+                  <div className="flex gap-5">
+                    <button
+                      className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
+                      onClick={() => {
+                        if (templates) {
+                          dispatch(setSelectedTemplate(templates[0]));
+                        }
+                        dispatch(
+                          updateAppState({
+                            ...appState,
+                            view: "Desktop",
+                          }),
+                        );
+                        switch (site.type) {
+                          case "Custom":
+                            router.push("/custom/" + site.id);
+                            break;
+                          case "Instagram":
+                            redirectToAuth(site.id);
+                            break;
+                          case "Amazon":
+                            router.push("/amazon/" + site.id);
+                            break;
+                        }
+                      }}
+                    >
+                      <FaEdit />
+                      Edit
+                    </button>
+                    <Link
+                      href={
+                        site.type === "Amazon"
+                          ? "/preview/amazon?preview_site=" + site.id
+                          : "/preview?preview_site=" + site.id
+                      }
+                      target="_blank"
+                      className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
+                    >
+                      <FaExternalLinkAlt />
+                      Preview
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
           <Pagination>
             <PaginationContent>
               {page > 1 && (

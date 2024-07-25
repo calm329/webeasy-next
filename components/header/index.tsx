@@ -69,7 +69,7 @@ import {
 import WidgetForm from "../ui/form/widget-form";
 
 const navigation = [
-  { name: "Dashboard", href: "/settings/websites" },
+  { name: "Dashboard", href: "/dashboard" },
   // { name: "Analytics", href: "#" },
 ];
 
@@ -264,7 +264,7 @@ export default function SiteHeader(props: TProps) {
                 if (status === "authenticated") {
                   const sites = await getSitesByUserId();
                   const hasSites = sites.length > 0;
-                  const isSettingsPage = pathname.startsWith("/settings");
+                  const isSettingsPage = pathname.startsWith("/dashboard");
 
                   if (isSiteBuilderPage(pathname)) {
                     if (
