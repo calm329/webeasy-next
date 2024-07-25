@@ -40,8 +40,7 @@ type TProps = {
       position: number;
     }>
   >;
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>;
-  sections: TSectionsType[];
+
   id: string;
 };
 
@@ -56,8 +55,7 @@ const EditableHero = ({
   setShowForm,
   setSectionModal,
   setTriggerSection,
-  setSections,
-  sections,
+
   id,
 }: TProps) => {
   const dispatch = useAppDispatch();
@@ -98,12 +96,12 @@ const EditableHero = ({
   );
 
   return (
-    <section className="bg-gray-50 py-10">
+    <section className="bg-gray-50 py-10" id={id}>
       <div
         className={`group container relative mx-auto px-4 ${editable && "group rounded border-2 border-transparent hover:border-indigo-500"}`}
         onClick={() => handleClick("Hero")}
       >
-        <EditComponent sections={sections} setSections={setSections} id={id} />
+        <EditComponent  id={id} />
         <AddSectionButtons
                   setSectionModal={setSectionModal}
                   id={id}

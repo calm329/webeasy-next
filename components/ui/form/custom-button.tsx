@@ -35,10 +35,12 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { randomUUID } from "crypto";
 import { generateUniqueId, validateURL } from "@/lib/utils/function";
 import { Switch } from "@/components/ui/switch";
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 const linkTypes = ["External", "Section", "Page", "Email", "Phone"];
 
 const CustomButton = (props: TProps) => {
+  const sections = useAppSelector(SD);
   const { setIsOpen, setShowForm, section, showForm, handleChange } = props;
   const [loading, setLoading] = useState(false);
   const appState = useAppSelector(AS);
@@ -242,18 +244,35 @@ const CustomButton = (props: TProps) => {
             >
               {data?.type}s
             </label>
-            <Select>
-              <SelectTrigger className="">
-                <SelectValue placeholder={`Select a ${data?.type}`} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {/* Map your options here */}
-                  <SelectItem value="example1">Example 1</SelectItem>
-                  <SelectItem value="example2">Example 2</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            {data?.link && (
+              <Select
+                defaultValue={data.link}
+                onValueChange={(url) => {
+                  setData({ ...data, link: url });
+
+                  if (showForm.edit) {
+                    handleChange(data.name, {
+                      ...{ ...data, link: url },
+                      fieldType: "button",
+                      section,
+                    });
+                  }
+                }}
+              >
+                <SelectTrigger className="">
+                  <SelectValue placeholder={`Select a ${data?.type}`} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {sections.map((section) => (
+                      <SelectItem value={section.id} key={section.id}>
+                        {section.title}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
           </div>
         );
       case "Page":

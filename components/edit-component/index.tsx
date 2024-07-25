@@ -1,18 +1,14 @@
-import React, { Dispatch, Fragment, SetStateAction, useState } from "react";
-import { FaArrowDownLong, FaArrowUpLong, FaDeleteLeft } from "react-icons/fa6";
+import React, { Fragment, useState } from "react";
+import { FaArrowDownLong, FaArrowUpLong } from "react-icons/fa6";
 import { VscLayoutSidebarLeft, VscLayoutSidebarRight } from "react-icons/vsc";
 import { BsThreeDots } from "react-icons/bs";
-import { TSection, TSectionsType } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
+  moveSection,
+  duplicateSection,
+  removeSection,
+  sectionsData as SD,
+} from "@/lib/store/slices/section-slice";
 import {
   Menu,
   MenuButton,
@@ -20,82 +16,57 @@ import {
   MenuItems,
   Transition,
 } from "@headlessui/react";
-import { FaCopy, FaTrash } from "react-icons/fa";
 import { generateUniqueId } from "@/lib/utils/function";
+import { FaCopy, FaTrash } from "react-icons/fa";
 
 type TProps = {
-  setSections: Dispatch<
-    SetStateAction<
-      TSectionsType[]
-    >
-  >;
-  sections: TSectionsType[];
   id: string;
 };
 
 const EditComponent = (props: TProps) => {
-  const { sections, setSections, id } = props;
+  const { id } = props;
+  const sections = useAppSelector(SD);
+  const dispatch = useAppDispatch();
   const [isRightSide, setIsRightSide] = useState(true);
 
-  const moveSection = (direction: "up" | "down") => {
-    setSections((prevSections) => {
-      const currentIndex = prevSections.findIndex(
-        (section) => section.id === id,
-      );
-      if (currentIndex === -1) return prevSections;
-
-      const newSections = [...prevSections];
-      const swapIndex =
-        direction === "up" ? currentIndex - 1 : currentIndex + 1;
-
-      if (swapIndex < 0 || swapIndex >= newSections.length) return prevSections;
-
-      [newSections[currentIndex], newSections[swapIndex]] = [
-        newSections[swapIndex],
-        newSections[currentIndex],
-      ];
-
-      return newSections;
-    });
+  const handleMoveSection = (direction: "up" | "down") => {
+    dispatch(moveSection({ id, direction }));
   };
-  const duplicateSection = () => {
-    setSections((prevSections) => {
-      const currentIndex = prevSections.findIndex(
-        (section) => section.id === id,
-      );
-      if (currentIndex === -1) return prevSections;
 
-      const newSection = {
-        ...prevSections[currentIndex],
-        id: generateUniqueId(),
-      };
-
-      // Insert new section immediately after the original section
-      const newSections = [...prevSections];
-      newSections.splice(currentIndex + 1, 0, newSection);
-
-      return newSections;
-    });
+  const handleDuplicateSection = () => {
+    dispatch(duplicateSection(id));
   };
+
+  const handleRemoveSection = () => {
+    dispatch(removeSection(id));
+  };
+
   return (
     <div
-      className={`${isRightSide ? "right-10" : "left-10"} absolute -top-8 z-10 hidden gap-5 rounded-xl border bg-white p-5  shadow group-hover:flex`}
+      className={`${isRightSide ? "right-10" : "left-10"} absolute -top-8 z-10 hidden gap-5 rounded-xl border bg-white p-5 shadow group-hover:flex`}
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
       <button>Restyle</button>
-      {/* <button>Regenerate images</button> */}
-      <FaArrowUpLong className="cursor-pointer" onClick={() => moveSection("up")} />
-      <FaArrowDownLong className="cursor-pointer" onClick={() => moveSection("down")} />
+      <FaArrowUpLong
+        className="cursor-pointer"
+        onClick={() => handleMoveSection("up")}
+      />
+      <FaArrowDownLong
+        className="cursor-pointer"
+        onClick={() => handleMoveSection("down")}
+      />
       {isRightSide ? (
-        <VscLayoutSidebarLeft className="cursor-pointer"
+        <VscLayoutSidebarLeft
+          className="cursor-pointer"
           onClick={() => {
             setIsRightSide(false);
           }}
         />
       ) : (
-        <VscLayoutSidebarRight className="cursor-pointer"
+        <VscLayoutSidebarRight
+          className="cursor-pointer"
           onClick={() => {
             setIsRightSide(true);
           }}
@@ -118,18 +89,13 @@ const EditComponent = (props: TProps) => {
           leaveTo="transform opacity-0 scale-95"
         >
           <MenuItems
-            className={`absolute -right-5 top-8 z-20 mt-2 flex w-32 origin-top-right flex-col divide-y divide-gray-100 rounded-md bg-white text-center  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none `}
+            className={`absolute -right-5 top-8 z-20 mt-2 flex w-32 origin-top-right flex-col divide-y divide-gray-100 rounded-md bg-white text-center shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
           >
-            {/* <MenuItem>
-              <button className="p-2">Edit</button>
-            </MenuItem>
- */}
             <MenuItem>
               <button
                 className="flex items-center gap-2 p-2"
-                onClick={duplicateSection}
+                onClick={handleDuplicateSection}
               >
-                {" "}
                 <FaCopy size={15} />
                 Duplicate
               </button>
@@ -138,11 +104,7 @@ const EditComponent = (props: TProps) => {
             <MenuItem>
               <button
                 className="flex items-center gap-2 p-2"
-                onClick={() => {
-                  setSections((prevSections) =>
-                    prevSections.filter((section) => section.id !== id),
-                  );
-                }}
+                onClick={handleRemoveSection}
               >
                 <FaTrash size={15} />
                 Delete
@@ -151,24 +113,6 @@ const EditComponent = (props: TProps) => {
           </MenuItems>
         </Transition>
       </Menu>
-      {/* <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-         
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <span>Edit</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <span>Duplicate</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <span>Delete</span>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu> */}
     </div>
   );
 };

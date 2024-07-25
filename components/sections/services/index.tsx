@@ -28,8 +28,7 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>
-  sections:TSectionsType[]
+
   id:string
 };
 
@@ -41,8 +40,7 @@ const ServicesSection = ({
   setSectionModal,
   setTriggerSection,
   showForm,
-  sections,
-  setSections,
+
   id
 }: TProps) => {
   const appState = useAppSelector(AS);
@@ -90,7 +88,7 @@ const ServicesSection = ({
         } group relative bg-gray-100`}
         onClick={handleSectionClick}
       >
-          <EditComponent id={id} sections={sections} setSections={setSections}/>
+          <EditComponent id={id}/>
         <AddSectionButtons
           classNameUp="top-0"
           setSectionModal={setSectionModal}

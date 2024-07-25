@@ -58,15 +58,10 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<
-    SetStateAction<
-    TSectionsType[]
-    >
-  >;
-  sections: TSectionsType[];
+
   id: string;
 
-  initialSections:(() => TSectionsType | null)[]
+  initialSections: (() => TSectionsType | null)[];
 };
 
 const SectionForm = (props: TProps) => {
@@ -81,10 +76,9 @@ const SectionForm = (props: TProps) => {
     setSectionModal,
     setTriggerSection,
     showForm,
-    sections,
-    setSections,
+
     id,
-    initialSections
+    initialSections,
   } = props;
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -108,8 +102,6 @@ const SectionForm = (props: TProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -132,8 +124,6 @@ const SectionForm = (props: TProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -157,8 +147,6 @@ const SectionForm = (props: TProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -181,8 +169,6 @@ const SectionForm = (props: TProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -205,8 +191,6 @@ const SectionForm = (props: TProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -229,8 +213,6 @@ const SectionForm = (props: TProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -277,8 +259,6 @@ const SectionForm = (props: TProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -301,8 +281,6 @@ const SectionForm = (props: TProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -325,8 +303,6 @@ const SectionForm = (props: TProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -350,8 +326,6 @@ const SectionForm = (props: TProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -383,7 +357,8 @@ const SectionForm = (props: TProps) => {
   ];
 
   const filteredSections = newSections
-    .map((section) => section()).filter((section) => section !== null)
+    .map((section) => section())
+    .filter((section) => section !== null)
     .filter((section) =>
       section?.title?.toLowerCase()?.includes(searchQuery.toLowerCase()),
     );
@@ -411,17 +386,17 @@ const SectionForm = (props: TProps) => {
       <div className="grid max-h-[600px] grid-cols-2 gap-10 overflow-auto px-5 max-md:grid-cols-1">
         {filteredSections.map((section) => (
           <div
-            key={section?.id??''}
+            key={section?.id ?? ""}
             className="flex cursor-pointer gap-3 rounded border p-5 hover:bg-gray-50 max-lg:flex-col"
             onClick={() => {
               addSectionByTitle(
                 id,
                 {
-                  id: section?.id??"",
-                  title: section?.title??"",
-                  content: section?.content ??<></>,
-                  image:section?.image??"",
-                  description:section?.description ??""
+                  id: section?.id ?? "",
+                  title: section?.title ?? "",
+                  content: section?.content ?? <></>,
+                  image: section?.image ?? "",
+                  description: section?.description ?? "",
                 },
                 triggerSection?.position,
               );
@@ -429,8 +404,11 @@ const SectionForm = (props: TProps) => {
             }}
           >
             <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-bold">{section?.title??""}</h2>
-              <p className="text-xs">{section?.description ??"Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is"}</p>
+              <h2 className="text-xl font-bold">{section?.title ?? ""}</h2>
+              <p className="text-xs">
+                {section?.description ??
+                  "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is"}
+              </p>
             </div>
             <Image
               alt=""

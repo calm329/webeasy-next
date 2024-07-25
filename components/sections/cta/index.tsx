@@ -29,8 +29,7 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>
-  sections:TSectionsType[]
+
   id:string
 };
 
@@ -43,8 +42,7 @@ export default function CtaSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
-    sections,
-    setSections,
+
     id
   } = props;
   const appState = useAppSelector(AS);
@@ -81,7 +79,7 @@ export default function CtaSection(props: TProps) {
       className={`bg-white group relative w-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick("")}
     >
-      <EditComponent id={id} sections={sections} setSections={setSections}/>
+      <EditComponent id={id} />
       <AddSectionButtons
         id={id}
         setSectionModal={setSectionModal}

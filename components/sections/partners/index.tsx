@@ -37,8 +37,7 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>;
-  sections: TSectionsType[];
+
   id: string;
 };
 
@@ -50,8 +49,7 @@ const PartnersSection = ({
   setSectionModal,
   setTriggerSection,
   showForm,
-  sections,
-  setSections,
+
   id,
 }: TProps) => {
   const appState = useAppSelector(AS);
@@ -118,7 +116,7 @@ const PartnersSection = ({
         className={`group relative flex flex-col gap-5 text-left ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
         onClick={handleSectionClick}
       >
-        <EditComponent id={id} sections={sections} setSections={setSections} />
+        <EditComponent id={id} />
         <AddSectionButtons
           setSectionModal={setSectionModal}
           setTriggerSection={setTriggerSection}

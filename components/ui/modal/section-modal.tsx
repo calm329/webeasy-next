@@ -37,12 +37,7 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<
-    SetStateAction<
-    TSectionsType[]
-    >
-  >;
-  sections: TSectionsType[];
+
   id: string;
   initialSections:(() => TSectionsType | null)[]
 };
@@ -59,8 +54,7 @@ export default function SectionModal(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
-    sections,
-    setSections,
+
     id,
     initialSections
   } = props;
@@ -108,8 +102,7 @@ export default function SectionModal(props: TProps) {
                   editable={editable}
                   setIsOpen={setIsOpen}
                   setSection={setSection}
-                  sections={sections}
-                  setSections={setSections}
+             
                   id={id}
                 />
               </Dialog.Panel>

@@ -30,8 +30,7 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>
-  sections:TSectionsType[]
+
   id:string
 };
 
@@ -44,8 +43,7 @@ export default function NewsLetterSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
-    setSections,
-    sections,
+
     id,
   } = props;
 
@@ -92,7 +90,7 @@ export default function NewsLetterSection(props: TProps) {
       }`}
       onClick={() => handleClick()}
     >
-      <EditComponent id={id} sections={sections} setSections={setSections}/>
+      <EditComponent id={id}/>
       <AddSectionButtons
        id={id}
         setSectionModal={setSectionModal}

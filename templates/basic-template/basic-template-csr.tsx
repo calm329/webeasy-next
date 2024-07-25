@@ -37,6 +37,10 @@ import ImageGallerySection from "@/components/sections/image-gallery";
 import PartnersSection from "@/components/sections/partners";
 import { usePathname } from "next/navigation";
 import { generateUniqueId } from "../../lib/utils/function";
+import {
+  sectionsData as SD,
+  setSections,
+} from "@/lib/store/slices/section-slice";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -84,8 +88,9 @@ const BasicTemplate = (props: BasicTemplateProps) => {
     position: 0,
   });
   const pathname = usePathname();
-  const [sections, setSections] = useState<Array<TSectionsType>>([]);
+  // const [sections, setSections] = useState<Array<TSectionsType>>([]);
   const isCustom = pathname?.split("/")[1] === "custom";
+  const sections = useAppSelector(SD);
 
   const initialSections = [
     () => {
@@ -107,8 +112,6 @@ const BasicTemplate = (props: BasicTemplateProps) => {
             setSection={setSection}
             showForm={showForm}
             setShowForm={setShowForm}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -134,8 +137,6 @@ const BasicTemplate = (props: BasicTemplateProps) => {
             setSection={setSection}
             showForm={showForm}
             setShowForm={setShowForm}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -158,8 +159,6 @@ const BasicTemplate = (props: BasicTemplateProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -183,8 +182,6 @@ const BasicTemplate = (props: BasicTemplateProps) => {
               editable={editable}
               setIsOpen={setIsOpen}
               setSection={setSection}
-              sections={sections}
-              setSections={setSections}
             />
           ),
         };
@@ -202,8 +199,6 @@ const BasicTemplate = (props: BasicTemplateProps) => {
               setIsOpen={setIsOpen}
               setSection={setSection}
               setShowForm={setShowForm}
-              sections={sections}
-              setSections={setSections}
             />
           ),
         };
@@ -227,8 +222,6 @@ const BasicTemplate = (props: BasicTemplateProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -250,8 +243,6 @@ const BasicTemplate = (props: BasicTemplateProps) => {
             editable={editable}
             setIsOpen={setIsOpen}
             setSection={setSection}
-            sections={sections}
-            setSections={setSections}
           />
         ),
       };
@@ -261,27 +252,34 @@ const BasicTemplate = (props: BasicTemplateProps) => {
     .map((section) => section())
     .filter((section) => section !== null);
 
+  // Use useEffect to set initial sections if needed
   useEffect(() => {
-    setSections((prevSections) => {
-      if (prevSections.length === 0) {
-        // Ensure that `filteredSections` does not contain `null` values
-        return filteredSections.filter(
-          (section) => section !== null,
-        ) as TSectionsType[];
-      }
-      return prevSections;
-    });
-  }, [appState]);
+    dispatch(setSections(filteredSections));
+  }, []);
+  // useEffect(() => {
+  //   setSections((prevSections) => {
+  //     if (prevSections.length === 0) {
+  //       // Ensure that `filteredSections` does not contain `null` values
+  //       return filteredSections.filter(
+  //         (section) => section !== null,
+  //       ) as TSectionsType[];
+  //     }
+  //     return prevSections;
+  //   });
+  // }, [appState]);
 
+  // Update addSectionAtIndex function to use Redux
   const addSectionAtIndex = (index: number, newSection: TSectionsType) => {
     if (index >= 0 && index <= sections.length) {
-      setSections([
+      const updatedSections = [
         ...sections.slice(0, index),
         newSection,
         ...sections.slice(index),
-      ]);
+      ];
+      dispatch(setSections(updatedSections));
     }
   };
+
   console.log("sections", sections);
   const addSectionByTitle = (
     id: string,
@@ -316,8 +314,6 @@ const BasicTemplate = (props: BasicTemplateProps) => {
         editable={editable}
         setIsOpen={setIsOpen}
         setSection={setSection}
-        sections={sections}
-        setSections={setSections}
       />
     </div>
   );

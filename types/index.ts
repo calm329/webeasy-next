@@ -261,6 +261,7 @@ export type TBanner = {
 };
 
 export type THero = {
+  id?:string;
   heading: string;
   subheading: string;
   image: {

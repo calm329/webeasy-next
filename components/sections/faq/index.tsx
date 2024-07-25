@@ -33,8 +33,7 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>
-  sections:TSectionsType[]
+
   id:string
 };
 
@@ -47,9 +46,9 @@ export default function FaqSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
-    sections,
+
     id,
-    setSections
+   
   } = props;
 
   const appState = useAppSelector(AS);
@@ -93,7 +92,7 @@ export default function FaqSection(props: TProps) {
       className={`group relative w-full bg-white text-left ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick()}
     >
-      <EditComponent id={id} sections={sections} setSections={setSections}/>
+      <EditComponent id={id}/>
       <AddSectionButtons
         id={id}
         setSectionModal={setSectionModal}

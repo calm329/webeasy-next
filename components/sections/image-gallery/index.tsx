@@ -29,11 +29,9 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>
-  sections:TSectionsType[]
+
   id:string
 };
-generateUniqueId
 
 const ImageGallerySection = ({
   editable,
@@ -43,8 +41,7 @@ const ImageGallerySection = ({
   setSectionModal,
   setTriggerSection,
   showForm,
-  setSections,
-  sections,
+
   id,
 }: TProps) => {
   const appState = useAppSelector(AS);
@@ -121,7 +118,7 @@ const ImageGallerySection = ({
         className={`${editable && "group relative rounded-xl border-2 border-transparent hover:border-indigo-500"} container mb-20 mt-20`}
         onClick={handleClick}
       >
-            <EditComponent id={id} sections={sections} setSections={setSections}/>
+            <EditComponent id={id} />
         <AddSectionButtons
           classNameUp="top-0"
           setSectionModal={setSectionModal}

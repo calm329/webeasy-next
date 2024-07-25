@@ -34,22 +34,8 @@ export default function CTA(props: TProps) {
         );
       case "Section":
         return (
-          <a
-            href={`#${link}`}
-            className="block w-full rounded-full bg-blue-500 px-8 py-3.5 text-center text-lg font-bold text-white hover:bg-blue-600 focus:ring-4 focus:ring-blue-200"
-            style={{ backgroundColor: bgColor }}
-          >
-            {appState?.generate?.generating ? (
-              <TypewriterEffect text={text} />
-            ) : (
-              text
-            )}
-          </a>
-        );
-      case "Page":
-        return (
-          <Link href={link}>
-            <a
+          <Link href={`#${link}`} scroll={true}>
+            <button
               className="block w-full rounded-full bg-blue-500 px-8 py-3.5 text-center text-lg font-bold text-white hover:bg-blue-600 focus:ring-4 focus:ring-blue-200"
               style={{ backgroundColor: bgColor }}
             >
@@ -58,7 +44,22 @@ export default function CTA(props: TProps) {
               ) : (
                 text
               )}
-            </a>
+            </button>
+          </Link>
+        );
+      case "Page":
+        return (
+          <Link href={link}>
+            <button
+              className="block w-full rounded-full bg-blue-500 px-8 py-3.5 text-center text-lg font-bold text-white hover:bg-blue-600 focus:ring-4 focus:ring-blue-200"
+              style={{ backgroundColor: bgColor }}
+            >
+              {appState?.generate?.generating ? (
+                <TypewriterEffect text={text} />
+              ) : (
+                text
+              )}
+            </button>
           </Link>
         );
       case "Email":

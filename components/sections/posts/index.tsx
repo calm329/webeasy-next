@@ -16,14 +16,13 @@ type TProps = {
       show: boolean;
     }>
   >;
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>
-  sections:TSectionsType[]
+
   id:string
 };
 
 const PostsSection = (props: TProps) => {
   const appState = useAppSelector(AS);
-  const { editable, setIsOpen, setSection, setShowForm,sections,setSections,id } = props;
+  const { editable, setIsOpen, setSection, setShowForm,id } = props;
   const dispatch = useAppDispatch();
   return (
     <section className="relative group flex">
@@ -49,7 +48,7 @@ const PostsSection = (props: TProps) => {
             }
           }}
         >
-                <EditComponent id={id} sections={sections} setSections={setSections}/>
+                <EditComponent id={id} />
           <h2 className="sr-only">Posts</h2>
           {appState?.iPosts?.show && (
             <div className="flex flex-wrap gap-5">

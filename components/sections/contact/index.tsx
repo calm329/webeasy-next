@@ -33,8 +33,7 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>
-  sections:TSectionsType[]
+
   id:string
 };
 
@@ -47,8 +46,7 @@ export default function ContactSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
-    sections,
-    setSections,
+
     id
   } = props;
   const appState = useAppSelector(AS);
@@ -92,7 +90,7 @@ export default function ContactSection(props: TProps) {
       className={`group relative isolate w-full bg-white text-left ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick()}
     >
-      <EditComponent setSections={setSections} sections={sections} id={id}/>
+      <EditComponent id={id}/>
       <AddSectionButtons
         id={id}
         setSectionModal={setSectionModal}
