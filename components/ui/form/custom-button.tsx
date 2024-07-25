@@ -298,12 +298,6 @@ const CustomButton = (props: TProps) => {
                 const url = e.target.value;
                 setData({ ...data, link: url });
 
-                if (!validateURL(url)) {
-                  setError("Please enter a valid URL.");
-                } else {
-                  setError("");
-                }
-
                 if (showForm.edit) {
                   handleChange(data.name, {
                     ...{ ...data, link: url },
@@ -313,7 +307,6 @@ const CustomButton = (props: TProps) => {
                 }
               }}
             />
-            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
           </div>
         );
       case "Phone":
@@ -335,12 +328,6 @@ const CustomButton = (props: TProps) => {
                 const url = e.target.value;
                 setData({ ...data, link: url });
 
-                if (!validateURL(url)) {
-                  setError("Please enter a valid URL.");
-                } else {
-                  setError("");
-                }
-
                 if (showForm.edit) {
                   handleChange(data.name, {
                     ...{ ...data, link: url },
@@ -350,7 +337,6 @@ const CustomButton = (props: TProps) => {
                 }
               }}
             />
-            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
           </div>
         );
       default:
@@ -412,33 +398,36 @@ const CustomButton = (props: TProps) => {
           >
             Link type
           </label>
-          <Select
-            // defaultValue={data?.type ?? ""}
-            defaultValue={data?.type ?? "External"}
-            onValueChange={(value) => {
-              setData({ ...data, type: value });
-              if (showForm.edit) {
-                handleChange(data?.name, {
-                  ...{ ...data, type: value },
-                  fieldType: "button",
-                  section,
-                });
-              }
-            }}
-          >
-            <SelectTrigger className="">
-              <SelectValue placeholder="Select a Link Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {linkTypes.map((type) => (
-                  <SelectItem value={type} key={type}>
-                    {type}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          {data?.type && (
+            <Select
+              // defaultValue={data?.type ?? ""}
+              defaultValue={data?.type ?? "External"}
+              onValueChange={(value) => {
+                console.log("value", value);
+                setData({ ...data, type: value });
+                if (showForm.edit) {
+                  handleChange(data?.name, {
+                    ...{ ...data, type: value },
+                    fieldType: "button",
+                    section,
+                  });
+                }
+              }}
+            >
+              <SelectTrigger className="">
+                <SelectValue placeholder="Select a Link Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {linkTypes.map((type) => (
+                    <SelectItem value={type} key={type}>
+                      {type}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
         </div>
         <div className="flex flex-col ">
           <label
