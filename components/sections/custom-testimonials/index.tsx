@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import EditComponent from "@/components/edit-component";
 import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
+import { sectionsData as SD } from '@/lib/store/slices/section-slice';
 
 type TProps = {
   editable?: boolean;
@@ -62,16 +63,67 @@ const CustomTestimonial = ({
     }
   };
 
+  const sections = useAppSelector(SD);
+
+  // Find the section by ID and get the variation
+  const section = sections.find((section) => section.id === id);
+  const variation = section?.variation || 1;
+
+  const styles: {
+    [key: number]: {
+      container: string;
+      listContainer: string;
+      contentContainer: string;
+      listCard: string;
+    };
+  } = {
+    1: {
+      container: "",
+      listContainer: "flex flex-col gap-10",
+      contentContainer: "flex flex-col gap-5",
+      listCard: "flex flex-col gap-10",
+    },
+    2: {
+      container: "md:basis-1/2 lg:basis-1/3",
+      listContainer: "flex gap-10",
+      contentContainer: "flex flex-col gap-5",
+      listCard: "flex flex-col gap-10",
+    },
+    3: {
+      container: "",
+      listContainer: "grid grid-cols-2  gap-10 ",
+      contentContainer: "flex flex-col gap-5",
+      listCard: "flex  gap-10",
+    },
+    
+    4: {
+      container: "",
+      listContainer: "flex flex-row-reverse gap-10",
+      contentContainer: "flex flex-col gap-5",
+      listCard: "flex flex-row-reverse gap-10",
+    },
+    5: {
+      container: "md:basis-1/2 lg:basis-1/3",
+      listContainer: "flex gap-10",
+      contentContainer: "flex flex-col gap-5",
+      listCard: "flex flex-col gap-10",
+    },
+  };
+  console.log(variation)
+  const { container, listContainer, listCard, contentContainer } =
+    styles[5];
+
+
   const renderTestimonials = () => (
     <Carousel className="h-full w-full">
       <CarouselContent>
         {appState.aiContent.testimonials.list.map((testimonial) => (
-          <CarouselItem key={testimonial.id}>
+          <CarouselItem key={testimonial.id} className={container}>
             <button
               className="h-full w-full text-justify rounded-lg border border-gray-300 p-8 shadow-lg"
               onClick={handleClick}
             >
-              <div className="flex flex-col gap-5">
+              <div className={listCard}>
                 <div className="h-30 w-30 overflow-hidden">
                   <Image
                     src={testimonial.avatar || BROKEN_IMAGE}
@@ -81,8 +133,10 @@ const CustomTestimonial = ({
                     className="h-[100px] w-[100px] rounded-full object-cover"
                   />
                 </div>
+                <div className={contentContainer}>
                 <h3 className="text-3xl font-bold">{testimonial.name}</h3>
                 <p className="text-xl">{testimonial.content}</p>
+                </div>
               </div>
             </button>
           </CarouselItem>
