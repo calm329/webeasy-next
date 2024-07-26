@@ -4,10 +4,11 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import CustomContent from "@/lib/content/custom";
 import { useAppSelector } from "@/lib/store/hooks";
-import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useDispatch } from "react-redux";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
 import EditComponent from "@/components/edit-component";
+import { sectionsData as SD } from '@/lib/store/slices/section-slice';
 
 type TProps = {
   editable?: boolean;
@@ -30,7 +31,7 @@ type TProps = {
     show: boolean;
   };
 
-  id:string
+  id: string;
 };
 
 export default function CtaSection(props: TProps) {
@@ -43,18 +44,24 @@ export default function CtaSection(props: TProps) {
     setTriggerSection,
     showForm,
 
-    id
+    id,
   } = props;
   const appState = useAppSelector(AS);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  
-  const handleClick = (field:TFields) => {
+
+  const handleClick = (field: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("CTA");
       setIsOpen(true);
       setShowForm({ form: "", edit: "", show: false });
-      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          focusedField: field,
+          openedSlide: "Customize",
+        }),
+      );
     }
   };
 
@@ -74,9 +81,58 @@ export default function CtaSection(props: TProps) {
     });
   }, []);
 
+  const sections = useAppSelector(SD);
+
+  // Find the section by ID and get the variation
+  const section = sections.find((section) => section.id === id);
+  const variation = section?.variation || 1;
+
+  const styles: {
+    [key: number]: {
+      container: string;
+      listContainer: string;
+      contentContainer: string;
+      listCard: string;
+    };
+  } = {
+    1: {
+      container: "mx-auto max-w-2xl text-center",
+      listContainer: "",
+      contentContainer: "",
+      listCard: "",
+    },
+    2: {
+      container: "ml-auto mr-0 max-w-2xl text-center",
+      listContainer: "",
+      contentContainer: "",
+      listCard: "",
+    },
+    3: {
+      container: "ml-0 mr-auto max-w-2xl text-center",
+      listContainer: "",
+      contentContainer: "",
+      listCard: "",
+    },
+    4: {
+      container: "mx-auto max-w-2xl text-center",
+      listContainer: "",
+      contentContainer: " ",
+      listCard: "",
+    },
+    5: {
+      container: "mx-auto max-w-2xl text-center",
+      listContainer: "",
+      contentContainer: "",
+      listCard: "",
+    },
+  };
+
+  const { container, listContainer, listCard, contentContainer } =
+    styles[variation];
+
   return (
     <button
-      className={`bg-white group relative w-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`group relative w-full bg-white ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={() => handleClick("")}
     >
       <EditComponent id={id} />
@@ -86,14 +142,14 @@ export default function CtaSection(props: TProps) {
         setTriggerSection={setTriggerSection}
       />
       <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
+        <div className={container}>
           {loading ? (
             <>
-              <Skeleton className="h-8 w-3/4 mx-auto mb-4" />
-              <Skeleton className="h-6 w-1/2 mx-auto mb-8" />
+              <Skeleton className="mx-auto mb-4 h-8 w-3/4" />
+              <Skeleton className="mx-auto mb-8 h-6 w-1/2" />
               <div className="mt-10 flex items-center justify-center gap-x-6">
-                <Skeleton className="h-10 w-24 mx-2" />
-                <Skeleton className="h-10 w-24 mx-2" />
+                <Skeleton className="mx-2 h-10 w-24" />
+                <Skeleton className="mx-2 h-10 w-24" />
               </div>
             </>
           ) : (
@@ -127,7 +183,8 @@ export default function CtaSection(props: TProps) {
                   href="#"
                   className={`text-sm font-semibold leading-6 text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                 >
-                  {appState.aiContent?.cta?.link?.label ?? ""} <span aria-hidden="true">→</span>
+                  {appState.aiContent?.cta?.link?.label ?? ""}{" "}
+                  <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </>

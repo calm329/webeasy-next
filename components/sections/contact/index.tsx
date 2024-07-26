@@ -133,7 +133,7 @@ import {
     };
   
     const { container, listContainer, listCard, contentContainer } =
-      styles[4];
+      styles[variation];
   
   
     return (
