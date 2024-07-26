@@ -48,7 +48,7 @@ export type TSection =
   | "Image Gallery"
   | "Partners"
   | "Testimonials"
-  |any;
+  | any;
 
 export type TFields =
   | "logo"
@@ -98,7 +98,7 @@ export interface AppState {
   status: string;
   view: "Mobile" | "Tablet" | "Desktop";
   iPosts: TPosts;
-  aiContent: TAiContent
+  aiContent: TAiContent;
 
   editable: boolean;
   meta: {
@@ -108,17 +108,17 @@ export interface AppState {
 }
 
 export type TAiContent = {
-  cta:any;
-  faq:any
-  footer:any
-  header:any
-  heroSection:any
-  logoClouds:any
-  newsLetter:any
-  pricing:any
-  stats:any
-  team:any
-  testimonialsSection:any
+  cta: any;
+  faq: any;
+  footer: any;
+  header: any;
+  heroSection: any;
+  logoClouds: any;
+  newsLetter: any;
+  pricing: any;
+  stats: any;
+  team: any;
+  testimonialsSection: any;
   productId?: string;
   banner: TBanner;
   hero: THero;
@@ -127,7 +127,7 @@ export type TAiContent = {
     primary: string;
     secondary: string;
   };
-  blog:TBlogs,
+  blog: TBlogs;
   testimonials: {
     show: boolean;
     list: Array<{
@@ -135,7 +135,7 @@ export type TAiContent = {
       name: string;
       avatar: string;
       content: string;
-      gender:string
+      gender: string;
     }>;
   };
   partners: {
@@ -149,7 +149,7 @@ export type TAiContent = {
       link: string;
     }>;
   };
-  contact:TContact
+  contact: TContact;
   gallery: { show: boolean; list: Array<string> };
   features?: Array<TFeature>;
   description?: string;
@@ -167,26 +167,26 @@ export type TAiContent = {
   location?: string;
 };
 
-export type TBlogs ={
-  title:string,
-  description:string,
-  posts:Array<{
-    id: number,
-    title: string,
-    href: string,
-    description:string,
-    imageUrl:string,
-    date: string,
-    datetime: string,
-    category: { title:  string, href: string },
+export type TBlogs = {
+  title: string;
+  description: string;
+  posts: Array<{
+    id: number;
+    title: string;
+    href: string;
+    description: string;
+    imageUrl: string;
+    date: string;
+    datetime: string;
+    category: { title: string; href: string };
     author: {
-      name: string
-      role: string
-      href: string
-      imageUrl:string,
-    },
-  }>
-}
+      name: string;
+      role: string;
+      href: string;
+      imageUrl: string;
+    };
+  }>;
+};
 
 export type TPosts = {
   show: boolean;
@@ -215,18 +215,18 @@ export type TContact = {
   // image: string;
   title: string;
   description: string;
-  address:{
+  address: {
     label: string;
     value: string;
-  },
-  telephone:{
+  };
+  telephone: {
     label: string;
     value: string;
-  },
-  email:{
+  };
+  email: {
     label: string;
     value: string;
-  }
+  };
 };
 
 export type TServices = {
@@ -261,7 +261,7 @@ export type TBanner = {
 };
 
 export type THero = {
-  id?:string;
+  id?: string;
   heading: string;
   subheading: string;
   image: {
@@ -270,8 +270,8 @@ export type THero = {
     imageUrl: string;
     alt: string;
     show: boolean;
-    horizontalPosition?:number;
-    verticalPosition?:number;
+    horizontalPosition?: number;
+    verticalPosition?: number;
   };
   button: {
     show: boolean;
@@ -344,10 +344,11 @@ export type TSite = {
 };
 
 export type TSiteType = "Instagram" | "Custom" | "Amazon";
-export interface TSectionsType{
+export interface TSectionsType {
   id: string;
-      title: string;
-      content: JSX.Element;
-      image:string,
-      description:string
+  title: string;
+  content: JSX.Element;
+  image: string;
+  description: string;
+  variation?: number;
 }

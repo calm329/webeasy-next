@@ -7,6 +7,7 @@ import TypewriterEffect from "@/components/typewriter-effect";
 import { Skeleton } from "@/components/ui/skeleton";
 import ServiceCard from "@/components/ui/card/service-card";
 import EditComponent from "@/components/edit-component";
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;
@@ -29,7 +30,7 @@ type TProps = {
     show: boolean;
   };
 
-  id:string
+  id: string;
 };
 
 const ServicesSection = ({
@@ -41,7 +42,7 @@ const ServicesSection = ({
   setTriggerSection,
   showForm,
 
-  id
+  id,
 }: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
@@ -79,16 +80,58 @@ const ServicesSection = ({
     }
   };
 
+  const sections = useAppSelector(SD);
+
+  // Find the section by ID and get the variation
+  const section = sections.find((section) => section.id === id);
+  const variation = section?.variation || 1;
+
+  const styles: {
+    [key: number]: {
+      container: string;
+      listContainer: string;
+      listCard: string;
+    };
+  } = {
+    1: {
+      container: "mx-auto max-w-7xl rounded-3xl p-8 md:p-12 w-full",
+      listContainer: "-m-8 flex flex-wrap justify-center",
+      listCard: "",
+    },
+    2: {
+      container: "mx-auto max-w-7xl rounded-3xl p-8 md:p-12 w-full",
+      listContainer: "-m-8 flex flex-wrap justify-center gap-5",
+      listCard: "bg-white border-2 border-gray-500 rounded-xl shadow",
+    },
+    3: {
+      container: "mx-auto max-w-7xl rounded-3xl p-8 md:p-12 w-full",
+      listContainer: "-m-8 flex flex-col gap-5 justify-center",
+      listCard: "border-2 border-gray-500 rounded-xl shadow",
+    },
+    4: {
+      container: "mx-auto max-w-7xl rounded-3xl p-8 md:p-12 w-full",
+      listContainer: "-m-8 flex flex-col gap-5 justify-center",
+      listCard: "bg-white border-2 border-gray-500 rounded-xl shadow",
+    },
+    5: {
+      container: "mx-auto max-w-7xl rounded-3xl p-8 md:p-12 w-full",
+      listContainer: "-m-8 flex flex-wrap justify-center",
+      listCard: "",
+    },
+  };
+
+  const { container, listContainer, listCard } = styles[variation];
+
   return (
-    <section className="relative group flex justify-center items-center mt-10">
-    
+    <section className="group relative mt-10 flex items-center justify-center">
       <button
-        className={`mx-auto max-w-7xl rounded-3xl p-8 md:p-12 ${
-          editable && "rounded border-2 border-transparent hover:border-indigo-500"
+        className={`${container} ${
+          editable &&
+          "rounded border-2 border-transparent hover:border-indigo-500"
         } group relative bg-gray-100`}
         onClick={handleSectionClick}
       >
-          <EditComponent id={id}/>
+        <EditComponent id={id} />
         <AddSectionButtons
           classNameUp="top-0"
           setSectionModal={setSectionModal}
@@ -99,7 +142,8 @@ const ServicesSection = ({
           {appState.aiContent.services?.title ? (
             <button
               className={`mx-auto w-fit text-center text-2xl font-bold ${
-                editable && "rounded border-2 border-transparent hover:border-indigo-500"
+                editable &&
+                "rounded border-2 border-transparent hover:border-indigo-500"
               }`}
               onClick={handleFieldClick("title")}
             >
@@ -115,7 +159,8 @@ const ServicesSection = ({
           {appState.aiContent.services?.description ? (
             <button
               className={`mx-auto mb-6 mt-2 w-fit text-center ${
-                editable && "rounded border-2 border-transparent hover:border-indigo-500"
+                editable &&
+                "rounded border-2 border-transparent hover:border-indigo-500"
               }`}
               onClick={handleFieldClick("description")}
             >
@@ -132,22 +177,24 @@ const ServicesSection = ({
           )}
         </div>
 
-        <div className="-m-8 flex flex-wrap justify-center">
+        <div className={listContainer}>
           {appState.aiContent.services?.show &&
             appState.aiContent.services?.list?.map((service) => (
-              <ServiceCard
-                id={service.id}
-                key={service.name}
-                name={service.name}
-                description={service.description}
-                color={appState.aiContent.colors?.primary}
-                editable={editable}
-                setIsOpen={setIsOpen}
-                setSection={setSection}
-                showForm={showForm}
-                setShowForm={setShowForm}
-                appState={appState}
-              />
+              <div key={service?.id} className={listCard}>
+                <ServiceCard
+                  id={service.id}
+                  key={service.name}
+                  name={service.name}
+                  description={service.description}
+                  color={appState.aiContent.colors?.primary}
+                  editable={editable}
+                  setIsOpen={setIsOpen}
+                  setSection={setSection}
+                  showForm={showForm}
+                  setShowForm={setShowForm}
+                  appState={appState}
+                />
+              </div>
             ))}
 
           {appState?.generate?.generating &&
@@ -157,7 +204,8 @@ const ServicesSection = ({
                   <div
                     key={i}
                     className={`w-full p-8 md:w-1/3 ${
-                      editable && "rounded border-2 border-transparent hover:border-indigo-500"
+                      editable &&
+                      "rounded border-2 border-transparent hover:border-indigo-500"
                     }`}
                   >
                     <div className="-m-3 flex flex-wrap">

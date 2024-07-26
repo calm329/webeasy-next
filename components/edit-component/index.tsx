@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Dispatch, Fragment, useState } from "react";
 import { FaArrowDownLong, FaArrowUpLong } from "react-icons/fa6";
 import { VscLayoutSidebarLeft, VscLayoutSidebarRight } from "react-icons/vsc";
 import { BsThreeDots } from "react-icons/bs";
@@ -8,6 +8,7 @@ import {
   duplicateSection,
   removeSection,
   sectionsData as SD,
+  changeVariation
 } from "@/lib/store/slices/section-slice";
 import {
   Menu,
@@ -21,6 +22,7 @@ import { FaCopy, FaTrash } from "react-icons/fa";
 
 type TProps = {
   id: string;
+
 };
 
 const EditComponent = (props: TProps) => {
@@ -41,6 +43,11 @@ const EditComponent = (props: TProps) => {
     dispatch(removeSection(id));
   };
 
+  const handleRestyleSection = () => {
+    const variation = Math.floor(Math.random() * 5) + 1
+    dispatch(changeVariation({id,variation}));
+  };
+
   return (
     <div
       className={`${isRightSide ? "right-10" : "left-10"} absolute -top-8 z-10 hidden gap-5 rounded-xl border bg-white p-5 shadow group-hover:flex`}
@@ -48,7 +55,7 @@ const EditComponent = (props: TProps) => {
         e.stopPropagation();
       }}
     >
-      <button>Restyle</button>
+      <button onClick={handleRestyleSection}>Restyle</button>
       <FaArrowUpLong
         className="cursor-pointer"
         onClick={() => handleMoveSection("up")}

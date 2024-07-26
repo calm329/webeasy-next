@@ -73,11 +73,29 @@ const sectionsSlice = createSlice({
 
       state.sections = newSections;
     },
+    changeVariation(
+      state,
+      action: PayloadAction<{ id: string; variation: number }>,
+    ) {
+      const index = state.sections.findIndex(
+        (section) => section.id === action.payload.id,
+      );
+      if (index !== -1) {
+        state.sections[index].variation = action.payload.variation;
+      }
+    },
   },
 });
 
-export const { setSections, addSection, updateSection, removeSection,duplicateSection,moveSection } =
-  sectionsSlice.actions;
+export const {
+  setSections,
+  addSection,
+  updateSection,
+  removeSection,
+  duplicateSection,
+  moveSection,
+  changeVariation,
+} = sectionsSlice.actions;
 
 export const sectionsData = (state: RootState) => state.sectionSlice.sections;
 
