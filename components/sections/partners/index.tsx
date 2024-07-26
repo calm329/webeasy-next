@@ -16,6 +16,7 @@ import AddSectionButtons from "@/components/add-section/buttons";
 import { TSection, TSectionsType } from "@/types";
 import EditComponent from "@/components/edit-component";
 import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;
@@ -73,6 +74,55 @@ const PartnersSection = ({
 
   let contentToRender;
 
+  const sections = useAppSelector(SD);
+
+  // Find the section by ID and get the variation
+  const section = sections.find((section) => section.id === id);
+  const variation = section?.variation || 1;
+
+  const styles: {
+    [key: number]: {
+      container: string;
+      listContainer: string;
+      contentContainer: string;
+      listCard: string;
+    };
+  } = {
+    1: {
+      container: "flex flex-col gap-5 text-left ",
+      listContainer: "flex gap-10",
+      contentContainer: "flex flex-col gap-5",
+      listCard: "relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl",
+    },
+    2: {
+      container: "flex  gap-10 text-left justify-between w-full  items-center",
+      listContainer: "grid grid-cols-2  gap-10 ",
+      contentContainer: "flex flex-col gap-5 w-1/2 ",
+      listCard: "relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl",
+    },
+    3: {
+      container: "flex flex-col gap-5 text-center ",
+      listContainer: "flex gap-10",
+      contentContainer: "flex flex-col gap-5",
+      listCard: "relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl",
+    },
+    4: {
+      container: "flex  gap-10 text-left flex-row-reverse justify-between w-full  items-center",
+      listContainer: "grid grid-cols-2  gap-10 ",
+      contentContainer: "flex flex-col gap-5 w-1/2 ",
+      listCard: "relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl",
+    },
+    5: {
+      container: "flex flex-col gap-5 text-left ",
+      listContainer: "flex gap-10",
+      contentContainer: "flex flex-col gap-5",
+      listCard: "relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl",
+    },
+  };
+
+  const { container, listContainer, listCard, contentContainer } =
+    styles[variation];
+
   if (!partnersContent) {
     contentToRender = (
       <div className="flex flex-col gap-5">
@@ -113,7 +163,7 @@ const PartnersSection = ({
   } else {
     contentToRender = (
       <button
-        className={`group relative flex flex-col gap-5 text-left ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+        className={`${container} ${editable && " group relative rounded border-2 border-transparent hover:border-indigo-500"}`}
         onClick={handleSectionClick}
       >
         <EditComponent id={id} />
@@ -122,18 +172,20 @@ const PartnersSection = ({
           setTriggerSection={setTriggerSection}
           id={id}
         />
-        <h2 className="text-3xl font-bold text-gray-900">
-          {partnersContent.title}
-        </h2>
-        <p>{partnersContent.description}</p>
-        <div className="inline-edit my-10 flex-1 px-5 md:px-6">
+        <div className={contentContainer}>
+          <h2 className="text-3xl font-bold text-gray-900">
+            {partnersContent.title}
+          </h2>
+          <p>{partnersContent.description}</p>
+        </div>
+        <div className="inline-edit  flex-1 px-5 md:px-6">
           {partnersContent.list.length <= 5 ? (
             <div className="flex w-full overflow-auto">
-              <div className="flex gap-10">
+              <div className={listContainer}>
                 {partnersContent.list.map((src, index) => (
                   <div
                     key={src.id}
-                    className="relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl"
+                    className={listCard}
                   >
                     <Image
                       className=" aspect-1 object-contain  grayscale transition-all duration-300 hover:grayscale-0"
