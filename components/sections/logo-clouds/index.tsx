@@ -78,7 +78,7 @@ export default function LogoSection(props: TProps) {
       className={`group w-full relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={()=>handleClick()}
     >
-      <EditComponent id={id} sections={sections} setSections={setSections}/>
+      <EditComponent id={id}/>
       <AddSectionButtons
         id={id}
         setSectionModal={setSectionModal}

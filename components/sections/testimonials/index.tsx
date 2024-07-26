@@ -91,7 +91,7 @@ export default function TestimonialSection(props: TProps) {
       className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} group relative isolate my-10 w-full overflow-visible bg-white px-6 py-24 sm:py-32 lg:px-8`}
       onClick={() => handleClick()}
     >
-      <EditComponent id={id} sections={sections} setSections={setSections}/>
+      <EditComponent id={id} />
       <AddSectionButtons
         id={id}
         setSectionModal={setSectionModal}
