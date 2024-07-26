@@ -124,7 +124,7 @@ const CustomPartnerLogo = (props: TProps) => {
   console.log("data", data);
   return (
     <div
-      className={`h-[55vh] ${showLinks ? "max-h-[600px]" : "max-h-[500px]"} overflow-auto`}
+      className={`h-fit ${showLinks ? "max-h-[600px]" : "max-h-[500px]"} overflow-auto`}
     >
       <div className=" border-b px-4 py-6 sm:px-6">
         <div className="flex items-center justify-between">
