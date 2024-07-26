@@ -4,7 +4,7 @@ import CustomWebsiteForm from "../../../components/ui/form/custom-website-form";
 export default function Example() {
   return (
     <div className="relative isolate overflow-hidden bg-white">
-      <div className="mx-auto max-w-7xl px-5 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 ">
+      <div className="mx-auto max-w-7xl px-5 pb-24 pt-5 sm:pb-32 lg:flex lg:px-8 ">
         <div className="mx-auto  max-w-3xl lg:mx-0 lg:flex-shrink-0 ">
           {/* <Image src={tailwindIcon} alt="Your Company" className="h-11 ml-auto" /> */}
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
