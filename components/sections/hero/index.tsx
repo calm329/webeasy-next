@@ -10,6 +10,7 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
 import EditComponent from "@/components/edit-component";
 import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;
@@ -32,7 +33,7 @@ type TProps = {
     show: boolean;
   };
 
-  id:string
+  id: string;
 };
 
 export default function HeroSection(props: TProps) {
@@ -84,12 +85,61 @@ export default function HeroSection(props: TProps) {
     });
   }, []);
 
+  const sections = useAppSelector(SD);
+
+  // Find the section by ID and get the variation
+  const section = sections.find((section) => section.id === id);
+  const variation = section?.variation || 1;
+
+  const styles: {
+    [key: number]: {
+      container: string;
+      listContainer: string;
+      contentContainer: string;
+      listCard: string;
+    };
+  } = {
+    1: {
+      contentContainer: "",
+      listContainer: "",
+      container: "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40 gap-10 justify-center items-center",
+      listCard: "",
+    },
+    2: {
+      contentContainer: "",
+      listContainer: "",
+      container: "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-col lg:px-8 lg:py-40 gap-10 justify-center items-center",
+      listCard: "",
+    },
+    3: {
+      contentContainer: "",
+      listContainer: "",
+      container: "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-col-reverse lg:px-8 lg:py-40 gap-10 justify-center items-center",
+      listCard: "",
+    },
+    4: {
+      contentContainer: "",
+      listContainer: "",
+      container: "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-row-reverse lg:px-8 lg:py-40 gap-10 justify-center items-center",
+      listCard: "",
+    },
+    5: {
+      contentContainer: "",
+      listContainer: "",
+      container: "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40 gap-10 justify-center items-center",
+      listCard: "",
+    },
+  };
+
+  const { container, listContainer, listCard, contentContainer } =
+    styles[variation];
+
   return (
     <button
       className="group relative isolate w-full bg-white text-left"
       onClick={() => handleClick()}
     >
-      <EditComponent id={id}/>
+      <EditComponent id={id} />
       <AddSectionButtons
         id={id}
         setSectionModal={setSectionModal}
@@ -118,7 +168,7 @@ export default function HeroSection(props: TProps) {
           strokeWidth={0}
         />
       </svg>
-      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
+      <div className={container}>
         <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
           <h1
             className={`mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -128,7 +178,7 @@ export default function HeroSection(props: TProps) {
             }}
           >
             {loading ? (
-              <Skeleton className="h-10 w-3/4 mb-4" />
+              <Skeleton className="mb-4 h-10 w-3/4" />
             ) : (
               appState.aiContent?.heroSection?.title ?? ""
             )}
@@ -141,7 +191,7 @@ export default function HeroSection(props: TProps) {
             }}
           >
             {loading ? (
-              <Skeleton className="h-6 w-3/4 mb-4" />
+              <Skeleton className="mb-4 h-6 w-3/4" />
             ) : (
               appState.aiContent?.heroSection?.description ?? ""
             )}
