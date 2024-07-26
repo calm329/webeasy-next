@@ -4,15 +4,16 @@ import {
   PhoneIcon,
 } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import { TFields, TSection, TSectionsType } from '@/types';
+import { TFields, TSection, TSectionsType } from "@/types";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddSectionButtons from "@/components/add-section/buttons";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import CustomContent from "@/lib/content/custom";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
 import EditComponent from "@/components/edit-component";
 import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
+import { sectionsData as SD } from '@/lib/store/slices/section-slice';
 
 type TProps = {
   editable?: boolean;
@@ -35,9 +36,8 @@ type TProps = {
     show: boolean;
   };
 
-  id:string
-}
-
+  id: string;
+};
 
 export default function HeaderSection(props: TProps) {
   const {
@@ -48,7 +48,7 @@ export default function HeaderSection(props: TProps) {
     setSectionModal,
     setTriggerSection,
     showForm,
- 
+
     id,
   } = props;
 
@@ -62,7 +62,13 @@ export default function HeaderSection(props: TProps) {
       setIsOpen(true);
 
       setShowForm({ form: "", edit: "", show: false });
-      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          focusedField: field,
+          openedSlide: "Customize",
+        }),
+      );
     }
   };
 
@@ -82,9 +88,62 @@ export default function HeaderSection(props: TProps) {
     });
   }, []);
 
+  const sections = useAppSelector(SD);
+  
+  // Find the section by ID and get the variation
+  const section = sections.find((section) => section.id === id);
+  const variation = section?.variation || 1;
+
+  const styles: {
+    [key: number]: {
+      container: string;
+      listContainer: string;
+      contentContainer: string;
+      listCard: string;
+    };
+  } = {
+    1: {
+      contentContainer: "mx-auto max-w-2xl lg:mx-0",
+      listContainer: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
+      container: "mx-auto max-w-7xl px-6 lg:px-8",
+      listCard: "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
+    },
+    2: {
+      contentContainer: "mx-auto max-w-2xl lg:mx-0",
+      listContainer: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
+      container: "mx-auto max-w-7xl px-6 lg:px-8 text-center",
+      listCard: "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
+    },
+    3: {
+      contentContainer: "mx-auto max-w-2xl lg:mx-0",
+      listContainer: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
+      container: "flex gap-10 mx-auto items-center max-w-7xl px-6 lg:px-8",
+      listCard: "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
+    },
+    4: {
+      contentContainer: "mx-auto max-w-2xl lg:mx-0",
+      listContainer: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
+      container: "flex gap-10 flex-row-reverse mx-auto items-center max-w-7xl px-6 lg:px-8",
+      listCard: "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
+    },
+    5: {
+      contentContainer: "mx-auto max-w-2xl lg:mx-0",
+      listContainer: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
+      container: "flex flex-col-reverse gap-10 mx-auto items-center max-w-7xl px-6 lg:px-8",
+      listCard: "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
+    },
+  };
+
+  const { container, listContainer, listCard, contentContainer } =
+    styles[variation];
+
+
   return (
-    <button className="text-left w-full overflow-visible relative group isolate  bg-gray-900 py-24 sm:py-32" onClick={() => handleClick()}>
-      <EditComponent id={id}/>
+    <button
+      className="group relative mx-auto isolate w-full overflow-visible bg-gray-900  py-24 text-left sm:py-32"
+      onClick={() => handleClick()}
+    >
+      <EditComponent id={id} />
       <AddSectionButtons
         id={id}
         setSectionModal={setSectionModal}
@@ -115,51 +174,59 @@ export default function HeaderSection(props: TProps) {
           className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
         />
       </div>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className={`text-4xl font-bold tracking-tight text-white sm:text-6xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      <div className={container}>
+        <div className={contentContainer}>
+          <h2
+            className={`text-4xl font-bold tracking-tight text-white sm:text-6xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             onClick={(e) => {
               e.stopPropagation();
               handleClick("title");
             }}
           >
-            {loading ? <Skeleton className="h-6 w-3/4 mb-2" /> : appState.aiContent?.header?.title ?? ""}
+            {loading ? (
+              <Skeleton className="mb-2 h-6 w-3/4" />
+            ) : (
+              appState.aiContent?.header?.title ?? ""
+            )}
           </h2>
-          <p className={`mt-6 text-lg leading-8 text-gray-300 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+          <p
+            className={`mt-6 text-lg leading-8 text-gray-300 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
             onClick={(e) => {
               e.stopPropagation();
               handleClick("description");
             }}
           >
-            {loading ? <Skeleton className="h-4 w-3/4 mb-2" /> : appState.aiContent?.header?.description ?? ""}
+            {loading ? (
+              <Skeleton className="mb-2 h-4 w-3/4" />
+            ) : (
+              appState.aiContent?.header?.description ?? ""
+            )}
           </p>
         </div>
-        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8">
-          {loading ? (
-            Array.from({ length: 3 }).map((_, idx) => (
-              <Skeleton key={idx} className="h-40 w-full rounded-xl" />
-            ))
-          ) : (
-            (appState.aiContent?.header?.list ?? []).map((card: any) => (
-              <div
-                key={card.name}
-                className={`flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowForm({ form: "Card", edit: card.id, show: true });
-                }}
-              >
-                {/* <card.icon
+        <div className={listContainer}>
+          {loading
+            ? Array.from({ length: 3 }).map((_, idx) => (
+                <Skeleton key={idx} className="h-40 w-full rounded-xl" />
+              ))
+            : (appState.aiContent?.header?.list ?? []).map((card: any) => (
+                <div
+                  key={card.name}
+                  className={`${listCard} ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowForm({ form: "Card", edit: card.id, show: true });
+                  }}
+                >
+                  {/* <card.icon
                   aria-hidden="true"
                   className="h-7 w-5 flex-none text-indigo-400"
                 /> */}
-                <div className="text-base leading-7">
-                  <h3 className="font-semibold text-white">{card.name}</h3>
-                  <p className="mt-2 text-gray-300">{card.description}</p>
+                  <div className="text-base leading-7">
+                    <h3 className="font-semibold text-white">{card.name}</h3>
+                    <p className="mt-2 text-gray-300">{card.description}</p>
+                  </div>
                 </div>
-              </div>
-            ))
-          )}
+              ))}
         </div>
       </div>
     </button>
