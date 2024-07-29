@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 
 import { RootState } from "..";
 import SiteApi from "@/lib/api/site-api";
@@ -22,14 +22,61 @@ type TInitialState = {
 };
 
 const initialSite: AppState = {
-  id:"",
+  id: "",
+  generate: {
+    progress: 0,
+    generating: false,
+    field: null,
+  },
   openedSlide: null,
   focusedField: null,
   selectedFont: "",
   subdomain: "",
   status: "Loading",
-  iPosts: { limit: 20, show: true, list: [] },
+  iPosts: { limit: 20, show: true, list: [], showHash: true },
   aiContent: {
+    cta: null,
+    faq: null,
+    footer: null,
+    header: null,
+    heroSection: null,
+    logoClouds: null,
+    newsLetter: null,
+    pricing: null,
+    stats: null,
+    team: null,
+    testimonialsSection: null,
+    contact: {
+      title: "",
+      description: "",
+      address: {
+        label: "",
+        value: "",
+      },
+      telephone: {
+        label: "",
+        value: "",
+      },
+      email: {
+        label: "",
+        value: "",
+      },
+    },
+    blog: {
+      title: "",
+      description: "",
+      posts: [],
+    },
+    partners: {
+      description: "",
+      list: [],
+      show: true,
+      title: "",
+    },
+    gallery: {
+      show: true,
+      list: [],
+    },
     banner: {
       businessName: "",
       button: { show: true, list: [] },
@@ -62,8 +109,12 @@ const initialSite: AppState = {
       list: [],
       title: "",
     },
-    businessType:"",
-    location:""
+    testimonials: {
+      show: true,
+      list: [],
+    },
+    businessType: "",
+    location: "",
   },
   view: "Desktop",
   editable: true,
@@ -120,33 +171,6 @@ const fetchSitesByUser = createAsyncThunk(
   },
 );
 
-//create site
-// const createSite = createAsyncThunk(
-//   "site/create",
-//   async (
-//     {
-//       aiResult,
-//       posts,
-//       accessToken,
-//       userId,
-//     }: {
-//       aiResult: string;
-//       posts: string;
-//       accessToken: string;
-//       userId: string;
-//     },
-//     thunkApi,
-//   ) => {
-//     try {
-//       return thunkApi.fulfillWithValue(
-//         await SiteApi.create({ aiResult, posts, accessToken, userId }),
-//       );
-//     } catch (error) {
-//       return thunkApi.rejectWithValue(error);
-//     }
-//   },
-// );
-
 //update site
 const updateSite = createAsyncThunk(
   "site/update",
@@ -165,6 +189,7 @@ const updateSite = createAsyncThunk(
     thunkApi,
   ) => {
     try {
+      console.log("hi");
       return thunkApi.fulfillWithValue(
         await SiteApi.update(subdomain, data, keys),
       );
@@ -205,7 +230,17 @@ const siteSlice = createSlice({
         JSON.stringify(newState.aiContent) !==
         JSON.stringify(present.aiContent);
 
-      if (isStateDifferent && present.status === "Done") {
+      let hasRequiredFields = false;
+
+      if (
+        present.aiContent?.hero?.image?.imageUrl &&
+        present.aiContent?.banner?.logo?.link
+      ) {
+        hasRequiredFields = true;
+      }
+      console.log("hasRequiredFields", hasRequiredFields);
+      if (isStateDifferent && present.status === "Done" && hasRequiredFields) {
+        console.log("hello", current(present.aiContent), newState.aiContent);
         past.push(present);
 
         // Ensure not to exceed the maximum history length
@@ -243,9 +278,9 @@ const siteSlice = createSlice({
     builder.addCase(fetchSitesByDomain.fulfilled, (state, action) => {
       state.loading = false;
       console.log("history", action.payload?.posts);
-      state.sites.domain.present.view="Desktop"
-      if(action.payload?.id){
-        state.sites.domain.present.id=action.payload?.id
+      state.sites.domain.present.view = "Desktop";
+      if (action.payload?.id) {
+        state.sites.domain.present.id = action.payload?.id;
       }
       state.sites.domain.present.meta = {
         title: action.payload?.title ?? "",
@@ -259,7 +294,9 @@ const siteSlice = createSlice({
           action.payload?.posts ?? "",
         );
       }
-      state.sites.domain.present.aiContent = JSON.parse(action.payload?.aiResult??"");
+      state.sites.domain.present.aiContent = JSON.parse(
+        action.payload?.aiResult ?? "",
+      );
     });
     builder.addCase(fetchSitesByDomain.rejected, (state) => {
       state.loading = false;
@@ -270,14 +307,19 @@ const siteSlice = createSlice({
     });
     builder.addCase(fetchSiteById.fulfilled, (state, action) => {
       state.loading = false;
+
+      state.sites.domain.present.generate.generating = false;
+      state.sites.domain.present.generate.progress = 0;
+
       console.log("history", action.payload?.posts);
-      state.sites.domain.present.view="Desktop"
+      state.sites.domain.present.editable = true;
+      state.sites.domain.present.view = "Desktop";
       state.sites.domain.present.meta = {
         title: action.payload?.title ?? "",
         description: action.payload?.description ?? "",
       };
-      if(action.payload?.id){
-        state.sites.domain.present.id=action.payload?.id
+      if (action.payload?.id) {
+        state.sites.domain.present.id = action.payload?.id;
       }
       state.sites.domain.present.subdomain = action.payload?.subdomain ?? "";
 
@@ -287,7 +329,9 @@ const siteSlice = createSlice({
           action.payload?.posts ?? "",
         );
       }
-      state.sites.domain.present.aiContent = JSON.parse(action.payload?.aiResult??"");
+      state.sites.domain.present.aiContent = JSON.parse(
+        action.payload?.aiResult ?? "",
+      );
     });
     builder.addCase(fetchSiteById.rejected, (state) => {
       state.loading = false;
@@ -339,7 +383,13 @@ const siteSlice = createSlice({
 });
 
 //export async thunks
-export { fetchSitesByDomain, updateSite, fetchSitesByUser, deleteSite,fetchSiteById };
+export {
+  fetchSitesByDomain,
+  updateSite,
+  fetchSitesByUser,
+  deleteSite,
+  fetchSiteById,
+};
 export const { updateAppState, undo, redo, clearPastAndFuture } =
   siteSlice.actions;
 export const appState = (state: RootState) =>

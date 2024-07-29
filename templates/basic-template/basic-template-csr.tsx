@@ -1,15 +1,46 @@
 import Image from "next/image";
-import PostCard from "@/components/ui/card/post-card";
-import ServiceCard from "@/components/ui/card/service-card";
-import CTA from "@/components/cta";
-import TopBar from "@/components/top-bar";
-import { Dispatch, SetStateAction } from "react";
-import { TBanner, TColors, TFields, THero, TPosts, TSection, TServices } from "@/types";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  TBanner,
+  TColors,
+  TFields,
+  THero,
+  TPosts,
+  TSection,
+  TSectionsType,
+  TServices,
+} from "@/types";
 import EditableBanner from "@/components/editable/banner";
-import EditableHero from "@/components/editable/hero";
+
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { Skeleton } from "@/components/ui/skeleton";
+import TypewriterEffect from "@/components/typewriter-effect";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/select-template-carousel";
+import AddSectionButtons from "@/components/add-section/buttons";
+import SectionModal from "@/components/ui/modal/section-modal";
+import PostCard from "@/components/ui/card/post-card";
+import ServiceCard from "@/components/ui/card/service-card";
+import { Card, CardContent } from "@/components/ui/card";
 import { appState } from "../../lib/store/slices/site-slice";
+import PostsSection from "@/components/sections/posts";
+import CustomTestimonial from "@/components/sections/custom-testimonials";
+import EditableHero from "@/components/editable/hero";
+import ServicesSection from "@/components/sections/services";
+import ImageGallerySection from "@/components/sections/image-gallery";
+import PartnersSection from "@/components/sections/partners";
+import { usePathname } from "next/navigation";
+import { generateUniqueId } from "../../lib/utils/function";
+import {
+  sectionsData as SD,
+  setSections,
+} from "@/lib/store/slices/section-slice";
 
 type BasicTemplateProps = {
   hero: THero;
@@ -22,20 +53,20 @@ type BasicTemplateProps = {
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
   showForm: {
-    form:string,
+    form: string;
     edit: string;
     show: boolean;
   };
   setShowForm: React.Dispatch<
     React.SetStateAction<{
-      form:string,
+      form: string;
       edit: string;
       show: boolean;
     }>
   >;
 };
 
-export default function BasicTemplate(props: BasicTemplateProps) {
+const BasicTemplate = (props: BasicTemplateProps) => {
   const {
     hero,
     banner,
@@ -51,108 +82,241 @@ export default function BasicTemplate(props: BasicTemplateProps) {
   } = props;
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
-  console.log("services",services)
-  return (
-    <>
-      <section className="bg-white py-6">
-        <EditableBanner
-          banner={banner}
-          colors={colors}
-          editable={editable}
-          setFocusedField={setFocusedField}
-          setIsOpen={setIsOpen}
-          setSection={setSection}
-          showForm={showForm}
-          setShowForm={setShowForm}
-        />
-      </section>
-      <section className=" bg-gray-50 py-10">
-        <div className="container mx-auto px-4">
-          <div className="rounded-3xl bg-white px-8 py-16  pb-10">
-            <div className="mx-auto max-w-7xl">
-              <EditableHero
-                colors={colors}
-                hero={hero}
-                editable={editable}
-                setFocusedField={setFocusedField}
-                setIsOpen={setIsOpen}
-                setSection={setSection}
-                showForm={showForm}
-                setShowForm={setShowForm}
-              />
+  const [sectionModal, setSectionModal] = useState(false);
+  const [triggerSection, setTriggerSection] = useState({
+    section: "Banner Section",
+    position: 0,
+  });
+  const pathname = usePathname();
+  // const [sections, setSections] = useState<Array<TSectionsType>>([]);
+  const isCustom = pathname?.split("/")[1] === "custom";
+  const sections = useAppSelector(SD);
 
-              <div
-                className={`rounded-3xl  p-8 md:p-12 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${!services?.show ?"bg-transparent":"bg-gray-100"}`}
-                onClick={() => {
-                  if (setIsOpen && setSection) {
-                    setIsOpen(true);
-                    setSection("Services");
-                    dispatch(
-                      updateAppState({
-                        ...appState,
-                        openedSlide: "Customize",
-                      }),
-                    );
-                  }
-                }}
-              >
-                {services?.show  && (
-                  <div className="-m-8 flex flex-wrap">
-                    {services?.list.map((service) => (
-                      <ServiceCard
-                        id={service["id"]}
-                        key={service["name"]}
-                        name={service["name"]}
-                        description={service["description"]}
-                        color={colors.primary}
-                        editable={editable}
-                        setIsOpen={setIsOpen}
-                        setSection={setSection}
-                        showForm={showForm}
-                        setShowForm={setShowForm}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <div className={`mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`} onClick={()=>{
-        if (setIsOpen && setSection) {
-          setIsOpen(true);
-          setSection("Posts");
-          dispatch(
-            updateAppState({
-              ...appState,
-              openedSlide: "Customize",
-            }),
-          );
-          setShowForm({
-            form:"",
-            edit:"",
-            show:false,
-          })
-        }
-      }}>
-        <h2 className="sr-only">Posts</h2>
-       { appState?.iPosts?.show && 
-        <div className="flex flex-wrap gap-5">
-          {posts.list.map((post,i) => (
-            posts.limit > i &&
-            <PostCard
-              key={post.id}
-              id={post.id}
-              permalink={editable?"#":post.permalink}
-              media_url={post.media_url}
-              media_type={post.media_type}
-              caption={post.caption}
-              timestamp={post.timestamp}
+  const initialSections = [
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Banner Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        content: (
+          <EditableBanner
+            id={id}
+            banner={banner}
+            colors={colors}
+            editable={editable}
+            setFocusedField={setFocusedField}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            showForm={showForm}
+            setShowForm={setShowForm}
+          />
+        ),
+      };
+    },
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Hero Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        content: (
+          <EditableHero
+            id={id}
+            colors={colors}
+            setTriggerSection={setTriggerSection}
+            setSectionModal={setSectionModal}
+            hero={hero}
+            editable={editable}
+            setFocusedField={setFocusedField}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+            showForm={showForm}
+            setShowForm={setShowForm}
+          />
+        ),
+      };
+    },
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Services Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        content: (
+          <ServicesSection
+            id={id}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+          />
+        ),
+      };
+    },
+    () => {
+      const id = generateUniqueId();
+      if (isCustom) {
+        return {
+          id,
+          title: "Image Gallery Section",
+          image:
+            "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+          description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+          content: (
+            <ImageGallerySection
+              id={id}
+              showForm={showForm}
+              setSectionModal={setSectionModal}
+              setShowForm={setShowForm}
+              setTriggerSection={setTriggerSection}
+              editable={editable}
+              setIsOpen={setIsOpen}
+              setSection={setSection}
             />
-          ))}
-        </div>}
+          ),
+        };
+      } else {
+        return {
+          id,
+          title: "Posts Section",
+          image:
+            "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+          description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+          content: (
+            <PostsSection
+              id={id}
+              editable={editable}
+              setIsOpen={setIsOpen}
+              setSection={setSection}
+              setShowForm={setShowForm}
+            />
+          ),
+        };
+      }
+    },
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Partners Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        content: (
+          <PartnersSection
+            id={id}
+            showForm={showForm}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+          />
+        ),
+      };
+    },
+    () => {
+      const id = generateUniqueId();
+      return {
+        id,
+        title: "Testimonial Section",
+        image:
+          "https://tailwindui.com/img/category-thumbnails/marketing/faq-sections.png",
+        description: "Lorem Ipsum is Lorem Ipsum and Lorem Ipsum is",
+        content: (
+          <CustomTestimonial
+            id={id}
+            setSectionModal={setSectionModal}
+            setShowForm={setShowForm}
+            setTriggerSection={setTriggerSection}
+            editable={editable}
+            setIsOpen={setIsOpen}
+            setSection={setSection}
+          />
+        ),
+      };
+    },
+  ];
+  const filteredSections = initialSections
+    .map((section) => section())
+    .filter((section) => section !== null);
+
+  // Use useEffect to set initial sections if needed
+  useEffect(() => {
+    dispatch(setSections(filteredSections));
+  }, []);
+  // useEffect(() => {
+  //   setSections((prevSections) => {
+  //     if (prevSections.length === 0) {
+  //       // Ensure that `filteredSections` does not contain `null` values
+  //       return filteredSections.filter(
+  //         (section) => section !== null,
+  //       ) as TSectionsType[];
+  //     }
+  //     return prevSections;
+  //   });
+  // }, [appState]);
+
+  // Update addSectionAtIndex function to use Redux
+  const addSectionAtIndex = (index: number, newSection: TSectionsType) => {
+    if (index >= 0 && index <= sections.length) {
+      const updatedSections = [
+        ...sections.slice(0, index),
+        newSection,
+        ...sections.slice(index),
+      ];
+      dispatch(setSections(updatedSections));
+    }
+  };
+
+  console.log("sections", sections);
+  const addSectionByTitle = (
+    id: string,
+    newSection: TSectionsType,
+    position: number,
+  ) => {
+    const index = sections.findIndex((section) => section.id === id);
+    if (index !== -1) {
+      const newIndex = position === 0 ? index : index + 1;
+      addSectionAtIndex(newIndex, newSection);
+    }
+  };
+  console.log("appState.selectedFont", appState.selectedFont);
+  return (
+    <div className="mb-20 flex min-h-screen flex-col">
+      <div className="flex flex-col gap-10">
+        {sections.map((section, index) => (
+          <div key={index}>{section.content}</div>
+        ))}
       </div>
-    </>
+      <SectionModal
+        initialSections={initialSections}
+        id={triggerSection.section}
+        open={sectionModal}
+        setOpen={setSectionModal}
+        addSectionByTitle={addSectionByTitle}
+        triggerSection={triggerSection}
+        showForm={showForm}
+        setSectionModal={setSectionModal}
+        setShowForm={setShowForm}
+        setTriggerSection={setTriggerSection}
+        editable={editable}
+        setIsOpen={setIsOpen}
+        setSection={setSection}
+      />
+    </div>
   );
-}
+};
+
+export default BasicTemplate;

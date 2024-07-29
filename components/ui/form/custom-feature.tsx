@@ -23,7 +23,11 @@ import { FormField, TSection } from "@/types";
 import { DebouncedState } from "use-debounce";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
-import { generateUniqueId, regenerateIndividual } from "@/lib/utils/function";
+import {
+  generateIndividualFeature,
+  generateUniqueId,
+  regenerateIndividual,
+} from "@/lib/utils/function";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import RegenerateOptions from "@/components/regenerate-options";
 import { useSearchParams } from "next/navigation";
@@ -93,18 +97,20 @@ const CustomFeature = (props: TProps) => {
     });
   }
 
-    useEffect(() => {
-      if (showForm.edit) {
-        const features = appState?.aiContent?.features?.filter((feature) => feature.id === showForm.edit);
-        if(features){
-          setData(features[0]);
-        }
+  useEffect(() => {
+    if (showForm.edit) {
+      const features = appState?.aiContent?.features?.filter(
+        (feature) => feature.id === showForm.edit,
+      );
+      if (features) {
+        setData(features[0]);
       }
-    }, [showForm.edit, appState]);
+    }
+  }, [showForm.edit, appState]);
 
   console.log("data", data);
   return (
-    <div className="">
+    <div className="h-fit max-h-[600px] overflow-auto">
       <div className=" border-b px-4 py-6 sm:px-6">
         <div className="flex items-center justify-between">
           <h2
@@ -150,15 +156,15 @@ const CustomFeature = (props: TProps) => {
         </div>
       </div>
       <form className="flex flex-col gap-5 p-5">
-      <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5">
           <div className="flex justify-between ">
-            <h3 className="block text-sm font-medium leading-6 text-gray-900">
+            <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
               Image
             </h3>
           </div>
           <div>
             <Uploader
-              defaultValue={data?.image??""}
+              defaultValue={data?.image ?? ""}
               name={"image"}
               label={""}
               onChange={(value) => {
@@ -184,10 +190,7 @@ const CustomFeature = (props: TProps) => {
                 onClick={() => {
                   setSelectedField("title");
                   setLoadingTitle(true);
-                  regenerateIndividual({
-                    appState,
-                    dispatch,
-                    searchParams,
+                  generateIndividualFeature({
                     fieldName: "featureTitle." + (data?.id ?? ""),
                     type,
                   }).then((res) => {
@@ -236,14 +239,12 @@ const CustomFeature = (props: TProps) => {
                 onClick={() => {
                   setSelectedField("description");
                   setLoadingDesc(true);
-                  regenerateIndividual({
-                    appState,
-                    dispatch,
-                    searchParams,
+                  generateIndividualFeature({
                     fieldName: "featureDescription." + (data?.id ?? ""),
                     type,
                   }).then((res) => {
                     setLoadingDesc(false);
+
                     res &&
                       setData((preval: any) => {
                         return { ...preval, description: res.description };
@@ -277,18 +278,19 @@ const CustomFeature = (props: TProps) => {
             }}
           />
         </div>
-
-        <button
-          onClick={() => handleFeatureSubmit(data?.id)}
-          type="button"
-          className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
-          disabled={loading}
-        >
-          {loading && (
-            <ImSpinner2 className="animate-spin text-lg text-white" />
-          )}
-          Save
-        </button>
+        {!showForm?.edit && (
+          <button
+            onClick={() => handleFeatureSubmit(data?.id)}
+            type="button"
+            className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
+            disabled={loading}
+          >
+            {loading && (
+              <ImSpinner2 className="animate-spin text-lg text-white" />
+            )}
+            Save
+          </button>
+        )}
       </form>
     </div>
   );

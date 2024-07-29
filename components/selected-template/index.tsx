@@ -1,8 +1,8 @@
 import BasicTemplate from "@/templates/basic-template/basic-template-csr";
-import BlueBasedTemplate from "@/templates/blue-based-template";
-import PostBasedTemplate from "@/templates/post-based-template";
+import BlueBasedTemplate from "@/templates/blue-based-template/blue-based-template-csr";
+import PostBasedTemplate from "@/templates/post-based-template/post-based-template-csr";
 import React, { Dispatch, SetStateAction } from "react";
-import GeneralTemplate from "@/templates/general-template";
+import GeneralTemplate from "@/templates/general-template/general-template-csr";
 import { AppState, TFields, TSection } from "@/types";
 import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
 import { useAppSelector } from "@/lib/store/hooks";
@@ -38,23 +38,22 @@ const SelectedTemplate = (props: TProps) => {
     setShowForm,
   } = props;
   const pathname = usePathname();
+  const isInstagramPage = pathname.startsWith("/auth");
   return (
     <div
-      className={` mx-auto overflow-auto ${appState.view === "Mobile" && "h-[800px] w-[480px] rounded-xl border-8 border-black no-scrollbar"} ${appState.view === "Tablet" && "h-[1024px] w-[768px] rounded-xl border-8  border-black no-scrollbar"} ${appState.view === "Desktop" && "h-full w-full"}`}
+      className={` mx-auto overflow-auto ${appState.view === "Mobile" && "no-scrollbar h-[800px] w-[480px] rounded-xl border-8 border-black"} ${appState.view === "Tablet" && "no-scrollbar h-[1024px] w-[768px] rounded-xl  border-8 border-black"} ${appState.view === "Desktop" && "h-full w-full"}`}
     >
       {selectedTemplate?.name === "Basic template" && (
         <BasicTemplate
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          banner={appState.aiContent.banner}
-          hero={appState.aiContent.hero}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent.services}
+          banner={appState.aiContent?.banner}
+          hero={appState.aiContent?.hero}
+          colors={appState.aiContent?.colors}
+          services={appState.aiContent?.services}
           posts={
-            pathname.startsWith("/auth")
-              ? appState.iPosts
-              : { ...appState.iPosts, list: [] }
+            isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
           showForm={showForm}
@@ -66,14 +65,12 @@ const SelectedTemplate = (props: TProps) => {
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          banner={appState.aiContent.banner}
-          hero={appState.aiContent.hero}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
+          banner={appState.aiContent?.banner}
+          hero={appState.aiContent?.hero}
+          colors={appState.aiContent?.colors}
+          services={appState.aiContent?.services?.list}
           posts={
-            pathname.startsWith("/auth")
-              ? appState.iPosts
-              : { ...appState.iPosts, list: [] }
+            isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
           showForm={showForm}
@@ -85,14 +82,12 @@ const SelectedTemplate = (props: TProps) => {
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          banner={appState.aiContent.banner}
-          hero={appState.aiContent.hero}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
+          banner={appState.aiContent?.banner}
+          hero={appState.aiContent?.hero}
+          colors={appState.aiContent?.colors}
+          services={appState.aiContent?.services?.list}
           posts={
-            pathname.startsWith("/auth")
-              ? appState.iPosts
-              : { ...appState.iPosts, list: [] }
+            isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
           showForm={showForm}
@@ -104,14 +99,12 @@ const SelectedTemplate = (props: TProps) => {
           editable={appState.editable}
           setSection={setSection}
           setIsOpen={setIsSideBarOpen}
-          banner={appState.aiContent.banner}
-          hero={appState.aiContent.hero}
-          colors={appState.aiContent["colors"]}
-          services={appState.aiContent["services"]["list"]}
+          banner={appState.aiContent?.banner}
+          hero={appState.aiContent?.hero}
+          colors={appState.aiContent?.colors}
+          services={appState.aiContent?.services?.list}
           posts={
-            pathname.startsWith("/auth")
-              ? appState.iPosts
-              : { ...appState.iPosts, list: [] }
+            isInstagramPage ? appState.iPosts : { ...appState.iPosts, list: [] }
           }
           setFocusedField={setFocusedField}
           showForm={showForm}

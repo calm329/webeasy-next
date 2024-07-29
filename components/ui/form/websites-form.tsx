@@ -1,11 +1,7 @@
-"use client";
 import Loader from "@/components/ui/loader";
 import { getAccessTokenBySiteId, getSitesByUserId } from "@/lib/fetchers";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchAccessToken } from "@/lib/store/slices/accesstoken-slice";
-import { getUsernameFromPosts } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaInstagram } from "react-icons/fa";
@@ -13,10 +9,12 @@ import { FaAmazon, FaEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import SelectSourceModal from "../modal/select-source-modal";
 import {
+  appState as AS,
   deleteSite,
   fetchSitesByUser,
   loading as LD,
   sitesData as SD,
+  updateAppState,
 } from "@/lib/store/slices/site-slice";
 import { BsTrash3 } from "react-icons/bs";
 import {
@@ -28,16 +26,25 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../pagination";
-import DeleteModal from "../modal/delete-modal";
-import { DeleteDrawer } from "../drawer/delete-drawer";
-import { useMediaQuery } from "usehooks-ts";
+import {
+  setSelectedTemplate,
+  TemplatesData as TD,
+} from "@/lib/store/slices/template-slice";
+import Image from "next/image";
+import Link from "next/link";
+import ResponsiveDialog from "../responsive-dialog/index";
+import DeleteContent from "@/components/delete-content";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
 type TSectionObject = Array<{
   logo: React.ReactNode;
   name: TSectionName;
-  // href: string;
 }>;
 const sections: TSectionObject = [
+  {
+    logo: "",
+    name: "All",
+  },
   {
     logo: <FaInstagram />,
     name: "Instagram",
@@ -51,7 +58,7 @@ const sections: TSectionObject = [
     name: "Custom",
   },
 ];
-type TSectionName = "Instagram" | "Amazon" | "Custom";
+type TSectionName = "Instagram" | "Amazon" | "Custom" | "All";
 
 type TSites = Array<{
   id: string;
@@ -78,30 +85,33 @@ const sortByCreatedAtDescending = (sites: TSites) => {
 };
 
 export default function WebsitesForm() {
-  const [selectedSection, setSelectedSection] =
-    useState<TSectionName>("Instagram");
+  const [selectedSection, setSelectedSection] = useState<TSectionName>("All");
   const searchParams = useSearchParams();
   const router = useRouter();
   const sites = useAppSelector(SD);
   const isLoading = useAppSelector(LD);
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
-  const dataPerPage = 4;
+  const dataPerPage = 6;
   const [paginatedData, setPaginatedData] = useState<TSites>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const { openDialog } = useResponsiveDialog();
   const [selectedItemId, setSelectedItemId] = useState("");
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const templates = useAppSelector(TD);
+  const appState = useAppSelector(AS);
+
   useEffect(() => {
     if (sites) {
+      const filteredSites =
+        selectedSection === "All"
+          ? sites
+          : sites.filter((site) => site.type === selectedSection);
+      const sortedSites = sortByCreatedAtDescending(filteredSites) ?? [];
       const startIndex = (page - 1) * dataPerPage;
       const endIndex = startIndex + dataPerPage;
-      setPaginatedData(
-        sites
-          .filter((site) => site.type === selectedSection)
-          .slice(startIndex, endIndex),
-      );
+      setPaginatedData(sortedSites.slice(startIndex, endIndex));
     }
-  }, [page, sites, selectedSection]);
+  }, [page, sites, selectedSection, isLoading]);
 
   const getData = async () => {
     try {
@@ -128,47 +138,32 @@ export default function WebsitesForm() {
       }
     } catch (error) {}
   };
-  useEffect(() => {
-    if (sites) {
-      const filteredSites = sites.filter(
-        (site) => site.type === selectedSection,
-      );
-      const sortedSites = sortByCreatedAtDescending(filteredSites);
-      const startIndex = (page - 1) * dataPerPage;
-      const endIndex = startIndex + dataPerPage;
-      if (sortedSites) {
-        setPaginatedData(sortedSites.slice(startIndex, endIndex));
-      }
-    }
-  }, [page, sites, selectedSection]);
-  
+
   const totalPages = Math.ceil(
-    (sites?.filter((site) => site.type === selectedSection).length || 0) /
-      dataPerPage,
+    (sites?.filter(
+      (site) => selectedSection === "All" || site.type === selectedSection,
+    ).length || 0) / dataPerPage,
   );
-  const matches = useMediaQuery("(min-width: 768px)");
+
+  const handleDelete = (siteId: string) => {
+    dispatch(deleteSite({ id: siteId }));
+  };
+
   return (
     <div className="">
-      {matches ? (
-        <DeleteModal
-          id={selectedItemId}
-          setOpen={setIsDeleting}
-          open={isDeleting}
+      <ResponsiveDialog id="delete">
+        <DeleteContent
+          action={() => handleDelete(selectedItemId)}
+          data="site"
         />
-      ) : (
-        <DeleteDrawer
-          id={selectedItemId}
-          setOpen={setIsDeleting}
-          open={isDeleting}
-        />
-      )}
+      </ResponsiveDialog>
       <div className="">
         <div className="border-b border-gray-200 ">
-          <nav className=" flex " aria-label="Tabs">
+          <nav className="flex" aria-label="Tabs">
             {sections.map((section) => (
               <button
                 key={section.name}
-                className={`group inline-flex items-center border-b-2  px-1 py-4 text-sm font-medium ${selectedSection === section.name ? "border-indigo-500 text-indigo-600" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} w-1/2 justify-center gap-2`}
+                className={`inline-flex items-center border-b-2 px-1 py-4 text-sm font-medium ${selectedSection === section.name ? "border-indigo-500 text-indigo-600" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} w-1/2 justify-center gap-2`}
                 onClick={() => {
                   setSelectedSection(section.name);
                   setPage(1);
@@ -186,77 +181,92 @@ export default function WebsitesForm() {
           <Loader text="Fetching Websites Data" />
         </div>
       ) : (
-        <div className="flex flex-wrap gap-10 px-5 pt-10">
-          {paginatedData?.map(
-            (site) =>
-              site.type === selectedSection && (
-                <div
-                  key={site.id}
-                  className=" relative flex max-w-80 flex-col items-center justify-center rounded-lg border   shadow"
+        <div className="flex flex-col gap-10">
+          <div className="mx-auto grid grid-cols-3 gap-10 px-5 pt-10 max-lg:grid-cols-2 max-md:grid-cols-1 max-sm:px-0">
+            {paginatedData?.map((site) => (
+              <div
+                key={site.id}
+                className=" relative flex flex-col  items-center justify-between overflow-hidden rounded-lg border shadow"
+              >
+                <button
+                  className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
+                  onClick={() => {
+                    setSelectedItemId(site.id);
+                    openDialog("delete");
+                  }}
                 >
-                  <button
-                    className="z-1 absolute right-2 top-2 rounded-full bg-white p-2"
-                    onClick={() => {
-                      setIsDeleting(true);
-                      setSelectedItemId(site.id);
-                      // dispatch(deleteSite({ id: site.id }));
-                    }}
-                  >
-                    <BsTrash3 color="red" />
-                  </button>
-                  <div className="min-h-80 rounded-t-lg flex justify-center items-center">
-                  <Image
-                    src={site.type === "Amazon"?JSON.parse(site?.aiResult).images.primary.Large?.URL: JSON.parse(site?.aiResult)?.hero?.image.imageUrl}
-                    height={200}
-                    width={500}
-                    className="contain "
-                    alt=""
+                  <BsTrash3 color="red" />
+                </button>
+                <div className="flex h-[500px]   w-[1400px] scale-[0.24] items-center justify-center rounded-t-lg max-xl:w-[1280px] ">
+                  <iframe
+                    src={
+                      site.type === "Amazon"
+                        ? "/preview/amazon?preview_site=" + site.id
+                        : "/preview?preview_site=" + site.id
+                    }
+                    height={2000}
+                    width={1280}
+                    // className="scale-50"
+                    className="absolute h-[2000px] w-[1400px] max-xl:w-[1280px]"
+                    // alt=""
+                    title="preview"
+                    allowFullScreen
                   />
+                </div>
+                <div className="flex flex-col gap-5 p-5">
+                  <div className="flex flex-col gap-2 ">
+                    <h2 className="line-clamp-1 text-xl font-bold">
+                      {site?.title}
+                    </h2>
+                    <p className="text-sm">{site?.description}</p>
                   </div>
-                  <div className="flex flex-col gap-5 p-5">
-                    <div className="flex flex-col gap-2 ">
-                      <h2 className="line-clamp-1 text-xl font-bold">
-                        {site?.title}
-                      </h2>
-                      <p className="line-clamp-3 text-sm">
-                        {site?.description}
-                      </p>
-                    </div>
 
-                    <div className="flex gap-5">
-                      <button
-                        className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
-                        onClick={() => {
-                          switch (site.type) {
-                            case "Custom":
-                              router.push("/custom?id=" + site.id);
-                              break;
-                            case "Instagram":
-                              redirectToAuth(site.id);
-                              break;
-                            case "Amazon":
-                              router.push("/amazon?site_id=" + site.id);
-                              break;
-                          }
-                        }}
-                      >
-                        <FaEdit />
-                        Edit
-                      </button>
-                      <Link
-                        href={site.type === "Amazon"?"/preview/amazon?preview_site="+site.id:"/preview?preview_site="+site.id}
-                        target="_blank"
-                        className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
-                      >
-                        
-                        <FaExternalLinkAlt />
-                        Preview
-                      </Link>
-                    </div>
+                  <div className="flex gap-5">
+                    <button
+                      className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-5 py-1 text-sm font-semibold text-white hover:bg-indigo-500"
+                      onClick={() => {
+                        if (templates) {
+                          dispatch(setSelectedTemplate(templates[0]));
+                        }
+                        dispatch(
+                          updateAppState({
+                            ...appState,
+                            view: "Desktop",
+                          }),
+                        );
+                        switch (site.type) {
+                          case "Custom":
+                            router.push("/custom/" + site.id);
+                            break;
+                          case "Instagram":
+                            redirectToAuth(site.id);
+                            break;
+                          case "Amazon":
+                            router.push("/amazon/" + site.id);
+                            break;
+                        }
+                      }}
+                    >
+                      <FaEdit />
+                      Edit
+                    </button>
+                    <Link
+                      href={
+                        site.type === "Amazon"
+                          ? "/preview/amazon?preview_site=" + site.id
+                          : "/preview?preview_site=" + site.id
+                      }
+                      target="_blank"
+                      className="text-500 inline-flex w-full items-center justify-center gap-x-1.5 rounded-md border-2 border-gray-400 bg-white px-5 py-1 text-sm font-semibold hover:bg-gray-100"
+                    >
+                      <FaExternalLinkAlt />
+                      Preview
+                    </Link>
                   </div>
                 </div>
-              ),
-          )}
+              </div>
+            ))}
+          </div>
           <Pagination>
             <PaginationContent>
               {page > 1 && (

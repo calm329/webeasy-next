@@ -72,12 +72,12 @@ const PostsContent = () => {
     );
   };
   return (
-    <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
+    <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
       {" "}
       <div className="flex flex-col gap-5 border-t p-5 pt-5">
         <div className="flex justify-between gap-10">
           <div>
-            <h3 className="block text-sm font-medium leading-6 text-gray-900">
+            <h3 className="text-sm font-medium leading-6 text-gray-900 ">
               Posts
             </h3>
             <p className="text-xs text-gray-400 ">Re-Order and limit Posts</p>
@@ -101,7 +101,7 @@ const PostsContent = () => {
                 );
               }}
             />
-            <Switch
+            {/* <Switch
               onCheckedChange={(checked) => {
                 console.log("checked", checked);
                 dispatch(
@@ -115,6 +115,28 @@ const PostsContent = () => {
                 );
               }}
               checked={appState.iPosts.show}
+            /> */}
+          </div>
+        </div>
+        <div className="flex justify-between gap-10">
+          <div>
+            <p className="text-sm">Show Caption</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Switch
+              onCheckedChange={(checked) => {
+                console.log("checked", checked);
+                dispatch(
+                  updateAppState({
+                    ...appState,
+                    iPosts: {
+                      ...appState.iPosts,
+                      showHash: checked,
+                    },
+                  }),
+                );
+              }}
+              checked={appState.iPosts.showHash}
             />
           </div>
         </div>

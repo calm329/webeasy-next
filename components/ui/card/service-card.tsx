@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { ServiceIcon } from "../../icons";
-import { TSection } from "@/types";
+import { AppState, TSection } from "@/types";
+import TypewriterEffect from "@/components/typewriter-effect";
 
 type ServiceCardProps = {
   name: string;
@@ -22,14 +23,23 @@ type ServiceCardProps = {
     }>
   >;
   id: string;
+  appState?: AppState;
 };
 
 export default function ServiceCard(props: ServiceCardProps) {
-  const { id, name, description, color, editable, showForm, setShowForm } =
-    props;
+  const {
+    id,
+    name,
+    description,
+    color,
+    editable,
+    showForm,
+    setShowForm,
+    appState,
+  } = props;
   return editable ? (
     <div
-      className={`w-full p-8 max-w-96  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`w-full max-w-96 p-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
       onClick={(e) => {
         setShowForm &&
           setShowForm({
@@ -47,9 +57,19 @@ export default function ServiceCard(props: ServiceCardProps) {
         </div>
         <div className="flex-1 p-3">
           <h3 className="font-heading mb-2 text-xl font-black text-gray-900">
-            {name}
+            {appState?.generate?.generating ? (
+              <TypewriterEffect text={name} />
+            ) : (
+              name
+            )}
           </h3>
-          <p className="text-sm font-bold text-gray-700">{description}</p>
+          <p className="text-sm font-bold text-gray-700  ">
+            {appState?.generate?.generating ? (
+              <TypewriterEffect text={description} />
+            ) : (
+              description
+            )}
+          </p>
         </div>
       </div>
     </div>
@@ -67,7 +87,7 @@ export default function ServiceCard(props: ServiceCardProps) {
           <h3 className="font-heading mb-2 text-xl font-black text-gray-900">
             {name}
           </h3>
-          <p className="text-sm font-bold text-gray-700">{description}</p>
+          <p className="text-sm font-bold text-gray-700  ">{description}</p>
         </div>
       </div>
     </div>

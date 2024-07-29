@@ -1,4 +1,7 @@
+"use client";
 import DomainForm from "@/components/ui/form/domain-form";
+import { MdAnalytics, MdDomain } from "react-icons/md";
+
 export default function Domain() {
   return (
     <div className="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 bg-white shadow">

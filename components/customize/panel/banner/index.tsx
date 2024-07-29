@@ -12,7 +12,7 @@ import { FiLink } from "react-icons/fi";
 import { ImSpinner2 } from "react-icons/im";
 import { IoMdAdd } from "react-icons/io";
 import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
-import { RxDragHandleDots2 } from "react-icons/rx";
+
 import { toast } from "sonner";
 import { DebouncedState } from "usehooks-ts";
 import { appState } from "../../../../lib/store/slices/site-slice";
@@ -26,8 +26,14 @@ import {
 import { ImPower } from "react-icons/im";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import RegenerateOptions from "@/components/regenerate-options";
-import { regenerateIndividual } from "@/lib/utils/function";
+import { getLogo, regenerateIndividual } from "@/lib/utils/function";
 import { useSearchParams } from "next/navigation";
+import CustomContent from "@/lib/content/custom";
+import { RxDragHandleDots2 } from "react-icons/rx";
+import ResponsiveDialog from "../../../ui/responsive-dialog/index";
+import ImagesListing from "@/components/ui/form/images-listing";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+
 type TProps = {
   section: TSection;
   handleChange: (name: string, value: string) => void;
@@ -64,6 +70,8 @@ const BannerContent = (props: TProps) => {
   const dispatch = useAppDispatch();
   const [type, setType] = useState("");
   const [isLinkInValid, setIsLinkInValid] = useState(false);
+  const { openDialog } = useResponsiveDialog();
+  const [selectedImage, setSelectedImage] = useState("");
   const onLinkInvalid = () => {
     setIsLinkInValid(true);
   };
@@ -80,7 +88,7 @@ const BannerContent = (props: TProps) => {
     }
 
     const updatedItems = reorder(
-      appState.aiContent.banner.button.list,
+      appState?.aiContent?.banner?.button?.list ?? [],
       result.source.index,
       result.destination.index,
     );
@@ -89,11 +97,11 @@ const BannerContent = (props: TProps) => {
       updateAppState({
         ...appState,
         aiContent: {
-          ...appState.aiContent,
+          ...appState?.aiContent,
           banner: {
-            ...appState.aiContent.banner,
+            ...appState?.aiContent?.banner,
             button: {
-              ...appState.aiContent.banner.button,
+              ...appState?.aiContent?.banner?.button,
               list: updatedItems,
             },
           },
@@ -107,16 +115,14 @@ const BannerContent = (props: TProps) => {
       updateAppState({
         ...appState,
         aiContent: {
-          ...appState.aiContent,
+          ...appState?.aiContent,
           banner: {
-            ...appState.aiContent.banner,
+            ...appState?.aiContent?.banner,
             button: {
-              ...appState.aiContent.banner.button,
-              list: appState.aiContent.banner.button.list.filter((button) => {
-                if (button.name !== name) {
-                  return button;
-                }
-              }),
+              ...appState?.aiContent?.banner?.button,
+              list: appState?.aiContent?.banner?.button?.list?.filter(
+                (button) => button.name !== name,
+              ),
             },
           },
         },
@@ -124,16 +130,37 @@ const BannerContent = (props: TProps) => {
     );
   };
 
+  function setImage(data: any) {
+    dispatch(
+      updateAppState({
+        ...appState,
+        aiContent: {
+          ...appState.aiContent,
+          banner: {
+            ...appState.aiContent?.banner,
+            logo: {
+              ...appState.aiContent?.banner?.logo,
+              link: data.urls.small,
+            },
+          },
+        },
+      }),
+    );
+  }
+
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    if (appState.focusedField === "businessName") {
+    if (appState?.focusedField === "businessName") {
       inputRef.current?.focus();
     }
   }, [appState]);
   return (
-    <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
+    <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
+      <ResponsiveDialog id="imageListing" width={"800px"}>
+        <ImagesListing action={setImage} />
+      </ResponsiveDialog>
       <form action="" className="flex flex-col gap-5 px-5">
-        {Object.keys(appState.aiContent.banner).map((data) => (
+        {Object.keys(appState?.aiContent?.banner ?? {}).map((data) => (
           <>
             {(() => {
               switch (data) {
@@ -141,66 +168,129 @@ const BannerContent = (props: TProps) => {
                   return (
                     <div className="flex flex-col gap-5">
                       <div className="flex justify-between ">
-                        <h3 className="block text-sm font-medium leading-6 text-gray-900">
-                          {data}
+                        <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
+                          Logo
                         </h3>
-                        <div className="flex gap-5">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedField(data)
-                              setLoading(true);
-                              regenerateIndividual({
-                                appState,
-                                dispatch,
-                                searchParams,
-                                fieldName: data,
-                                // type,
-                              }).then(() => {
-                                setLoading(false);
-                              });
-                            }}
-                            className="flex items-center gap-2 "
-                          >
-                            Regenerate
-                            {loading && data === selectedField ? (
-                              <ImSpinner2 className="animate-spin text-lg text-black" />
-                            ) : (
-                              <ImPower className=" text-xs " />
-                            )}
-                          </button>
-                          <Switch
-                            onCheckedChange={(checked) =>
+                        <Switch
+                          onCheckedChange={(checked) =>
+                            dispatch(
+                              updateAppState({
+                                ...appState,
+                                aiContent: {
+                                  ...appState?.aiContent,
+                                  banner: {
+                                    ...appState?.aiContent?.banner,
+                                    logo: {
+                                      ...appState?.aiContent?.banner?.logo,
+                                      show: checked,
+                                    },
+                                  },
+                                },
+                              }),
+                            )
+                          }
+                          checked={appState?.aiContent?.banner?.logo?.show}
+                        />
+                      </div>
+                      {appState?.aiContent?.banner?.logo?.show && (
+                        <div className="flex flex-col gap-5">
+                          <Uploader
+                            defaultValue={
+                              appState?.aiContent?.banner?.logo?.link
+                            }
+                            name={data as "logo" | "image"}
+                            label={""}
+                            // contain={true}
+                            onChange={(value) => {
                               dispatch(
                                 updateAppState({
                                   ...appState,
                                   aiContent: {
-                                    ...appState.aiContent,
+                                    ...appState?.aiContent,
                                     banner: {
-                                      ...appState.aiContent.banner,
+                                      ...appState?.aiContent?.banner,
                                       logo: {
-                                        ...appState.aiContent.banner.logo,
-                                        show: checked,
+                                        ...appState?.aiContent?.banner?.logo,
+                                        link: value,
                                       },
                                     },
                                   },
                                 }),
-                              )
-                            }
-                            checked={appState.aiContent.banner.logo.show}
-                          />
-                        </div>
-                      </div>
-                      {appState.aiContent.banner.logo.show && (
-                        <div>
-                          <Uploader
-                            defaultValue={appState.aiContent.banner.logo.link}
-                            name={data as "logo" | "image"}
-                            label={""}
-                            onChange={(value) => {
-                              handleChange(data, value);
+                              );
                             }}
                           />
+                          <div>
+                            <div className="flex  gap-5">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelectedField(data);
+                                  setLoading(true);
+                                  dispatch(
+                                    updateAppState({
+                                      ...appState,
+                                      aiContent: {
+                                        ...appState?.aiContent,
+                                        banner: {
+                                          ...appState?.aiContent?.banner,
+                                          logo: {
+                                            ...appState?.aiContent?.banner
+                                              ?.logo,
+                                            link: "",
+                                          },
+                                        },
+                                      },
+                                    }),
+                                  );
+                                  getLogo({
+                                    businessName:
+                                      appState?.aiContent?.banner?.businessName,
+                                    businessType:
+                                      appState?.aiContent?.businessType ?? "",
+                                    location:
+                                      appState?.aiContent?.location ?? "",
+                                  }).then((data) => {
+                                    setLoading(false);
+                                    dispatch(
+                                      updateAppState({
+                                        ...appState,
+                                        aiContent: {
+                                          ...appState?.aiContent,
+                                          banner: {
+                                            ...appState?.aiContent?.banner,
+                                            logo: {
+                                              ...appState?.aiContent?.banner
+                                                ?.logo,
+                                              link: data,
+                                            },
+                                          },
+                                        },
+                                      }),
+                                    );
+                                  });
+                                }}
+                                className="flex items-center gap-2 "
+                              >
+                                Regenerate
+                                {loading && data === selectedField ? (
+                                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                                ) : (
+                                  <ImPower className=" text-xs " />
+                                )}
+                              </button>
+                              <div>
+                                <button
+                                  type="button"
+                                  className=""
+                                  onClick={() => {
+                                    openDialog("imageListing");
+                                  }}
+                                >
+                                  Swap
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -210,7 +300,7 @@ const BannerContent = (props: TProps) => {
                     <div className="flex flex-col border-t pt-5">
                       <div className="flex  items-center justify-between text-sm font-medium leading-6 text-gray-900 ">
                         <label htmlFor="businessName" className="block">
-                          {data}
+                          Business Name
                         </label>
                       </div>
 
@@ -222,7 +312,7 @@ const BannerContent = (props: TProps) => {
                           handleChange(data, e.target.value);
                         }}
                         ref={inputRef}
-                        value={appState.aiContent.banner.businessName}
+                        value={appState?.aiContent?.banner?.businessName}
                       />
                     </div>
                   );
@@ -232,12 +322,11 @@ const BannerContent = (props: TProps) => {
                     <div className="flex flex-col gap-5 border-t pt-5">
                       <div className="flex justify-between gap-10">
                         <div>
-                          <h3 className="block text-sm font-medium leading-6 text-gray-900">
+                          <h3 className="text-sm font-medium leading-6 text-gray-900">
                             Buttons
                           </h3>
                           <p className="text-xs text-gray-400 ">
-                            Add a button with a link to a page, phone number,
-                            email or section
+                            Add a button and link it to a page or a section
                           </p>
                         </div>
                         <Switch
@@ -246,11 +335,11 @@ const BannerContent = (props: TProps) => {
                               updateAppState({
                                 ...appState,
                                 aiContent: {
-                                  ...appState.aiContent,
+                                  ...appState?.aiContent,
                                   banner: {
-                                    ...appState.aiContent.banner,
+                                    ...appState?.aiContent?.banner,
                                     button: {
-                                      ...appState.aiContent.banner.button,
+                                      ...appState?.aiContent?.banner?.button,
                                       show: checked,
                                     },
                                   },
@@ -258,10 +347,10 @@ const BannerContent = (props: TProps) => {
                               }),
                             )
                           }
-                          checked={appState.aiContent.banner.button.show}
+                          checked={appState?.aiContent?.banner?.button?.show}
                         />
                       </div>
-                      {appState.aiContent.banner.button.show && (
+                      {appState?.aiContent?.banner?.button?.show && (
                         <>
                           <DragDropContext onDragEnd={onDragEnd}>
                             <Droppable droppableId="droppable">
@@ -271,7 +360,7 @@ const BannerContent = (props: TProps) => {
                                   ref={provided.innerRef}
                                   style={getListStyle(snapshot.isDraggingOver)}
                                 >
-                                  {appState.aiContent.banner.button.list.map(
+                                  {appState?.aiContent?.banner?.button?.list?.map(
                                     (item, index) => (
                                       <Draggable
                                         key={item.name}
@@ -299,6 +388,7 @@ const BannerContent = (props: TProps) => {
                                               <MdModeEditOutline
                                                 color="blue"
                                                 size={20}
+                                                className="cursor-pointer"
                                                 onClick={() =>
                                                   setShowForm({
                                                     form: "Button",
@@ -310,6 +400,7 @@ const BannerContent = (props: TProps) => {
                                               <MdDeleteForever
                                                 color="red"
                                                 size={20}
+                                                className="cursor-pointer"
                                                 onClick={() =>
                                                   handleDeleteButton(item.name)
                                                 }
@@ -325,7 +416,7 @@ const BannerContent = (props: TProps) => {
                               )}
                             </Droppable>
                           </DragDropContext>
-                          {appState.aiContent.banner.button.list.length !==
+                          {appState?.aiContent?.banner?.button?.list?.length !==
                             2 && (
                             <button
                               className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
@@ -349,17 +440,6 @@ const BannerContent = (props: TProps) => {
             })()}
           </>
         ))}
-
-        {/* <button
-          type="submit"
-          className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
-          disabled={loading}
-        >
-          {loading && (
-            <ImSpinner2 className="animate-spin text-lg text-white" />
-          )}
-          Save
-        </button> */}
       </form>
     </div>
   );

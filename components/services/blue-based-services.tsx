@@ -8,6 +8,8 @@ import Image from "next/image";
 import { TColors, TFields, TSection } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
+import { appState } from "../../lib/store/slices/site-slice";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function BackgroundImage({
   className,
@@ -83,9 +85,10 @@ export function Services(props: TProps) {
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
   return (
-    <section id="schedule" aria-label="Schedule" className="py-20 sm:py-32">
-      <div className="relative mt-14 sm:mt-24">
-        <BackgroundImage position="right" className="-bottom-32 -top-40" />
+    <section id="schedule" aria-label="Schedule" className="py-14">
+      <div className="relative ">
+        <BackgroundImage position="right" />
+
         <Container
           className={`relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
           onClick={() => {
@@ -103,13 +106,64 @@ export function Services(props: TProps) {
         >
           <div className="grid  lg:gap-x-8">
             {/* <DaySummary day={day} /> */}
-            {appState.aiContent.services.show && (
+            {appState?.aiContent?.services?.show && (
               <ol
                 role="list"
                 className={
                   " mt-10  space-y-8 bg-white px-10 py-14 text-center shadow-xl shadow-blue-900/5"
                 }
               >
+                <div className="flex flex-col gap-3 border-b-2 border-gray-400 pb-5 ">
+                  <h1
+                    className={`text-3xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (editable && setIsOpen && setSection && setShowForm) {
+                        setSection("Services");
+                        setIsOpen(true);
+                        setShowForm({
+                          form: "",
+                          edit: "",
+                          show: false,
+                        });
+                        dispatch(
+                          updateAppState({
+                            ...appState,
+                            focusedField: "title",
+                            openedSlide: "Customize",
+                          }),
+                        );
+                      }
+                    }}
+                  >
+                    {appState?.aiContent?.services.title}
+                  </h1>
+                  <p
+                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (editable && setIsOpen && setSection && setShowForm) {
+                        setSection("Services");
+                        setIsOpen(true);
+                        setShowForm({
+                          form: "",
+                          edit: "",
+                          show: false,
+                        });
+                        dispatch(
+                          updateAppState({
+                            ...appState,
+                            focusedField: "description",
+                            openedSlide: "Customize",
+                          }),
+                        );
+                      }
+                    }}
+                  >
+                    {appState?.aiContent?.services.description}
+                  </p>
+                </div>
+
                 {services?.map((data, i) => (
                   <li
                     key={i}
@@ -130,12 +184,31 @@ export function Services(props: TProps) {
                       {data.name}
                     </h4>
                     {data.description && (
-                      <p className="mt-1 tracking-tight text-blue-900">
+                      <p className="mt-1 tracking-tight text-blue-900  ">
                         {data.description}
                       </p>
                     )}
                   </li>
                 ))}
+
+                {Array.from({ length: 6 })?.map(
+                  (data, i) =>
+                    (services?.length ?? 0) < i && (
+                      <li key={i}>
+                        {i > 0 && (
+                          <div className="mx-auto  mb-8 h-px  border-b-2 border-gray-400 bg-white" />
+                        )}
+                        <h4 className="mx-auto text-center text-lg font-semibold tracking-tight text-blue-900">
+                          <Skeleton className="h-12 w-44 border-gray-400" />
+                        </h4>
+
+                        <p className="mt-1 flex flex-col gap-2 text-center tracking-tight text-blue-900">
+                          <Skeleton className="h-10 w-44 border-gray-400" />
+                          <Skeleton className="h-10 w-20 border-gray-400" />
+                        </p>
+                      </li>
+                    ),
+                )}
               </ol>
             )}
           </div>

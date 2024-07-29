@@ -10,19 +10,24 @@ import { TMeta, TTemplateName, AppState } from "@/types";
 import ColorModal from "../ui/modal/color-modal";
 import { MetaDrawer } from "../ui/drawer/meta-drawer";
 import { ColorDrawer } from "../ui/drawer/color-drawer";
-import SelectTemplateModal from "../ui/modal/select-template-modal";
 import { TTemplate } from ".";
-import SelectTemplateDrawer from "../ui/drawer/select-template-drawer";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateAppState } from "@/lib/store/slices/site-slice";
 import {
+  generateImagesForCustom,
+  generateNewCustomSite,
+  generateTextForCustom,
   getAmazonData,
+  getAmazonDataUsingASIN,
   getColors,
   getInstagramData,
   regenerateImage,
   regenerateText,
 } from "@/lib/utils/function";
 import { usePathname, useSearchParams } from "next/navigation";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
+import SelectTemplateCarousel from "../ui/select-template-carousel/carousel-template";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -32,37 +37,26 @@ type TProps = {
   handleChange?: (name: string, value: string) => void;
   appState: AppState;
   templates: TTemplate | null;
-  setShowAuthModal: Dispatch<SetStateAction<boolean>>;
   setIsFontOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function SettingMenu(props: TProps) {
-  const { handleChange, appState, templates, setShowAuthModal, setIsFontOpen } =
-    props;
+  const { handleChange, appState, templates, setIsFontOpen } = props;
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
   const [isColorOpen, setIsColorOpen] = useState(false);
-  const [isTemplateOpen, setIsTemplateOpen] = useState(false);
   const matches = useMediaQuery("(max-width: 900px)");
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { openDialog } = useResponsiveDialog();
   return (
     <>
-      {isMobile ? (
-        <SelectTemplateDrawer
-          open={isTemplateOpen}
-          setOpen={setIsTemplateOpen}
-          templates={templates}
-        />
-      ) : (
-        <SelectTemplateModal
-          open={isTemplateOpen}
-          setOpen={setIsTemplateOpen}
-          templates={templates}
-        />
-      )}
+      <ResponsiveDialog id="selectTemplate">
+        <SelectTemplateCarousel />
+      </ResponsiveDialog>
+
       {handleChange &&
         (isMobile ? (
           <MetaDrawer
@@ -102,6 +96,7 @@ export default function SettingMenu(props: TProps) {
             onClick={() =>
               dispatch(updateAppState({ ...appState, openedSlide: null }))
             }
+            disabled={appState.generate.generating}
           >
             <div className="flex flex-col items-center justify-center gap-2 sm:hidden">
               <div className="flex">
@@ -141,30 +136,7 @@ export default function SettingMenu(props: TProps) {
           <Menu.Items
             className={`absolute left-0 z-20 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${matches && "-top-52"} `}
           >
-            {/* <div className="px-4 py-3">
-            <p className="text-sm">Signed in as</p>
-            <p className="truncate text-sm font-medium text-gray-900">
-              {session?.user?.email}
-            </p>
-          </div> */}
             <div className="py-1">
-              {/* <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={classNames(
-                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                      "block w-full cursor-pointer px-4 py-2 text-left text-sm",
-                    )}
-                    onClick={() =>
-                      status === "unauthenticated"
-                        ? setShowAuthModal(true)
-                        : setOpen(true)
-                    }
-                  >
-                    SEO Configuration
-                  </button>
-                )}
-              </Menu.Item> */}
               {!pathname.startsWith("/amazon") && (
                 <Menu.Item>
                   {({ active }) => (
@@ -174,7 +146,7 @@ export default function SettingMenu(props: TProps) {
                         "block w-full cursor-pointer px-4 py-2 text-left text-sm",
                       )}
                       onClick={() => {
-                        setIsTemplateOpen(true);
+                        openDialog("selectTemplate");
                       }}
                     >
                       Switch Template
@@ -221,48 +193,8 @@ export default function SettingMenu(props: TProps) {
                   {({ active }) => (
                     <button
                       onClick={async () => {
-                        dispatch(
-                          updateAppState({ ...appState, status: "Loading..." }),
-                        );
-                        const data = await getAmazonData(appState);
-                        const colors = await getColors(
-                          appState.aiContent.images?.primary?.Large?.URL ?? "",
-                        );
-                        console.log("data", data);
-                        dispatch(
-                          updateAppState({
-                            ...appState,
-                            aiContent: {
-                              ...appState.aiContent,
-                              features: data.features.map(
-                                (feature: any, i: any) => {
-                                  if (i === 0) {
-                                    return {
-                                      ...feature,
-                                      image:
-                                        appState.aiContent.images?.primary
-                                          ?.Large?.URL ?? "",
-                                    };
-                                  } else if (i === 1 || i === 2 || i === 3) {
-                                    return {
-                                      ...feature,
-                                      image:
-                                        appState.aiContent.images?.variant[
-                                          i - 1
-                                        ]?.Large?.URL ??
-                                        appState.aiContent.images?.primary
-                                          ?.Large?.URL ??
-                                        "",
-                                    };
-                                  }
-                                },
-                              ),
-                              colors: colors,
-                              description: data.description,
-                            },
-
-                            status: "Done",
-                          }),
+                        await getAmazonDataUsingASIN(
+                          appState.aiContent?.productId ?? "",
                         );
                       }}
                       className={classNames(
@@ -280,11 +212,21 @@ export default function SettingMenu(props: TProps) {
                     {({ active }) => (
                       <button
                         onClick={() => {
-                          regenerateText({
-                            appState,
-                            dispatch,
-                            searchParams,
-                          });
+                          if (pathname.startsWith("/custom")) {
+                            generateTextForCustom({
+                              businessName:
+                                appState.aiContent.banner.businessName,
+                              businessType:
+                                appState.aiContent.businessType ?? "",
+                              location: appState.aiContent.location ?? "",
+                            });
+                          } else {
+                            regenerateText({
+                              appState,
+                              dispatch,
+                              searchParams,
+                            });
+                          }
                         }}
                         className={classNames(
                           active
@@ -301,11 +243,21 @@ export default function SettingMenu(props: TProps) {
                     {({ active }) => (
                       <button
                         onClick={() => {
-                          regenerateImage({
-                            appState,
-                            dispatch,
-                            searchParams,
-                          });
+                          if (pathname.startsWith("/custom")) {
+                            generateImagesForCustom({
+                              businessName:
+                                appState.aiContent.banner.businessName,
+                              businessType:
+                                appState.aiContent.businessType ?? "",
+                              location: appState.aiContent.location ?? "",
+                            });
+                          } else {
+                            regenerateImage({
+                              appState,
+                              dispatch,
+                              searchParams,
+                            });
+                          }
                         }}
                         className={classNames(
                           active
@@ -321,14 +273,24 @@ export default function SettingMenu(props: TProps) {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() =>
-                          getInstagramData({
-                            appState,
-                            dispatch,
-                            searchParams,
-                            regenerate: true,
-                          })
-                        }
+                        onClick={() => {
+                          if (pathname.startsWith("/custom")) {
+                            generateNewCustomSite({
+                              businessType:
+                                appState.aiContent.businessType ?? "",
+                              location: appState.aiContent.location ?? "",
+                              businessName:
+                                appState.aiContent.banner.businessName ?? "",
+                            });
+                          } else {
+                            getInstagramData({
+                              appState,
+                              dispatch,
+                              searchParams,
+                              regenerate: true,
+                            });
+                          }
+                        }}
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"

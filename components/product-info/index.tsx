@@ -1,15 +1,17 @@
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 import Image from "next/image";
 import React from "react";
 
 type TProps = {
-  data:any
-}
+  data: any;
+};
 
-const ProductInfo = (props:TProps) => {
-  const {data}= props
+const ProductInfo = (props: TProps) => {
+  const { data } = props;
   return (
     <div
-      className={"mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16"
+      className={
+        "mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16"
       }
     >
       <div className={"lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8"}>
@@ -331,7 +333,11 @@ const ProductInfo = (props:TProps) => {
         </form> */}
       </div>
 
-      <div className={"flex flex-col gap-10 py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6"}>
+      <div
+        className={
+          "flex flex-col gap-10 py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6"
+        }
+      >
         {data?.features?.map((feature: any, i: any) => (
           <div
             className={`flex items-center justify-center gap-5 ${i % 2 !== 0 ? "flex-row-reverse" : ""}`}
@@ -341,9 +347,9 @@ const ProductInfo = (props:TProps) => {
               src={
                 i === 0
                   ? data?.images?.primary?.Large?.URL ?? ""
-                  : data?.images?.variant[i - 1]?.Large?.URL ??
-                    data?.images?.primary?.Large?.URL ??
-                    ""
+                  : (data?.images?.variant[i - 1]?.Large?.URL ??
+                      data?.images?.primary?.Large?.URL) ||
+                    BROKEN_IMAGE
               }
               alt=""
               width={200}

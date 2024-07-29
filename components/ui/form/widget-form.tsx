@@ -38,11 +38,12 @@ const WidgetForm = () => {
   const isMobile = useMediaQuery("(max-width: 1024px)");
   return (
     <div>
-     { !isMobile&&
-      <h2 className="mt-3 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        Widgets
-      </h2>}
-      <div className="mt-5 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 bg-gray-200 shadow grid grid-cols-2 max-sm:grid-cols-1 sm:gap-px sm:divide-y-0">
+      {!isMobile && (
+        <h2 className="mt-3 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          Widgets
+        </h2>
+      )}
+      <div className="mt-5 grid grid-cols-2 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 bg-gray-200 shadow max-sm:grid-cols-1 sm:gap-px sm:divide-y-0">
         {widgets.map((widget, widgetIdx) => (
           <div
             key={widget.name}
@@ -55,7 +56,7 @@ const WidgetForm = () => {
               widgetIdx === widgets.length - 1
                 ? "rounded-bl-lg rounded-br-lg sm:rounded-bl-none"
                 : "",
-              "group relative bg-white p-6 max-sm:px-5 max-sm:py-2 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500",
+              "group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 max-sm:px-5 max-sm:py-2",
             )}
           >
             <div>

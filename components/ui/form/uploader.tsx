@@ -9,11 +9,19 @@ type TProps = {
   name: string;
   label?: string;
   onChange?: (value: string) => void;
+  contain?: boolean;
+  multimedia?: boolean;
+};
+
+export const isImage = (url: string) => {
+  const imageFormats = ["jpg", "jpeg", "png"];
+  console.log("url: " + imageFormats.some((format) => url?.includes(format)));
+  return imageFormats.some((format) => url?.includes(format));
 };
 
 export default function Uploader(props: TProps) {
-  const { defaultValue, name, label, onChange } = props;
-  const aspectRatio = name === "image" ? "aspect-video" : "aspect-square";
+  const { defaultValue, name, label, onChange, contain, multimedia } = props;
+  const aspectRatio = "aspect-video"; // Since both images and videos can use this aspect ratio
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [data, setData] = useState({
@@ -24,14 +32,21 @@ export default function Uploader(props: TProps) {
 
   const handleUpload = (file: File | null) => {
     if (file) {
-      if (file.size / 1024 / 1024 > 50) {
-        toast.error("File size too big (max 50MB)");
+      if (file.size / 1024 / 1024 > 100) {
+        toast.error("File size too big (max 100MB)");
       } else if (
         !file.type.includes("png") &&
         !file.type.includes("jpg") &&
-        !file.type.includes("jpeg")
+        !file.type.includes("jpeg") &&
+        (!multimedia ||
+          (!file.type.includes("mp4") &&
+            !file.type.includes("avi") &&
+            !file.type.includes("mov")))
       ) {
-        toast.error("Invalid file type (must be .png, .jpg, or .jpeg)");
+        toast.error(
+          "Invalid file type (must be .png, .jpg, .jpeg" +
+            (multimedia ? ", .mp4, .avi, or .mov)" : ")"),
+        );
       } else {
         fetch("/api/upload", {
           method: "POST",
@@ -54,6 +69,7 @@ export default function Uploader(props: TProps) {
   };
 
   useEffect(() => {
+    console.log("Upload", data[name]);
     if (defaultValue) {
       setData((prev) => ({ ...prev, [name]: defaultValue }));
     }
@@ -69,7 +85,7 @@ export default function Uploader(props: TProps) {
           aspectRatio,
           {
             "max-w-screen-md": aspectRatio === "aspect-video",
-            "max-w-xs": aspectRatio === "aspect-square",
+            // "max-w-xs": aspectRatio === "aspect-square",
           },
         )}
       >
@@ -131,16 +147,37 @@ export default function Uploader(props: TProps) {
             Drag and drop or click to upload.
           </p>
           <p className="mt-2 text-center text-xs text-gray-500">
-            Max file size: 50MB
+            Max file size: 100MB
           </p>
-          <span className="sr-only">Photo upload</span>
+          <span className="sr-only">Upload</span>
         </div>
-        {data[name] && (
-          // eslint-disable-next-line @next/next/no-img-element
+        {data[name] && !multimedia ? (
           <Image
             src={data[name] as string}
             alt="Preview"
-            className="h-full w-full rounded-md object-cover"
+            className={`h-full w-full rounded-md ${
+              contain ? "object-contain" : "object-cover"
+            }`}
+            height={400}
+            width={400}
+          />
+        ) : isImage(data[name] as string) ? (
+          <Image
+            src={data[name] as string}
+            alt="Preview"
+            className={`h-full w-full rounded-md ${
+              contain ? "object-contain" : "object-cover"
+            }`}
+            height={400}
+            width={400}
+          />
+        ) : (
+          <video
+            src={data[name] as string}
+            controls
+            className={`h-full w-full rounded-md ${
+              contain ? "object-contain" : "object-cover"
+            }`}
             height={400}
             width={400}
           />
@@ -153,7 +190,7 @@ export default function Uploader(props: TProps) {
           ref={inputRef}
           name={name}
           type="file"
-          accept="image/*"
+          accept={multimedia ? "image/*,video/*" : "image/*"}
           className="sr-only"
           onChange={(e) => {
             const file = e.currentTarget.files && e.currentTarget.files[0];

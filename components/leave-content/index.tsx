@@ -1,3 +1,4 @@
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
   appState as AS,
@@ -10,11 +11,12 @@ import { useRouter } from "next/navigation";
 import React, { SetStateAction } from "react";
 
 type TProps = {
-  setOpen: React.Dispatch<SetStateAction<boolean>>;
+  redirectUrl?: string;
 };
 
 const LeaveContent = (props: TProps) => {
-  const { setOpen } = props;
+  const { redirectUrl } = props;
+  const { closeDialog } = useResponsiveDialog();
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
 
@@ -29,22 +31,20 @@ const LeaveContent = (props: TProps) => {
         <button
           className="mr-2 rounded bg-indigo-600 px-4 py-2 text-white"
           onClick={() => {
-            setOpen(false);
+            closeDialog("leave");
           }}
         >
           Continue building
-        
         </button>
         <button
           className="rounded bg-gray-500 px-4 py-2 text-white"
-          
           onClick={() => {
-            setOpen(false);
+            closeDialog("leave");
             dispatch(clearPastAndFuture());
-            router.push("/");
+            router.push(redirectUrl ?? "/");
           }}
         >
-            Yes, leave now
+          Yes, leave now
         </button>
       </div>
     </div>

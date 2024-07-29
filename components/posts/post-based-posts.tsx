@@ -1,6 +1,7 @@
 import { Container } from "@/components/container";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 import { TColors, TPosts, TSection } from "@/types";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
@@ -73,41 +74,38 @@ export function Posts(props: TProps) {
         {posts.show && (
           <ul
             role="list"
-            className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3"
+            className={`mx-auto mt-16 grid max-w-2xl gap-6 sm:gap-8 lg:mt-20 lg:max-w-none  ${appState.view === "Mobile" && "grid-cols-1"} ${appState.view === "Tablet" && "grid-cols-2"} ${appState.view === "Desktop" && "grid-cols-1 lg:grid-cols-3"}`}
           >
-            {posts.list.map((data, i) => (
-              posts.limit >i &&
-              <li key={i}>
-                <ul role="list" className="flex flex-col gap-y-6 sm:gap-y-8">
-                  <li key={i}>
-                    <figure className="relative rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10">
-                      <QuoteIcon className="absolute left-6 top-6 fill-slate-100" />
-                      <blockquote className="relative">
-                        <p className="text-lg tracking-tight text-slate-900">
-                          {data.caption}
-                        </p>
-                      </blockquote>
-                      <figcaption className="relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
-                        <div>
-                          <div className="font-display text-base text-slate-900">
-                            {data.username}
-                          </div>
-                        </div>
-                        <div className="overflow-hidden rounded-full bg-slate-50">
-                          <Image
-                            className="h-14 w-14 object-cover"
-                            src={data.media_url}
-                            alt=""
-                            width={56}
-                            height={56}
-                          />
-                        </div>
-                      </figcaption>
-                    </figure>
+            {posts.list.map(
+              (data, i) =>
+                posts.limit > i && (
+                  <li key={i} className="">
+                    <ul role="list" className="flex h-full gap-y-6 sm:gap-y-8">
+                      <li key={i}>
+                        <figure className="relative flex h-full flex-col justify-between rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10">
+                          <QuoteIcon className="absolute left-6 top-6 fill-slate-100" />
+                          <blockquote className="relative">
+                            <p className="text-lg tracking-tight text-slate-900">
+                              {data.caption}
+                            </p>
+                          </blockquote>
+                          <figcaption className="relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
+                            <div className="overflow-hidden rounded-full bg-slate-50">
+                              <Image
+                                className="h-14 w-14 object-cover"
+                                src={data.media_url || BROKEN_IMAGE}
+                                alt=""
+                                width={56}
+                                height={56}
+                              />
+                            </div>
+                          </figcaption>
+                        </figure>
+                      </li>
+                    </ul>
                   </li>
-                </ul>
-              </li>
-            ))}
+                ),
+            )}
           </ul>
         )}
       </Container>

@@ -17,7 +17,8 @@ const PublishForm = () => {
       .regex(
         /^[a-z0-9]+$/,
         "Subdomain must contain only lowercase letters, numbers, and no spaces",
-      ),
+      )
+      .max(15),
   });
   const defaultValues = {
     subdomain: "",
@@ -36,7 +37,7 @@ const PublishForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
-  const appState = useAppSelector(AS)
+  const appState = useAppSelector(AS);
   const onSubmit = async () => {
     try {
       setLoading(true);
@@ -50,7 +51,10 @@ const PublishForm = () => {
         return;
       } else {
         const id = searchParams?.get("id");
-        const response = await updateSubDomain({ subdomain: getValues().subdomain, id:id?? appState.id });
+        const response = await updateSubDomain({
+          subdomain: getValues().subdomain,
+          id: id ?? appState.id,
+        });
         router.push("https://" + response.subdomain + ".webeasy.ai");
       }
     } catch (error) {
@@ -62,7 +66,7 @@ const PublishForm = () => {
       <div>
         <label
           htmlFor="subdomain"
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className="text-sm font-medium leading-6 text-gray-900 "
         >
           Enter Subdomain for your site?
         </label>

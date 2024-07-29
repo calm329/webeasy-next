@@ -3,7 +3,6 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import AuthModal from "../ui/modal/auth-modal";
 import AccountMenu from "./account-menu";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -12,7 +11,7 @@ import { getUsernameFromPosts } from "@/lib/utils";
 import { DebouncedState } from "use-debounce";
 import { useMediaQuery } from "usehooks-ts";
 import { TMeta, TTemplateName, AppState, TUser } from "@/types";
-import { getAllTemplates, getUserById } from "@/lib/fetchers";
+import { getAllTemplates, getSitesByUserId, getUserById } from "@/lib/fetchers";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
@@ -32,17 +31,19 @@ import { FaExternalLinkAlt, FaRedoAlt, FaUndoAlt } from "react-icons/fa";
 import { Menu, Transition } from "@headlessui/react";
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import WidgetModal from "../ui/modal/widget-modal";
 import { useState } from "react";
 import ViewMenu from "../menu/view-menu";
 import PublishMenu from "../menu/publish-menu";
 import BottomToolBar from "../bottom-bar";
-import { WidgetDrawer } from "../ui/drawer/widget-drawer";
 import { isBot } from "next/dist/server/web/spec-extension/user-agent";
 import { ImCancelCircle } from "react-icons/im";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { IoMdAdd, IoMdArrowRoundBack } from "react-icons/io";
-import { getInstagramData, saveState } from "@/lib/utils/function";
+import {
+  getInstagramData,
+  isSiteBuilderPage,
+  saveState,
+} from "@/lib/utils/function";
 import {
   appState as AS,
   clearPastAndFuture,
@@ -54,16 +55,23 @@ import {
   undo,
   updateAppState,
 } from "@/lib/store/slices/site-slice";
-import Loader from "../ui/loader";
-import BackModal from "../ui/modal/back-modal";
-import { BackDrawer } from "../ui/drawer/back-drawer";
-import { LeaveDrawer } from "../ui/drawer/leave-drawer";
-import LeaveModal from "../ui/modal/leave-modal";
 import AiAssist from "../ai-assist";
+import { fetchUser, UsersData as UD } from "@/lib/store/slices/user-slice";
+import PageSlideOver from "../ui/slide-over/page-slide";
+// import BackContent from "../modal-content/back";
+import AuthModalContent from "../modal-content/auth";
+import LeaveContent from "../leave-content";
+import ResponsiveDialog from "../ui/responsive-dialog";
+import {
+  ResponsiveDialogProvider,
+  useResponsiveDialog,
+} from "@/lib/context/responsive-dialog-context";
+import WidgetForm from "../ui/form/widget-form";
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 const navigation = [
-  { name: "Customization", href: "#" },
-  { name: "Analytics", href: "#" },
+  { name: "Dashboard", href: "/dashboard" },
+  // { name: "Analytics", href: "#" },
 ];
 
 function classNames(...classes: any[]) {
@@ -90,21 +98,18 @@ export default function SiteHeader(props: TProps) {
   const router = useRouter();
   const { status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const matches = useMediaQuery("(max-width: 500px)");
-  const [user, setUser] = useState<TUser>(null);
   const [loading, setLoading] = useState(false);
   const [hideNavigation, setHideNavigation] = useState(false);
-  const [showWidgetModal, setWidgetModal] = useState(false);
-  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [showPagesPanel, setShowPagesPanel] = useState(false);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
-  const [showBackModal, setShowBackModal] = useState(false);
   const selectedTemplate = useAppSelector(ST);
   const [templates, setTemplates] = useState<TTemplate | null>(null);
+  const userData = useAppSelector(UD);
   const fetchData = async () => {
     try {
       const temp = await dispatch(fetchTemplates()).unwrap();
@@ -112,7 +117,7 @@ export default function SiteHeader(props: TProps) {
       setTemplates(temp);
     } catch (error) {}
   };
-
+  console.log("userData", userData);
   useEffect(() => {
     !templates && fetchData();
 
@@ -131,136 +136,161 @@ export default function SiteHeader(props: TProps) {
   const getUserData = async () => {
     setLoading(true);
     try {
-      const user = await getUserById();
-      setUser({ ...user });
+      // const user = await getUserById();
+      const res = await dispatch(fetchUser()).unwrap();
+
+      // setUser({ ...user });
     } catch (error) {
     } finally {
       setLoading(false);
     }
   };
-  const isBottomBar = useMediaQuery("(min-width: 900px)");
-  const isMobile = useMediaQuery("(max-width: 1024px)");
+
   useEffect(() => {
-    getUserData();
+    // if (session?.user?.email) {
+    !userData && getUserData();
+    // }
   }, [status]);
+  const isBottomBar = useMediaQuery("(min-width: 900px)");
+  const { openDialog, closeDialog } = useResponsiveDialog();
+  const sections = useAppSelector(SD);
   return (
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
     >
-      {(pathname.startsWith("/auth") || pathname.startsWith("/custom")|| pathname.startsWith("/amazon")) &&
+      <ResponsiveDialog id="auth" dismissible={false} showClose={true}>
+        <AuthModalContent />
+      </ResponsiveDialog>
+      <ResponsiveDialog id="leave" showClose={true}>
+        <LeaveContent />
+      </ResponsiveDialog>
+      <ResponsiveDialog id="widget" showClose={true}>
+        <WidgetForm />
+      </ResponsiveDialog>
+
+      {isSiteBuilderPage(pathname) &&
+        !appState?.generate?.generating &&
         setIsFontOpen && (
           <BottomToolBar
             showNavigation={showNavigation}
             // appState={appState}
             handleChange={handleChange}
-            isAuth={isAuth}
-            setShowAuthModal={setShowAuthModal}
             setIsFontOpen={setIsFontOpen}
           />
         )}
 
-      {isMobile ? (
-        <BackDrawer setOpen={setShowBackModal} open={showBackModal} />
-      ) : (
-        <BackModal setOpen={setShowBackModal} open={showBackModal} />
-      )}
-
-      {isMobile ? (
-        <LeaveDrawer setOpen={setShowLeaveModal} open={showLeaveModal} />
-      ) : (
-        <LeaveModal setOpen={setShowLeaveModal} open={showLeaveModal} />
-      )}
+      <PageSlideOver setIsOpen={setShowPagesPanel} open={showPagesPanel} />
 
       <nav>
-        {!isBottomBar &&
-          (pathname.startsWith("/auth") || pathname.startsWith("/custom") || pathname.startsWith("/amazon")) && (
-            <div className="fixed top-0 z-10 flex w-full justify-around border-b bg-white pb-5 pt-5">
-              <button className="flex flex-col items-center">
-                <IoMdAdd size={20} />
-                {/* Undo */}
-              </button>
-              <button
-                className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`}
-                onClick={() => dispatch(undo())}
-                disabled={pastAppState.length === 0}
-              >
-                <FaUndoAlt />
-                {/* Undo */}
-              </button>
-              <button
-                className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`}
-                onClick={() => dispatch(redo())}
-                disabled={futureAppState.length === 0}
-              >
-                <FaRedoAlt />
-                {/* Redo */}
-              </button>
-              <button className="flex flex-col items-center">
-                <ImCancelCircle
-                  size={18}
-                  onClick={() => {
-                    if (pathname.startsWith("/custom")) {
-                      if (searchParams.get("id")) {
-                        dispatch(
-                          fetchSiteById({
-                            id: searchParams.get("id") ?? "",
-                          }),
-                        );
-                      }
-                    }else if (pathname.startsWith("/amazon")) {
-                      if (searchParams.get("site_id")) {
-                        dispatch(
-                          fetchSiteById({
-                            id: searchParams.get("site_id") ?? "",
-                          }),
-                        );
-                      }
-                    } else {
-                      getInstagramData({
-                        appState,
-                        dispatch,
-                        searchParams,
-                      });
-                    }
-                    dispatch(clearPastAndFuture());
-                  }}
-                />
-                {/* Cancel */}
-              </button>
-              <button className="flex flex-col items-center">
-                <MdOutlineDownloadDone
-                  size={20}
-                  onClick={() => {
-                    if (status === "authenticated") {
-                      saveState(appState, dispatch).then(() =>
-                        dispatch(clearPastAndFuture()),
+        {!isBottomBar && isSiteBuilderPage(pathname) && (
+          <div className="fixed top-0 z-10 flex w-full justify-around border-b bg-white pb-5 pt-5">
+            <button className="flex flex-col items-center">
+              <IoMdAdd size={20} />
+              {/* Undo */}
+            </button>
+            <button
+              className={`flex flex-col items-center ${pastAppState.length === 0 && "text-gray-500"}`}
+              onClick={() => dispatch(undo())}
+              disabled={pastAppState.length === 0}
+            >
+              <FaUndoAlt />
+              {/* Undo */}
+            </button>
+            <button
+              className={`flex flex-col items-center ${futureAppState.length === 0 && "text-gray-500"}`}
+              onClick={() => dispatch(redo())}
+              disabled={futureAppState.length === 0}
+            >
+              <FaRedoAlt />
+              {/* Redo */}
+            </button>
+            <button className="flex flex-col items-center">
+              <ImCancelCircle
+                size={18}
+                onClick={() => {
+                  if (pathname.startsWith("/custom")) {
+                    if (searchParams.get("id")) {
+                      dispatch(
+                        fetchSiteById({
+                          id: searchParams.get("id") ?? "",
+                        }),
                       );
-                    } else {
-                      setShowAuthModal(true);
                     }
-                  }}
-                />
-                {/* Done */}
-              </button>
-            </div>
-          )}
+                  } else if (pathname.startsWith("/amazon")) {
+                    if (searchParams.get("site_id")) {
+                      dispatch(
+                        fetchSiteById({
+                          id: searchParams.get("site_id") ?? "",
+                        }),
+                      );
+                    }
+                  } else {
+                    getInstagramData({
+                      appState,
+                      dispatch,
+                      searchParams,
+                    });
+                  }
+                  dispatch(clearPastAndFuture());
+                }}
+              />
+              {/* Cancel */}
+            </button>
+            <button className="flex flex-col items-center">
+              <MdOutlineDownloadDone
+                size={20}
+                onClick={() => {
+                  if (status === "authenticated") {
+                    saveState(
+                      appState,
+                      dispatch,
+                      selectedTemplate?.id ?? "",
+                      sections,
+                    ).then(() => dispatch(clearPastAndFuture()));
+                  } else {
+                    openDialog("auth");
+                  }
+                }}
+              />
+              {/* Done */}
+            </button>
+          </div>
+        )}
         <div
-          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-6 px-0 ${!isBottomBar && "mt-14 w-full max-w-full justify-between"}`}
+          className={`mx-auto flex max-w-[85rem] items-center px-5 ${!isAuth && "justify-between"} p-5 px-0 ${!isBottomBar && isSiteBuilderPage(pathname) && " mt-14 w-full max-w-full justify-between"}`}
           aria-label="Global"
         >
           <div className="flex items-center gap-x-12 ">
             <button
-              onClick={() => {
-                if (isAuth) {
-                  if (
-                    futureAppState.length === 0 &&
-                    pastAppState.length === 0
-                  ) {
-                    router.push("/");
+              onClick={async () => {
+                if (status === "authenticated") {
+                  const sites = await getSitesByUserId();
+                  const hasSites = sites.length > 0;
+                  const isSettingsPage = pathname.startsWith("/dashboard");
+
+                  if (isSiteBuilderPage(pathname)) {
+                    if (
+                      futureAppState.length === 0 &&
+                      pastAppState.length === 0
+                    ) {
+                      router.push("/");
+                    } else {
+                      openDialog("leave");
+                    }
                   } else {
-                    setShowLeaveModal(true);
+                    if (isSettingsPage) {
+                      if (hasSites) {
+                        // Stay on the settings page if the user has sites
+                        return;
+                      } else {
+                        router.push("/");
+                      }
+                    } else {
+                      router.push("/");
+                    }
                   }
                 } else {
+                  // User is not authenticated, redirect to the general home page
                   router.push("/");
                 }
               }}
@@ -268,16 +298,14 @@ export default function SiteHeader(props: TProps) {
               <Image
                 src={"/WebEasy-logo-dark.svg"}
                 alt={"Logo"}
-                className={`${!isAuth && "h-10  max-sm:w-full"}`}
+                className={`${!isAuth && "h-[2.9rem] max-sm:w-full"}`}
                 width={200}
                 height={100}
               />
             </button>
 
-            <div
-              className={`flex lg:gap-x-12 ${hideNavigation && "hidden"} max-lg:hidden`}
-            >
-              {user &&
+            {/* <div className={`flex max-lg:hidden  lg:gap-x-12`}>
+              {status === "authenticated" &&
                 showNavigation &&
                 navigation.map((item) => (
                   <a
@@ -288,11 +316,14 @@ export default function SiteHeader(props: TProps) {
                     {item.name}
                   </a>
                 ))}
-            </div>
+            </div> */}
           </div>
           {isAuth && isBottomBar && status === "authenticated" && (
             <div className="ml-5 flex gap-2">
-              <div className="flex items-center justify-center gap-5 rounded border border-gray-400 px-5 py-2 pr-2">
+              <div
+                className="flex items-center justify-center gap-5 rounded border border-gray-400 px-5 py-2 pr-2"
+                onClick={() => setShowPagesPanel(true)}
+              >
                 <span>Home</span>
                 <span className="h-5 w-5 text-sm">
                   <ChevronDownIcon />
@@ -313,63 +344,55 @@ export default function SiteHeader(props: TProps) {
                     handleChange={handleChange ?? undefined}
                     appState={appState}
                     templates={templates}
-                    setShowAuthModal={setShowAuthModal}
                     setIsFontOpen={setIsFontOpen}
                   />
                 )}
               </div>
               <div className={` ml-3 mr-5 flex ${!isBottomBar && "hidden"}`}>
-                <span className="hidden sm:block">
-                  <button
-                    type="button"
-                    className="inline-flex flex-col items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-black"
-                    onClick={() => {
-                      setWidgetModal(true);
-                      dispatch(
-                        updateAppState({ ...appState, openedSlide: null }),
-                      );
-                    }}
-                  >
-                    <ChatBubbleLeftIcon
-                      className="-ml-0.5 mr-1.5 h-5 w-5 "
-                      aria-hidden="true"
-                    />
-                    Widget
-                  </button>
-                </span>
-                {isMobile ? (
-                  <WidgetDrawer
-                    open={showWidgetModal}
-                    setOpen={setWidgetModal}
-                  />
-                ) : (
-                  <WidgetModal
-                    open={showWidgetModal}
-                    setOpen={setWidgetModal}
-                  />
+                {status === "authenticated" && (
+                  <span className="hidden sm:block">
+                    <button
+                      type="button"
+                      className="inline-flex flex-col items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-black"
+                      onClick={() => {
+                        openDialog("widget");
+                        dispatch(
+                          updateAppState({ ...appState, openedSlide: null }),
+                        );
+                      }}
+                    >
+                      <ChatBubbleLeftIcon
+                        className="-ml-0.5 mr-1.5 h-5 w-5 "
+                        aria-hidden="true"
+                      />
+                      Widget
+                    </button>
+                  </span>
                 )}
+
                 <ViewMenu />
 
-                <PublishMenu setShowAuthModal={setShowAuthModal} />
-                <AiAssist />
+                <PublishMenu />
+                {status === "authenticated" && <AiAssist />}
               </div>
               <div className="-mt-4">
-                {status === "authenticated" ? (
+                {status === "authenticated" && (
                   <button
                     className="max-lg:hidden"
                     onClick={() =>
                       dispatch(
-                        updateAppState({ ...appState, openedSlide: null })
+                        updateAppState({ ...appState, openedSlide: null }),
                       )
                     }
                   >
-                    <AccountMenu user={user} />
+                    <AccountMenu user={userData} />
                   </button>
-                ) : (
+                )}
+                {status === "unauthenticated" && (
                   <button
                     className="ml-5 flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 max-lg:hidden"
                     onClick={() => {
-                      setShowAuthModal(true);
+                      openDialog("auth");
                       setMobileMenuOpen(false);
                     }}
                   >
@@ -382,13 +405,13 @@ export default function SiteHeader(props: TProps) {
           <div
             className={`flex ${isAuth && "hidden"} justify-end gap-5  max-lg:hidden`}
           >
-            {status === "authenticated" ? (
-              <AccountMenu user={user} />
-            ) : (
+            {status === "authenticated" && <AccountMenu user={userData} />}
+
+            {status === "unauthenticated" && (
               <button
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={() => {
-                  setShowAuthModal(true);
+                  openDialog("auth");
                   setMobileMenuOpen(false);
                 }}
               >
@@ -399,7 +422,7 @@ export default function SiteHeader(props: TProps) {
           <div
             className={`flex ${isAuth ? "ml-4 w-auto" : "w-full"} justify-end gap-5  lg:hidden`}
           >
-            {status === "authenticated" ? (
+            {status === "authenticated" && (
               <div className="flex">
                 <button
                   type="button"
@@ -410,11 +433,12 @@ export default function SiteHeader(props: TProps) {
                   <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
-            ) : (
+            )}
+            {status === "unauthenticated" && (
               <button
                 className="flex w-20 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={() => {
-                  setShowAuthModal(true);
+                  openDialog("auth");
                   setMobileMenuOpen(false);
                 }}
               >
@@ -424,7 +448,6 @@ export default function SiteHeader(props: TProps) {
           </div>
         </div>
       </nav>
-      <AuthModal open={showAuthModal} setOpen={setShowAuthModal} />
       <Dialog
         as="div"
         className="lg:hidden"
@@ -458,9 +481,9 @@ export default function SiteHeader(props: TProps) {
               {status === "authenticated" && (
                 <div className="py-5 pt-10">
                   <div className="flex gap-3">
-                    {user?.image ? (
+                    {userData?.image ? (
                       <Image
-                        src={user?.image}
+                        src={userData?.image}
                         className=" aspect-1 h-[45px] w-[45px] rounded-full object-cover text-gray-900"
                         alt=""
                         width={50}
@@ -476,14 +499,14 @@ export default function SiteHeader(props: TProps) {
                       />
                     )}
                     <div>
-                      <h2 className="font-semibold">{user?.name}</h2>
-                      <p className="text-sm">{user?.email}</p>
+                      <h2 className="font-semibold">{userData?.name}</h2>
+                      <p className="text-sm">{userData?.email}</p>
                     </div>
                   </div>
                 </div>
               )}
-              {/* <div className="space-y-1 py-5">
-                {user &&
+              <div className="space-y-1 py-5">
+                {status === "authenticated" &&
                   navigation.map((item) => (
                     <a
                       key={item.name}
@@ -493,7 +516,7 @@ export default function SiteHeader(props: TProps) {
                       {item.name}
                     </a>
                   ))}
-              </div> */}
+              </div>
 
               {status === "authenticated" ? (
                 <>
@@ -549,7 +572,7 @@ export default function SiteHeader(props: TProps) {
                   <button
                     className="-mx-3 block w-full rounded-lg px-3  py-2  text-start text-base leading-7 text-gray-900 hover:bg-gray-50"
                     onClick={() => {
-                      setShowAuthModal(true);
+                      openDialog("auth");
                       setMobileMenuOpen(false);
                     }}
                   >

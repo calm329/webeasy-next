@@ -6,6 +6,7 @@ import { TColors, THero, TSection } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 type TProps = {
   hero: THero;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
@@ -39,7 +40,7 @@ export function Hero(props: TProps) {
   const appState = useAppSelector(AS);
   return (
     <Container
-      className={`flex gap-5 pb-16 pt-20 text-center max-lg:flex-col lg:pt-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      className={`flex gap-5 pb-16 pt-20 text-center max-lg:flex-col lg:pt-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} ${appState.view === "Mobile" || "Tablet" ? "flex-col-reverse items-center justify-center" : ""}`}
       onClick={() => {
         if (editable && setIsOpen && setSection && setShowForm) {
           setSection("Hero");
@@ -53,9 +54,9 @@ export function Hero(props: TProps) {
         }
       }}
     >
-      {hero.image.show && (
+      {hero?.image?.show && (
         <Image
-          src={hero.image.imageUrl}
+          src={hero?.image?.imageUrl || BROKEN_IMAGE}
           alt=""
           height={400}
           width={300}
@@ -76,7 +77,7 @@ export function Hero(props: TProps) {
       <div>
         <h1
           className={`font-display ml-auto max-w-4xl text-5xl font-medium tracking-tight text-slate-900 sm:text-7xl ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-          style={{ color: colors.primary }}
+          style={{ color: colors?.primary }}
           onClick={(e) => {
             e.stopPropagation();
             if (editable && setIsOpen && setSection && setShowForm) {
@@ -97,7 +98,7 @@ export function Hero(props: TProps) {
             }
           }}
         >
-          {hero.heading}
+          {hero?.heading}
         </h1>
         <p
           className={`mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
@@ -121,18 +122,18 @@ export function Hero(props: TProps) {
             }
           }}
         >
-          {hero.subheading}
+          {hero?.subheading}
         </p>
-        {hero.button.show && (
+        {hero?.button?.show && (
           <div
             className={`mx-auto ml-0 mt-10 flex justify-center gap-x-6 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
           >
-            {hero.button.list.map((data, i) => (
+            {hero?.button?.list?.map((data, i) => (
               <div key={i}>
                 <Button
-                  href={data.value ?? "#"}
+                  href={data.link ?? "#"}
                   text={data.label}
-                  bgColor={colors.secondary}
+                  bgColor={colors?.secondary}
                 />
               </div>
             ))}

@@ -3,14 +3,14 @@ import DynamicForm from "./dynamic-form";
 import { toast } from "sonner";
 import { FormField, TFields, TUser } from "@/types";
 import { useMediaQuery } from "usehooks-ts";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 type TProps = {
-  open: TFields;
-  setOpen: Dispatch<SetStateAction<TFields>>;
   user: TUser;
   getUserData: () => Promise<void>;
 };
 const UpdateUser = (props: TProps) => {
-  const { open, setOpen, getUserData, user } = props;
+  const { getUserData, user } = props;
+  const { closeDialog } = useResponsiveDialog();
   const [userFields, setUserFields] = useState<FormField[]>([
     {
       name: "avatar",
@@ -60,16 +60,14 @@ const UpdateUser = (props: TProps) => {
       {!matches && (
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Update User {open}
+            Update User
           </h2>
         </div>
       )}
       <div className="max-sm:px-5">
         <DynamicForm
-          focusedField={open}
           fields={userFields}
           handler={async (data: any, keys: string[]) => {
-  
             try {
               const response = await fetch("/api/auth/update-user", {
                 method: "PATCH",
@@ -81,7 +79,7 @@ const UpdateUser = (props: TProps) => {
 
               if (response.status === 200) {
                 toast.success(`User ${open} Updated successfully`);
-                setOpen(null);
+                closeDialog("updateUser");
                 getUserData();
               } else {
                 const { error } = await response.json();
@@ -94,9 +92,7 @@ const UpdateUser = (props: TProps) => {
               });
             }
           }}
-          handleChange={(name, value) => {
-         
-          }}
+          handleChange={(name, value) => {}}
         />
       </div>
     </div>

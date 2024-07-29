@@ -4,6 +4,13 @@ import CustomButton from "@/components/ui/form/custom-button";
 import { DebouncedState } from "use-debounce";
 import CustomService from "@/components/ui/form/custom-service";
 import CustomFeature from "@/components/ui/form/custom-feature";
+import CustomTestimonial from "@/components/ui/form/custom-testimonial";
+import CustomFaq from "@/components/ui/form/custom-faq";
+import CustomHeader from "@/components/ui/form/custom-header";
+import CustomStats from "@/components/ui/form/custom-stats";
+import CustomTeam from "@/components/ui/form/custom-team";
+import CustomPrice from "@/components/ui/form/custom-price";
+import CustomPartnerLogo from "@/components/ui/form/custom-logo";
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -50,6 +57,16 @@ const CustomizePanel = (props: TProps) => {
         />
       )}
 
+      {showForm.form === "PartnerLogo" && (
+        <CustomPartnerLogo
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+          handleChange={handleChange}
+        />
+      )}
+
       {showForm.form === "Service" && (
         <CustomService
           handleChange={handleChange}
@@ -68,18 +85,77 @@ const CustomizePanel = (props: TProps) => {
           showForm={showForm}
         />
       )}
+      {showForm.form === "Testimonial" && (
+        <CustomTestimonial
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+
+      {showForm.form === "FAQ" && (
+        <CustomFaq
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+
+      {showForm.form === "Card" && (
+        <CustomHeader
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+
+      {showForm.form === "Stats" && (
+        <CustomStats
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+
+      {showForm.form === "Team" && (
+        <CustomTeam
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
+
+      {showForm.form === "Price" && (
+        <CustomPrice
+          handleChange={handleChange}
+          section={section}
+          setIsOpen={setIsOpen}
+          setShowForm={setShowForm}
+          showForm={showForm}
+        />
+      )}
     </>
   ) : (
     <div className=" ">
       {!isMobile && (
         <>
-          <div className=" px-4 py-6 sm:px-6">
+          <div className=" px-5 py-6 ">
             <div className="flex items-center justify-between">
               <h2
                 className="text-base font-semibold leading-6 "
                 id="slide-over-title"
               >
-                {section}
+                {section === "Partners" ? "Logo Settings" : section}
               </h2>
               <div className="ml-3 flex h-7 items-center">
                 <button

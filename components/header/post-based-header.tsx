@@ -9,6 +9,7 @@ import { TBanner, TColors, TSection } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 
 type TProps = {
   banner: TBanner;
@@ -64,17 +65,17 @@ export function Header(props: TProps) {
         >
           <div
             className="flex items-center md:gap-x-12 "
-            style={{ color: colors.primary }}
+            style={{ color: colors?.primary }}
           >
             <Link
               href="#"
               aria-label="Home"
               className="flex items-center gap-5"
             >
-              {banner.logo.show && (
+              {banner?.logo?.show && (
                 <Image
-                  src={banner.logo.link ?? ""}
-                  alt={banner.logo.alt ?? ""}
+                  src={banner?.logo?.link || BROKEN_IMAGE}
+                  alt={banner?.logo?.alt ?? ""}
                   height={100}
                   width={100}
                 />
@@ -101,11 +102,11 @@ export function Header(props: TProps) {
                   }
                 }}
               >
-                {banner.businessName}
+                {banner?.businessName}
               </span>
             </Link>
           </div>
-          {banner.button.show && (
+          {banner?.button?.show && (
             <div
               className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"} flex items-center gap-x-5 md:gap-x-8`}
               onClick={() => {
@@ -115,12 +116,12 @@ export function Header(props: TProps) {
                 }
               }}
             >
-              {banner.button.list.map((data, i) => (
+              {banner?.button?.list?.map((data, i) => (
                 <div key={i}>
                   <Button
-                    href={data.value ?? "#"}
+                    href={data.link ?? "#"}
                     text={data.label}
-                    bgColor={colors.secondary}
+                    bgColor={colors?.secondary}
                   />
                 </div>
               ))}

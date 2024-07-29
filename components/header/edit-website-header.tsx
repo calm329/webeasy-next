@@ -1,19 +1,4 @@
 "use client";
-import { Fragment } from "react";
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  LinkIcon,
-  PencilIcon,
-} from "@heroicons/react/20/solid";
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { Menu, Transition } from "@headlessui/react";
-import { ChefHatIcon } from "lucide-react";
-import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
-import WidgetModal from "../ui/modal/widget-modal";
-import { useState } from "react";
 
 export default function EditWebsiteHeader() {
   return (

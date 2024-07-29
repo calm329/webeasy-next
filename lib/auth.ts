@@ -2,6 +2,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook"; // Import Facebook provider
 import prisma from "./prisma";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
@@ -9,12 +11,13 @@ const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 export const authOptions: AuthOptions = {
   pages: {
     signIn: "/",
+    error: "/g-auth",
   },
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     Credentials({
       id: "email",
-      name: "email",
+      name: "Email",
       type: "credentials",
       credentials: {
         email: { label: "Email", type: "text" },
@@ -51,9 +54,30 @@ export const authOptions: AuthOptions = {
         };
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID ?? "", // Add your Facebook client ID
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET ?? "", // Add your Facebook client secret
+    }),
   ],
   adapter: PrismaAdapter(prisma) as any,
-  callbacks: {},
+  callbacks: {
+    async session({ session, token, user }) {
+      if (user) {
+        session.user.id = user.id;
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+  },
   session: {
     strategy: "jwt",
   },

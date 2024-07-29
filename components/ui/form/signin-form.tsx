@@ -8,16 +8,19 @@ import { toast } from "sonner";
 import { z } from "zod";
 import CryptoJS from "crypto-js";
 import { usePathname, useRouter } from "next/navigation";
-import { saveState } from "@/lib/utils/function";
-import { clearPastAndFuture, appState as AS } from '@/lib/store/slices/site-slice';
+import { isSiteBuilderPage, saveState } from "@/lib/utils/function";
+import {
+  clearPastAndFuture,
+  appState as AS,
+} from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { getSitesByUserId } from "@/lib/fetchers";
+import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
-type TProps = {
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-};
-
-export default function SigninForm(props: TProps) {
-  const { setIsOpen } = props;
+export default function SigninForm() {
+  const { closeDialog } = useResponsiveDialog();
   const [loading, setLoading] = useState(false);
   const [encryptedData, setEncryptedData] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -25,7 +28,7 @@ export default function SigninForm(props: TProps) {
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
   });
-
+  const selectedTemplate = useAppSelector(ST);
   type UserFormValue = z.infer<typeof formSchema>;
 
   const defaultValues = {
@@ -41,10 +44,12 @@ export default function SigninForm(props: TProps) {
     resolver: zodResolver(formSchema),
     defaultValues,
   });
-  const router = useRouter()
-  const pathname = usePathname()
-  const appState = useAppSelector(AS)
+  const router = useRouter();
+  const pathname = usePathname();
+  const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
+  const sections = useAppSelector(SD);
+
   const encryptData = (email: string, password: string) => {
     const encryptedEmail = CryptoJS.AES.encrypt(email, "secretKey").toString();
     const encryptedPassword = CryptoJS.AES.encrypt(
@@ -61,43 +66,48 @@ export default function SigninForm(props: TProps) {
 
   const onSubmit = async (data: UserFormValue) => {
     setLoading(true);
-
-    const status = await signIn("email", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
-    if(!(pathname.startsWith("/auth")||pathname.startsWith("/custom")||pathname.startsWith("/amazon"))){
-      router.push("/settings/websites")
-    }
-    
-    if((pathname.startsWith("/auth")||pathname.startsWith("/custom")||pathname.startsWith("/amazon"))) {
-      saveState(appState, dispatch).then(() =>
-        dispatch(clearPastAndFuture()),
-      );
-    }
-
-    if (status?.error) {
-      toast.error(status?.error, {
-        position: "top-right",
+    try {
+      const status = await signIn("email", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
       });
-    }
-    if (status?.ok) {
-      if (rememberMe) {
-        encryptData(data.email, data.password);
-      } else {
-        const encryptedData = localStorage.getItem("userData");
-        if (encryptedData) {
-          localStorage.removeItem("userData");
-        }
+      const sites = await getSitesByUserId();
+
+      if (status?.error) {
+        toast.error(status?.error, {
+          position: "top-right",
+        });
+        return;
       }
-      toast.success("Login successful", {
-        position: "top-right",
-      });
-      setIsOpen(false);
-    }
+      if (status?.ok) {
+        if (rememberMe) {
+          encryptData(data.email, data.password);
+        } else {
+          const encryptedData = localStorage.getItem("userData");
+          if (encryptedData) {
+            localStorage.removeItem("userData");
+          }
+        }
+        closeDialog("auth");
+      }
 
-    setLoading(false);
+      if (isSiteBuilderPage(pathname)) {
+        saveState(
+          appState,
+          dispatch,
+          selectedTemplate?.id ?? "",
+          sections,
+        ).then(() => dispatch(clearPastAndFuture()));
+      } else if (sites && sites.length > 0) {
+        router.push("/dashboard");
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   const decryptData = () => {
@@ -132,7 +142,7 @@ export default function SigninForm(props: TProps) {
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className="text-sm font-medium leading-6 text-gray-900"
         >
           Email address
         </label>
@@ -154,7 +164,7 @@ export default function SigninForm(props: TProps) {
       <div>
         <label
           htmlFor="password"
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className="text-sm font-medium leading-6 text-gray-900"
         >
           Password
         </label>

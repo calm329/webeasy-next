@@ -11,10 +11,17 @@ import {
 import { useEffect, useState } from "react";
 import Loader from "../loader";
 import { useMediaQuery } from "usehooks-ts";
-import { DomainDrawer } from "../drawer/domain-drawer";
-import DomainModal from "../modal/domain-modal";
 import { TSite } from "@/types";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../pagination";
+import ResponsiveDialog from "../responsive-dialog/index";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "../pagination";
+import UpdateDomainForm from "./update-domain-form";
 export default function DomainForm() {
   const [isUpdateSubdomain, setIsUpdateSubdomain] = useState(false);
   const [selectedSubdomain, setSelectedSubdomain] = useState("");
@@ -25,22 +32,18 @@ export default function DomainForm() {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
   const dataPerPage = 4;
-  const [paginatedData, setPaginatedData] = useState<Array<TSite>|null>(null);
+  const [paginatedData, setPaginatedData] = useState<Array<TSite> | null>(null);
 
   useEffect(() => {
     if (sites) {
+      const filteredSites = sites.filter((site) => site.subdomain.length <= 20);
       const startIndex = (page - 1) * dataPerPage;
       const endIndex = startIndex + dataPerPage;
-      setPaginatedData(
-        sites.slice(startIndex, endIndex),
-      );
+      setPaginatedData(filteredSites.slice(startIndex, endIndex));
     }
   }, [page, sites]);
 
-  const totalPages = Math.ceil(
-    (sites?.length || 0) /
-      dataPerPage,
-  );
+  const totalPages = Math.ceil((paginatedData?.length || 0) / dataPerPage);
 
   const getData = async () => {
     try {
@@ -53,11 +56,10 @@ export default function DomainForm() {
   }, []);
   return (
     <>
-      {isMobile ? (
-        <DomainDrawer open={isUpdateSubdomain} setOpen={setIsUpdateSubdomain} subdomain={selectedSubdomain}/>
-      ) : (
-        <DomainModal open={isUpdateSubdomain} setOpen={setIsUpdateSubdomain} subdomain={selectedSubdomain}/>
-      )}
+      <ResponsiveDialog id="domain">
+        <UpdateDomainForm subdomain={selectedSubdomain} />
+      </ResponsiveDialog>
+
       <div className="px-4 py-5 sm:p-6">
         <h2 className="text-base font-semibold leading-7 text-gray-900">
           Current Domains
@@ -79,7 +81,7 @@ export default function DomainForm() {
                     target="_blank"
                     className="group flex gap-x-3 rounded-md py-2 pl-2 pr-3 text-sm font-semibold leading-6"
                   >
-                    {site.subdomain}.webeasy.ai
+                    {`${site.subdomain}.webeasy.ai`}
                     <FaExternalLinkAlt
                       className="-ml-0.5 mr-1.5 h-4 w-4 text-indigo-600"
                       aria-hidden="true"
@@ -89,47 +91,48 @@ export default function DomainForm() {
                 <button
                   type="button"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  onClick={()=> {setIsUpdateSubdomain(true);setSelectedSubdomain(site.subdomain)}}
-
+                  onClick={() => {
+                    setIsUpdateSubdomain(true);
+                    setSelectedSubdomain(site.subdomain);
+                  }}
                 >
                   Update
                 </button>
               </div>
-              
             ))}
             <Pagination>
-            <PaginationContent>
-              {page > 1 && (
-                <PaginationItem>
-                  <PaginationPrevious
-                    href="#"
-                    onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                  />
-                </PaginationItem>
-              )}
-              {[...Array(totalPages)].map((_, i) => (
-                <PaginationItem key={i}>
-                  <PaginationLink
-                    href="#"
-                    isActive={i + 1 === page}
-                    onClick={() => setPage(i + 1)}
-                  >
-                    {i + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-              {page < totalPages && (
-                <PaginationItem>
-                  <PaginationNext
-                    href="#"
-                    onClick={() =>
-                      setPage((prev) => Math.min(prev + 1, totalPages))
-                    }
-                  />
-                </PaginationItem>
-              )}
-            </PaginationContent>
-          </Pagination>
+              <PaginationContent>
+                {page > 1 && (
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                    />
+                  </PaginationItem>
+                )}
+                {[...Array(totalPages)].map((_, i) => (
+                  <PaginationItem key={i}>
+                    <PaginationLink
+                      href="#"
+                      isActive={i + 1 === page}
+                      onClick={() => setPage(i + 1)}
+                    >
+                      {i + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                {page < totalPages && (
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={() =>
+                        setPage((prev) => Math.min(prev + 1, totalPages))
+                      }
+                    />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
           </>
         )}
       </div>
@@ -139,6 +142,12 @@ export default function DomainForm() {
         </h2>
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
           <Search placeholder="Search for a domain name..." />
+          <Link
+            href={"/dashboard/domain/search"}
+            className="rounded border px-5 py-2 shadow"
+          >
+            Buy
+          </Link>
         </div>
       </div>
       <div className="px-4 py-4 sm:px-6">

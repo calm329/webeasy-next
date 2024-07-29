@@ -36,7 +36,19 @@ export type FormField = {
   }>;
 };
 
-export type TSection = "Hero" | "Banner" | "Services" | "Posts"|"Gallery"|"Features"|"Description"|"Title";
+export type TSection =
+  | "Hero"
+  | "Banner"
+  | "Services"
+  | "Posts"
+  | "Gallery"
+  | "Features"
+  | "Description"
+  | "Title"
+  | "Image Gallery"
+  | "Partners"
+  | "Testimonials"
+  | any;
 
 export type TFields =
   | "logo"
@@ -52,6 +64,11 @@ export type TFields =
   | "name"
   | "avatar"
   | "email"
+  | "description"
+  | "price"
+  | "featureTitle"
+  | "featureDescription"
+  | string
   | null;
 
 export type TMeta = {
@@ -69,6 +86,11 @@ export type TTemplateName =
 
 export interface AppState {
   id: string;
+  generate: {
+    progress: number;
+    generating: boolean;
+    field: TFields | null;
+  };
   openedSlide: "Customize" | "Font" | null;
   selectedFont: string;
   focusedField: TFields | null;
@@ -76,29 +98,7 @@ export interface AppState {
   status: string;
   view: "Mobile" | "Tablet" | "Desktop";
   iPosts: TPosts;
-  aiContent: {
-    banner: TBanner;
-    hero: THero;
-    services: TServices;
-    colors: {
-      primary: string;
-      secondary: string;
-    };
-    features?: Array<{ id:string,image:string,title: string; description: string }>;
-    description?: string;
-    images?: {
-      primary: { Large: { Height: number; URL: string; Width: number } };
-      variant: Array<{
-        Large: { Height: number; URL: string; Width: number };
-        Medium: { Height: number; URL: string; Width: number };
-        Small: { Height: number; URL: string; Width: number };
-      }>;
-    };
-    price?: string;
-    title?: string;
-    businessType?: string;
-    location?: string;
-  };
+  aiContent: TAiContent;
 
   editable: boolean;
   meta: {
@@ -107,9 +107,92 @@ export interface AppState {
   };
 }
 
+export type TAiContent = {
+  cta: any;
+  faq: any;
+  footer: any;
+  header: any;
+  heroSection: any;
+  logoClouds: any;
+  newsLetter: any;
+  pricing: any;
+  stats: any;
+  team: any;
+  testimonialsSection: any;
+  productId?: string;
+  banner: TBanner;
+  hero: THero;
+  services: TServices;
+  colors: {
+    primary: string;
+    secondary: string;
+  };
+  blog: TBlogs;
+  testimonials: {
+    show: boolean;
+    list: Array<{
+      id: string;
+      name: string;
+      avatar: string;
+      content: string;
+      gender: string;
+
+    }>;
+  };
+  partners: {
+    show: boolean;
+    title: string;
+    description: string;
+    list: Array<{
+      id: string;
+      name: string;
+      logo: string;
+      link: string;
+    }>;
+  };
+  contact: TContact;
+  gallery: { show: boolean; list: Array<string> };
+  features?: Array<TFeature>;
+  description?: string;
+  images?: {
+    primary: { Large: { Height: number; URL: string; Width: number } };
+    variant: Array<{
+      Large: { Height: number; URL: string; Width: number };
+      Medium: { Height: number; URL: string; Width: number };
+      Small: { Height: number; URL: string; Width: number };
+    }>;
+  };
+  price?: string;
+  title?: string;
+  businessType?: string;
+  location?: string;
+};
+
+export type TBlogs = {
+  title: string;
+  description: string;
+  posts: Array<{
+    id: number;
+    title: string;
+    href: string;
+    description: string;
+    imageUrl: string;
+    date: string;
+    datetime: string;
+    category: { title: string; href: string };
+    author: {
+      name: string;
+      role: string;
+      href: string;
+      imageUrl: string;
+    };
+  }>;
+};
+
 export type TPosts = {
   show: boolean;
   limit: number;
+  showHash: boolean;
   list: Array<{
     id: string;
     media_url: string;
@@ -119,6 +202,32 @@ export type TPosts = {
     username: string;
     timestamp: string;
   }>;
+};
+
+export type TFeature = {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+};
+
+export type TContact = {
+  // id: string;
+  // image: string;
+  title: string;
+  description: string;
+  address: {
+    label: string;
+    value: string;
+  };
+  telephone: {
+    label: string;
+    value: string;
+  };
+  email: {
+    label: string;
+    value: string;
+  };
 };
 
 export type TServices = {
@@ -146,13 +255,14 @@ export type TBanner = {
     list: Array<{
       name: string;
       type: "External" | "Section";
-      value: string;
+      link: string;
       label: string;
     }>;
   };
 };
 
 export type THero = {
+  id?: string;
   heading: string;
   subheading: string;
   image: {
@@ -161,13 +271,15 @@ export type THero = {
     imageUrl: string;
     alt: string;
     show: boolean;
+    horizontalPosition?: number;
+    verticalPosition?: number;
   };
   button: {
     show: boolean;
     list: Array<{
       name: string;
       type: "External" | "Section";
-      value: string;
+      link: string;
       label: string;
     }>;
   };
@@ -233,3 +345,11 @@ export type TSite = {
 };
 
 export type TSiteType = "Instagram" | "Custom" | "Amazon";
+export interface TSectionsType {
+  id: string;
+  title: string;
+  content: JSX.Element;
+  image: string;
+  description: string;
+  variation?: number;
+}

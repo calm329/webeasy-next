@@ -6,7 +6,7 @@ const TitleContent = () => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
   return (
-    <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
+    <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
         <div className="flex flex-col border-t pt-5">
           <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
@@ -58,7 +58,7 @@ const TitleContent = () => {
               );
             }}
             //   ref={inputRef}
-            value={appState.aiContent.title}
+            value={appState.aiContent?.title}
           />
         </div>
       </form>

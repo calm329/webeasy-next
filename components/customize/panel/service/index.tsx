@@ -1,7 +1,14 @@
+import RegenerateOptions from "@/components/regenerate-options";
 import { Switch } from "@/components/ui/switch";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
-import React, { Dispatch, SetStateAction } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   DragDropContext,
   Draggable,
@@ -9,9 +16,12 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { FiLink } from "react-icons/fi";
+import { ImPower, ImSpinner2 } from "react-icons/im";
 import { IoMdAdd } from "react-icons/io";
 import { MdDeleteForever, MdModeEditOutline } from "react-icons/md";
 import { RxDragHandleDots2 } from "react-icons/rx";
+import CustomContent from "../../../../lib/content/custom";
+import { generateCustomServiceTAndD } from "@/lib/utils/function";
 
 const grid = 2;
 
@@ -47,6 +57,10 @@ const ServiceContent = (props: TProps) => {
     result.splice(endIndex, 0, removed);
     return result;
   };
+  const [loadingDescription, setLoadingDescription] = useState(false);
+  const [loadingTitle, setLoadingTitle] = useState(false);
+
+  const [selectedField, setSelectedField] = useState("");
 
   const onDragEnd = (result: DropResult): void => {
     if (!result.destination) {
@@ -54,7 +68,7 @@ const ServiceContent = (props: TProps) => {
     }
 
     const updatedItems = reorder(
-      appState.aiContent.services.list,
+      appState.aiContent?.services?.list,
       result.source.index,
       result.destination.index,
     );
@@ -65,7 +79,7 @@ const ServiceContent = (props: TProps) => {
         aiContent: {
           ...appState.aiContent,
           services: {
-            ...appState.aiContent.services,
+            ...appState.aiContent?.services,
             list: updatedItems,
           },
         },
@@ -80,8 +94,8 @@ const ServiceContent = (props: TProps) => {
         aiContent: {
           ...appState.aiContent,
           services: {
-            ...appState.aiContent.services,
-            list: appState.aiContent.services.list.filter((service) => {
+            ...appState.aiContent?.services,
+            list: appState.aiContent?.services?.list?.filter((service) => {
               if (service.id !== id) {
                 return service;
               }
@@ -91,38 +105,170 @@ const ServiceContent = (props: TProps) => {
       }),
     );
   };
+  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (appState.focusedField === "title") {
+      inputRef.current?.focus();
+    }
+
+    if (appState.focusedField === "description") {
+      textareaRef.current?.focus();
+    }
+  }, [appState]);
+
   return (
-    <div className="max-h-[calc(-194px + 80vh)] h-[548px] overflow-y-auto py-5 transition-all ease-in-out">
-      {" "}
-      <div className="flex flex-col gap-5 border-t p-5 pt-5">
-        <div className="flex justify-between gap-10">
-          <div>
-            <h3 className="block text-sm font-medium leading-6 text-gray-900">
-              Services
-            </h3>
-            <p className="text-xs text-gray-400 ">
-              Add, Update or delete a service
-            </p>
+    <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
+      <div className="flex justify-between gap-10 px-5 pb-5">
+        <div>
+          <h3 className="text-sm font-medium leading-6 text-gray-900 ">
+            Services
+          </h3>
+          <p className="text-xs text-gray-400 ">
+            Add, Update or delete a service
+          </p>
+        </div>
+        {/* <Switch
+          onCheckedChange={(checked) =>
+            dispatch(
+              updateAppState({
+                ...appState,
+                aiContent: {
+                  ...appState.aiContent,
+                  services: {
+                    ...appState.aiContent?.services,
+                    show: checked,
+                  },
+                },
+              }),
+            )
+          }
+          checked={appState.aiContent?.services?.show}
+        /> */}
+      </div>
+      <div className="px-5 pb-5">
+        <div className="flex flex-col border-t pt-5">
+          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor={"title"} className="block">
+              {"title"}
+            </label>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                className="flex items-center gap-2 "
+                onClick={() => {
+                  setLoadingTitle(true);
+                  setSelectedField("title");
+                  generateCustomServiceTAndD({
+                    data: {
+                      businessName: appState.aiContent.banner.businessName,
+                      businessType: appState.aiContent.businessType ?? "",
+                      location: appState.aiContent.location ?? "",
+                    },
+                    fieldName: "title",
+                    type: "",
+                    individual: true,
+                  }).then(() => {
+                    setLoadingTitle(false);
+                  });
+                }}
+              >
+                Regenerate
+                {loadingTitle ? (
+                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                ) : (
+                  <ImPower className=" text-xs " />
+                )}
+              </button>
+              {/* <RegenerateOptions setType={setType} type={type} /> */}
+            </div>
           </div>
-          <Switch
-            onCheckedChange={(checked) =>
+
+          <input
+            type="text"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            id={"title"}
+            placeholder={"Enter Title..."}
+            onChange={(e) => {
               dispatch(
                 updateAppState({
                   ...appState,
                   aiContent: {
                     ...appState.aiContent,
                     services: {
-                      ...appState.aiContent.services,
-                      show: checked,
+                      ...appState.aiContent?.services,
+                      title: e.target.value,
                     },
                   },
                 }),
-              )
-            }
-            checked={appState.aiContent.services.show}
+              );
+            }}
+            ref={inputRef}
+            value={appState.aiContent?.services?.title}
           />
         </div>
-        {appState.aiContent.services.show && (
+
+        <div className="flex flex-col border-t pt-5">
+          <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor={"description"} className="block">
+              {"description"}
+            </label>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                className="flex items-center gap-2 "
+                onClick={() => {
+                  setLoadingDescription(true);
+                  setSelectedField("description");
+                  generateCustomServiceTAndD({
+                    data: {
+                      businessName: appState.aiContent.banner.businessName,
+                      businessType: appState.aiContent.businessType ?? "",
+                      location: appState.aiContent.location ?? "",
+                    },
+                    fieldName: "description",
+                    type: "",
+                    individual: true,
+                  }).then(() => {
+                    setLoadingDescription(false);
+                  });
+                }}
+              >
+                Regenerate
+                {loadingDescription ? (
+                  <ImSpinner2 className="animate-spin text-lg text-black" />
+                ) : (
+                  <ImPower className=" text-xs " />
+                )}
+              </button>
+              {/* <RegenerateOptions setType={setType} type={type} /> */}
+            </div>
+          </div>
+          <textarea
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            id={"description"}
+            placeholder={"Enter Description"}
+            onChange={(e) => {
+              dispatch(
+                updateAppState({
+                  ...appState,
+                  aiContent: {
+                    ...appState.aiContent,
+                    services: {
+                      ...appState.aiContent?.services,
+                      description: e.target.value,
+                    },
+                  },
+                }),
+              );
+            }}
+            ref={textareaRef}
+            value={appState.aiContent?.services?.description}
+          />
+        </div>
+      </div>
+      <div className="flex flex-col gap-5 border-t p-5 pt-5">
+        {appState.aiContent?.services?.show && (
           <>
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="droppable">
@@ -133,7 +279,7 @@ const ServiceContent = (props: TProps) => {
                     style={getListStyle(snapshot.isDraggingOver)}
                     className="flex flex-col gap-5"
                   >
-                    {appState.aiContent.services?.list?.map((item, index) => (
+                    {appState.aiContent?.services?.list?.map((item, index) => (
                       <Draggable
                         key={item.name}
                         draggableId={item.name}
@@ -174,11 +320,13 @@ const ServiceContent = (props: TProps) => {
                                     form: "Service",
                                   });
                                 }}
+                                className="cursor-pointer"
                               />
                               <MdDeleteForever
                                 color="red"
                                 size={20}
                                 onClick={() => handleDeleteService(item.id)}
+                                className="cursor-pointer"
                               />
                             </div>
                           </div>
@@ -190,8 +338,8 @@ const ServiceContent = (props: TProps) => {
                 )}
               </Droppable>
             </DragDropContext>
-            {appState.aiContent.services.list &&
-              appState.aiContent.services.list.length !== 9 && (
+            {appState.aiContent?.services?.list &&
+              appState.aiContent?.services?.list?.length !== 9 && (
                 <button
                   className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
                   onClick={() => {

@@ -9,30 +9,32 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/select-template-carousel";
-import { getAllTemplates } from "@/lib/fetchers";
-import { TTemplate } from "../../header";
 import Image from "next/image";
-import { TTemplateName } from "@/types";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { setSelectedTemplate } from "@/lib/store/slices/template-slice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import {
+  setSelectedTemplate,
+  TemplatesData as TD,
+} from "@/lib/store/slices/template-slice";
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
-type TProps = {
-  templates: TTemplate | null;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-const SelectTemplateCarousel = (props: TProps) => {
-  const { templates, setOpen } = props;
+const SelectTemplateCarousel = () => {
+  const { closeDialog } = useResponsiveDialog();
+  const templates = useAppSelector(TD);
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const [activeIndex, setActiveIndex] = React.useState(0);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+  const sortedTemplates = templates
+    ? [...templates].sort((a, b) => a.name.localeCompare(b.name))
+    : null;
   function handleSwitchTemplate() {
-    if (templates) {
-      const templateData = templates[activeIndex];
-      dispatch(setSelectedTemplate(templateData))
-      setOpen(false);
+    if (sortedTemplates) {
+      const templateData = sortedTemplates[activeIndex];
+      dispatch(setSelectedTemplate(templateData));
+      closeDialog("selectTemplate");
     }
   }
-  const sortedTemplates = templates ? [...templates].sort((a, b) => a.name.localeCompare(b.name)) : null;
+
+  console.log("sortedTemplates", sortedTemplates);
   return (
     <div className="mt-5 flex flex-col gap-5 text-center">
       {!isMobile && (
@@ -47,24 +49,23 @@ const SelectTemplateCarousel = (props: TProps) => {
         setActiveIndex={setActiveIndex}
       >
         <CarouselContent>
-          {sortedTemplates
-            ?.map((data, i) => (
-              <CarouselItem key={data.id}>
-                <div className=" p-1">
-                  <Card className="">
-                    <CardContent className="aspect-square flex h-56 flex-col items-center  justify-center p-6">
-                      <Image
-                        alt=""
-                        src={data.previewUrl}
-                        height={400}
-                        width={400}
-                      />
-                      <span className="text-xl font-semibold">{data.name}</span>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
+          {sortedTemplates?.map((data, i) => (
+            <CarouselItem key={data.id}>
+              <div className=" p-1">
+                <Card className="">
+                  <CardContent className="aspect-square flex h-56 flex-col items-center  justify-center p-6">
+                    <Image
+                      alt=""
+                      src={data.previewUrl}
+                      height={400}
+                      width={400}
+                    />
+                    <span className="text-xl font-semibold">{data.name}</span>
+                  </CardContent>
+                </Card>
+              </div>
+            </CarouselItem>
+          ))}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />

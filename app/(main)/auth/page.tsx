@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import SiteHeader from "@/components/header";
 import SelectedTemplate from "@/components/selected-template";
-import { getInstagramData, handleChangeAppState} from "@/lib/utils/function";
+import { getInstagramData, handleChangeAppState } from "@/lib/utils/function";
 import EditWebsiteHeader from "@/components/header/edit-website-header";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
@@ -25,7 +25,7 @@ import { FontsDrawer } from "@/components/ui/drawer/fonts-drawer";
 
 export default function Page() {
   const router = useRouter();
-  const { data: session,status } = useSession();
+  const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   // const [appState, setAppState] = useState<AppState>(initialState);
   const appState = useAppSelector(AS);
@@ -41,9 +41,9 @@ export default function Page() {
     show: false,
   });
 
-  const handleChange = ((name: string, value: string) => {
+  const handleChange = (name: string, value: string) => {
     handleChangeAppState(dispatch, appState, name, value);
-  });
+  };
 
   useEffect(() => {
     const getInstaCredentials = async () => {
@@ -77,40 +77,43 @@ export default function Page() {
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    async function checkSiteEditable() {
-      const { subdomain: siteAvailable, editable } =
-        await checkSiteAvailability({
-          userId: searchParams.get("user_id") || "",
-        });
+  // useEffect(() => {
+  //   async function checkSiteEditable() {
+  //     const { subdomain: siteAvailable, editable } =
+  //       await checkSiteAvailability({
+  //         userId: searchParams.get("user_id") || "",
+  //       });
+  //       console.log("editable",editable)
+  //     dispatch(
+  //       updateAppState({
+  //         ...appState,
+  //         editable: editable,
+  //       }),
+  //     );
+  //   }
 
-      dispatch(
-        updateAppState({
-          ...appState,
-          editable: editable,
-        }),
-      );
-    }
-
-    checkSiteEditable();
-  }, [session]);
+  //   checkSiteEditable();
+  // }, [session]);
 
   const matches = useMediaQuery("(min-width: 768px)");
 
   useEffect(() => {
     const WebFontLoader = require("webfontloader");
-    if(appState.selectedFont){
-      window && WebFontLoader.load({
-        google: {
-          families: [appState.selectedFont],
-        },
-      });
+    if (appState.selectedFont) {
+      window &&
+        WebFontLoader.load({
+          google: {
+            families: [appState.selectedFont],
+          },
+        });
     }
   }, [appState.selectedFont]);
   return (
     <>
-      {!saveLoading &&appState.status === "Done"&&appState?.aiContent?.banner ? (
-        <>
+      {!saveLoading &&
+      appState.status === "Done" &&
+      appState?.aiContent?.banner ? (
+        <div className="mb-20">
           <SiteHeader
             showNavigation={false}
             isAuth={true}
@@ -178,7 +181,7 @@ export default function Page() {
             )}
           </div>
           {saveLoading && <Loader text="Saving Data" />}
-        </>
+        </div>
       ) : (
         <div className="absolute inset-0 flex items-center justify-center">
           <Loader text={appState.status} />

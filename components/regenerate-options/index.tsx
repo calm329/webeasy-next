@@ -21,26 +21,28 @@ const writingStyles = [
 
 type TProps = {
   type: string;
-  setType: React.Dispatch<React.SetStateAction<string>>;
+  setType?: React.Dispatch<React.SetStateAction<string>>;
+  types?: string[];
+  title?: string;
 };
 
 const RegenerateOptions = (props: TProps) => {
-  const { type, setType } = props;
+  const { type, setType, types, title } = props;
   return (
     <div>
       <Select
         defaultValue={type ?? "External"}
         onValueChange={(value) => {
-          setType(value);
+          setType && setType(value);
         }}
       >
-        <SelectTrigger className="w-10 border-none outline-none focus:ring-offset-0 ring-0 ring-offset-0 focus:ring-0">
+        <SelectTrigger className="w-10 border-none outline-none ring-0 ring-offset-0 focus:ring-0 focus:ring-offset-0">
           <BsThreeDotsVertical />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>Writing style</SelectLabel>
-            {writingStyles.map((style) => (
+            <SelectLabel>{title ? title : "Writing style"}</SelectLabel>
+            {(types ?? writingStyles).map((style) => (
               <SelectItem key={style} value={style}>
                 {style}
               </SelectItem>

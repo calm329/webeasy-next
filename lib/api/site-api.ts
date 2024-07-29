@@ -1,4 +1,9 @@
-import { checkSiteAvailability, createNewSite, deleteSiteBySiteId, updateSite } from "../actions";
+import {
+  checkSiteAvailability,
+  createNewSite,
+  deleteSiteBySiteId,
+  updateSite,
+} from "../actions";
 import { getSiteData, getSiteDataById, getSitesByUserId } from "../fetchers";
 
 class SiteApiService {
@@ -46,14 +51,14 @@ class SiteApiService {
     return getSiteData(subdomain);
   }
 
-    /**
+  /**
    * Get site by ID
    * @params id
    * @returns site
    */
-    public async getSiteById(id: string) {
-      return getSiteDataById(id);
-    }
+  public async getSiteById(id: string) {
+    return getSiteDataById(id);
+  }
 
   /**
    * Get site by userId
@@ -64,8 +69,8 @@ class SiteApiService {
     return getSitesByUserId();
   }
 
-  public async deleteSiteById(id:string){
-    return deleteSiteBySiteId({id})
+  public async deleteSiteById(id: string) {
+    return deleteSiteBySiteId({ id });
   }
 }
 const SiteApi = new SiteApiService();

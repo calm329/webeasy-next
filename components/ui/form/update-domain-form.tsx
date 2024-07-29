@@ -1,3 +1,4 @@
+import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { loading as LD, updateSite } from "@/lib/store/slices/site-slice";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,20 +8,17 @@ import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
 import { z } from "zod";
 
-type TProps =  {
+type TProps = {
   subdomain: string;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 
 const UpdateDomainForm = (props: TProps) => {
-  const {
-    subdomain,
-    setOpen,
-  } = props;
+  const { subdomain } = props;
+  const { closeDialog } = useResponsiveDialog();
   const loading = useAppSelector(LD);
   const dispatch = useAppDispatch();
   const formSchema = z.object({
-    subdomain: z.string().min(1, "required"),
+    subdomain: z.string().min(1, "required").max(15),
   });
 
   const defaultValues = {
@@ -51,7 +49,7 @@ const UpdateDomainForm = (props: TProps) => {
       toast.success("Domain successfully Updated", {
         position: "top-right",
       });
-      setOpen(false);
+      closeDialog("domain");
     } catch (error) {
       console.error("Error:", error);
       toast.error("Something went wrong", {
@@ -66,7 +64,7 @@ const UpdateDomainForm = (props: TProps) => {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium leading-6 text-gray-900"
+            className="text-sm font-medium leading-6 text-gray-900 "
           >
             Sub Domain
           </label>

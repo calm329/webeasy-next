@@ -14,6 +14,12 @@ import { appState } from "../store/slices/site-slice";
 import Search from "../../components/ui/search/index";
 import App from "next/app";
 import { store } from "../store";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import AmazonContent from "../content/amazon";
+import { TFeature } from "../../types/index";
+import CustomContent from "../content/custom";
+// import { selectedTemplate } from "../store/slices/template-slice";
+import CustomizeMeta from "../../components/customize/meta/index";
 
 type TParams = {
   regenerate?: boolean;
@@ -44,15 +50,16 @@ export const getContent = async (
         method: "POST",
         body: JSON.stringify({
           data: {
-            businessType: appState?.aiContent.businessType,
-            location: appState?.aiContent.location,
-            businessName: appState?.aiContent.banner.businessName,
+            businessType: appState?.aiContent?.businessType,
+            location: appState?.aiContent?.location,
+            businessName: appState?.aiContent?.banner?.businessName,
           },
           fieldName: fieldName?.split(".")
             ? fieldName?.split(".")[0]
             : fieldName ?? "",
           type: type ?? "",
-          services:appState?.aiContent.services
+          services: appState?.aiContent?.services,
+          testimonials: appState?.aiContent?.testimonials?.list,
         }),
       });
     } else {
@@ -64,7 +71,7 @@ export const getContent = async (
             ? fieldName?.split(".")[0]
             : fieldName ?? "",
           type: type ?? "",
-          services:appState?.aiContent.services
+          services: appState?.aiContent.services,
         }),
       });
     }
@@ -91,7 +98,7 @@ export const getContent = async (
         data = {
           hero: {
             image: {
-              imageUrl: appState?.aiContent.hero.image.imageUrl ?? "",
+              imageUrl: appState?.aiContent.hero.image ?? "",
             },
           },
         };
@@ -102,7 +109,7 @@ export const getContent = async (
           }),
         });
         const image = await res.json();
-        data["hero"]["image"]["imageUrl"] = image.imageUrl;
+        data["hero"]["image"]["imageUrl"] = image;
       } else if (appState?.aiContent.businessType && !fieldName) {
         const res = await fetch("/api/image", {
           method: "POST",
@@ -111,7 +118,7 @@ export const getContent = async (
           }),
         });
         const image = await res.json();
-        data["hero"]["image"]["imageUrl"] = image.imageUrl;
+        data["hero"]["image"]["imageUrl"] = image;
       }
     }
 
@@ -133,7 +140,7 @@ export const getContent = async (
         }),
       });
       const image = await res.json();
-      data["banner"]["logo"]["link"] = image.imageUrl;
+      data["banner"]["logo"]["link"] = image;
     } else if (data?.banner?.businessName && !fieldName) {
       const res = await fetch("/api/image", {
         method: "POST",
@@ -145,7 +152,7 @@ export const getContent = async (
         }),
       });
       const image = await res.json();
-      data["banner"]["logo"]["link"] = image.imageUrl;
+      data["banner"]["logo"]["link"] = image;
     }
     console.log("generated-data", data);
     return data;
@@ -277,6 +284,20 @@ export const regenerateIndividual = async (params: TRParams) => {
               description: content.services.list[0].description,
             };
 
+          case "testimonialName":
+            return {
+              id: "",
+              name: content.testimonials[0].name,
+              avatar: "",
+              content: "",
+            };
+          case "testimonialContent":
+            return {
+              id: "",
+              name: "",
+              avatar: "",
+              content: content.testimonials[0].content,
+            };
           case "featureTitle":
             return {
               id: "",
@@ -452,6 +473,67 @@ export const regenerateIndividual = async (params: TRParams) => {
                 return;
               }
               break;
+            case "testimonialName":
+              if (fieldName?.split(".")[1]) {
+                console.log("testimonialName", content.testimonials[0].name);
+                dispatch(
+                  updateAppState({
+                    ...currentAppState,
+                    aiContent: {
+                      ...currentAppState.aiContent,
+                      testimonials: {
+                        ...currentAppState.aiContent.testimonials,
+                        list: currentAppState.aiContent.testimonials.list.map(
+                          (testimonial) => {
+                            if (testimonial.id === fieldName?.split(".")[1]) {
+                              return {
+                                ...testimonial,
+                                name: content.testimonials[0].name,
+                              };
+                            } else {
+                              return testimonial;
+                            }
+                          },
+                        ),
+                      },
+                    },
+                  }),
+                );
+              } else {
+                resolve();
+                return;
+              }
+              break;
+            case "testimonialContent":
+              if (fieldName?.split(".")[1]) {
+                dispatch(
+                  updateAppState({
+                    ...currentAppState,
+                    aiContent: {
+                      ...currentAppState.aiContent,
+                      testimonials: {
+                        ...currentAppState.aiContent.testimonials,
+                        list: currentAppState.aiContent.testimonials.list.map(
+                          (testimonial) => {
+                            if (testimonial.id === fieldName?.split(".")[1]) {
+                              return {
+                                ...testimonial,
+                                content: content.testimonials[0].content,
+                              };
+                            } else {
+                              return testimonial;
+                            }
+                          },
+                        ),
+                      },
+                    },
+                  }),
+                );
+              } else {
+                resolve();
+                return;
+              }
+              break;
             case "featureTitle":
               if (fieldName?.split(".")[1]) {
                 dispatch(
@@ -541,8 +623,7 @@ export const regenerateText = async (params: TParams) => {
 
       if (content) {
         console.log("content", content);
-        content["hero"]["image"]["imageUrl"] =
-          appState.aiContent.hero.image.imageUrl;
+        content["hero"]["image"]["imageUrl"] = appState.aiContent.hero.image;
         content["banner"]["logo"]["link"] = appState.aiContent.banner.logo.link;
 
         content["colors"] = appState.aiContent.colors;
@@ -660,9 +741,10 @@ export const getInstagramData = async (params: TParams) => {
         selectedFont: siteData.font,
         subdomain: siteAvailable,
         status: "Done",
-        aiContent: aiContent,
+        aiContent: { ...appState.aiContent, ...aiContent },
         iPosts: JSON.parse(siteData?.posts ?? ""),
         meta: { title: siteData.title, description: siteData.description },
+        editable,
       }),
     );
   } else {
@@ -722,6 +804,7 @@ export const getInstagramData = async (params: TParams) => {
               limit: 20,
               show: true,
               list: instagramDetails.iPosts,
+              showHash: true,
             }),
             accessToken: searchParams.get("access_token") || "",
             userId: searchParams.get("user_id") || "",
@@ -1193,23 +1276,50 @@ export function generateUniqueId() {
   return uniqueId;
 }
 
-export async function saveState(appState: AppState, dispatch: any) {
+export async function saveState(
+  appState: AppState,
+  dispatch: any,
+  templateId: string,
+  sections: any,
+) {
   try {
-    const data = {
-      aiResult: appState.aiContent,
-      font: appState.selectedFont,
-      posts: appState.iPosts,
-    };
-    console.log("Saved state", appState);
-    await dispatch(
+    const isCustom = location.pathname?.split("/")[1] === "custom";
+    let data: any;
+    const simplifiedSections = sections.map((section: any) => ({
+      id: section.id,
+      title: section.title,
+    }));
+
+    console.log("sections12", sections);
+    if (isCustom) {
+      data = {
+        aiResult: appState.aiContent,
+        font: appState.selectedFont,
+        templateId: templateId,
+        sections: JSON.stringify(simplifiedSections),
+      };
+    } else {
+      data = {
+        aiResult: appState.aiContent,
+        font: appState.selectedFont,
+        posts: appState.iPosts,
+        templateId: templateId,
+        sections: JSON.stringify(simplifiedSections),
+      };
+    }
+    console.log("Saved state", data);
+    const res = await dispatch(
       updateStateSite({
         subdomain: appState.subdomain,
         data,
         keys: Object.keys(data),
       }),
     ).unwrap();
+    console.log("res", res);
     toast.success("Data saved successfully");
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export function extractASIN(url: string) {
@@ -1260,7 +1370,7 @@ export async function getAmazonData(
           ? fieldName?.split(".")[0]
           : fieldName ?? "",
         type: type ?? "",
-        features:appState?.aiContent?.features
+        features: appState?.aiContent?.features,
       }),
     });
     let content = "";
@@ -1280,3 +1390,1277 @@ export async function getAmazonData(
     return data;
   } catch (error) {}
 }
+
+export function isSiteBuilderPage(pathname: string): boolean {
+  const tempPathname = pathname.split("/")[1];
+  console.log("isSiteBuilderPage", tempPathname);
+  if (
+    tempPathname === "auth" ||
+    tempPathname === "custom" ||
+    tempPathname === "amazon"
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export const createNewAmazonSite = async (
+  amazonData: any,
+  router: AppRouterInstance,
+) => {
+  try {
+    const startContentFetch = performance.now();
+    const response = await fetch("/api/content/amazon", {
+      method: "POST",
+      body: JSON.stringify({
+        productTitle: amazonData.ItemInfo.Title.DisplayValue,
+      }),
+    });
+    let content = "";
+    const reader = response.body?.getReader();
+    if (!reader) return;
+
+    const decoder = new TextDecoder();
+    let done = false;
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+
+      if (chunkValue && chunkValue !== "###") content += chunkValue;
+    }
+    const endContentFetch = performance.now();
+    console.log(`Content fetch took ${endContentFetch - startContentFetch} ms`);
+    const data = JSON.parse(content);
+    const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL);
+
+    const finalData = {
+      ...data,
+      images: {
+        primary: amazonData?.Images?.Primary,
+        variant: amazonData?.Images?.Variants,
+      },
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      title: amazonData?.ItemInfo?.Title?.DisplayValue,
+      features: data.features.map((feature: any, i: any) => {
+        if (i === 0) {
+          return {
+            ...feature,
+            image: amazonData?.Images?.Primary?.Large?.URL ?? "",
+          };
+        } else if (i === 1 || i === 2 || i === 3) {
+          return {
+            ...feature,
+            image:
+              amazonData?.Images?.Variants[i - 1]?.Large?.URL ??
+              amazonData?.Images?.Primary?.Large?.URL ??
+              "",
+          };
+        }
+      }),
+      colors,
+    };
+
+    // setAiData(data);
+
+    // dispatch(updateAmazonSite(finalData));
+    // router.push("/amazon?site_id=" + responseSite.id);
+  } catch (error) {
+    console.log("errorAmazonGeneration", error);
+  }
+};
+
+export const getAmazonDataUsingASIN = async (product: string) => {
+  try {
+    const startTime = performance.now();
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          productId: product,
+        },
+        generate: {
+          generating: true,
+          progress: 0,
+        },
+      }),
+    );
+
+    const url = "/api/amazon";
+    const requestData = { itemIds: [product] };
+
+    const responseStartTime = performance.now();
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    const responseEndTime = performance.now();
+    const responseTimeTaken = responseEndTime - responseStartTime;
+    console.log(`Time taken by fetch call: ${responseTimeTaken} milliseconds`);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok " + response.statusText);
+    }
+
+    const data = await response.json();
+    const amazonData = data.ItemsResult.Items[0];
+
+    const colorsStartTime = performance.now();
+    const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL);
+    const colorsEndTime = performance.now();
+    const colorsTimeTaken = colorsEndTime - colorsStartTime;
+    console.log(`Time taken by getColors: ${colorsTimeTaken} milliseconds`);
+
+    const initialData = {
+      images: {
+        primary: amazonData?.Images?.Primary,
+        variant: amazonData?.Images?.Variants,
+      },
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      title: amazonData?.ItemInfo?.Title?.DisplayValue,
+      colors,
+      features: [],
+      description: "",
+    };
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          ...initialData,
+        },
+        generate: {
+          ...getAppState().generate,
+          progress: getAppState().generate.progress + 40,
+        },
+      }),
+    );
+
+    // Parallel execution of getFeatures and getDescription
+    const [features, description] = await Promise.all([
+      AmazonContent.getFeatures({
+        individual: false,
+        type: "",
+        fieldName: "",
+      }),
+      AmazonContent.getDescription(),
+    ]);
+
+    const featuresEndTime = performance.now();
+    const descriptionEndTime = performance.now();
+
+    const featuresTimeTaken = featuresEndTime - responseEndTime; // Calculate relative to response end time
+    const descriptionTimeTaken = descriptionEndTime - responseEndTime; // Calculate relative to response end time
+
+    console.log(`Time taken by getFeatures: ${featuresTimeTaken} milliseconds`);
+    console.log(
+      `Time taken by getDescription: ${descriptionTimeTaken} milliseconds`,
+    );
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        generate: {
+          ...getAppState().generate,
+          progress: 100,
+          generating: true,
+        },
+      }),
+    );
+
+    const finalData = {
+      ...initialData,
+      features,
+      description,
+    };
+
+    const endTime = performance.now();
+    const totalTimeTaken = endTime - startTime;
+    console.log(`Total time taken: ${totalTimeTaken} milliseconds`);
+
+    return finalData;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+export const getLatestAmazonData = async (
+  product: string,
+  router: AppRouterInstance,
+) => {
+  try {
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          images: "",
+          price: "",
+          title: "",
+        },
+      }),
+    );
+    const url = "/api/amazon";
+
+    const requestData = {
+      itemIds: [product],
+    };
+
+    const response = await fetch(url, {
+      method: "POST", // Assuming this is a POST request
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok " + response.statusText);
+    }
+    const data = await response.json();
+    const amazonData = data.ItemsResult.Items[0];
+
+    const initialData = {
+      images: {
+        primary: amazonData?.Images?.Primary,
+        variant: amazonData?.Images?.Variants,
+      },
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      title: amazonData?.ItemInfo?.Title?.DisplayValue,
+    };
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          ...initialData,
+        },
+      }),
+    );
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+export const getNewAiDataForAmazon = async (
+  product: string,
+  router: AppRouterInstance,
+) => {
+  try {
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {},
+        generate: {
+          ...getAppState().generate,
+          progress: 0,
+        },
+      }),
+    );
+    const url = "/api/amazon";
+
+    const requestData = {
+      itemIds: [product],
+    };
+
+    const response = await fetch(url, {
+      method: "POST", // Assuming this is a POST request
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok " + response.statusText);
+    }
+    const data = await response.json();
+    const amazonData = data.ItemsResult.Items[0];
+    // const data = JSON.parse(content);
+    const colors = await getColors(amazonData?.Images?.Primary?.Large?.URL);
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {},
+        generate: {
+          ...getAppState().generate,
+          progress: 10,
+        },
+      }),
+    );
+
+    const initialData = {
+      images: {
+        primary: amazonData?.Images?.Primary,
+        variant: amazonData?.Images?.Variants,
+      },
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      title: amazonData?.ItemInfo?.Title?.DisplayValue,
+      colors,
+      features: [],
+      description: "",
+    };
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          ...initialData,
+        },
+        generate: {
+          ...getAppState().generate,
+          progress: getAppState().generate.progress + 40,
+        },
+      }),
+    );
+    console.log("appState", getAppState());
+    const features = await AmazonContent.getFeatures({
+      individual: false,
+      type: "",
+      fieldName: "",
+    });
+    const description = await AmazonContent.getDescription();
+
+    const finalData = {
+      ...initialData,
+      features,
+      description,
+    };
+    return finalData;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
+export const findClosingBracketIndex = (
+  text: string,
+  startIndex: number,
+): number => {
+  let openBrackets = 0;
+
+  for (let i = startIndex; i < text.length; i++) {
+    if (text[i] === "{") {
+      openBrackets++;
+    } else if (text[i] === "}") {
+      openBrackets--;
+      if (openBrackets === 0) {
+        return i;
+      }
+    }
+  }
+
+  return -1;
+};
+
+export async function generateIndividualFeature({
+  fieldName,
+  type,
+}: {
+  fieldName: string;
+  type: string;
+}) {
+  try {
+    const featureData = await AmazonContent.getFeatures({
+      individual: true,
+      type: type,
+      fieldName: fieldName?.split(".") && fieldName?.split(".")[0],
+    });
+    console.log("featureData", featureData);
+    let feature: TFeature;
+
+    if (Array.isArray(featureData)) {
+      feature = featureData[0]; // Assuming we need the first feature from the array
+    } else {
+      feature = featureData;
+    }
+    if (fieldName?.split(".") && !fieldName?.split(".")[1]) {
+      switch (fieldName?.split(".")[0]) {
+        case "featureTitle":
+          return {
+            id: "",
+            title: feature.title,
+            image: "",
+            description: "",
+          };
+        case "featureDescription":
+          return {
+            id: "",
+            title: "",
+            image: "",
+            description: feature.description,
+          };
+      }
+    }
+
+    const updateState = async (fieldName: string, content: any) => {
+      const currentAppState = getAppState(); // Ensure we are using the latest app state
+      return new Promise<void>((resolve) => {
+        switch (fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName) {
+          case "featureTitle":
+            if (fieldName?.split(".")[1]) {
+              store.dispatch(
+                updateAppState({
+                  ...currentAppState,
+                  aiContent: {
+                    ...currentAppState.aiContent,
+                    features: currentAppState.aiContent.features?.map(
+                      (feature) => {
+                        if (feature.id === fieldName?.split(".")[1]) {
+                          return {
+                            ...feature,
+                            title: content.title,
+                          };
+                        } else {
+                          return feature;
+                        }
+                      },
+                    ),
+                  },
+                  generate: {
+                    ...currentAppState.generate,
+                    field: fieldName,
+                  },
+                }),
+              );
+            } else {
+              resolve();
+              return;
+            }
+            break;
+          case "featureDescription":
+            if (fieldName?.split(".")[1]) {
+              store.dispatch(
+                updateAppState({
+                  ...currentAppState,
+                  aiContent: {
+                    ...currentAppState.aiContent,
+                    features: currentAppState.aiContent.features?.map(
+                      (feature) => {
+                        if (feature.id === fieldName?.split(".")[1]) {
+                          return {
+                            ...feature,
+                            description: content.description,
+                          };
+                        } else {
+                          return feature;
+                        }
+                      },
+                    ),
+                  },
+                  generate: {
+                    ...currentAppState.generate,
+                    field: fieldName,
+                  },
+                }),
+              );
+            } else {
+              resolve();
+              return;
+            }
+            break;
+        }
+        resolve();
+      });
+    };
+
+    updateQueue.enqueue(() => updateState(fieldName, feature));
+  } catch (error) {}
+}
+
+export async function generateNewCustomSite(data: {
+  businessType: string;
+  businessName: string;
+  location: string;
+}) {
+  try {
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          businessName: data.businessName,
+          businessType: data.businessType,
+          location: data.location,
+        },
+        generate: {
+          generating: true,
+          progress: 0,
+        },
+      }),
+    );
+
+    const startTime = performance.now();
+    const startImagesTime = performance.now();
+    // Start all API calls in parallel
+    const [heroImage] = await Promise.all([
+      getRandomImageFromUnsplash(data.businessType),
+    ]);
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        generate: {
+          ...getAppState().generate,
+          progress: 10,
+        },
+      }),
+    );
+
+    const endImagesTime = performance.now();
+    const timeImagesTaken = endImagesTime - startImagesTime;
+    console.log(
+      `Total time taken by Image Api Calls: ${timeImagesTaken} milliseconds`,
+    );
+    const startColorTime = performance.now();
+    const colors = await getColors(heroImage);
+    const endColorTime = performance.now();
+    const timeColorTaken = endColorTime - startColorTime;
+    console.log(
+      `Total time taken by Colors Api Calls: ${timeColorTaken} milliseconds`,
+    );
+
+    const initialData = {
+      colors,
+      hero: {
+        image: {
+          show: true,
+          imageUrl: heroImage,
+        },
+      },
+      services: {
+        show: true,
+      },
+    };
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          ...initialData,
+        },
+        generate: {
+          ...getAppState().generate,
+          progress: getAppState().generate.progress + 10,
+        },
+      }),
+    );
+    const startTextTime = performance.now();
+    const [hero, banner, services, logo, testimonials, gallery, partners] =
+      await Promise.all([
+        CustomContent.getHero({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getBanner({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getServices({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+
+        getLogo(data),
+        CustomContent.getTestimonials({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        getPhotosFromUnsplash(data.businessType),
+        CustomContent.getPartners({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getCTA({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getContact({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getFAQ({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getFooter({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getHeader({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getHeroSection({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getLogoClouds({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getNewsLetter({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getPricing({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getStats({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getTeam({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+        CustomContent.getTestimonialsSection({
+          data,
+          individual: false,
+          fieldName: "",
+          type: "",
+        }),
+      ]);
+
+    const endTextTime = performance.now();
+    const timeTextTaken = endTextTime - startTextTime;
+    console.log(
+      `Total time taken by Text and logo Api Calls: ${timeTextTaken} milliseconds`,
+    );
+
+    const endTime = performance.now();
+    const timeTaken = endTime - startTime;
+
+    console.log("heroImage", heroImage);
+    console.log("colors", colors);
+    console.log("logo", logo);
+    console.log(`Total time taken by all API calls: ${timeTaken} milliseconds`);
+    console.log("services", services, hero, banner);
+
+    if (logo) {
+      store.dispatch(
+        updateAppState({
+          ...getAppState(),
+          aiContent: {
+            ...getAppState().aiContent,
+            banner: {
+              ...getAppState().aiContent.banner,
+              logo: {
+                ...getAppState().aiContent.banner.logo,
+                show: true,
+                link: logo,
+              },
+            },
+          },
+          generate: {
+            generating: false,
+            progress: 100,
+          },
+        }),
+      );
+    }
+
+    const finalData = {
+      ...initialData,
+      services: {
+        ...services,
+        ...initialData.services,
+      },
+      hero: {
+        ...hero,
+        ...initialData.hero,
+      },
+      banner: {
+        ...banner,
+        logo: {
+          ...banner.logo,
+          show: true,
+          link: logo,
+        },
+      },
+      testimonials: {
+        ...testimonials,
+      },
+      gallery: {
+        show: true,
+        list: gallery,
+      },
+      partners: {
+        ...getAppState().aiContent.partners,
+      },
+    };
+
+    return finalData;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+export async function generateImagesForCustom(data: {
+  businessType: string;
+  businessName: string;
+  location: string;
+}) {
+  try {
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          banner: {
+            ...getAppState().aiContent.banner,
+
+            logo: {
+              ...getAppState().aiContent.banner.logo,
+              show: true,
+              link: "",
+            },
+          },
+          hero: {
+            ...getAppState().aiContent.hero,
+            image: "",
+          },
+          gallery: "",
+          testimonials: "",
+          partners: "",
+        },
+        generate: {
+          ...getAppState().generate,
+          generating: true,
+        },
+      }),
+    );
+
+    const startTime = performance.now();
+    const startImagesTime = performance.now();
+    // Start all API calls in parallel
+    const [heroImage, logo] = await Promise.all([
+      getRandomImageFromUnsplash(data.businessType),
+      getLogo(data),
+      getPhotosFromUnsplash(data.businessType),
+      CustomContent.getTestimonials({
+        data: data,
+        fieldName: "",
+        individual: false,
+        type: "",
+      }),
+    ]);
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          banner: {
+            ...getAppState().aiContent.banner,
+
+            logo: {
+              ...getAppState().aiContent.banner.logo,
+              show: true,
+              link: logo,
+            },
+          },
+          hero: {
+            ...getAppState().aiContent.hero,
+            image: {
+              ...getAppState().aiContent.hero.image,
+              show: true,
+              imageUrl: heroImage,
+            },
+          },
+        },
+        generate: {
+          generating: false,
+          progress: 0,
+        },
+      }),
+    );
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+export async function generateTextForCustom(data: {
+  businessType: string;
+  businessName: string;
+  location: string;
+}) {
+  try {
+    const heroImage = getAppState().aiContent.hero.image.imageUrl;
+    const logo = getAppState().aiContent.banner.logo.link;
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          banner: {
+            ...getAppState().aiContent.banner,
+            businessName: "",
+            button: "",
+          },
+          hero: {
+            ...getAppState().aiContent.hero,
+            button: "",
+            heading: "",
+            subheading: "",
+          },
+          services: "",
+          testimonials: "",
+          testimonialsSection: "",
+          partners: "",
+          cta: "",
+          faq: "",
+          footer: "",
+          header: "",
+          heroSection: "",
+          logoClouds: "",
+          newsletter: "",
+          pricing: "",
+          stats: "",
+          team: "",
+        },
+        generate: {
+          generating: true,
+          progress: 0,
+        },
+      }),
+    );
+
+    const startTextTime = performance.now();
+    const [hero, banner, services] = await Promise.all([
+      CustomContent.getHero({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getBanner({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getServices({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getCTA({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getContact({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getFAQ({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getFooter({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getHeader({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getHero({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getHeroSection({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getLogoClouds({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getNewsLetter({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getPartners({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getPricing({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getStats({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getTeam({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getTestimonials({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+      CustomContent.getTestimonialsSection({
+        data,
+        individual: false,
+        fieldName: "",
+        type: "",
+      }),
+    ]);
+
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          banner: {
+            ...banner,
+            logo: {
+              ...banner.logo,
+              link: logo,
+            },
+          },
+          hero: {
+            ...hero,
+            image: {
+              ...hero.image,
+              imageUrl: heroImage,
+            },
+          },
+        },
+        generate: {
+          generating: false,
+          progress: 0,
+        },
+      }),
+    );
+
+    const endTextTime = performance.now();
+    const timeTextTaken = endTextTime - startTextTime;
+    console.log(
+      `Total time taken by Text Api Calls: ${timeTextTaken} milliseconds`,
+    );
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+export async function getRandomImageFromUnsplash(prompt: string) {
+  try {
+    const startTime = performance.now();
+    const res1 = await fetch(
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=5`,
+    );
+    const resUnsplash = await res1.json();
+    console.log("resUnsplash", resUnsplash);
+    const data = resUnsplash;
+
+    const dataToBeFiltered = data.map((obj: any) => {
+      return {
+        description: obj.alt_description,
+      };
+    });
+    const response = await fetch("/api/content/image", {
+      method: "POST",
+      body: JSON.stringify({
+        data: dataToBeFiltered,
+        businessType: prompt,
+      }),
+    });
+    const index = await response.json();
+    const endTime = performance.now();
+    console.log(
+      `Image Generation using ai+unplash took ${endTime - startTime} ms`,
+    );
+    // console.log("response",res)
+    console.log("dataofimages", data, parseInt(index));
+    return data[parseInt(index)].urls.small;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
+
+export async function getLogo(req: {
+  businessName: string;
+  businessType: string;
+  location: string;
+}) {
+  try {
+    const res = await fetch("/api/image", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt: `generate logo for business name ${req.businessName} and businessType ${req.businessType} but don't add living things in it.`,
+      }),
+    });
+    const data = await res.json();
+    return data.imageUrl;
+  } catch (error) {}
+}
+
+export async function getAiHeroImageForCustom() {
+  try {
+    const res = await fetch("/api/image", {
+      method: "POST",
+      body: JSON.stringify({
+        prompt: `generate hero image for ${getAppState().aiContent.businessType}`,
+      }),
+    });
+    const data = await res.json();
+    return data.imageUrl;
+  } catch (error) {}
+}
+
+export async function regenerateHeroImage(type: string) {
+  try {
+    let image = "";
+    console.log("type", type);
+    if (type === "Stored Image") {
+      image = await getRandomImageFromUnsplash(
+        getAppState().aiContent?.businessType ?? "",
+      );
+    } else {
+      image = await getAiHeroImageForCustom();
+    }
+    return image;
+  } catch (error) {}
+}
+
+export async function generateCustomServiceTAndD({
+  individual,
+  type,
+  fieldName,
+  data,
+}: {
+  individual: boolean;
+  type: string;
+  fieldName: string;
+  data: { businessType: string; businessName: string; location: string };
+}) {
+  try {
+    const response = await CustomContent.getServiceTAndD({
+      data,
+      fieldName,
+      type: "",
+      individual: true,
+    });
+
+    const updateState = async (fieldName: string, content: any) => {
+      const currentAppState = getAppState(); // Ensure we are using the latest app state
+      return new Promise<void>((resolve) => {
+        switch (fieldName) {
+          case "title":
+            store.dispatch(
+              updateAppState({
+                ...currentAppState,
+                aiContent: {
+                  ...currentAppState.aiContent,
+                  services: {
+                    ...currentAppState.aiContent.services,
+                    title: content.title,
+                  },
+                },
+              }),
+            );
+
+            break;
+          case "description":
+            store.dispatch(
+              updateAppState({
+                ...currentAppState,
+                aiContent: {
+                  ...currentAppState.aiContent,
+                  services: {
+                    ...currentAppState.aiContent.services,
+                    description: content.description,
+                  },
+                },
+              }),
+            );
+            break;
+        }
+        resolve();
+      });
+    };
+
+    updateQueue.enqueue(() => updateState(fieldName, response));
+  } catch (error) {}
+}
+
+export async function generatePartnersTAndD({
+  individual,
+  type,
+  fieldName,
+  data,
+}: {
+  individual: boolean;
+  type: string;
+  fieldName: string;
+  data: { businessType: string; businessName: string; location: string };
+}) {
+  try {
+    const response = await CustomContent.getPartnersTAndD({
+      data,
+      fieldName,
+      type: "",
+      individual: true,
+    });
+
+    const updateState = async (fieldName: string, content: any) => {
+      const currentAppState = getAppState(); // Ensure we are using the latest app state
+      return new Promise<void>((resolve) => {
+        switch (fieldName) {
+          case "partnersTitle":
+            store.dispatch(
+              updateAppState({
+                ...currentAppState,
+                aiContent: {
+                  ...currentAppState.aiContent,
+                  partners: {
+                    ...currentAppState.aiContent.partners,
+                    title: content.title,
+                  },
+                },
+              }),
+            );
+
+            break;
+          case "partnersDescription":
+            store.dispatch(
+              updateAppState({
+                ...currentAppState,
+                aiContent: {
+                  ...currentAppState.aiContent,
+                  partners: {
+                    ...currentAppState.aiContent.partners,
+                    description: content.description,
+                  },
+                },
+              }),
+            );
+            break;
+        }
+        resolve();
+      });
+    };
+
+    updateQueue.enqueue(() => updateState(fieldName, response));
+  } catch (error) {}
+}
+
+export const validateURL = (url: string) => {
+  const urlPattern = new RegExp(
+    "^(https?:\\/\\/)" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i", // fragment locator
+  );
+  return !!urlPattern.test(url);
+};
+
+export const getPhotosFromUnsplash = async (prompt: string) => {
+  try {
+    console.log("prompt", prompt);
+    const res = await fetch(
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=6`,
+    );
+    const data = await res.json();
+    console.log("actualimage", data);
+    const fullUrls = data.map((photo: any) => photo.urls.full);
+    store.dispatch(
+      updateAppState({
+        ...getAppState(),
+        aiContent: {
+          ...getAppState().aiContent,
+          gallery: {
+            ...getAppState().aiContent.gallery,
+            show: true,
+            list: fullUrls,
+          },
+        },
+      }),
+    );
+    return fullUrls;
+  } catch (error) {}
+};
+
+export const getAllUnsplashImages = async (prompt: string) => {
+  const res = await fetch(
+    `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=100`,
+  );
+  const data = await res.json();
+
+  return data;
+};
