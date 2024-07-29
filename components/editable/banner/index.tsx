@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import { TBanner, TColors, TFields, TSection, TSectionsType } from "@/types";
 import EditComponent from "@/components/edit-component";
-import { sectionsData as SD  } from "@/lib/store/slices/section-slice";
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   banner: TBanner;
@@ -38,7 +38,6 @@ const EditableBanner: React.FC<TProps> = ({
 
   id,
 }) => {
-  
   const dispatch = useAppDispatch();
   const appState = useAppSelector(AS);
 
@@ -57,7 +56,7 @@ const EditableBanner: React.FC<TProps> = ({
         className={`container relative mx-auto px-4 ${editable ? "rounded border-2 border-transparent hover:border-indigo-500" : ""}`}
         onClick={handleClick}
       >
-        <EditComponent id={id}  />
+        <EditComponent id={id} />
         {appState.aiContent?.banner ? (
           <TopBar
             banner={banner}

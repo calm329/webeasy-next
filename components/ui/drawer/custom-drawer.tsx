@@ -99,18 +99,14 @@ export function CustomDrawer(props: TProps) {
             {section === "Testimonials" && (
               <TestimonialContent setShowForm={setShowForm} />
             )}
-            {section === "Image Gallery" && (
-              <CustomGalleryContent
-
-              />
-            )}
+            {section === "Image Gallery" && <CustomGalleryContent />}
             {section === "Title" && <TitleContent />}
             {section === "Description" && <DescriptionContent />}
             {section === "Features" && (
               <FeaturesContent setShowForm={setShowForm} />
             )}
-             {/* {New Section} */}
-             {section === "Contact" && (
+            {/* {New Section} */}
+            {section === "Contact" && (
               <ContactContent
                 section={section}
                 handleChange={handleChange}

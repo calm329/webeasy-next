@@ -14,7 +14,7 @@ const DescriptionContent = () => {
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   return (
-    <div className="max-h-[600px] h-[55vh]  overflow-y-auto py-5 transition-all ease-in-out">
+    <div className="h-[55vh] max-h-[600px]  overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
         <div className="flex flex-col border-t pt-5">
           <div className="flex  justify-between text-sm font-medium leading-6 text-gray-900">

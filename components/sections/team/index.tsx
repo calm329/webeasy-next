@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 // Import the Skeleton component
 import { Skeleton } from "@/components/ui/skeleton";
 import EditComponent from "@/components/edit-component";
-import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;
@@ -95,60 +94,6 @@ export default function TeamSection(props: TProps) {
     });
   }, []);
 
-  const sections = useAppSelector(SD);
-
-  // Find the section by ID and get the variation
-  const section = sections.find((section) => section.id === id);
-  const variation = section?.variation || 1;
-
-  const styles: {
-    [key: number]: {
-      container: string;
-      listContainer: string;
-      listCard: string;
-      contentContainer: string;
-    };
-  } = {
-    1: {
-      container: "mx-auto max-w-7xl px-6 lg:px-8",
-      listContainer:
-        "mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3",
-      listCard: "flex flex-col items-center",
-      contentContainer: "text-left ",
-    },
-    2: {
-      container: "mx-auto max-w-7xl px-6 lg:px-8",
-      listContainer:
-        "mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3",
-      listCard: "flex flex-col items-center",
-      contentContainer: "text-center ",
-    },
-    3: {
-      container: "mx-auto max-w-7xl px-6 lg:px-8",
-      listContainer:
-        "mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3",
-      listCard: "flex flex-col items-center",
-      contentContainer: "text-right ",
-    },
-    4: {
-      container: "mx-auto max-w-7xl flex justify-between items-center gap-5 px-6 lg:px-8",
-      listContainer:
-        "mx-auto mt-20 flex flex-wrap max-w-2xl  gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none ",
-      listCard: "flex max-w-52 flex-col items-center",
-      contentContainer: "mx-auto max-w-2xl lg:mx-0",
-    },
-    5: {
-      container: "mx-auto max-w-7xl flex flex-row-reverse justify-between items-center gap-5 px-6 lg:px-8",
-      listContainer:
-        "mx-auto mt-20 flex flex-wrap max-w-2xl  gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none ",
-      listCard: "flex max-w-52 flex-col items-center",
-      contentContainer: "mx-auto max-w-2xl lg:mx-0",
-    },
-  };
-
-  const { container, listContainer, listCard, contentContainer } =
-    styles[variation];
-
   return (
     <button
       className={`group relative w-full bg-white py-24 text-left sm:py-32 ${
@@ -163,8 +108,8 @@ export default function TeamSection(props: TProps) {
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />
-      <div className={container}>
-        <div className={contentContainer}>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl lg:mx-0">
           <h2
             className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl ${
               editable &&
@@ -198,7 +143,10 @@ export default function TeamSection(props: TProps) {
             )}
           </p>
         </div>
-        <ul role="list" className={listContainer}>
+        <ul
+          role="list"
+          className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+        >
           {isLoading || appState.aiContent?.team?.list?.length === 0
             ? Array.from({ length: 3 }).map((_, idx) => (
                 <li key={idx} className="flex flex-col items-center">
@@ -208,7 +156,7 @@ export default function TeamSection(props: TProps) {
                 </li>
               ))
             : appState.aiContent?.team?.list.map((person: any) => (
-                <li key={person.id} className={listCard}>
+                <li key={person.id} className="flex flex-col items-center">
                   <img
                     alt=""
                     src={person.imageUrl}

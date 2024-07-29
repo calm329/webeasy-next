@@ -23,11 +23,11 @@ const GalleryContent = (props: TProps) => {
   const appState = useAppSelector(AS);
 
   return (
-    <div className="max-h-[600px] h-[55vh] overflow-y-auto py-5 transition-all ease-in-out">
+    <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
       <form action="" className="flex flex-col gap-5 px-4 sm:px-6">
         <div className="flex flex-col gap-5">
           <div className="flex justify-between">
-            <h3 className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
+            <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
               Primary Image
             </h3>
           </div>
@@ -46,7 +46,7 @@ const GalleryContent = (props: TProps) => {
         {appState?.aiContent?.images?.variant?.slice(0, 3)?.map((image, i) => (
           <div className="flex flex-col gap-5" key={i}>
             <div className="flex justify-between">
-              <h3 className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
+              <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
                 Image {i + 1}
               </h3>
             </div>

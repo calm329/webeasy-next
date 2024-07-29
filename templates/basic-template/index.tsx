@@ -28,7 +28,7 @@ type TProps = {
 };
 export default function BasicTemplate(props: TProps) {
   const { aiContent, posts } = props;
-  console.log("aiContent?.partners?.list",aiContent?.partners?.list)
+  console.log("aiContent?.partners?.list", aiContent?.partners?.list);
   return (
     <>
       <section className="bg-white py-6">
@@ -152,6 +152,7 @@ export default function BasicTemplate(props: TProps) {
                 <CarouselItem key={i}>
                   <div
                     className={`mx-10 h-[500px]  rounded-lg border border-gray-300 shadow-lg max-sm:mx-0`}
+
                   >
                     <Image
                       src={image}

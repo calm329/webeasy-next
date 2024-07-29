@@ -19,10 +19,7 @@ export async function DELETE(req: NextRequest) {
   } catch (error) {
     const unknownError = error as any;
     if (unknownError.code === "P2025") {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     } else {
       return NextResponse.json(
         { error: unknownError.message },

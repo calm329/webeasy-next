@@ -2,12 +2,8 @@ import React from "react";
 import { FaAmazon, FaInstagram } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 
 export default function SelectSourceContent() {
-  const router = useRouter();
-  const { closeDialog } = useResponsiveDialog();
   return (
     <div className="sm:mx-auto sm:w-full sm:max-w-md">
       <Image
@@ -22,44 +18,30 @@ export default function SelectSourceContent() {
       </h2>
 
       <div className="mt-6 grid grid-cols-1 gap-4">
-        <button
-          type="button"
-          onClick={() => {
-            router.push(
-              `${process.env.NEXT_PUBLIC_INSTAGRAM_API_AUTH_ENDPOINT}authorize?client_id=${process.env.NEXT_PUBLIC_FB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_FB_REDIRECT_URL}&scope=user_profile,user_media&response_type=code`,
-            );
-            closeDialog("source");
-          }}
+        <Link
+          href={`${process.env.NEXT_PUBLIC_INSTAGRAM_API_AUTH_ENDPOINT}authorize?client_id=${process.env.NEXT_PUBLIC_FB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_FB_REDIRECT_URL}&scope=user_profile,user_media&response_type=code`}
           className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
         >
           <FaInstagram className="size-5 text-[#4267B2]" />
           <span className="text-sm font-semibold leading-6">Instagram</span>
-        </button>
+        </Link>
       </div>
       <div className="mt-6 grid grid-cols-1 gap-4">
-        <button
-          type="button"
-          onClick={() => {
-            router.push("/website-builder/amazon");
-            closeDialog("source");
-          }}
+        <Link
+          href="/website-builder/amazon"
           className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
         >
           <FaAmazon className="size-5" />
           <span className="text-sm font-semibold leading-6">Amazon</span>
-        </button>
+        </Link>
       </div>
       <div className="mt-6 grid grid-cols-1 gap-4">
-        <button
-          type="button"
-          onClick={() => {
-            router.push("/website-builder");
-            closeDialog("source");
-          }}
+        <Link
+          href="/website-builder"
           className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
         >
           <span className="text-sm font-semibold leading-6">Custom</span>
-        </button>
+        </Link>
       </div>
     </div>
   );

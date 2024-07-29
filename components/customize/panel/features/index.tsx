@@ -84,7 +84,7 @@ const FeaturesContent = (props: TProps) => {
     );
   };
   return (
-    <div className="max-h-[600px] h-[55vh] overflow-y-auto py-5 transition-all ease-in-out">
+    <div className="h-[55vh] max-h-[600px] overflow-y-auto py-5 transition-all ease-in-out">
       {" "}
       <div className="flex flex-col gap-5 border-t p-5 pt-5">
         <div className="flex justify-between gap-10">

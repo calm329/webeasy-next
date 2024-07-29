@@ -67,7 +67,7 @@ import {
   useResponsiveDialog,
 } from "@/lib/context/responsive-dialog-context";
 import WidgetForm from "../ui/form/widget-form";
-import { sectionsData as SD } from '@/lib/store/slices/section-slice';
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard" },
@@ -153,7 +153,7 @@ export default function SiteHeader(props: TProps) {
   }, [status]);
   const isBottomBar = useMediaQuery("(min-width: 900px)");
   const { openDialog, closeDialog } = useResponsiveDialog();
-  const sections = useAppSelector(SD)
+  const sections = useAppSelector(SD);
   return (
     <header
       className={`${isAuth ? " w-full" : "relative"} border-b-1 z-1 bg-white`}
@@ -242,7 +242,6 @@ export default function SiteHeader(props: TProps) {
                 onClick={() => {
                   if (status === "authenticated") {
                     saveState(
-                     
                       appState,
                       dispatch,
                       selectedTemplate?.id ?? "",

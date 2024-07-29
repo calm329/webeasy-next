@@ -6,7 +6,6 @@ import Domain from "../../settings/domain/page";
 const DomainPage = () => {
   return (
     <>
-    
       <Domain />
     </>
   );

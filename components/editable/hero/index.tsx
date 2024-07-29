@@ -13,7 +13,7 @@ import SectionModal from "@/components/ui/modal/section-modal";
 import { isImage } from "@/components/ui/form/uploader";
 import EditComponent from "@/components/edit-component";
 import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
-import { sectionsData as SD } from '@/lib/store/slices/section-slice';
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   hero: THero;
@@ -64,7 +64,7 @@ const EditableHero = ({
   const sections = useAppSelector(SD);
 
   // Find the section by ID and get the variation
-  const section = sections.find(section => section.id === id);
+  const section = sections.find((section) => section.id === id);
   const variation = section?.variation || 1;
 
   const handleClick = (field: TFields) => {

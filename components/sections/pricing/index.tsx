@@ -8,7 +8,6 @@ import { TFields, TSection, TSectionsType } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component here
 import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
 import EditComponent from "@/components/edit-component";
-import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;
@@ -54,54 +53,6 @@ export default function PricingSection(props: TProps) {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(true); // State to manage loading state
-
-  const sections = useAppSelector(SD);
-
-  // Find the section by ID and get the variation
-  const section = sections.find((section) => section.id === id);
-  const variation = section?.variation || 1;
-
-  const styles: {
-    [key: number]: {
-      container: string;
-      listContainer: string;
-      listCard: string;
-      contentContainer:string;
-    };
-  } = {
-    1: {
-      container: "mx-auto max-w-7xl px-6 lg:px-8",
-      listContainer: "isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3",
-      listCard: "flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10",
-      contentContainer:"mx-auto max-w-4xl text-center"
-    },
-    2: {
-      container: "mx-auto max-w-7xl px-6 lg:px-8",
-      listContainer: "isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 gap-10",
-      listCard: "flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10 rounded-xl",
-      contentContainer:"mx-auto max-w-4xl text-left"
-    },
-    3:  {
-      container: "mx-auto max-w-7xl px-6 lg:px-8",
-      listContainer: "isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 gap-10",
-      listCard: "flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10 rounded-xl",
-      contentContainer:"mx-auto max-w-4xl text-center"
-    },
-    4: {
-      container: "mx-auto max-w-7xl px-6 lg:px-8",
-      listContainer: "isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3",
-      listCard: "flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10",
-      contentContainer:"mx-auto max-w-4xl text-left"
-    },
-    5: {
-      container: "mx-auto max-w-7xl px-6 lg:px-8",
-      listContainer: "isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3",
-      listCard: "flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10",
-      contentContainer:"mx-auto max-w-4xl text-center"
-    },
-  };
-
-  const { container, listContainer, listCard,contentContainer } = styles[variation];
 
   const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
@@ -149,8 +100,8 @@ export default function PricingSection(props: TProps) {
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />
-      <div className={container}>
-        <div className={contentContainer}>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-base font-semibold leading-7 text-indigo-600">
             Pricing
           </h2>
@@ -166,26 +117,25 @@ export default function PricingSection(props: TProps) {
               appState.aiContent?.pricing?.title ?? ""
             )}
           </p>
-          <p
-            className={`mx-auto mt-6 max-w-2xl  text-lg leading-8 text-gray-600 ${
-              editable &&
-              "rounded border-2 border-transparent hover:border-indigo-500"
-            }`}
-          >
-            {isLoading ? (
-              <Skeleton className="h-6 w-96" />
-            ) : (
-              appState.aiContent?.pricing?.description ?? ""
-            )}
-          </p>
         </div>
-
-        <div className={listContainer}>
+        <p
+          className={`mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600 ${
+            editable &&
+            "rounded border-2 border-transparent hover:border-indigo-500"
+          }`}
+        >
+          {isLoading ? (
+            <Skeleton className="h-6 w-96" />
+          ) : (
+            appState.aiContent?.pricing?.description ?? ""
+          )}
+        </p>
+        <div className="isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {(appState.aiContent?.pricing?.list ?? []).length === 0
             ? Array.from({ length: 3 }).map((_, idx) => (
                 <div
                   key={idx}
-                  className={`${listCard} ${
+                  className={`flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10 ${
                     editable &&
                     "rounded border-2 border-transparent hover:border-indigo-500"
                   }`}
@@ -225,7 +175,7 @@ export default function PricingSection(props: TProps) {
                       tierIdx === appState.aiContent?.pricing?.list.length - 1
                         ? "lg:rounded-l-none"
                         : ""
-                    } ${listCard} ${
+                    } ${"flex flex-col justify-between rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10"} ${
                       editable &&
                       "rounded border-2 border-transparent hover:border-indigo-500"
                     }`}

@@ -1,22 +1,22 @@
-import React, { Dispatch, SetStateAction } from "react";
-import Image from "next/image";
+import AddSectionButtons from '@/components/add-section/buttons';
+import EditComponent from '@/components/edit-component';
+import { CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card/general-card';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/select-template-carousel";
-import { CardContent } from "@/components/ui/card";
-import { Card } from "@/components/ui/card/general-card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
-import AddSectionButtons from "@/components/add-section/buttons";
-import { TSection, TSectionsType } from "@/types";
-import EditComponent from "@/components/edit-component";
-import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
-import { sectionsData as SD } from "@/lib/store/slices/section-slice";
+} from '@/components/ui/select-template-carousel';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { sectionsData as SD } from '@/lib/store/slices/section-slice';
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+import { BROKEN_IMAGE } from '@/lib/utils/common-constant';
+import { TSection } from '@/types';
+import Image from 'next/image';
+import React, { Dispatch, SetStateAction } from 'react';
 
 type TProps = {
   editable?: boolean;
@@ -61,13 +61,13 @@ const PartnersSection = ({
   const handleSectionClick = () => {
     if (setIsOpen && setSection) {
       setIsOpen(true);
-      setSection("Partners");
-      setShowForm({ show: false, edit: "", form: "" });
+      setSection('Partners');
+      setShowForm({ show: false, edit: '', form: '' });
       dispatch(
         updateAppState({
           ...appState,
-          openedSlide: "Customize",
-        }),
+          openedSlide: 'Customize',
+        })
       );
     }
   };
@@ -89,34 +89,40 @@ const PartnersSection = ({
     };
   } = {
     1: {
-      container: "flex flex-col gap-5 text-left ",
-      listContainer: "flex gap-10",
-      contentContainer: "flex flex-col gap-5",
-      listCard: "relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl",
+      container: 'flex flex-col gap-5 text-left ',
+      listContainer: 'flex gap-10',
+      contentContainer: 'flex flex-col gap-5',
+      listCard:
+        'relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl',
     },
     2: {
-      container: "flex  gap-10 text-left justify-between w-full  items-center",
-      listContainer: "grid grid-cols-2  gap-10 ",
-      contentContainer: "flex flex-col gap-5 w-1/2 ",
-      listCard: "relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl",
+      container: 'flex  gap-10 text-left justify-between w-full  items-center',
+      listContainer: 'grid grid-cols-2  gap-10 ',
+      contentContainer: 'flex flex-col gap-5 w-1/2 ',
+      listCard:
+        'relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl',
     },
     3: {
-      container: "flex flex-col gap-5 text-center ",
-      listContainer: "flex gap-10",
-      contentContainer: "flex flex-col gap-5",
-      listCard: "relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl",
+      container: 'flex flex-col gap-5 text-center ',
+      listContainer: 'flex gap-10',
+      contentContainer: 'flex flex-col gap-5',
+      listCard:
+        'relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl',
     },
     4: {
-      container: "flex  gap-10 text-left flex-row-reverse justify-between w-full  items-center",
-      listContainer: "grid grid-cols-2  gap-10 ",
-      contentContainer: "flex flex-col gap-5 w-1/2 ",
-      listCard: "relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl",
+      container:
+        'flex  gap-10 text-left flex-row-reverse justify-between w-full  items-center',
+      listContainer: 'grid grid-cols-2  gap-10 ',
+      contentContainer: 'flex flex-col gap-5 w-1/2 ',
+      listCard:
+        'relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl',
     },
     5: {
-      container: "flex flex-col gap-5 text-left ",
-      listContainer: "flex gap-10",
-      contentContainer: "flex flex-col gap-5",
-      listCard: "relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl",
+      container: 'flex flex-col gap-5 text-left ',
+      listContainer: 'flex gap-10',
+      contentContainer: 'flex flex-col gap-5',
+      listCard:
+        'relative flex  w-auto flex-shrink-0 rounded-lg p-2 transition-all  md:rounded-xl lg:rounded-2xl',
     },
   };
 
@@ -136,7 +142,7 @@ const PartnersSection = ({
           <div
             className="flex h-full w-full overflow-hidden"
             style={{
-              mask: "linear-gradient(90deg, transparent, white 5%, white 95%, transparent)",
+              mask: 'linear-gradient(90deg, transparent, white 5%, white 95%, transparent)',
             }}
           >
             <div className="flex w-full items-center justify-center gap-10">
@@ -156,14 +162,14 @@ const PartnersSection = ({
   } else if (!partnersContent.show) {
     contentToRender = (
       <button
-        className={`h-[100px] ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+        className={`h-[100px] ${editable && 'rounded border-2 border-transparent hover:border-indigo-500'}`}
         onClick={handleSectionClick}
       ></button>
     );
   } else {
     contentToRender = (
       <button
-        className={`${container} ${editable && " group relative rounded border-2 border-transparent hover:border-indigo-500"}`}
+        className={`${container} ${editable && ' group relative rounded border-2 border-transparent hover:border-indigo-500'}`}
         onClick={handleSectionClick}
       >
         <EditComponent id={id} />
@@ -182,20 +188,39 @@ const PartnersSection = ({
           {partnersContent.list.length <= 5 ? (
             <div className="flex w-full overflow-auto">
               <div className={listContainer}>
-                {partnersContent.list.map((src, index) => (
-                  <div
-                    key={src.id}
-                    className={listCard}
-                  >
-                    <Image
-                      className=" aspect-1 object-contain  grayscale transition-all duration-300 hover:grayscale-0"
-                      src={src.logo || BROKEN_IMAGE}
-                      alt={`Logo ${index + 1}`}
-                      height={200}
-                      width={200}
-                    />
-                  </div>
-                ))}
+                {partnersContent.list.map((src, index) =>
+                  src.link ? (
+                    <a
+                      key={src.id}
+                      className={listCard}
+                      href={src.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        cursor: 'pointer',
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Image
+                        className=" aspect-1 object-contain  grayscale transition-all duration-300 hover:grayscale-0"
+                        src={src.logo || BROKEN_IMAGE}
+                        alt={`Logo ${index + 1}`}
+                        height={200}
+                        width={200}
+                      />
+                    </a>
+                  ) : (
+                    <div key={src.id} className={listCard}>
+                      <Image
+                        className=" aspect-1 object-contain  grayscale transition-all duration-300 hover:grayscale-0"
+                        src={src.logo || BROKEN_IMAGE}
+                        alt={`Logo ${index + 1}`}
+                        height={200}
+                        width={200}
+                      />
+                    </div>
+                  )
+                )}
               </div>
             </div>
           ) : (
@@ -209,16 +234,36 @@ const PartnersSection = ({
                     <div className="p-1">
                       <Card className="border-0">
                         <CardContent className="flex border-0 p-6">
-                          <div className="relative flex flex-shrink-0 rounded-lg p-2 transition-all md:rounded-xl lg:rounded-2xl">
-                            <Image
-                              className="h-24 object-contain grayscale transition-all duration-300 hover:grayscale-0"
-                              src={src.logo || BROKEN_IMAGE}
-                              alt={`Logo ${index + 1}`}
-                              height={200}
-                              width={200}
-                              onClick={() => window.open(src.link, "_blank")}
-                            />
-                          </div>
+                          {src.link ? (
+                            <a
+                              href={src.link}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{
+                                cursor: 'pointer',
+                              }}
+                              onClick={(e) => e.stopPropagation()}
+                              className="relative flex flex-shrink-0 rounded-lg p-2 transition-all md:rounded-xl lg:rounded-2xl"
+                            >
+                              <Image
+                                className="h-24 object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                                src={src.logo || BROKEN_IMAGE}
+                                alt={`Logo ${index + 1}`}
+                                height={200}
+                                width={200}
+                              />
+                            </a>
+                          ) : (
+                            <div className="relative flex flex-shrink-0 rounded-lg p-2 transition-all md:rounded-xl lg:rounded-2xl">
+                              <Image
+                                className="h-24 object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                                src={src.logo || BROKEN_IMAGE}
+                                alt={`Logo ${index + 1}`}
+                                height={200}
+                                width={200}
+                              />
+                            </div>
+                          )}
                         </CardContent>
                       </Card>
                     </div>

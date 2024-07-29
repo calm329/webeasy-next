@@ -158,50 +158,51 @@ const LogoContent = (props: TProps) => {
                             {data}
                           </label>
                           <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setLoadingHeading(true);
-                              CustomContent.getLogoClouds({
-                                data: {
-                                  location: appState?.aiContent?.location ?? "",
-                                  businessName:
-                                    appState?.aiContent?.banner?.businessName,
-                                  businessType:
-                                    appState?.aiContent?.businessType ?? "",
-                                },
-                                fieldName: "logoClouds",
-                                individual: true,
-                                type,
-                              }).then((res: any) => {
-                                dispatch(
-                                  updateAppState({
-                                    ...appState,
-                                    aiContent: {
-                                      ...appState.aiContent,
-                                      logoClouds: {
-                                        ...appState.aiContent?.logoClouds,
-                                        [data]: res[data],
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setLoadingHeading(true);
+                                CustomContent.getLogoClouds({
+                                  data: {
+                                    location:
+                                      appState?.aiContent?.location ?? "",
+                                    businessName:
+                                      appState?.aiContent?.banner?.businessName,
+                                    businessType:
+                                      appState?.aiContent?.businessType ?? "",
+                                  },
+                                  fieldName: "logoClouds",
+                                  individual: true,
+                                  type,
+                                }).then((res: any) => {
+                                  dispatch(
+                                    updateAppState({
+                                      ...appState,
+                                      aiContent: {
+                                        ...appState.aiContent,
+                                        logoClouds: {
+                                          ...appState.aiContent?.logoClouds,
+                                          [data]: res[data],
+                                        },
                                       },
-                                    },
-                                  }),
-                                );
-                                setLoadingHeading(false);
-                              });
-                            }}
-                            className="flex items-center gap-2 "
-                          >
-                            Regenerate
-                            {loadingHeading ? (
-                              <ImSpinner2 className="animate-spin text-lg text-black" />
-                            ) : (
-                              <ImPower className=" text-xs " />
-                            )}
-                          </button>
-                          <RegenerateOptions setType={setType} type={type} />
+                                    }),
+                                  );
+                                  setLoadingHeading(false);
+                                });
+                              }}
+                              className="flex items-center gap-2 "
+                            >
+                              Regenerate
+                              {loadingHeading ? (
+                                <ImSpinner2 className="animate-spin text-lg text-black" />
+                              ) : (
+                                <ImPower className=" text-xs " />
+                              )}
+                            </button>
+                            <RegenerateOptions setType={setType} type={type} />
+                          </div>
                         </div>
-                        </div>
-                       
+
                         <input
                           type="text"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

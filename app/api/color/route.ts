@@ -43,7 +43,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ colors: response.choices[0].message.content });
   } catch (error) {
-
     return NextResponse.json({
       colors: JSON.stringify({
         primary: "#000000",

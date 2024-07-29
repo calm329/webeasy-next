@@ -39,7 +39,7 @@ type TProps = {
   };
 
   id: string;
-  initialSections:(() => TSectionsType | null)[]
+  initialSections: (() => TSectionsType | null)[];
 };
 export default function SectionModal(props: TProps) {
   const {
@@ -56,7 +56,7 @@ export default function SectionModal(props: TProps) {
     showForm,
 
     id,
-    initialSections
+    initialSections,
   } = props;
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -91,7 +91,7 @@ export default function SectionModal(props: TProps) {
                   </button>
                 </div>
                 <SectionForm
-                initialSections={initialSections}
+                  initialSections={initialSections}
                   addSectionByTitle={addSectionByTitle}
                   triggerSection={triggerSection}
                   setOpen={setOpen}
@@ -102,7 +102,6 @@ export default function SectionModal(props: TProps) {
                   editable={editable}
                   setIsOpen={setIsOpen}
                   setSection={setSection}
-             
                   id={id}
                 />
               </Dialog.Panel>

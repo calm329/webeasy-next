@@ -40,7 +40,9 @@ export default function ContentSection(props: TProps) {
     showForm,
   } = props;
   return (
-    <div className={`relative group ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} isolate  bg-white py-24 sm:py-32`}>
+    <div
+      className={`group relative ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} isolate  bg-white py-24 sm:py-32`}
+    >
       {/* <EditComponent /> */}
       <AddSectionButtons
         id="0"

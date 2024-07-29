@@ -1280,7 +1280,7 @@ export async function saveState(
   appState: AppState,
   dispatch: any,
   templateId: string,
-  sections:any
+  sections: any,
 ) {
   try {
     const isCustom = location.pathname?.split("/")[1] === "custom";
@@ -1290,13 +1290,13 @@ export async function saveState(
       title: section.title,
     }));
 
-    console.log("sections12",sections)
+    console.log("sections12", sections);
     if (isCustom) {
       data = {
         aiResult: appState.aiContent,
         font: appState.selectedFont,
         templateId: templateId,
-        sections:JSON.stringify(simplifiedSections)
+        sections: JSON.stringify(simplifiedSections),
       };
     } else {
       data = {
@@ -1304,7 +1304,7 @@ export async function saveState(
         font: appState.selectedFont,
         posts: appState.iPosts,
         templateId: templateId,
-        sections:JSON.stringify(simplifiedSections)
+        sections: JSON.stringify(simplifiedSections),
       };
     }
     console.log("Saved state", data);
@@ -1315,7 +1315,7 @@ export async function saveState(
         keys: Object.keys(data),
       }),
     ).unwrap();
-    console.log("res",res)
+    console.log("res", res);
     toast.success("Data saved successfully");
   } catch (error) {
     console.log(error);

@@ -176,7 +176,8 @@ const CustomHeader = (props: TProps) => {
             onChange={(e) => {
               setData({ ...data, name: e.target.value });
               if (showForm.edit) {
-                const data = appState.aiContent?.header?.list?.map((item: any) => {
+                const data = appState.aiContent?.header?.list?.map(
+                  (item: any) => {
                     if (item.id === showForm.edit) {
                       return {
                         ...item,
@@ -185,8 +186,9 @@ const CustomHeader = (props: TProps) => {
                     } else {
                       return item;
                     }
-                  })
-                  console.log("data",data)
+                  },
+                );
+                console.log("data", data);
                 dispatch(
                   updateAppState({
                     ...appState,
@@ -222,16 +224,18 @@ const CustomHeader = (props: TProps) => {
                       ...appState.aiContent,
                       header: {
                         ...appState.aiContent.header,
-                        list: appState.aiContent.header.list?.map((item: any) => {
-                          if (item.id === showForm.edit) {
-                            return {
-                              ...item,
-                              description: e.target.value,
-                            };
-                          } else {
-                            return item;
-                          }
-                        }),
+                        list: appState.aiContent.header.list?.map(
+                          (item: any) => {
+                            if (item.id === showForm.edit) {
+                              return {
+                                ...item,
+                                description: e.target.value,
+                              };
+                            } else {
+                              return item;
+                            }
+                          },
+                        ),
                       },
                     },
                   }),

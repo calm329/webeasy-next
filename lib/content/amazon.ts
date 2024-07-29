@@ -47,7 +47,7 @@ class AmazonContentApiService {
             if (completeJson) {
               try {
                 console.log("completeJson", completeJson);
-                if(individual){
+                if (individual) {
                   resolve(JSON.parse(completeJson).features);
                 }
                 resolve(tempFeatures);
@@ -80,7 +80,7 @@ class AmazonContentApiService {
 
             try {
               const jsonObject = JSON.parse(jsonString);
-              
+
               tempFeatures.push({
                 ...jsonObject,
                 image: getAppState().aiContent.images?.primary.Large.URL,

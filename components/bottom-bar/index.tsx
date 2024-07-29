@@ -36,7 +36,7 @@ import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
 import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import ResponsiveDialog from "../ui/responsive-dialog/index";
 import WidgetForm from "../ui/form/widget-form";
-import { sectionsData as SD } from '@/lib/store/slices/section-slice';
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   showNavigation: boolean;
@@ -47,10 +47,7 @@ type TProps = {
 };
 
 const BottomToolBar = (props: TProps) => {
-  const {
-    handleChange,
-    setIsFontOpen,
-  } = props;
+  const { handleChange, setIsFontOpen } = props;
   const isBottomBar = useMediaQuery("(max-width: 900px)");
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
@@ -62,7 +59,7 @@ const BottomToolBar = (props: TProps) => {
   const pathname = usePathname();
   const selectedTemplate = useAppSelector(ST);
   const { openDialog } = useResponsiveDialog();
-  const sections = useAppSelector(SD)
+  const sections = useAppSelector(SD);
 
   return (
     <div className=" z-1 fixed bottom-0   flex w-full justify-around border border-gray-200 bg-white   py-2 shadow-xl ">

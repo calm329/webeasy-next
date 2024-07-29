@@ -25,7 +25,8 @@ type TProps = {
     | "description"
     | "price"
     | "featureTitle"
-    | "featureDescription"|string
+    | "featureDescription"
+    | string
   >;
   getValues: any;
   f: FormField;

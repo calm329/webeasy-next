@@ -38,7 +38,7 @@ export default function Navlink() {
             {secondaryNavigation.map((item) => (
               <li key={item.name}>
                 <Link
-                  href={item.href??"#"}
+                  href={item.href ?? "#"}
                   className={classNames(
                     item.href === pathname
                       ? "bg-gray-50 text-indigo-600"

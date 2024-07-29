@@ -93,7 +93,7 @@ export function Hero(props: TProps) {
           {!appState.generate.generating ? (
             hero?.image?.show && (
               <Image
-                src={appState.aiContent.hero?.image?.imageUrl  || BROKEN_IMAGE}
+                src={appState.aiContent.hero?.image?.imageUrl || BROKEN_IMAGE}
                 alt=""
                 height={400}
                 width={300}

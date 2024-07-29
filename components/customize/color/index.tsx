@@ -72,14 +72,13 @@ const CustomizeColor = (props: TProps) => {
             fields={colorFields}
             handler={async (data: any, keys: string[]) => {
               try {
-        
                 handleChange("colors", data);
                 await updateSite(
                   getUsernameFromPosts(JSON.stringify(appState.iPosts)) || "",
                   data,
                   keys,
                 );
-  
+
                 toast.success("Your Colors has been saved");
               } catch (error) {}
             }} // updateSite}

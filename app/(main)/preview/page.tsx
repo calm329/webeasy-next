@@ -35,11 +35,11 @@ const Preview = (props: TProps) => {
     }
     console.log("selectedTemplate", appState);
   }, [searchParams, dispatch]);
-  
+
   if (loading) {
     return <Loader text="loading" />;
   }
-  if(appState?.aiContent?.banner){
+  if (appState?.aiContent?.banner) {
     switch (selectedTemplate?.name) {
       case "Basic template":
         return (
@@ -87,7 +87,6 @@ const Preview = (props: TProps) => {
         );
     }
   }
-
 };
 
 export default Preview;

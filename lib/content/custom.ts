@@ -1,9 +1,12 @@
-
 import { store } from "../store";
 import { updateAppState } from "../store/slices/site-slice";
 import { getAppState, getRandomImageFromUnsplash } from "../utils/function";
 import { TBanner, TBlogs, TContact, TFeature, THero, TServices } from "@/types";
-import { LifebuoyIcon, NewspaperIcon, PhoneIcon } from "@heroicons/react/24/outline";
+import {
+  LifebuoyIcon,
+  NewspaperIcon,
+  PhoneIcon,
+} from "@heroicons/react/24/outline";
 
 class CustomContentApiService {
   private url = (api: string) => `/api/content/custom/${api}`;
@@ -290,13 +293,15 @@ class CustomContentApiService {
 
             try {
               const jsonObject = JSON.parse(jsonString);
-              const image = await getRandomImageFromUnsplash(jsonObject.gender +"portrait")
-              
+              const image = await getRandomImageFromUnsplash(
+                jsonObject.gender + "portrait",
+              );
+
               tempTestimonials.push({
                 ...jsonObject,
-                avatar:image
+                avatar: image,
               });
-             
+
               console.log(
                 "tempTestimonials",
                 JSON.stringify(tempTestimonials, null, 2),
@@ -367,20 +372,20 @@ class CustomContentApiService {
           },
         );
         const tempBlogPosts: Array<{
-          id: number,
-          title: string,
-          href: string,
-          description:string,
-          imageUrl:string,
-          date: string,
-          datetime: string,
-          category: { title:  string, href: string },
+          id: number;
+          title: string;
+          href: string;
+          description: string;
+          imageUrl: string;
+          date: string;
+          datetime: string;
+          category: { title: string; href: string };
           author: {
-            name: string
-            role: string
-            href: string
-            imageUrl:string,
-          },
+            name: string;
+            role: string;
+            href: string;
+            imageUrl: string;
+          };
         }> = [];
         const reader = response.body?.getReader();
         if (!reader) {
@@ -514,7 +519,6 @@ class CustomContentApiService {
     });
   }
 
-
   public async getHero({
     individual,
     type,
@@ -607,7 +611,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }): Promise<{title:string,description:string}> {
+  }): Promise<{ title: string; description: string }> {
     return new Promise(async (resolve, reject) => {
       console.log("getHero");
       try {
@@ -674,7 +678,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }): Promise<{title:string,description:string}> {
+  }): Promise<{ title: string; description: string }> {
     return new Promise(async (resolve, reject) => {
       console.log("getHero");
       try {
@@ -861,7 +865,7 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                if(!individual){
+                if (!individual) {
                   store.dispatch(
                     updateAppState({
                       ...getAppState(),
@@ -869,25 +873,23 @@ class CustomContentApiService {
                         ...getAppState().aiContent,
                         contact: {
                           ...parsedData.contact,
-                          address:{
-                            label:"Address",
-                            value:"545 Mavis Island Chicago, IL 99191"
+                          address: {
+                            label: "Address",
+                            value: "545 Mavis Island Chicago, IL 99191",
                           },
-                          telephone:{
-                            label:"Telephone",
-                            value:"+1 (555) 234-5678"
+                          telephone: {
+                            label: "Telephone",
+                            value: "+1 (555) 234-5678",
                           },
-                          email:{
-                            label:"Email",
-                            value:"hello@example.com"
-                          }
+                          email: {
+                            label: "Email",
+                            value: "hello@example.com",
+                          },
                         },
                       },
-  
                     }),
                   );
                 }
-                
 
                 resolve(parsedData.contact);
               } catch (error) {
@@ -912,7 +914,6 @@ class CustomContentApiService {
       }
     });
   }
-
 
   public async getPartners({
     individual,
@@ -960,56 +961,55 @@ class CustomContentApiService {
                 //   resolve(JSON.parse(completeJson).features);
                 // }
 
-                if(!individual)
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      partners: {
-                        ...parsedData.partners,
-                        ...getAppState().aiContent.partners,
-                        list:[
-                          {
-                            id:"0",
-                            name:"",
-                            logo:"/images/partners/partner-1.png",
-                            redirect:""
-                          }
-                          ,
-                          {
-                            id:"1",
-                            name:"",
-                            logo:"/images/partners/partner-2.png",
-                            redirect:""
-                          },
-                          {
-                            id:"2",
-                            name:"",
-                            logo:"/images/partners/partner-3.png",
-                            redirect:""
-                          },
-                          {
-                            id:"3",
-                            name:"",
-                            logo:"/images/partners/partner-4.png",
-                            redirect:""
-                          },
-                          {
-                            id:"4",
-                            name:"",
-                            logo:"/images/partners/partner-5.png",
-                            redirect:""
-                          }
-                        ]
+                if (!individual)
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        partners: {
+                          ...parsedData.partners,
+                          ...getAppState().aiContent.partners,
+                          list: [
+                            {
+                              id: "0",
+                              name: "",
+                              logo: "/images/partners/partner-1.png",
+                              redirect: "",
+                            },
+                            {
+                              id: "1",
+                              name: "",
+                              logo: "/images/partners/partner-2.png",
+                              redirect: "",
+                            },
+                            {
+                              id: "2",
+                              name: "",
+                              logo: "/images/partners/partner-3.png",
+                              redirect: "",
+                            },
+                            {
+                              id: "3",
+                              name: "",
+                              logo: "/images/partners/partner-4.png",
+                              redirect: "",
+                            },
+                            {
+                              id: "4",
+                              name: "",
+                              logo: "/images/partners/partner-5.png",
+                              redirect: "",
+                            },
+                          ],
+                        },
                       },
-                    },
-                    generate:{
-                      ...getAppState().generate,
+                      generate: {
+                        ...getAppState().generate,
                         progress: getAppState().generate.progress + 10,
-                    }
-                  }),
-                );
+                      },
+                    }),
+                  );
 
                 resolve(parsedData.partners);
               } catch (error) {
@@ -1045,20 +1045,17 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(
-          this.url(individual ? fieldName : "cta"),
-          {
-            method: "POST",
-            body: JSON.stringify({
-              data: data,
-              type: type ?? "",
-              services: getAppState().aiContent.services ?? "",
-            }),
-          },
-        );
+        const response = await fetch(this.url(individual ? fieldName : "cta"), {
+          method: "POST",
+          body: JSON.stringify({
+            data: data,
+            type: type ?? "",
+            services: getAppState().aiContent.services ?? "",
+          }),
+        });
 
         const reader = response.body?.getReader();
         if (!reader) {
@@ -1078,7 +1075,7 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                if(!individual){
+                if (!individual) {
                   store.dispatch(
                     updateAppState({
                       ...getAppState(),
@@ -1087,11 +1084,10 @@ class CustomContentApiService {
                         cta: {
                           ...parsedData.cta,
                         },
-                      }
+                      },
                     }),
                   );
                 }
-               
 
                 resolve(parsedData.cta);
               } catch (error) {
@@ -1117,7 +1113,6 @@ class CustomContentApiService {
     });
   }
 
-
   public async getFAQ({
     individual,
     type,
@@ -1128,20 +1123,17 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await fetch(
-          this.url(individual ? fieldName : "faq"),
-          {
-            method: "POST",
-            body: JSON.stringify({
-              data: data,
-              type: type ?? "",
-              services: getAppState().aiContent.services ?? "",
-            }),
-          },
-        );
+        const response = await fetch(this.url(individual ? fieldName : "faq"), {
+          method: "POST",
+          body: JSON.stringify({
+            data: data,
+            type: type ?? "",
+            services: getAppState().aiContent.services ?? "",
+          }),
+        });
 
         const reader = response.body?.getReader();
         if (!reader) {
@@ -1161,7 +1153,7 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                if(!individual){
+                if (!individual) {
                   store.dispatch(
                     updateAppState({
                       ...getAppState(),
@@ -1170,11 +1162,10 @@ class CustomContentApiService {
                         faq: {
                           ...parsedData.faq,
                         },
-                      }
+                      },
                     }),
                   );
                 }
-                
 
                 resolve(parsedData.faq);
               } catch (error) {
@@ -1210,7 +1201,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
@@ -1242,18 +1233,18 @@ class CustomContentApiService {
               try {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
-                if(!individual)
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      footer: {
-                        ...parsedData.footer,
+                if (!individual)
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        footer: {
+                          ...parsedData.footer,
+                        },
                       },
-                    }
-                  }),
-                );
+                    }),
+                  );
 
                 resolve(parsedData.footer);
               } catch (error) {
@@ -1289,7 +1280,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
@@ -1321,19 +1312,19 @@ class CustomContentApiService {
               try {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
-                if(!individual)
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      header: {
-                        ...parsedData.header,
-                        bg:"https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
+                if (!individual)
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        header: {
+                          ...parsedData.header,
+                          bg: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply",
+                        },
                       },
-                    }
-                  }),
-                );
+                    }),
+                  );
 
                 resolve(parsedData.header);
               } catch (error) {
@@ -1369,7 +1360,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
@@ -1401,19 +1392,20 @@ class CustomContentApiService {
               try {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
-                if(!individual)
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      heroSection: {
-                        image:"https://tailwindui.com/img/component-images/project-app-screenshot.png",
-                        ...parsedData.heroSection,
+                if (!individual)
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        heroSection: {
+                          image:
+                            "https://tailwindui.com/img/component-images/project-app-screenshot.png",
+                          ...parsedData.heroSection,
+                        },
                       },
-                    }
-                  }),
-                );
+                    }),
+                  );
 
                 resolve(parsedData.heroSection);
               } catch (error) {
@@ -1449,7 +1441,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
@@ -1481,46 +1473,50 @@ class CustomContentApiService {
               try {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
-                if(!individual)
-                store.dispatch(
-                  updateAppState({
-                    ...getAppState(),
-                    aiContent: {
-                      ...getAppState().aiContent,
-                      logoClouds: {
-                        ...parsedData.logoClouds,
-                        list:[
-                          {
-                            image: "https://tailwindui.com/img/logos/transistor-logo-gray-900.svg",
-                            alt: "Logo 1",
-                            link: "#",
-                          },
-                          {
-                            image: "https://tailwindui.com/img/logos/reform-logo-gray-900.svg",
-                            alt: "Logo 1",
-                            link: "#",
-                          },
-                          {
-                            image: "https://tailwindui.com/img/logos/tuple-logo-gray-900.svg",
-                            alt: "Logo 1",
-                            link: "#",
-                          },
-                          {
-                            image: "https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg",
-                            alt: "Logo 1",
-                            link: "#",
-                          },
-                          {
-                            image: "https://tailwindui.com/img/logos/statamic-logo-gray-900.svg",
-                            alt: "Logo 1",
-                            link: "#",
-                          }
-                        ]
-
+                if (!individual)
+                  store.dispatch(
+                    updateAppState({
+                      ...getAppState(),
+                      aiContent: {
+                        ...getAppState().aiContent,
+                        logoClouds: {
+                          ...parsedData.logoClouds,
+                          list: [
+                            {
+                              image:
+                                "https://tailwindui.com/img/logos/transistor-logo-gray-900.svg",
+                              alt: "Logo 1",
+                              link: "#",
+                            },
+                            {
+                              image:
+                                "https://tailwindui.com/img/logos/reform-logo-gray-900.svg",
+                              alt: "Logo 1",
+                              link: "#",
+                            },
+                            {
+                              image:
+                                "https://tailwindui.com/img/logos/tuple-logo-gray-900.svg",
+                              alt: "Logo 1",
+                              link: "#",
+                            },
+                            {
+                              image:
+                                "https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg",
+                              alt: "Logo 1",
+                              link: "#",
+                            },
+                            {
+                              image:
+                                "https://tailwindui.com/img/logos/statamic-logo-gray-900.svg",
+                              alt: "Logo 1",
+                              link: "#",
+                            },
+                          ],
+                        },
                       },
-                    }
-                  }),
-                );
+                    }),
+                  );
 
                 resolve(parsedData.logoClouds);
               } catch (error) {
@@ -1556,7 +1552,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
@@ -1589,7 +1585,7 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                if(!individual){
+                if (!individual) {
                   store.dispatch(
                     updateAppState({
                       ...getAppState(),
@@ -1598,11 +1594,10 @@ class CustomContentApiService {
                         newsLetter: {
                           ...parsedData.newsLetter,
                         },
-                      }
+                      },
                     }),
                   );
                 }
-             
 
                 resolve(parsedData.newsLetter);
               } catch (error) {
@@ -1638,7 +1633,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
@@ -1670,7 +1665,7 @@ class CustomContentApiService {
               try {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
-                if(!individual){
+                if (!individual) {
                   store.dispatch(
                     updateAppState({
                       ...getAppState(),
@@ -1679,11 +1674,11 @@ class CustomContentApiService {
                         pricing: {
                           ...parsedData.pricing,
                         },
-                      }
+                      },
                     }),
                   );
                 }
-               
+
                 resolve(parsedData.pricing);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
@@ -1718,7 +1713,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
@@ -1751,7 +1746,7 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                if(!individual){
+                if (!individual) {
                   store.dispatch(
                     updateAppState({
                       ...getAppState(),
@@ -1760,11 +1755,10 @@ class CustomContentApiService {
                         stats: {
                           ...parsedData.stats,
                         },
-                      }
+                      },
                     }),
                   );
                 }
-               
 
                 resolve(parsedData.stats);
               } catch (error) {
@@ -1789,7 +1783,6 @@ class CustomContentApiService {
       }
     });
   }
-  
 
   public async getTeam({
     individual,
@@ -1801,7 +1794,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
@@ -1834,7 +1827,7 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                if(!individual){
+                if (!individual) {
                   store.dispatch(
                     updateAppState({
                       ...getAppState(),
@@ -1843,11 +1836,10 @@ class CustomContentApiService {
                         team: {
                           ...parsedData.team,
                         },
-                      }
+                      },
                     }),
                   );
                 }
-               
 
                 resolve(parsedData.team);
               } catch (error) {
@@ -1883,7 +1875,7 @@ class CustomContentApiService {
     type: string;
     fieldName: string;
     data: { businessType: string; businessName: string; location: string };
-  }){
+  }) {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await fetch(
@@ -1916,7 +1908,7 @@ class CustomContentApiService {
                 console.log("completeJson", completeJson);
                 const parsedData = JSON.parse(completeJson);
 
-                if(!individual){
+                if (!individual) {
                   store.dispatch(
                     updateAppState({
                       ...getAppState(),
@@ -1925,12 +1917,15 @@ class CustomContentApiService {
                         testimonialsSection: {
                           ...parsedData.testimonialsSection,
                         },
-                      }
+                      },
                     }),
                   );
                 }
-               
-                console.log("parsedData.testimonialsSection",parsedData.testimonialsSection)
+
+                console.log(
+                  "parsedData.testimonialsSection",
+                  parsedData.testimonialsSection,
+                );
                 resolve(parsedData.testimonialsSection);
               } catch (error) {
                 console.error("Error parsing final JSON:", error);
@@ -1954,7 +1949,6 @@ class CustomContentApiService {
       }
     });
   }
-  
 }
 
 const CustomContent = new CustomContentApiService();

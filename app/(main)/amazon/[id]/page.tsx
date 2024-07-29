@@ -54,7 +54,7 @@ const Amazon = ({ params }: { params: { id: string } }) => {
           aiContent: {},
         }),
       );
-      dispatch(clearPastAndFuture())
+      dispatch(clearPastAndFuture());
       dispatch(fetchSiteById({ id: params.id ?? "" }));
     }
   }, [params]);
@@ -73,7 +73,7 @@ const Amazon = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="mb-20">
-      {(loading && appState?.generate?.progress === 100) && <GeneratedOverlay />}
+      {loading && appState?.generate?.progress === 100 && <GeneratedOverlay />}
       <SiteHeader
         showNavigation={false}
         setIsFontOpen={setIsFontOpen}

@@ -362,7 +362,7 @@ const ProductTemplate = (props: TProps) => {
                           color: appState?.aiContent?.colors?.secondary,
                         }}
                       >
-                        {appState?.generate?.generating  ? (
+                        {appState?.generate?.generating ? (
                           <TypewriterEffect text={feature.description} />
                         ) : (
                           feature.description
@@ -372,39 +372,40 @@ const ProductTemplate = (props: TProps) => {
                   </div>
                 ))}
 
-                {appState?.generate?.generating && Array.from({ length: 4 })?.map(
-                  (_, i) =>
-                    i > features?.length - 1 && (
-                      <div
-                        key={i}
-                        className={`flex items-center justify-center gap-5 max-sm:flex-col ${i % 2 !== 0 ? "flex-row-reverse" : ""}`}
-                      >
-                        <div className="h-56 w-56">
-                          <Skeleton className="h-56 w-56" />
+                {appState?.generate?.generating &&
+                  Array.from({ length: 4 })?.map(
+                    (_, i) =>
+                      i > features?.length - 1 && (
+                        <div
+                          key={i}
+                          className={`flex items-center justify-center gap-5 max-sm:flex-col ${i % 2 !== 0 ? "flex-row-reverse" : ""}`}
+                        >
+                          <div className="h-56 w-56">
+                            <Skeleton className="h-56 w-56" />
+                          </div>
+                          <div className="w-1/2 max-sm:w-full">
+                            <h2
+                              className="text-xl font-semibold"
+                              style={{
+                                color: appState?.aiContent?.colors?.primary,
+                              }}
+                            >
+                              <Skeleton className="mb-2 h-7 w-16" />
+                            </h2>
+                            <p
+                              className="flex flex-col gap-1 text-sm text-gray-500"
+                              style={{
+                                color: appState?.aiContent?.colors?.secondary,
+                              }}
+                            >
+                              <Skeleton className="h-5" />
+                              <Skeleton className="h-5" />
+                              <Skeleton className="h-5 w-1/2" />
+                            </p>
+                          </div>
                         </div>
-                        <div className="w-1/2 max-sm:w-full">
-                          <h2
-                            className="text-xl font-semibold"
-                            style={{
-                              color: appState?.aiContent?.colors?.primary,
-                            }}
-                          >
-                            <Skeleton className="mb-2 h-7 w-16" />
-                          </h2>
-                          <p
-                            className="flex flex-col gap-1 text-sm text-gray-500"
-                            style={{
-                              color: appState?.aiContent?.colors?.secondary,
-                            }}
-                          >
-                            <Skeleton className="h-5" />
-                            <Skeleton className="h-5" />
-                            <Skeleton className="h-5 w-1/2" />
-                          </p>
-                        </div>
-                      </div>
-                    ),
-                )}
+                      ),
+                  )}
               </div>
             </div>
           </>

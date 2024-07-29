@@ -8,7 +8,7 @@ import {
   duplicateSection,
   removeSection,
   sectionsData as SD,
-  changeVariation
+  changeVariation,
 } from "@/lib/store/slices/section-slice";
 import {
   Menu,
@@ -22,7 +22,6 @@ import { FaCopy, FaTrash } from "react-icons/fa";
 
 type TProps = {
   id: string;
-
 };
 
 const EditComponent = (props: TProps) => {
@@ -44,8 +43,8 @@ const EditComponent = (props: TProps) => {
   };
 
   const handleRestyleSection = () => {
-    const variation = Math.floor(Math.random() * 5) + 1
-    dispatch(changeVariation({id,variation}));
+    const variation = Math.floor(Math.random() * 5) + 1;
+    dispatch(changeVariation({ id, variation }));
   };
 
   return (

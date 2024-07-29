@@ -1,20 +1,18 @@
 import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {
-  deleteSite,
-} from "@/lib/store/slices/site-slice";
+import { deleteSite } from "@/lib/store/slices/site-slice";
 
 import React from "react";
 
 type TProps = {
-  action:()=>void;
-  data:string
+  action: () => void;
+  data: string;
 };
 
 const DeleteContent = (props: TProps) => {
-  const { action,data } = props;
+  const { action, data } = props;
   const dispatch = useAppDispatch();
-  const {closeDialog} = useResponsiveDialog()
+  const { closeDialog } = useResponsiveDialog();
   return (
     <div className="rounded  p-4  text-center">
       <div className="mb-4 text-lg">
@@ -24,8 +22,8 @@ const DeleteContent = (props: TProps) => {
         <button
           className="mr-2 rounded bg-indigo-600 px-4 py-2 text-white"
           onClick={() => {
-            action()
-            closeDialog('delete');
+            action();
+            closeDialog("delete");
           }}
         >
           Delete
@@ -33,7 +31,7 @@ const DeleteContent = (props: TProps) => {
         <button
           className="rounded bg-gray-500 px-4 py-2 text-white"
           onClick={() => {
-            closeDialog('delete');
+            closeDialog("delete");
           }}
         >
           Cancel

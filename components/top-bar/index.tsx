@@ -127,7 +127,9 @@ export default function TopBar(props: TopBarProps) {
               ) : (
                 <Link href="#">
                   {appState?.generate?.generating ? (
-                    <TypewriterEffect text={appState.aiContent?.banner.businessName ?? ""} />
+                    <TypewriterEffect
+                      text={appState.aiContent?.banner.businessName ?? ""}
+                    />
                   ) : (
                     appState.aiContent?.banner?.businessName
                   )}

@@ -84,17 +84,17 @@ const NewsLetterContent = (props: TProps) => {
                             <button
                               type="button"
                               onClick={() => {
-                             
                                 setLoadingHeading(true);
                                 CustomContent.getNewsLetter({
                                   data: {
-                                    location: appState?.aiContent?.location ?? "",
+                                    location:
+                                      appState?.aiContent?.location ?? "",
                                     businessName:
                                       appState?.aiContent?.banner?.businessName,
                                     businessType:
                                       appState?.aiContent?.businessType ?? "",
                                   },
-                                  fieldName: "newsLetter"+data,
+                                  fieldName: "newsLetter" + data,
                                   individual: true,
                                   type,
                                 }).then((res: any) => {
@@ -132,16 +132,18 @@ const NewsLetterContent = (props: TProps) => {
                           id={data}
                           placeholder={"Enter Title..."}
                           onChange={(e) => {
-                            dispatch(updateAppState({
+                            dispatch(
+                              updateAppState({
                                 ...appState,
-                                aiContent:{
-                                     ...appState.aiContent,
-                                    newsLetter:{
-                                       ...appState.aiContent?.newsLetter,
-                                        [data]: e.target.value
-                                    }
-                                }
-                            }))
+                                aiContent: {
+                                  ...appState.aiContent,
+                                  newsLetter: {
+                                    ...appState.aiContent?.newsLetter,
+                                    [data]: e.target.value,
+                                  },
+                                },
+                              }),
+                            );
                           }}
                           ref={inputRef}
                           value={appState.aiContent?.newsLetter?.title}
@@ -159,17 +161,17 @@ const NewsLetterContent = (props: TProps) => {
                             <button
                               type="button"
                               onClick={() => {
-                             
                                 setLoadingSubHeading(true);
                                 CustomContent.getNewsLetter({
                                   data: {
-                                    location: appState?.aiContent?.location ?? "",
+                                    location:
+                                      appState?.aiContent?.location ?? "",
                                     businessName:
                                       appState?.aiContent?.banner?.businessName,
                                     businessType:
                                       appState?.aiContent?.businessType ?? "",
                                   },
-                                  fieldName: "newsLetter"+data,
+                                  fieldName: "newsLetter" + data,
                                   individual: true,
                                   type,
                                 }).then((res: any) => {
@@ -205,16 +207,18 @@ const NewsLetterContent = (props: TProps) => {
                           id={data}
                           placeholder={"Enter Sub-heading"}
                           onChange={(e) => {
-                            dispatch(updateAppState({
+                            dispatch(
+                              updateAppState({
                                 ...appState,
-                                aiContent:{
-                                     ...appState.aiContent,
-                                    newsLetter:{
-                                       ...appState.aiContent?.newsLetter,
-                                        [data]: e.target.value
-                                    }
-                                }
-                            }))
+                                aiContent: {
+                                  ...appState.aiContent,
+                                  newsLetter: {
+                                    ...appState.aiContent?.newsLetter,
+                                    [data]: e.target.value,
+                                  },
+                                },
+                              }),
+                            );
                           }}
                           ref={textareaRef}
                           value={appState.aiContent?.newsLetter?.description}

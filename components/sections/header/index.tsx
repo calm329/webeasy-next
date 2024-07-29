@@ -13,7 +13,7 @@ import CustomContent from "@/lib/content/custom";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
 import EditComponent from "@/components/edit-component";
 import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
-import { sectionsData as SD } from '@/lib/store/slices/section-slice';
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;
@@ -89,7 +89,7 @@ export default function HeaderSection(props: TProps) {
   }, []);
 
   const sections = useAppSelector(SD);
-  
+
   // Find the section by ID and get the variation
   const section = sections.find((section) => section.id === id);
   const variation = section?.variation || 1;
@@ -104,43 +104,54 @@ export default function HeaderSection(props: TProps) {
   } = {
     1: {
       contentContainer: "mx-auto max-w-2xl lg:mx-0",
-      listContainer: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
+      listContainer:
+        "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
       container: "mx-auto max-w-7xl px-6 lg:px-8",
-      listCard: "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
+      listCard:
+        "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
     },
     2: {
       contentContainer: "mx-auto max-w-2xl lg:mx-0",
-      listContainer: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
+      listContainer:
+        "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
       container: "mx-auto max-w-7xl px-6 lg:px-8 text-center",
-      listCard: "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
+      listCard:
+        "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
     },
     3: {
       contentContainer: "mx-auto max-w-2xl lg:mx-0",
-      listContainer: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
+      listContainer:
+        "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
       container: "flex gap-10 mx-auto items-center max-w-7xl px-6 lg:px-8",
-      listCard: "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
+      listCard:
+        "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
     },
     4: {
       contentContainer: "mx-auto max-w-2xl lg:mx-0",
-      listContainer: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
-      container: "flex gap-10 flex-row-reverse mx-auto items-center max-w-7xl px-6 lg:px-8",
-      listCard: "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
+      listContainer:
+        "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
+      container:
+        "flex gap-10 flex-row-reverse mx-auto items-center max-w-7xl px-6 lg:px-8",
+      listCard:
+        "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
     },
     5: {
       contentContainer: "mx-auto max-w-2xl lg:mx-0",
-      listContainer: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
-      container: "flex flex-col-reverse gap-10 mx-auto items-center max-w-7xl px-6 lg:px-8",
-      listCard: "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
+      listContainer:
+        "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8",
+      container:
+        "flex flex-col-reverse gap-10 mx-auto items-center max-w-7xl px-6 lg:px-8",
+      listCard:
+        "flex gap-x-4 rounded-xl bg-white/5 p-6 ring-1 ring-inset ring-white/10",
     },
   };
 
   const { container, listContainer, listCard, contentContainer } =
     styles[variation];
 
-
   return (
     <button
-      className="group relative mx-auto isolate w-full overflow-visible bg-gray-900  py-24 text-left sm:py-32"
+      className="group relative isolate mx-auto w-full overflow-visible bg-gray-900  py-24 text-left sm:py-32"
       onClick={() => handleClick()}
     >
       <EditComponent id={id} />
