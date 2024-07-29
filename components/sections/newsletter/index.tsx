@@ -9,7 +9,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component here
 import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import EditComponent from "@/components/edit-component";
-import { sectionsData as SD } from '@/lib/store/slices/section-slice';
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;
@@ -85,7 +85,7 @@ export default function NewsLetterSection(props: TProps) {
   }, []);
 
   const sections = useAppSelector(SD);
-  
+
   // Find the section by ID and get the variation
   const section = sections.find((section) => section.id === id);
   const variation = section?.variation || 1;
@@ -101,31 +101,36 @@ export default function NewsLetterSection(props: TProps) {
     1: {
       contentContainer: "",
       listContainer: "",
-      container: "mx-auto flex justify-between items-center max-w-7xl  gap-10 px-6 flex-wrap  lg:gap-8 lg:px-8",
+      container:
+        "mx-auto flex justify-between items-center max-w-7xl  gap-10 px-6 flex-wrap  lg:gap-8 lg:px-8",
       listCard: "",
     },
     2: {
       contentContainer: "",
       listContainer: "",
-      container: "mx-auto max-w-7xl flex-row-reverse gap-10 px-6 flex justify-between items-center flex-wrap  lg:gap-8 lg:px-8",
+      container:
+        "mx-auto max-w-7xl flex-row-reverse gap-10 px-6 flex justify-between items-center flex-wrap  lg:gap-8 lg:px-8",
       listCard: "",
     },
     3: {
       contentContainer: "",
       listContainer: "",
-      container: "mx-auto max-w-7xl flex-col-reverse gap-10 px-6 flex justify-between items-center flex-wrap  lg:gap-8 lg:px-8",
+      container:
+        "mx-auto max-w-7xl flex-col-reverse gap-10 px-6 flex justify-between items-center flex-wrap  lg:gap-8 lg:px-8",
       listCard: "",
     },
     4: {
       contentContainer: "",
       listContainer: "",
-      container: "mx-auto max-w-7xl flex-col gap-10 px-6 flex justify-between items-center flex-wrap  lg:gap-8 lg:px-8",
+      container:
+        "mx-auto max-w-7xl flex-col gap-10 px-6 flex justify-between items-center flex-wrap  lg:gap-8 lg:px-8",
       listCard: "",
     },
     5: {
       contentContainer: "",
       listContainer: "",
-      container: "mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 lg:grid-cols-12 lg:gap-8 lg:px-8",
+      container:
+        "mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 lg:grid-cols-12 lg:gap-8 lg:px-8",
       listCard: "",
     },
   };

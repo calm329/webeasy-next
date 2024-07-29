@@ -2,13 +2,7 @@ import Image from "next/image";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button/template-button";
 import { Card } from "@/components/ui/card/general-card";
-import {
-  TBanner,
-  TFeature,
-  THero,
-  TPosts,
-  TServices,
-} from "@/types";
+import { TBanner, TFeature, THero, TPosts, TServices } from "@/types";
 
 type TProps = {
   aiContent: {

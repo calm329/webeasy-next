@@ -176,7 +176,8 @@ const CustomStats = (props: TProps) => {
             onChange={(e) => {
               setData({ ...data, name: e.target.value });
               if (showForm.edit) {
-                const data = appState.aiContent?.stats?.list?.map((item: any) => {
+                const data = appState.aiContent?.stats?.list?.map(
+                  (item: any) => {
                     if (item.id === showForm.edit) {
                       return {
                         ...item,
@@ -185,8 +186,9 @@ const CustomStats = (props: TProps) => {
                     } else {
                       return item;
                     }
-                  })
-                  console.log("data",data)
+                  },
+                );
+                console.log("data", data);
                 dispatch(
                   updateAppState({
                     ...appState,
@@ -222,16 +224,18 @@ const CustomStats = (props: TProps) => {
                       ...appState.aiContent,
                       stats: {
                         ...appState.aiContent.stats,
-                        list: appState.aiContent.stats.list?.map((item: any) => {
-                          if (item.id === showForm.edit) {
-                            return {
-                              ...item,
-                              value: e.target.value,
-                            };
-                          } else {
-                            return item;
-                          }
-                        }),
+                        list: appState.aiContent.stats.list?.map(
+                          (item: any) => {
+                            if (item.id === showForm.edit) {
+                              return {
+                                ...item,
+                                value: e.target.value,
+                              };
+                            } else {
+                              return item;
+                            }
+                          },
+                        ),
                       },
                     },
                   }),

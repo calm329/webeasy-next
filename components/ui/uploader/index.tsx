@@ -40,7 +40,6 @@ export default function Uploader() {
     return !data.image || saving;
   }, [data.image, saving]);
 
-  
   return (
     <form
       className="grid gap-6"

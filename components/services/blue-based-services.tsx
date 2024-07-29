@@ -118,12 +118,7 @@ export function Services(props: TProps) {
                     className={`text-3xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (
-                        editable &&
-                        setIsOpen &&
-                        setSection &&
-                        setShowForm
-                      ) {
+                      if (editable && setIsOpen && setSection && setShowForm) {
                         setSection("Services");
                         setIsOpen(true);
                         setShowForm({
@@ -147,12 +142,7 @@ export function Services(props: TProps) {
                     className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (
-                        editable &&
-                        setIsOpen &&
-                        setSection &&
-                        setShowForm
-                      ) {
+                      if (editable && setIsOpen && setSection && setShowForm) {
                         setSection("Services");
                         setIsOpen(true);
                         setShowForm({

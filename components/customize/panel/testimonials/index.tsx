@@ -93,11 +93,13 @@ const TestimonialContent = (props: TProps) => {
           ...appState.aiContent,
           testimonials: {
             ...appState.aiContent?.testimonials,
-            list: appState.aiContent?.testimonials?.list?.filter((testimonial) => {
-              if (testimonial.id !== id) {
-                return testimonial;
-              }
-            }),
+            list: appState.aiContent?.testimonials?.list?.filter(
+              (testimonial) => {
+                if (testimonial.id !== id) {
+                  return testimonial;
+                }
+              },
+            ),
           },
         },
       }),
@@ -157,80 +159,83 @@ const TestimonialContent = (props: TProps) => {
                     style={getListStyle(snapshot.isDraggingOver)}
                     className="flex flex-col gap-5"
                   >
-                    {appState.aiContent?.testimonials?.list?.map((item, index) => (
-                      <Draggable
-                        key={item.name}
-                        draggableId={item.name}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            className=" flex items-center justify-between"
-                            key={item.name}
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style,
-                            )}
-                          >
-                            <div className="flex items-center gap-2 ">
-                              <div>
-                                <RxDragHandleDots2 />
+                    {appState.aiContent?.testimonials?.list?.map(
+                      (item, index) => (
+                        <Draggable
+                          key={item.name}
+                          draggableId={item.name}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              className=" flex items-center justify-between"
+                              key={item.name}
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={getItemStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style,
+                              )}
+                            >
+                              <div className="flex items-center gap-2 ">
+                                <div>
+                                  <RxDragHandleDots2 />
+                                </div>
+
+                                <div>
+                                  <h4>{item.name}</h4>
+                                  <p className="line-clamp-1 ">
+                                    {item.content}
+                                  </p>
+                                </div>
                               </div>
-                            
-                              <div>
-                                <h4>{item.name}</h4>
-                                <p className="line-clamp-1 ">
-                                  {item.content}
-                                </p>
+                              <div className="flex items-center gap-2">
+                                <MdModeEditOutline
+                                  color="blue"
+                                  size={20}
+                                  onClick={() => {
+                                    setShowForm({
+                                      edit: item.id,
+                                      show: true,
+                                      form: "Testimonial",
+                                    });
+                                  }}
+                                  className="cursor-pointer"
+                                />
+                                <MdDeleteForever
+                                  color="red"
+                                  size={20}
+                                  onClick={() =>
+                                    handleDeleteTestimonial(item.id)
+                                  }
+                                  className="cursor-pointer"
+                                />
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <MdModeEditOutline
-                                color="blue"
-                                size={20}
-                                onClick={() => {
-                                  setShowForm({
-                                    edit: item.id,
-                                    show: true,
-                                    form: "Testimonial",
-                                  });
-                                }}
-                                className="cursor-pointer"
-                              />
-                              <MdDeleteForever
-                                color="red"
-                                size={20}
-                                onClick={() => handleDeleteTestimonial(item.id)}
-                                className="cursor-pointer"
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
+                          )}
+                        </Draggable>
+                      ),
+                    )}
                     {provided.placeholder}
                   </div>
                 )}
               </Droppable>
             </DragDropContext>
-      
-                <button
-                  className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-                  onClick={() => {
-                    setShowForm({
-                      edit: "",
-                      show: true,
-                      form: "Testimonial",
-                    });
-                  }}
-                >
-                  Add Testimonial
-                  <IoMdAdd size={20} />
-                </button>
-          
+
+            <button
+              className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+              onClick={() => {
+                setShowForm({
+                  edit: "",
+                  show: true,
+                  form: "Testimonial",
+                });
+              }}
+            >
+              Add Testimonial
+              <IoMdAdd size={20} />
+            </button>
           </>
         )}
       </div>

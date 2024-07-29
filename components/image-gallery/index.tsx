@@ -2,15 +2,17 @@ import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
 import Image from "next/image";
 import React from "react";
 type TProps = {
-  data:any
-}
-const ImageGallery = (props:TProps) => {
-    const { data } = props;
+  data: any;
+};
+const ImageGallery = (props: TProps) => {
+  const { data } = props;
   return (
-    <div className={`sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 mx-auto max-w-2xl `}>
+    <div
+      className={`mx-auto max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 `}
+    >
       <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
         <Image
-          src={data.images?.primary?.Large?.URL|| BROKEN_IMAGE}
+          src={data.images?.primary?.Large?.URL || BROKEN_IMAGE}
           alt="Two each of gray, white, and black shirts laying flat."
           className="h-full w-full object-contain object-center"
           height={400}
@@ -18,11 +20,12 @@ const ImageGallery = (props:TProps) => {
         />
       </div>
       <div className={"hidden lg:grid lg:grid-cols-1 lg:gap-y-8"}>
-        <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg flex-1">
+        <div className="aspect-h-2 aspect-w-3 flex-1 overflow-hidden rounded-lg">
           <Image
             src={
               (data?.images?.variant[0]?.Large?.URL ??
-              data?.images?.primary?.Large?.URL)|| BROKEN_IMAGE
+                data?.images?.primary?.Large?.URL) ||
+              BROKEN_IMAGE
             }
             alt="Model wearing plain black basic tee."
             className="h-full w-full object-contain object-center"
@@ -30,11 +33,12 @@ const ImageGallery = (props:TProps) => {
             width={200}
           />
         </div>
-        <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg flex-1">
+        <div className="aspect-h-2 aspect-w-3 flex-1 overflow-hidden rounded-lg">
           <Image
             src={
               (data?.images?.variant[1]?.Large?.URL ??
-              data?.images?.primary?.Large?.URL)|| BROKEN_IMAGE
+                data?.images?.primary?.Large?.URL) ||
+              BROKEN_IMAGE
             }
             alt="Model wearing plain gray basic tee."
             className="h-full w-full object-contain object-center"
@@ -47,7 +51,8 @@ const ImageGallery = (props:TProps) => {
         <Image
           src={
             (data?.images?.variant[2]?.Large?.URL ??
-            data?.images?.primary?.Large?.URL)|| BROKEN_IMAGE
+              data?.images?.primary?.Large?.URL) ||
+            BROKEN_IMAGE
           }
           alt="Model wearing plain white basic tee."
           className="h-full w-full object-contain object-center"

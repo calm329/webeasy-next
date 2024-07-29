@@ -190,7 +190,6 @@ const BlueBasedTemplate = (props: TProps) => {
         aria-labelledby="speakers-title"
         className="py-20 sm:py-32"
       >
-
         <Container className={`flex`}>
           <div className="mt-14 grid grid-cols-1 items-start gap-x-8 gap-y-8 sm:mt-16 sm:gap-y-16 lg:mt-24 lg:grid-cols-3">
             <div className="lg:col-span-3">

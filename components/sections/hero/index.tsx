@@ -102,31 +102,36 @@ export default function HeroSection(props: TProps) {
     1: {
       contentContainer: "",
       listContainer: "",
-      container: "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40 gap-10 justify-center items-center",
+      container:
+        "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40 gap-10 justify-center items-center",
       listCard: "",
     },
     2: {
       contentContainer: "",
       listContainer: "",
-      container: "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-col lg:px-8 lg:py-40 gap-10 justify-center items-center",
+      container:
+        "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-col lg:px-8 lg:py-40 gap-10 justify-center items-center",
       listCard: "",
     },
     3: {
       contentContainer: "",
       listContainer: "",
-      container: "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-col-reverse lg:px-8 lg:py-40 gap-10 justify-center items-center",
+      container:
+        "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-col-reverse lg:px-8 lg:py-40 gap-10 justify-center items-center",
       listCard: "",
     },
     4: {
       contentContainer: "",
       listContainer: "",
-      container: "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-row-reverse lg:px-8 lg:py-40 gap-10 justify-center items-center",
+      container:
+        "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-row-reverse lg:px-8 lg:py-40 gap-10 justify-center items-center",
       listCard: "",
     },
     5: {
       contentContainer: "",
       listContainer: "",
-      container: "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40 gap-10 justify-center items-center",
+      container:
+        "mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40 gap-10 justify-center items-center",
       listCard: "",
     },
   };

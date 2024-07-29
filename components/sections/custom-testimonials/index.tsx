@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import EditComponent from "@/components/edit-component";
 import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
-import { sectionsData as SD } from '@/lib/store/slices/section-slice';
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;
@@ -32,7 +32,7 @@ type TProps = {
     SetStateAction<{ section: string; position: number }>
   >;
 
-  id:string
+  id: string;
 };
 
 const CustomTestimonial = ({
@@ -43,7 +43,7 @@ const CustomTestimonial = ({
   setSectionModal,
   setTriggerSection,
 
-  id
+  id,
 }: TProps) => {
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
@@ -52,13 +52,13 @@ const CustomTestimonial = ({
     if (setIsOpen && setSection) {
       setIsOpen(true);
       setSection("Testimonials");
-      console.log("clickcing")
+      console.log("clickcing");
       setShowForm({ show: false, edit: "", form: "" });
       dispatch(
         updateAppState({
           ...appState,
           openedSlide: "Customize",
-        })
+        }),
       );
     }
   };
@@ -95,7 +95,7 @@ const CustomTestimonial = ({
       contentContainer: "flex flex-col gap-5",
       listCard: "flex  gap-10",
     },
-    
+
     4: {
       container: "",
       listContainer: "flex flex-row-reverse gap-10",
@@ -109,10 +109,8 @@ const CustomTestimonial = ({
       listCard: "flex flex-col gap-10",
     },
   };
-  console.log(variation)
-  const { container, listContainer, listCard, contentContainer } =
-    styles[5];
-
+  console.log(variation);
+  const { container, listContainer, listCard, contentContainer } = styles[5];
 
   const renderTestimonials = () => (
     <Carousel className="h-full w-full">
@@ -120,7 +118,7 @@ const CustomTestimonial = ({
         {appState.aiContent.testimonials.list.map((testimonial) => (
           <CarouselItem key={testimonial.id} className={container}>
             <button
-              className="h-full w-full text-justify rounded-lg border border-gray-300 p-8 shadow-lg"
+              className="h-full w-full rounded-lg border border-gray-300 p-8 text-justify shadow-lg"
               onClick={handleClick}
             >
               <div className={listCard}>
@@ -134,8 +132,8 @@ const CustomTestimonial = ({
                   />
                 </div>
                 <div className={contentContainer}>
-                <h3 className="text-3xl font-bold">{testimonial.name}</h3>
-                <p className="text-xl">{testimonial.content}</p>
+                  <h3 className="text-3xl font-bold">{testimonial.name}</h3>
+                  <p className="text-xl">{testimonial.content}</p>
                 </div>
               </div>
             </button>
@@ -168,7 +166,9 @@ const CustomTestimonial = ({
 
   let content;
   if (appState?.aiContent?.testimonials?.list) {
-    content = appState.aiContent.testimonials.show ? renderTestimonials() : renderEmptyState();
+    content = appState.aiContent.testimonials.show
+      ? renderTestimonials()
+      : renderEmptyState();
   } else {
     content = renderSkeleton();
   }
@@ -183,7 +183,7 @@ const CustomTestimonial = ({
         classNameUp="top-0 z-10"
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
-        id={id} 
+        id={id}
       />
       {content}
     </section>

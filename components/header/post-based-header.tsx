@@ -74,7 +74,7 @@ export function Header(props: TProps) {
             >
               {banner?.logo?.show && (
                 <Image
-                  src={banner?.logo?.link  || BROKEN_IMAGE}
+                  src={banner?.logo?.link || BROKEN_IMAGE}
                   alt={banner?.logo?.alt ?? ""}
                   height={100}
                   width={100}

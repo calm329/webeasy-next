@@ -8,15 +8,13 @@ import { ImSpinner2 } from "react-icons/im";
 import { toast } from "sonner";
 import { z } from "zod";
 
-type TProps =  {
+type TProps = {
   subdomain: string;
-}
+};
 
 const UpdateDomainForm = (props: TProps) => {
-  const {
-    subdomain,
-  } = props;
-  const {closeDialog} = useResponsiveDialog()
+  const { subdomain } = props;
+  const { closeDialog } = useResponsiveDialog();
   const loading = useAppSelector(LD);
   const dispatch = useAppDispatch();
   const formSchema = z.object({
@@ -51,7 +49,7 @@ const UpdateDomainForm = (props: TProps) => {
       toast.success("Domain successfully Updated", {
         position: "top-right",
       });
-      closeDialog('domain');
+      closeDialog("domain");
     } catch (error) {
       console.error("Error:", error);
       toast.error("Something went wrong", {

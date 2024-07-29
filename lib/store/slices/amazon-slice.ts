@@ -14,12 +14,12 @@ const persistConfig = {
 
 const MAX_HISTORY_LENGTH = 100;
 type TInitialState = {
-  site:any;
+  site: any;
   loading: boolean;
 };
 
 const initialSite = {
-  id:"",
+  id: "",
   openedSlide: null,
   focusedField: null,
   selectedFont: "",
@@ -58,8 +58,8 @@ const initialSite = {
       list: [],
       title: "",
     },
-    businessType:"",
-    location:""
+    businessType: "",
+    location: "",
   },
   view: "Desktop",
   editable: true,
@@ -79,14 +79,12 @@ const amazonSlice = createSlice({
   initialState,
   reducers: {
     updateAmazonSite(state, action) {
-     state.site = action.payload
-    }
+      state.site = action.payload;
+    },
   },
 });
 
-export const { updateAmazonSite } =
-  amazonSlice.actions;
-export const amazonData = (state: RootState) =>
-  state.amazonSlice.site;
+export const { updateAmazonSite } = amazonSlice.actions;
+export const amazonData = (state: RootState) => state.amazonSlice.site;
 export const loading = (state: RootState) => state.amazonSlice.loading;
 export default persistReducer(persistConfig, amazonSlice.reducer);

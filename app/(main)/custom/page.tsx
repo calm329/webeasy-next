@@ -67,9 +67,9 @@ export default function Page() {
           subdomain: await generateUniqueHash("subdomain"),
           aiResult: JSON.stringify({
             ...data,
-            businessType:business,
+            businessType: business,
             businessName,
-            location
+            location,
           }),
           type: "Custom",
         });

@@ -15,16 +15,18 @@ type TProps = {
   setSection?: Dispatch<SetStateAction<TSection>>;
   editable?: boolean;
   setFocusedField?: Dispatch<SetStateAction<TFields>>;
-  showForm?:{
-    form:string,
-    edit:string,
-    show: boolean,
+  showForm?: {
+    form: string;
+    edit: string;
+    show: boolean;
   };
-  setShowForm?:React.Dispatch<React.SetStateAction<{
-    form:string,
-    edit:string,
-    show: boolean,
-  }>>;
+  setShowForm?: React.Dispatch<
+    React.SetStateAction<{
+      form: string;
+      edit: string;
+      show: boolean;
+    }>
+  >;
 };
 
 const BlueBasedTemplate = (props: TProps) => {

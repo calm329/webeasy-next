@@ -35,7 +35,7 @@ import { useSearchParams } from "next/navigation";
 import { features } from "process";
 import Uploader from "./uploader";
 import { Switch } from "../switch";
-import { MdDeleteForever } from 'react-icons/md';
+import { MdDeleteForever } from "react-icons/md";
 
 const CustomPrice = (props: TProps) => {
   const { setIsOpen, setShowForm, section, showForm, handleChange } = props;
@@ -477,14 +477,14 @@ const CustomPrice = (props: TProps) => {
                           );
                         }}
                       >
-                        <MdDeleteForever/>
+                        <MdDeleteForever />
                       </button>
                     </div>
                   ))}
                   {/* Button to add a new feature */}
                   <button
                     type="button"
-                    className="text-indigo-600 ml-auto mr-0"
+                    className="ml-auto mr-0 text-indigo-600"
                     onClick={() => {
                       const updatedFeatures = [...plan.features, ""]; // Add a new empty feature
                       const updatedList = appState.aiContent.pricing.list.map(

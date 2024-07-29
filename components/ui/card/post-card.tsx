@@ -9,11 +9,12 @@ type PostCardProps = {
   media_type: string;
   caption: string;
   timestamp: string;
-  showHash:boolean
+  showHash: boolean;
 };
 
 export default function PostCard(props: PostCardProps) {
-  const { id, permalink, media_url, media_type, caption, timestamp,showHash } = props;
+  const { id, permalink, media_url, media_type, caption, timestamp, showHash } =
+    props;
   return (
     <Link href={permalink} className="group max-w-96 ">
       <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">

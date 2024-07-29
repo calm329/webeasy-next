@@ -28,13 +28,15 @@ export async function POST(request: NextRequest) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${openaiApiKey}`,
         },
-      }
+      },
     );
 
     const imageUrl = response.data.data[0].url;
 
     // Fetch the generated image
-    const imageResponse = await axios.get(imageUrl, { responseType: "arraybuffer" });
+    const imageResponse = await axios.get(imageUrl, {
+      responseType: "arraybuffer",
+    });
     const buffer = Buffer.from(imageResponse.data, "binary");
     const contentType = imageResponse.headers["content-type"];
     const filename = `${nanoid()}.${contentType.split("/")[1]}`;
@@ -51,7 +53,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: "Error generating or storing image" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

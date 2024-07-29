@@ -33,7 +33,7 @@ export default function AccountMenu(props: TProps) {
   const { user } = props;
   const pastAppState = useAppSelector(PAS);
   const futureAppState = useAppSelector(FAS);
-  const {openDialog} = useResponsiveDialog()
+  const { openDialog } = useResponsiveDialog();
   const match = useMediaQuery("(max-width:1024px)");
   const router = useRouter();
   const pathname = usePathname();
@@ -105,7 +105,7 @@ export default function AccountMenu(props: TProps) {
                       ) {
                         router.push("/dashboard");
                       } else {
-                        openDialog('leave');
+                        openDialog("leave");
                       }
                     }}
                     className={classNames(
@@ -130,7 +130,7 @@ export default function AccountMenu(props: TProps) {
                       ) {
                         router.push("/settings");
                       } else {
-                        openDialog('leave');
+                        openDialog("leave");
                       }
                     }}
                     className={classNames(

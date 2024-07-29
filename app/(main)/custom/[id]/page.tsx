@@ -55,7 +55,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const matches = useMediaQuery("(min-width: 768px)");
   useEffect(() => {
     if (params.id) {
-      dispatch(clearPastAndFuture())
+      dispatch(clearPastAndFuture());
       dispatch(fetchSiteById({ id: params.id }));
     } else {
       router.push("/website-builder");
@@ -87,7 +87,6 @@ export default function Page({ params }: { params: { id: string } }) {
 
       <div className="relative flex size-full ">
         <div style={{ fontFamily: appState.selectedFont }} className="w-full">
-
           <EditWebsiteHeader />
 
           <div className="relative flex size-full ">

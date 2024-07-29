@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       temperature: 0,
       max_tokens: 1000,
     });
-    let content = response?.choices[0]?.message?.content; 
+    let content = response?.choices[0]?.message?.content;
 
     return NextResponse.json(content);
   } catch (error) {

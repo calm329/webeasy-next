@@ -27,9 +27,9 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>
-  sections:TSectionsType[]
-  id:string
+  setSections: Dispatch<SetStateAction<TSectionsType[]>>;
+  sections: TSectionsType[];
+  id: string;
 };
 export default function LogoSection(props: TProps) {
   const {
@@ -42,19 +42,25 @@ export default function LogoSection(props: TProps) {
     showForm,
     setSections,
     sections,
-    id
+    id,
   } = props;
 
   const appState = useAppSelector(AS);
 
-  const dispatch= useAppDispatch()
-  const handleClick = (field?:TFields) => {
+  const dispatch = useAppDispatch();
+  const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
       setSection("logoClouds");
       setIsOpen(true);
 
       setShowForm({ form: "", edit: "", show: false });
-      dispatch(updateAppState({ ...appState, focusedField: field, openedSlide: "Customize" }));
+      dispatch(
+        updateAppState({
+          ...appState,
+          focusedField: field,
+          openedSlide: "Customize",
+        }),
+      );
     }
   };
 
@@ -75,10 +81,10 @@ export default function LogoSection(props: TProps) {
   }, []);
   return (
     <button
-      className={`group w-full relative bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
-      onClick={()=>handleClick()}
+      className={`group relative w-full bg-white py-24 sm:py-32 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+      onClick={() => handleClick()}
     >
-      <EditComponent id={id}/>
+      <EditComponent id={id} />
       <AddSectionButtons
         id={id}
         setSectionModal={setSectionModal}

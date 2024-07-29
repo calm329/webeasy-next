@@ -12,11 +12,12 @@ export async function POST(
   request: NextRequest,
   { params }: { params: { field: string } },
 ) {
-  const { data, mediaCaption, type, services,testimonials } = await request.json();
+  const { data, mediaCaption, type, services, testimonials } =
+    await request.json();
   let fields = "";
   switch (params.field) {
     case "testimonialsSection":
-      fields = `only generate the ${type?? ""} data for testimonialsSection and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for testimonialsSection and please don't add any other fields expect the given 
       "testimonialsSection": {
                 "image":"https://tailwindui.com/img/logos/workcation-logo-indigo-600.svg",
                 "message":"**message**",
@@ -24,28 +25,28 @@ export async function POST(
                 "name":"**name**",
                 "role":"**role**",
                 
-              } only generate the one testimonial and don't create a array of the given object only return the object`
-    break;
+              } only generate the one testimonial and don't create a array of the given object only return the object`;
+      break;
     case "testimonialsSectionmessage":
-      fields = `only generate the ${type?? ""} data for testimonialsSection and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for testimonialsSection and please don't add any other fields expect the given 
       "testimonialsSection": {
                 "message":"**message**", 
-              } only generate the one testimonial and don't create a array of the given object only return the object`
-    break;
+              } only generate the one testimonial and don't create a array of the given object only return the object`;
+      break;
     case "testimonialsSectionname":
-      fields = `only generate the ${type?? ""} data for testimonialsSection and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for testimonialsSection and please don't add any other fields expect the given 
       "testimonialsSection": {
                 "name":"**name**",
-              } only generate the one testimonial and don't create a array of the given object only return the object`
-    break;
+              } only generate the one testimonial and don't create a array of the given object only return the object`;
+      break;
     case "testimonialsSectionrole":
-      fields = `only generate the ${type?? ""} data for testimonialsSection and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for testimonialsSection and please don't add any other fields expect the given 
       "testimonialsSection": {
                 "role":"**role**",
-              } only generate the one testimonial and don't create a array of the given object only return the object`
-    break;
+              } only generate the one testimonial and don't create a array of the given object only return the object`;
+      break;
     case "team":
-    fields = `only generate the ${type?? ""} data for team and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for team and please don't add any other fields expect the given 
     "team": {
            "title":"**title**",
             "description":"**description**",
@@ -60,49 +61,49 @@ export async function POST(
                   "linkedinUrl": '#',
                 }
             >
-          } only generate three objects in the team.list`
-  break;
-  case "teamtitle":
-    fields = `only generate the ${type?? ""} data for team and please don't add any other fields expect the given 
+          } only generate three objects in the team.list`;
+      break;
+    case "teamtitle":
+      fields = `only generate the ${type ?? ""} data for team and please don't add any other fields expect the given 
     "team": {
            "title":"**title**",
-  }`
-  break;
-  case "teamdescription":
-    fields = `only generate the ${type?? ""} data for team and please don't add any other fields expect the given 
+  }`;
+      break;
+    case "teamdescription":
+      fields = `only generate the ${type ?? ""} data for team and please don't add any other fields expect the given 
     "team": {
             "description":"**description**",
 
-          }`
-  break;
+          }`;
+      break;
     case "stats":
-      fields = `only generate the ${type?? ""} data for stats and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for stats and please don't add any other fields expect the given 
       "stats": {
              "title":"**title**",
               "description":"**description**",
               "list": Array<
                 { "id": "**unique id**", "name": "**name**", "value": "**value**" },
               >
-            } only generate 4 items in the stats.list`
+            } only generate 4 items in the stats.list`;
 
-    break;
+      break;
     case "statstitle":
-      fields = `only generate the ${type?? ""} data for stats and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for stats and please don't add any other fields expect the given 
       "stats": {
              "title":"**title**",
-            } `
-             
-    break;
+            } `;
+
+      break;
     case "statsdescription":
-      fields = `only generate the ${type?? ""} data for stats and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for stats and please don't add any other fields expect the given 
       "stats": {
             
               "description":"**description**",
-             `
-             
-    break;
+             `;
+
+      break;
     case "pricing":
-      fields = `only generate the ${type?? ""} data for pricing and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for pricing and please don't add any other fields expect the given 
       "pricing": {
               "title":"**title**",
               "description":"**description**",
@@ -118,52 +119,52 @@ export async function POST(
                   "button":"Buy Plan"
                 }
               >
-            } generate three list of object and 1 index will have mostPopular as true else false`
-    break;
+            } generate three list of object and 1 index will have mostPopular as true else false`;
+      break;
     case "pricingtitle":
-      fields = `only generate the ${type?? ""} data for pricing and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for pricing and please don't add any other fields expect the given 
       "pricing": {
               "title":"**title**",
               
-            } `
-    break;
+            } `;
+      break;
     case "pricingdescription":
-      fields = `only generate the ${type?? ""} data for pricing and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for pricing and please don't add any other fields expect the given 
       "pricing": {
               
         "description":"**description**",
-        `
-    break;
+        `;
+      break;
     case "newsLetter":
-      fields = `only generate the ${type?? ""} data for newsLetter and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for newsLetter and please don't add any other fields expect the given 
       "newsLetter": {
               "title":"**title**",
               "description":"**description**"
-            }`
-                    break;
-                    case "newsLettertitle":
-                      fields = `only generate the ${type?? ""} data for newsLetter and please don't add any other fields expect the given 
+            }`;
+      break;
+    case "newsLettertitle":
+      fields = `only generate the ${type ?? ""} data for newsLetter and please don't add any other fields expect the given 
                       "newsLetter": {
                             "title":"**title**",
-                            }`
-                                    break;
-                                    case "newsLetterdescription":
-                                      fields = `only generate the ${type?? ""} data for newsLetter and please don't add any other fields expect the given 
+                            }`;
+      break;
+    case "newsLetterdescription":
+      fields = `only generate the ${type ?? ""} data for newsLetter and please don't add any other fields expect the given 
                                       "newsLetter": {
                                         
                                               "description":"**description**"
-                                            }`
-                                                    break;
+                                            }`;
+      break;
 
     case "logoClouds":
-      fields = `only generate the ${type?? ""} data for logo and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for logo and please don't add any other fields expect the given 
       "logoClouds": {
                   "title":"**title**"
-        }`
-                    break;
+        }`;
+      break;
 
     case "heroSection":
-      fields = `only generate the ${type?? ""} data for heroSection and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for heroSection and please don't add any other fields expect the given 
       "heroSection": {
                   "title":"**title**",
                   "description":"**description**",
@@ -175,23 +176,23 @@ export async function POST(
                     "label":"**label**",
                     "link":"#",
                   }
-                }`
-                    break;
+                }`;
+      break;
     case "heroSectiontitle":
-      fields = `only generate the ${type?? ""} data for heroSection and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for heroSection and please don't add any other fields expect the given 
       "heroSection": {
                   "title":"**title**",
-                }`
-                    break;
-                    case "heroSectiondescription":
-      fields = `only generate the ${type?? ""} data for heroSection and please don't add any other fields expect the given 
+                }`;
+      break;
+    case "heroSectiondescription":
+      fields = `only generate the ${type ?? ""} data for heroSection and please don't add any other fields expect the given 
       "heroSection": {
                   "description":"**description**",
                  
-                }`
-                    break;
+                }`;
+      break;
     case "header":
-      fields = `only generate the ${type?? ""} data for header and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for header and please don't add any other fields expect the given 
       "header": {
                 "title":"**title**",
                 "description":"**description**",
@@ -203,22 +204,22 @@ export async function POST(
                       "**description**.",
                   }
                 >
-              } only generate three header.list object`
-    break;
+              } only generate three header.list object`;
+      break;
     case "headertitle":
-      fields = `only generate the ${type?? ""} data for header and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for header and please don't add any other fields expect the given 
       "header": {
         "title":"**title**",
-      }`
-    break;
+      }`;
+      break;
     case "headerdescription":
-      fields = `only generate the ${type?? ""} data for header and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for header and please don't add any other fields expect the given 
       "header": {
         "description":"**description**",    
-      }`
-    break;
+      }`;
+      break;
     case "footer":
-      fields = `only generate the ${type?? ""} data for footer and please don't add any other fields expect the given 
+      fields = `only generate the ${type ?? ""} data for footer and please don't add any other fields expect the given 
       "footer": {
               "title":"**title**",
               "list":{
@@ -265,7 +266,7 @@ export async function POST(
                   },
                 ],
             }
-            }`
+            }`;
       break;
     case "faq":
       fields = `only generate the ${type ?? ""} data for FAQ section and please don't add any other fields expect the given 
@@ -278,7 +279,7 @@ export async function POST(
                   answer:
                     "**answer**",
                 }>
-            } and only generate three question and answers`
+            } and only generate three question and answers`;
       break;
     case "cta":
       fields = `only generate the ${type ?? ""} data for CTA section and please don't add any other fields expect the given 
@@ -293,38 +294,38 @@ export async function POST(
                 "label":"**label**",
                 "link":"#",
               }
-            }`
+            }`;
       break;
-      case "ctatitle":
-        fields = `only generate the ${type ?? ""} data for CTA section and please don't add any other fields expect the given 
+    case "ctatitle":
+      fields = `only generate the ${type ?? ""} data for CTA section and please don't add any other fields expect the given 
         "cta": {
                 "title":"**title**",
-              }`
-        break;
-        case "ctadescription":
-        fields = `only generate the ${type ?? ""} data for CTA section and please don't add any other fields expect the given 
+              }`;
+      break;
+    case "ctadescription":
+      fields = `only generate the ${type ?? ""} data for CTA section and please don't add any other fields expect the given 
         "cta": {
                 "description":"**description**",
-              }`
-        break;
+              }`;
+      break;
     case "contact":
       fields = `only generate the ${type ?? ""} data for Contact and please don't add any other fields expect the given 
       "contact":{
       "title":"**Title of the contact**",
       "description":"**description of the contact**",
-      }`
+      }`;
       break;
-      case "contacttitle":
+    case "contacttitle":
       fields = `only generate the ${type ?? ""} data for Contact and please don't add any other fields expect the given 
       "contact":{
       "title":"**Title of the contact**",
-      }`
+      }`;
       break;
-      case "contactdescription":
+    case "contactdescription":
       fields = `only generate the ${type ?? ""} data for Contact and please don't add any other fields expect the given 
       "contact":{
       "description":"**description of the contact**",
-      }`
+      }`;
       break;
     case "blog":
       fields = `only generate the ${type ?? ""} data for blog and please don't add any other fields expect the given 
@@ -350,7 +351,7 @@ export async function POST(
             "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
           },
         }>
-      } only generate three posts`
+      } only generate three posts`;
       break;
     case "testimonialName":
       fields = `only generate the ${type ?? ""} data for testimonials[0].name field and please don't add any other field expect the given "testimonials":[

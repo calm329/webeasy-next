@@ -11,7 +11,7 @@ export function ProgressLoader() {
   console.log("Progress", progress);
   return (
     <div className="fixed   bottom-5 z-50 flex  h-10 w-full items-center justify-center ">
-      <div className="relative h-full w-96 shadow-xl border rounded">
+      <div className="relative h-full w-96 rounded border shadow-xl">
         <div
           className="absolute  left-0 top-0 h-10 rounded"
           style={{
@@ -21,7 +21,7 @@ export function ProgressLoader() {
         ></div>
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="flex h-[90%] w-[23.5rem] items-center justify-center rounded bg-white text-center text-sm  text-black">
-            <ImSpinner2 className="animate-spin text-lg text-indigo-600 mr-5" />
+            <ImSpinner2 className="mr-5 animate-spin text-lg text-indigo-600" />
             Your site is being generated {progress}%
           </span>
         </div>

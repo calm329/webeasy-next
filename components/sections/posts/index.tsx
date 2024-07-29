@@ -17,16 +17,15 @@ type TProps = {
     }>
   >;
 
-  id:string
+  id: string;
 };
 
 const PostsSection = (props: TProps) => {
   const appState = useAppSelector(AS);
-  const { editable, setIsOpen, setSection, setShowForm,id } = props;
+  const { editable, setIsOpen, setSection, setShowForm, id } = props;
   const dispatch = useAppDispatch();
   return (
-    <section className="relative group flex">
-
+    <section className="group relative flex">
       {appState.iPosts.list.length > 0 && (
         <button
           className={`mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8  ${editable && "rounded border-2 border-transparent hover:border-indigo-500"} group relative`}
@@ -48,7 +47,7 @@ const PostsSection = (props: TProps) => {
             }
           }}
         >
-                <EditComponent id={id} />
+          <EditComponent id={id} />
           <h2 className="sr-only">Posts</h2>
           {appState?.iPosts?.show && (
             <div className="flex flex-wrap gap-5">

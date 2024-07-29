@@ -5,7 +5,7 @@ import axios from "axios";
 // import { parseISO } from "date-fns";
 export const BASEURL = process.env.REACT_APP_API_URL;
 const appAxios = axios.create({
-    baseURL: "/",
+  baseURL: "/",
 });
 // appAxios.interceptors.request.use((conf) => {
 //     const user = store.getState().authSlice.user;
@@ -63,6 +63,6 @@ const appAxios = axios.create({
 //     return data;
 // }
 export const GetPhoto = (photo: string) => {
-    return `${BASEURL}/${photo}`;
+  return `${BASEURL}/${photo}`;
 };
 export { appAxios };

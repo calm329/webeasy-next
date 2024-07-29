@@ -116,7 +116,8 @@ export default function FooterSection(props: TProps) {
     4: {
       contentContainer: "",
       listContainer: "",
-      container: "xl:flex flex-col-reverse justify-center items-center  xl:gap-8",
+      container:
+        "xl:flex flex-col-reverse justify-center items-center  xl:gap-8",
       listCard: "",
     },
     5: {

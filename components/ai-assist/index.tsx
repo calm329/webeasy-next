@@ -8,7 +8,7 @@ const AiAssist = () => {
   const appState = useAppSelector(AS);
   return (
     <div
-      className="ml-3 mt-1 flex flex-col items-center gap-2 cursor-pointer"
+      className="ml-3 mt-1 flex cursor-pointer flex-col items-center gap-2"
       onClick={() =>
         dispatch(updateAppState({ ...appState, openedSlide: null }))
       }

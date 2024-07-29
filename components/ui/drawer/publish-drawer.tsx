@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import PublishForm from '../form/publish-form';
+import PublishForm from "../form/publish-form";
 type TProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;

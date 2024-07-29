@@ -8,7 +8,7 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import { useDispatch } from "react-redux";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
 import EditComponent from "@/components/edit-component";
-import { sectionsData as SD } from '@/lib/store/slices/section-slice';
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;

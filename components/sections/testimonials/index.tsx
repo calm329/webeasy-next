@@ -32,9 +32,9 @@ type TProps = {
     edit: string;
     show: boolean;
   };
-  setSections: Dispatch<SetStateAction<TSectionsType[]>>
-  sections:TSectionsType[]
-  id:string
+  setSections: Dispatch<SetStateAction<TSectionsType[]>>;
+  sections: TSectionsType[];
+  id: string;
 };
 
 export default function TestimonialSection(props: TProps) {
@@ -137,7 +137,10 @@ export default function TestimonialSection(props: TProps) {
                 height={200}
                 width={200}
                 alt=""
-                src={appState.aiContent?.testimonialsSection?.avatar || BROKEN_IMAGE}
+                src={
+                  appState.aiContent?.testimonialsSection?.avatar ||
+                  BROKEN_IMAGE
+                }
                 className={`mx-auto h-10 w-10 rounded-full ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
               />
             )}

@@ -32,7 +32,7 @@ const CustomService = (props: TProps) => {
   const { setIsOpen, setShowForm, section, showForm, handleChange } = props;
   const [loadingTitle, setLoadingTitle] = useState(false);
   const [loadingDesc, setLoadingDesc] = useState(false);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
   const [type, setType] = useState("");
@@ -107,7 +107,7 @@ const CustomService = (props: TProps) => {
 
   console.log("data", data);
   return (
-    <div className="max-h-[600px] h-[55vh] overflow-auto">
+    <div className="h-[55vh] max-h-[600px] overflow-auto">
       <div className=" border-b px-4 py-6 sm:px-6">
         <div className="flex items-center justify-between">
           <h2
@@ -167,15 +167,18 @@ const CustomService = (props: TProps) => {
                     dispatch,
                     searchParams,
                     fieldName: "serviceName." + (data?.id ?? ""),
-                    type
+                    type,
                   }).then((res) => {
                     setLoadingTitle(false);
-                    res && setData(((preval:any)=>{return{...preval,name:res.name}}))
+                    res &&
+                      setData((preval: any) => {
+                        return { ...preval, name: res.name };
+                      });
                   });
                 }}
                 className="flex items-center gap-2 "
               >
-                {(showForm.edit || data?.name) ? "Regenerate" : "Generate"}
+                {showForm.edit || data?.name ? "Regenerate" : "Generate"}
                 {loadingTitle ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
@@ -216,15 +219,18 @@ const CustomService = (props: TProps) => {
                     dispatch,
                     searchParams,
                     fieldName: "serviceDescription." + (data?.id ?? ""),
-                    type
+                    type,
                   }).then((res) => {
                     setLoadingDesc(false);
-                    res && setData(((preval:any)=>{return{...preval,description:res.description}}))
+                    res &&
+                      setData((preval: any) => {
+                        return { ...preval, description: res.description };
+                      });
                   });
                 }}
                 className="flex items-center gap-2 "
               >
-                {(showForm.edit || data?.description) ? "Regenerate" : "Generate"}
+                {showForm.edit || data?.description ? "Regenerate" : "Generate"}
                 {loadingDesc ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
@@ -249,18 +255,19 @@ const CustomService = (props: TProps) => {
             }}
           />
         </div>
-        {!showForm?.edit &&
-        <button
-          onClick={() => handleServiceSubmit(data?.id)}
-          type="button"
-          className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
-          disabled={loading}
-        >
-          {loading && (
-            <ImSpinner2 className="animate-spin text-lg text-white" />
-          )}
-          Save
-        </button>}
+        {!showForm?.edit && (
+          <button
+            onClick={() => handleServiceSubmit(data?.id)}
+            type="button"
+            className={`ml-auto  flex gap-2 rounded-md px-3 py-2 text-sm  font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${loading ? "bg-indigo-500" : "bg-indigo-600 hover:bg-indigo-500 "}`}
+            disabled={loading}
+          >
+            {loading && (
+              <ImSpinner2 className="animate-spin text-lg text-white" />
+            )}
+            Save
+          </button>
+        )}
       </form>
     </div>
   );

@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -96,8 +95,7 @@
   backdrop-filter: blur(20px) !important;
 }
 
-
-.z-1{
+.z-1 {
   z-index: 1;
 }
 
@@ -109,15 +107,22 @@
   scrollbar-width: none; /* For Firefox */
 }
 
-.css-qbdosj-Input,.css-166bipr-Input, #react-select-2-placeholder ,.css-1dimb5e-singleValue,.css-19bb58m,.css-1cfo1cf,.css-1jqq78o-placeholder{
-  padding-left:25px ;
+.css-qbdosj-Input,
+.css-166bipr-Input,
+#react-select-2-placeholder,
+.css-1dimb5e-singleValue,
+.css-19bb58m,
+.css-1cfo1cf,
+.css-1jqq78o-placeholder {
+  padding-left: 25px;
 }
 
-.css-1hb7zxy-IndicatorsContainer,.css-1wy0on6{
+.css-1hb7zxy-IndicatorsContainer,
+.css-1wy0on6 {
   display: none !important;
 }
 
-#react-select-2-input::after{
+#react-select-2-input::after {
   border: 0px !important;
   outline: none !important;
 }

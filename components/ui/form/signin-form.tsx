@@ -15,9 +15,9 @@ import {
 } from "@/lib/store/slices/site-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { getSitesByUserId } from "@/lib/fetchers";
-import { selectedTemplate as ST } from '@/lib/store/slices/template-slice';
+import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
 import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
-import { sectionsData as SD } from '@/lib/store/slices/section-slice';
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 export default function SigninForm() {
   const { closeDialog } = useResponsiveDialog();
@@ -28,7 +28,7 @@ export default function SigninForm() {
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
   });
-  const selectedTemplate = useAppSelector(ST)
+  const selectedTemplate = useAppSelector(ST);
   type UserFormValue = z.infer<typeof formSchema>;
 
   const defaultValues = {
@@ -48,8 +48,8 @@ export default function SigninForm() {
   const pathname = usePathname();
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
-  const sections = useAppSelector(SD)
-  
+  const sections = useAppSelector(SD);
+
   const encryptData = (email: string, password: string) => {
     const encryptedEmail = CryptoJS.AES.encrypt(email, "secretKey").toString();
     const encryptedPassword = CryptoJS.AES.encrypt(
@@ -89,13 +89,16 @@ export default function SigninForm() {
             localStorage.removeItem("userData");
           }
         }
-        closeDialog('auth')
+        closeDialog("auth");
       }
 
       if (isSiteBuilderPage(pathname)) {
-        saveState(appState, dispatch,selectedTemplate?.id ?? "",sections).then(() =>
-          dispatch(clearPastAndFuture()),
-        );
+        saveState(
+          appState,
+          dispatch,
+          selectedTemplate?.id ?? "",
+          sections,
+        ).then(() => dispatch(clearPastAndFuture()));
       } else if (sites && sites.length > 0) {
         router.push("/dashboard");
       } else {

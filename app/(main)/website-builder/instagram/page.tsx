@@ -6,7 +6,7 @@ import PageStatus from "@/components/ui/pagestatus";
 export default function Example() {
   return (
     <div className="relative isolate overflow-hidden bg-white">
-      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex flex-col lg:px-8 ">
+      <div className="mx-auto max-w-7xl flex-col px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 ">
         <div className="">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
             AI-Powered InstaSite Builder

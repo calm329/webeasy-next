@@ -111,13 +111,12 @@ const FaqContent = (props: TProps) => {
           ...appState.aiContent,
           faq: {
             ...appState.aiContent?.faq,
-            
+
             list: appState.aiContent?.faq?.list?.filter((faq: any) => {
               if (faq.id !== id) {
                 return faq;
               }
             }),
-            
           },
         },
       }),
@@ -274,19 +273,19 @@ const FaqContent = (props: TProps) => {
                           </Droppable>
                         </DragDropContext>
                         {/* {appState.aiContent?.faq?.list?.length  2 && ( */}
-                          <button
-                            className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
-                            onClick={() =>
-                              setShowForm({
-                                form: "FAQ",
-                                edit: "",
-                                show: true,
-                              })
-                            }
-                          >
-                            Add Faq
-                            <IoMdAdd size={20} />
-                          </button>
+                        <button
+                          className="ml-auto mt-5 flex items-center gap-2 text-sm text-indigo-800"
+                          onClick={() =>
+                            setShowForm({
+                              form: "FAQ",
+                              edit: "",
+                              show: true,
+                            })
+                          }
+                        >
+                          Add Faq
+                          <IoMdAdd size={20} />
+                        </button>
                         {/* )} */}
                       </div>
                     );

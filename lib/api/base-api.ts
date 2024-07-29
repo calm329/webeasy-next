@@ -18,7 +18,7 @@ export const _post = async <T>(api: string, data: any, headers: any = null) => {
     if (response.status === 200 || response.status === 201) {
       return response.data;
     } else {
-    //   throw new AppError(response.status, response.statusText, response.data);
+      //   throw new AppError(response.status, response.statusText, response.data);
     }
   } catch (error) {
     throw HandleError(error);

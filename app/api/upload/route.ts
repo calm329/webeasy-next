@@ -22,6 +22,6 @@ export async function POST(req: Request) {
     access: "public",
   });
 
-  console.log("blob: " + blob)
+  console.log("blob: " + blob);
   return NextResponse.json(blob);
 }

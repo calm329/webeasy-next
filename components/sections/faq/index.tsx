@@ -12,7 +12,7 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 import CustomContent from "@/lib/content/custom";
 import { Skeleton } from "@/components/ui/skeleton"; // Import the Skeleton component
 import EditComponent from "@/components/edit-component";
-import { sectionsData as SD } from '@/lib/store/slices/section-slice';
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;
@@ -88,7 +88,7 @@ export default function FaqSection(props: TProps) {
   }, []);
 
   const sections = useAppSelector(SD);
-  
+
   // Find the section by ID and get the variation
   const section = sections.find((section) => section.id === id);
   const variation = section?.variation || 1;
@@ -120,7 +120,8 @@ export default function FaqSection(props: TProps) {
       listCard: "",
     },
     4: {
-      contentContainer: "mx-auto items-center gap-10 flex w-full max-w-4xl divide-y divide-gray-900/10",
+      contentContainer:
+        "mx-auto items-center gap-10 flex w-full max-w-4xl divide-y divide-gray-900/10",
       listContainer: "",
       container: "mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40",
       listCard: "",

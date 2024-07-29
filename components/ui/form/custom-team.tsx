@@ -164,9 +164,9 @@ const CustomTeam = (props: TProps) => {
         </div>
       </div>
       <form className="flex flex-col gap-5 p-5">
-      <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5">
           <div className="flex justify-between ">
-            <h3 className="text-sm font-medium leading-6 text-gray-900 flex justify-center items-center">
+            <h3 className="flex items-center justify-center text-sm font-medium leading-6 text-gray-900">
               Image
             </h3>
           </div>
@@ -178,25 +178,29 @@ const CustomTeam = (props: TProps) => {
               onChange={(value) => {
                 setData({ ...data, imageUrl: value });
                 if (showForm.edit) {
-                  dispatch(updateAppState({
-                    ...appState,
-                    aiContent: {
-                     ...appState.aiContent,
-                      team: {
-                        ...appState.aiContent.team,
-                        list: appState.aiContent.team.list?.map((item: any) => {
-                          if (item.id === showForm.edit) {
-                            return {
-                             ...item,
-                              imageUrl: value,
-                            };
-                          } else {
-                            return item;
-                          }
-                        }),
+                  dispatch(
+                    updateAppState({
+                      ...appState,
+                      aiContent: {
+                        ...appState.aiContent,
+                        team: {
+                          ...appState.aiContent.team,
+                          list: appState.aiContent.team.list?.map(
+                            (item: any) => {
+                              if (item.id === showForm.edit) {
+                                return {
+                                  ...item,
+                                  imageUrl: value,
+                                };
+                              } else {
+                                return item;
+                              }
+                            },
+                          ),
+                        },
                       },
-                    },
-                  }))
+                    }),
+                  );
                 }
                 // handleChange("primaryImage", value);
                 // field.onChange(value);
@@ -216,7 +220,8 @@ const CustomTeam = (props: TProps) => {
             onChange={(e) => {
               setData({ ...data, name: e.target.value });
               if (showForm.edit) {
-                const data = appState.aiContent?.team?.list?.map((item: any) => {
+                const data = appState.aiContent?.team?.list?.map(
+                  (item: any) => {
                     if (item.id === showForm.edit) {
                       return {
                         ...item,
@@ -225,8 +230,9 @@ const CustomTeam = (props: TProps) => {
                     } else {
                       return item;
                     }
-                  })
-                  console.log("data",data)
+                  },
+                );
+                console.log("data", data);
                 dispatch(
                   updateAppState({
                     ...appState,

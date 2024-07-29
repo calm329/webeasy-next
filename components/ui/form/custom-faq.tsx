@@ -177,16 +177,16 @@ const CustomFaq = (props: TProps) => {
               setData({ ...data, question: e.target.value });
               if (showForm.edit) {
                 const data = appState.aiContent?.faq?.list?.map((item: any) => {
-                    if (item.id === showForm.edit) {
-                      return {
-                        ...item,
-                        question: e.target.value,
-                      };
-                    } else {
-                      return item;
-                    }
-                  })
-                  console.log("data",data)
+                  if (item.id === showForm.edit) {
+                    return {
+                      ...item,
+                      question: e.target.value,
+                    };
+                  } else {
+                    return item;
+                  }
+                });
+                console.log("data", data);
                 dispatch(
                   updateAppState({
                     ...appState,

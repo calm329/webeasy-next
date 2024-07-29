@@ -21,7 +21,7 @@ export default function MyWebsites() {
   const { openDialog } = useResponsiveDialog();
   const pathname = usePathname();
   return (
-    <div className="max-w-[83.5rem] mb-10 mx-auto px-5">
+    <div className="mx-auto mb-10 max-w-[83.5rem] px-5">
       <ResponsiveDialog id="source">
         <SelectSourceContent />
       </ResponsiveDialog>

@@ -27,7 +27,7 @@ function FontSlideOver(props: TProps) {
               <IoClose />
             </button>
           </div>
-          <div className=" p-5 max-h-[600px] h-[55vh] overflow-y-auto transition-all ease-in-out">
+          <div className=" h-[55vh] max-h-[600px] overflow-y-auto p-5 transition-all ease-in-out">
             <FontPicker />
           </div>
         </div>

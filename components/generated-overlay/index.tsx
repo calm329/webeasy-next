@@ -8,7 +8,7 @@ const GeneratedOverlay = () => {
     };
   }, []);
   return (
-    <div className="overlay-animate absolute z-50 w-full  backdrop-blur text-2xl font-bold justify-center flex items-center text-white">
+    <div className="overlay-animate absolute z-50 flex  w-full items-center justify-center text-2xl font-bold text-white backdrop-blur">
       Site Generation Complete
     </div>
   );

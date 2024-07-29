@@ -103,11 +103,7 @@ function SlideOver(props: TProps) {
                 setShowForm={setShowForm}
               />
             )}
-            {section === "Image Gallery" && (
-              <CustomGalleryContent
-         
-              />
-            )}
+            {section === "Image Gallery" && <CustomGalleryContent />}
             {section === "Title" && <TitleContent />}
             {section === "Description" && <DescriptionContent />}
             {section === "Features" && (

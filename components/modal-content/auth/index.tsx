@@ -22,13 +22,12 @@ const AuthModalContent = () => {
             height={40}
             width={200}
           />
-          
         </div>
         <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           {isSignIn ? "Sign in to your account" : "Sign up for an account"}
         </h2>
       </div>
-      {isSignIn ? <SignInForm  /> : <RegisterForm />}
+      {isSignIn ? <SignInForm /> : <RegisterForm />}
       <div>
         <div className="relative mt-10">
           <div

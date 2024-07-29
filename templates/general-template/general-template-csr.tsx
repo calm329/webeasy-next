@@ -220,17 +220,12 @@ export default function General(props: TProps) {
           >
             {appState?.aiContent?.services?.show && (
               <>
-                  <div className="mx-auto text-center flex flex-col gap-3 border-b-2 border-gray-400 pb-5 mb-5">
+                <div className="mx-auto mb-5 flex flex-col gap-3 border-b-2 border-gray-400 pb-5 text-center">
                   <h1
                     className={`text-3xl font-bold ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (
-                        editable &&
-                        setIsOpen &&
-                        setSection &&
-                        setShowForm
-                      ) {
+                      if (editable && setIsOpen && setSection && setShowForm) {
                         setSection("Services");
                         setIsOpen(true);
                         setShowForm({
@@ -254,12 +249,7 @@ export default function General(props: TProps) {
                     className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500"}  `}
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (
-                        editable &&
-                        setIsOpen &&
-                        setSection &&
-                        setShowForm
-                      ) {
+                      if (editable && setIsOpen && setSection && setShowForm) {
                         setSection("Services");
                         setIsOpen(true);
                         setShowForm({
@@ -280,39 +270,42 @@ export default function General(props: TProps) {
                     {appState?.aiContent?.services.description}
                   </p>
                 </div>
-              <div className="flex  flex-wrap justify-center gap-10">
-
-                {services?.map((data) => (
-                  <div
-                    className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} max-w-96`}
-                    onClick={() => {
-                      setShowForm &&
-                        setShowForm({
-                          edit: data.id,
-                          form: "Service",
-                          show: true,
-                        });
-                    }}
-                    key={data.id}
-                  >
-                    <Card.Title>{data.name}</Card.Title>
-                    <Card.Description ><p className=" ">{data.description}</p></Card.Description>
-                  </div>
-                ))}
-
-                {!appState.generate.generating &&
-                  Array.from({ length: 6 })?.map((_, i) => (
-                    (services?.length??0) <i &&
-                    <div className={`max-w-96 w-96`} key={i}>
-                      <Card.Title>
-                        <Skeleton className="h-10 w-full bg-gray-400" />
-                      </Card.Title>
+                <div className="flex  flex-wrap justify-center gap-10">
+                  {services?.map((data) => (
+                    <div
+                      className={`${editable && "rounded border-2 border-transparent hover:border-indigo-500 "} max-w-96`}
+                      onClick={() => {
+                        setShowForm &&
+                          setShowForm({
+                            edit: data.id,
+                            form: "Service",
+                            show: true,
+                          });
+                      }}
+                      key={data.id}
+                    >
+                      <Card.Title>{data.name}</Card.Title>
                       <Card.Description>
-                        <Skeleton className="h-8 w-full bg-gray-400" />
+                        <p className=" ">{data.description}</p>
                       </Card.Description>
                     </div>
                   ))}
-              </div>
+
+                  {!appState.generate.generating &&
+                    Array.from({ length: 6 })?.map(
+                      (_, i) =>
+                        (services?.length ?? 0) < i && (
+                          <div className={`w-96 max-w-96`} key={i}>
+                            <Card.Title>
+                              <Skeleton className="h-10 w-full bg-gray-400" />
+                            </Card.Title>
+                            <Card.Description>
+                              <Skeleton className="h-8 w-full bg-gray-400" />
+                            </Card.Description>
+                          </div>
+                        ),
+                    )}
+                </div>
               </>
             )}
           </div>

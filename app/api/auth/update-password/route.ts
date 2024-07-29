@@ -22,9 +22,9 @@ export async function PATCH(req: NextRequest) {
       },
     });
   }
-  console.log("User")
+  console.log("User");
 
-  if(userData?.password){
+  if (userData?.password) {
     const isSame = await bcrypt.compare(currentPassword, userData.password);
 
     if (!isSame) {
@@ -34,10 +34,10 @@ export async function PATCH(req: NextRequest) {
       );
     }
   }
-  console.log("User1")
+  console.log("User1");
   const salt = await bcrypt.genSalt(12);
   const hashedPassword = await bcrypt.hash(newPassword, salt);
-  console.log("User2")
+  console.log("User2");
   try {
     const user = await prisma.user.update({
       where: {

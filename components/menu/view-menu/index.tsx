@@ -76,7 +76,7 @@ export default function ViewMenu() {
                 type="button"
                 className={classNames(
                   active ? "bg-gray-100" : "",
-                  "block px-4 py-2 text-sm text-gray-700 w-full text-left",
+                  "block w-full px-4 py-2 text-left text-sm text-gray-700",
                 )}
                 onClick={() =>
                   dispatch(updateAppState({ ...appState, view: "Desktop" }))
@@ -91,7 +91,7 @@ export default function ViewMenu() {
               <button
                 className={classNames(
                   active ? "bg-gray-100" : "",
-                  "block px-4 py-2 text-sm text-gray-700 w-full text-left",
+                  "block w-full px-4 py-2 text-left text-sm text-gray-700",
                 )}
                 type="button"
                 onClick={() =>
@@ -107,7 +107,7 @@ export default function ViewMenu() {
               <button
                 className={classNames(
                   active ? "bg-gray-100" : "",
-                  "block px-4 py-2 text-sm text-gray-700 w-full text-left",
+                  "block w-full px-4 py-2 text-left text-sm text-gray-700",
                 )}
                 type="button"
                 onClick={() =>

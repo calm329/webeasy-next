@@ -181,13 +181,19 @@ export default function BlogSection(props: TProps) {
                         className={`h-10 w-10 rounded-full bg-gray-100 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
                       />
                       <div className="text-sm leading-6">
-                        <p className={`font-semibold text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>
+                        <p
+                          className={`font-semibold text-gray-900 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                        >
                           <a href={post.author.href}>
                             <span className="absolute inset-0" />
                             {post.author.name}
                           </a>
                         </p>
-                        <p className={`text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}>{post.author.role}</p>
+                        <p
+                          className={`text-gray-600 ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                        >
+                          {post.author.role}
+                        </p>
                       </div>
                     </div>
                   </div>

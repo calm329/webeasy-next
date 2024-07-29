@@ -35,34 +35,34 @@ const initialSite: AppState = {
   status: "Loading",
   iPosts: { limit: 20, show: true, list: [], showHash: true },
   aiContent: {
-    cta:null,
-    faq:null,
-    footer:null,
+    cta: null,
+    faq: null,
+    footer: null,
     header: null,
-    heroSection:null,
-    logoClouds:null,
-    newsLetter:null,
-    pricing:null,
-    stats:null,
-    team:null,
-    testimonialsSection:null,
-    contact:{
-      title:"",
-      description:"",
-      address:{
-        label:"",
-        value:""
+    heroSection: null,
+    logoClouds: null,
+    newsLetter: null,
+    pricing: null,
+    stats: null,
+    team: null,
+    testimonialsSection: null,
+    contact: {
+      title: "",
+      description: "",
+      address: {
+        label: "",
+        value: "",
       },
-      telephone:{
-        label:"",
-        value:""
+      telephone: {
+        label: "",
+        value: "",
       },
-      email:{
-        label:"",
-        value:""
-      }
+      email: {
+        label: "",
+        value: "",
+      },
     },
-    blog:{
+    blog: {
       title: "",
       description: "",
       posts: [],
@@ -189,7 +189,7 @@ const updateSite = createAsyncThunk(
     thunkApi,
   ) => {
     try {
-      console.log("hi")
+      console.log("hi");
       return thunkApi.fulfillWithValue(
         await SiteApi.update(subdomain, data, keys),
       );

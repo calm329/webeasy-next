@@ -176,20 +176,24 @@ const CustomTestimonial = (props: TProps) => {
                 onClick={() => {
                   setSelectedField("avatar");
                   setLoadingAvatar(true);
-                  getRandomImageFromUnsplash((data?.gender ??"MALE") +" portrait").then((res) => {
+                  getRandomImageFromUnsplash(
+                    (data?.gender ?? "MALE") + " portrait",
+                  ).then((res) => {
                     setLoadingAvatar(false);
-                    res && setData(((preval:any)=>{return{...preval,avatar:res}}))
+                    res &&
+                      setData((preval: any) => {
+                        return { ...preval, avatar: res };
+                      });
                   });
                 }}
                 className="flex items-center gap-2 "
               >
-                {(showForm.edit || data?.avatar )? "Regenerate" : "Generate"}
+                {showForm.edit || data?.avatar ? "Regenerate" : "Generate"}
                 {loadingAvatar ? (
                   <ImSpinner2 className="animate-spin text-lg text-black" />
                 ) : (
                   <ImPower className=" text-xs " />
                 )}
-                
               </button>
               <RegenerateOptions setType={setType} type={type} />
             </div>
@@ -246,10 +250,13 @@ const CustomTestimonial = (props: TProps) => {
                     dispatch,
                     searchParams,
                     fieldName: "testimonialName." + (data?.id ?? ""),
-                    type
+                    type,
                   }).then((res) => {
                     setLoadingTitle(false);
-                    res && setData(((preval:any)=>{return{...preval,name:res.name}}))
+                    res &&
+                      setData((preval: any) => {
+                        return { ...preval, name: res.name };
+                      });
                   });
                 }}
                 className="flex items-center gap-2 "
@@ -314,10 +321,13 @@ const CustomTestimonial = (props: TProps) => {
                     dispatch,
                     searchParams,
                     fieldName: "testimonialContent." + (data?.id ?? ""),
-                    type
+                    type,
                   }).then((res) => {
                     setLoadingDesc(false);
-                    res && setData(((preval:any)=>{return{...preval,content:res.content}}))
+                    res &&
+                      setData((preval: any) => {
+                        return { ...preval, content: res.content };
+                      });
                   });
                 }}
                 className="flex items-center gap-2 "
@@ -340,28 +350,28 @@ const CustomTestimonial = (props: TProps) => {
               setData({ ...data, content: e.target.value });
               if (showForm.edit) {
                 dispatch(
-                    updateAppState({
-                      ...appState,
-                      aiContent: {
-                        ...appState.aiContent,
-                        testimonials: {
-                          ...appState.aiContent.testimonials,
-                          list: appState.aiContent.testimonials.list?.map(
-                            (item) => {
-                              if (item.id === showForm.edit) {
-                                return {
-                                  ...item,
-                                  content: e.target.value,
-                                };
-                              } else {
-                                return item;
-                              }
-                            },
-                          ),
-                        },
+                  updateAppState({
+                    ...appState,
+                    aiContent: {
+                      ...appState.aiContent,
+                      testimonials: {
+                        ...appState.aiContent.testimonials,
+                        list: appState.aiContent.testimonials.list?.map(
+                          (item) => {
+                            if (item.id === showForm.edit) {
+                              return {
+                                ...item,
+                                content: e.target.value,
+                              };
+                            } else {
+                              return item;
+                            }
+                          },
+                        ),
                       },
-                    }),
-                  );
+                    },
+                  }),
+                );
               }
             }}
           />
