@@ -142,7 +142,7 @@ const CustomPartnerLogo = (props: TProps) => {
               }
               className="cursor-pointer"
             />
-            Logo Settings
+            Logos
           </h2>
           <div className="ml-3 flex h-7 items-center">
             <button
