@@ -8,6 +8,7 @@ import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
 // Import the Skeleton component
 import { Skeleton } from "@/components/ui/skeleton";
 import EditComponent from "@/components/edit-component";
+import { sectionsData as SD } from "@/lib/store/slices/section-slice";
 
 type TProps = {
   editable?: boolean;
@@ -30,7 +31,7 @@ type TProps = {
     show: boolean;
   };
 
-  id:string
+  id: string;
 };
 
 const stats = [
@@ -50,7 +51,7 @@ export default function StatsSection(props: TProps) {
     setTriggerSection,
     showForm,
 
-    id
+    id,
   } = props;
 
   const appState = useAppSelector(AS);
@@ -89,25 +90,86 @@ export default function StatsSection(props: TProps) {
     });
   }, []);
 
+  const sections = useAppSelector(SD);
+
+  // Find the section by ID and get the variation
+  const section = sections.find((section) => section.id === id);
+  const variation = section?.variation || 1;
+
+  const styles: {
+    [key: number]: {
+      container: string;
+      listContainer: string;
+      listCard: string;
+      contentContainer: string;
+    };
+  } = {
+    1: {
+      container: "mx-auto max-w-2xl lg:max-w-none",
+      listContainer:
+        "mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4",
+      listCard:
+        "flex flex-col bg-gray-400/5 p-8",
+      contentContainer: "text-center",
+    },
+    2: {
+      container: "mx-auto max-w-2xl lg:max-w-none",
+      listContainer:
+        "mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4",
+      listCard:
+        "flex flex-col bg-gray-400/5 p-8",
+      contentContainer: "text-left",
+    },
+    3: {
+      container: "mx-auto max-w-2xl lg:max-w-none",
+      listContainer:
+        "mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4",
+      listCard:
+        "flex flex-col bg-gray-400/5 p-8",
+      contentContainer: "text-right",
+    },
+    4: {
+      container: "mx-auto max-w-2xl flex justify-between gap-5 items-center  lg:max-w-none",
+      listContainer:
+        "mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4",
+      listCard:
+        "flex flex-col bg-gray-400/5 p-8",
+      contentContainer: "text-center",
+    },
+    5: {
+      container: "mx-auto max-w-2xl flex justify-between gap-5 items-center  lg:max-w-none",
+      listContainer:
+        "mt-16 grid grid-cols-1  overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-2 gap-5",
+      listCard:
+        "flex flex-col bg-gray-400/5 p-8",
+      contentContainer: "text-center",
+    },
+  };
+
+  const { container, listContainer, listCard, contentContainer } =
+    styles[variation];
+
   return (
     <button
       className={`group relative w-full bg-white py-24 sm:py-32 ${
-        editable && "rounded border-2 border-transparent hover:border-indigo-500"
+        editable &&
+        "rounded border-2 border-transparent hover:border-indigo-500"
       }`}
       onClick={() => handleClick()}
     >
-      <EditComponent id={id}/>
+      <EditComponent id={id} />
       <AddSectionButtons
         id={id}
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:max-w-none">
-          <div className="text-center">
+        <div className={container}>
+          <div className={contentContainer}>
             <h2
               className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl ${
-                editable && "rounded border-2 border-transparent hover:border-indigo-500"
+                editable &&
+                "rounded border-2 border-transparent hover:border-indigo-500"
               }`}
               onClick={(e) => {
                 e.stopPropagation();
@@ -122,7 +184,8 @@ export default function StatsSection(props: TProps) {
             </h2>
             <p
               className={`mt-4 text-lg leading-8 text-gray-600 ${
-                editable && "rounded border-2 border-transparent hover:border-indigo-500"
+                editable &&
+                "rounded border-2 border-transparent hover:border-indigo-500"
               }`}
               onClick={(e) => {
                 e.stopPropagation();
@@ -136,34 +199,37 @@ export default function StatsSection(props: TProps) {
               )}
             </p>
           </div>
-          <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
-            {(isLoading || appState.aiContent?.stats?.list?.length === 0) ? (
-              Array.from({ length: 4 }).map((_, idx) => (
-                <div key={idx} className="flex flex-col bg-gray-400/5 p-8">
-                  <Skeleton className="h-6 w-24 mb-4" />
-                  <Skeleton className="h-8 w-20 mt-6" />
-                </div>
-              ))
-            ) : (
-              appState.aiContent?.stats?.list.map((stat: any) => (
-                <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
-                  <dt
-                    className={`text-sm font-semibold leading-6 text-gray-600 ${
-                      editable && "rounded border-2 border-transparent hover:border-indigo-500"
-                    }`}
+          <dl className={listContainer}>
+            {isLoading || appState.aiContent?.stats?.list?.length === 0
+              ? Array.from({ length: 4 }).map((_, idx) => (
+                  <div key={idx} className="flex flex-col bg-gray-400/5 p-8">
+                    <Skeleton className="mb-4 h-6 w-24" />
+                    <Skeleton className="mt-6 h-8 w-20" />
+                  </div>
+                ))
+              : appState.aiContent?.stats?.list.map((stat: any) => (
+                  <div
+                    key={stat.id}
+                    className={listCard}
                   >
-                    {stat.name}
-                  </dt>
-                  <dd
-                    className={`order-first text-3xl font-semibold tracking-tight text-gray-900 ${
-                      editable && "rounded border-2 border-transparent hover:border-indigo-500"
-                    }`}
-                  >
-                    {stat.value}
-                  </dd>
-                </div>
-              ))
-            )}
+                    <dt
+                      className={`text-sm font-semibold leading-6 text-gray-600 ${
+                        editable &&
+                        "rounded border-2 border-transparent hover:border-indigo-500"
+                      }`}
+                    >
+                      {stat.name}
+                    </dt>
+                    <dd
+                      className={`order-first text-3xl font-semibold tracking-tight text-gray-900 ${
+                        editable &&
+                        "rounded border-2 border-transparent hover:border-indigo-500"
+                      }`}
+                    >
+                      {stat.value}
+                    </dd>
+                  </div>
+                ))}
           </dl>
         </div>
       </div>
