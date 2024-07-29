@@ -17,6 +17,7 @@ import ImagesListing from "@/components/ui/form/images-listing";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { appState as AS } from "@/lib/store/slices/site-slice";
 import { useSearchParams } from "next/navigation";
+import { Slider } from "@/components/ui/slider";
 
 const EditableField: React.FC = () => {
   const {
@@ -167,36 +168,35 @@ const EditableField: React.FC = () => {
                     <label className="block text-xs font-medium text-gray-700">
                       Horizontal
                     </label>
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={imagePosition?.horizontal}
-                      onChange={(e) =>
+                    <Slider
+                      min={0}
+                      max={100}
+                      defaultValue={[imagePosition?.horizontal ?? 0]}
+                      onValueChange={(val) => {
                         setImagePosition &&
-                        setImagePosition({
-                          vertical: imagePosition?.vertical ?? 0,
-                          horizontal: parseInt(e.target.value),
-                        })
-                      }
-                      className="w-full"
+                          setImagePosition({
+                            vertical: imagePosition?.vertical ?? 0,
+                            horizontal: val[0],
+                          });
+                      }}
+                      className="my-3 w-full"
                     />
+
                     <label className="block text-xs font-medium text-gray-700">
                       Vertical
                     </label>
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={imagePosition?.vertical}
-                      onChange={(e) =>
+                    <Slider
+                      min={0}
+                      max={100}
+                      defaultValue={[imagePosition?.vertical ?? 0]}
+                      onValueChange={(val) => {
                         setImagePosition &&
-                        setImagePosition({
-                          horizontal: imagePosition?.horizontal ?? 0,
-                          vertical: parseInt(e.target.value),
-                        })
-                      }
-                      className="w-full"
+                          setImagePosition({
+                            vertical: val[0],
+                            horizontal: imagePosition?.horizontal ?? 0,
+                          });
+                      }}
+                      className="my-3 w-full"
                     />
                   </div>
                 </div>
