@@ -53,7 +53,7 @@ export default function PricingSection(props: TProps) {
 
   const appState = useAppSelector(AS);
   const dispatch = useAppDispatch();
-  const [isLoading, setLoading] = useState(false); // State to manage loading state
+  const [isLoading, setLoading] = useState(true); // State to manage loading state
 
   const sections = useAppSelector(SD);
 
@@ -121,50 +121,18 @@ export default function PricingSection(props: TProps) {
 
   useEffect(() => {
     // Simulating data fetching
-    dispatch(
-      updateAppState({
-        ...appState,
-        aiContent: {
-          ...appState.aiContent,
-          pricing: {
-            title: "**title**",
-            description: "**description**",
-            list: [
-              {
-                name: "**name**",
-                id: "1",
-                href: "#",
-                priceMonthly: "**priceMonthly**",
-                description: "**description**",
-                features: ["1", "2", "3"],
-                mostPopular: false,
-                button: "Buy Plan",
-              },
-              {
-                name: "**name**",
-                id: "2",
-                href: "#",
-                priceMonthly: "**priceMonthly**",
-                description: "**description**",
-                features: ["1", "2", "3"],
-                mostPopular: true,
-                button: "Buy Plan",
-              },
-              {
-                name: "**name**",
-                id: "3",
-                href: "#",
-                priceMonthly: "**priceMonthly**",
-                description: "**description**",
-                features: ["1", "2", "3"],
-                mostPopular: false,
-                button: "Buy Plan",
-              },
-            ],
-          },
-        },
-      }),
-    );
+    CustomContent.getPricing({
+      data: {
+        businessName: appState.aiContent.banner.businessName,
+        businessType: appState.aiContent.businessType ?? "",
+        location: appState.aiContent.location ?? "",
+      },
+      fieldName: "pricing",
+      individual: false,
+      type: "list",
+    }).then(() => {
+      setLoading(false); // Set loading to false when data fetch completes
+    });
   }, []);
 
   return (
