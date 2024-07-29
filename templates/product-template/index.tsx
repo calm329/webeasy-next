@@ -8,7 +8,7 @@ type TProps = {
 const ProductTemplate = (props:TProps) => {
   const { data } = props;
   return (
-    <div className={` mx-auto overflow-auto`}>
+    <div className={` mx-auto overflow-auto mt-10`}>
 
       <ProductCategory />
       <main className="">
