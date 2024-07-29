@@ -1,28 +1,31 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Card, CardContent } from "@/components/ui/card";
-import { useMediaQuery } from "usehooks-ts";
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/select-template-carousel";
-import Image from "next/image";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+} from '@/components/ui/select-template-carousel';
+import { useResponsiveDialog } from '@/lib/context/responsive-dialog-context';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
 import {
   setSelectedTemplate,
   TemplatesData as TD,
-} from "@/lib/store/slices/template-slice";
-import { useResponsiveDialog } from "@/lib/context/responsive-dialog-context";
+} from '@/lib/store/slices/template-slice';
+import Image from 'next/image';
+import { useMediaQuery } from 'usehooks-ts';
 
 const SelectTemplateCarousel = () => {
   const { closeDialog } = useResponsiveDialog();
   const templates = useAppSelector(TD);
-  const isMobile = useMediaQuery("(max-width: 1024px)");
+  const isMobile = useMediaQuery('(max-width: 1024px)');
   const [activeIndex, setActiveIndex] = React.useState(0);
   const dispatch = useAppDispatch();
+  const appState = useAppSelector(AS);
+
   const sortedTemplates = templates
     ? [...templates].sort((a, b) => a.name.localeCompare(b.name))
     : null;
@@ -30,11 +33,17 @@ const SelectTemplateCarousel = () => {
     if (sortedTemplates) {
       const templateData = sortedTemplates[activeIndex];
       dispatch(setSelectedTemplate(templateData));
-      closeDialog("selectTemplate");
+      dispatch(
+        updateAppState({
+          ...appState,
+          templateId: templateData.id,
+        })
+      );
+      closeDialog('selectTemplate');
     }
   }
 
-  console.log("sortedTemplates", sortedTemplates);
+  console.log('sortedTemplates', sortedTemplates);
   return (
     <div className="mt-5 flex flex-col gap-5 text-center">
       {!isMobile && (

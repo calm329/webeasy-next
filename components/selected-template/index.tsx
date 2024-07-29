@@ -1,12 +1,12 @@
-import BasicTemplate from "@/templates/basic-template/basic-template-csr";
-import BlueBasedTemplate from "@/templates/blue-based-template/blue-based-template-csr";
-import PostBasedTemplate from "@/templates/post-based-template/post-based-template-csr";
-import React, { Dispatch, SetStateAction } from "react";
-import GeneralTemplate from "@/templates/general-template/general-template-csr";
-import { AppState, TFields, TSection } from "@/types";
-import { selectedTemplate as ST } from "@/lib/store/slices/template-slice";
-import { useAppSelector } from "@/lib/store/hooks";
-import { usePathname } from "next/navigation";
+import { useAppSelector } from '@/lib/store/hooks';
+import { TemplatesData as TD } from '@/lib/store/slices/template-slice';
+import BasicTemplate from '@/templates/basic-template/basic-template-csr';
+import BlueBasedTemplate from '@/templates/blue-based-template/blue-based-template-csr';
+import GeneralTemplate from '@/templates/general-template/general-template-csr';
+import PostBasedTemplate from '@/templates/post-based-template/post-based-template-csr';
+import { AppState, TFields, TSection } from '@/types';
+import { usePathname } from 'next/navigation';
+import React, { Dispatch, SetStateAction } from 'react';
 
 type TProps = {
   appState: AppState;
@@ -28,7 +28,8 @@ type TProps = {
 };
 
 const SelectedTemplate = (props: TProps) => {
-  const selectedTemplate = useAppSelector(ST);
+  const templates = useAppSelector(TD);
+
   const {
     appState,
     setSection,
@@ -38,12 +39,15 @@ const SelectedTemplate = (props: TProps) => {
     setShowForm,
   } = props;
   const pathname = usePathname();
-  const isInstagramPage = pathname.startsWith("/auth");
+  const isInstagramPage = pathname.startsWith('/auth');
+  const selectedTemplate = templates?.find(
+    (template) => template.id === appState.templateId
+  );
   return (
     <div
-      className={` mx-auto overflow-auto ${appState.view === "Mobile" && "no-scrollbar h-[800px] w-[480px] rounded-xl border-8 border-black"} ${appState.view === "Tablet" && "no-scrollbar h-[1024px] w-[768px] rounded-xl  border-8 border-black"} ${appState.view === "Desktop" && "h-full w-full"}`}
+      className={` mx-auto overflow-auto ${appState.view === 'Mobile' && 'no-scrollbar h-[800px] w-[480px] rounded-xl border-8 border-black'} ${appState.view === 'Tablet' && 'no-scrollbar h-[1024px] w-[768px] rounded-xl  border-8 border-black'} ${appState.view === 'Desktop' && 'h-full w-full'}`}
     >
-      {selectedTemplate?.name === "Basic template" && (
+      {selectedTemplate?.name === 'Basic template' && (
         <BasicTemplate
           editable={appState.editable}
           setSection={setSection}
@@ -60,7 +64,7 @@ const SelectedTemplate = (props: TProps) => {
           setShowForm={setShowForm}
         />
       )}
-      {selectedTemplate?.name === "Blue-Based template" && (
+      {selectedTemplate?.name === 'Blue-Based template' && (
         <BlueBasedTemplate
           editable={appState.editable}
           setSection={setSection}
@@ -77,7 +81,7 @@ const SelectedTemplate = (props: TProps) => {
           setShowForm={setShowForm}
         />
       )}
-      {selectedTemplate?.name === "Post-Based template" && (
+      {selectedTemplate?.name === 'Post-Based template' && (
         <PostBasedTemplate
           editable={appState.editable}
           setSection={setSection}
@@ -94,7 +98,7 @@ const SelectedTemplate = (props: TProps) => {
           setShowForm={setShowForm}
         />
       )}
-      {selectedTemplate?.name === "General template" && (
+      {selectedTemplate?.name === 'General template' && (
         <GeneralTemplate
           editable={appState.editable}
           setSection={setSection}
