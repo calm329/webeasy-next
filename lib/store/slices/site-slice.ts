@@ -1,14 +1,13 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 
-import { RootState } from "..";
-import SiteApi from "@/lib/api/site-api";
-import { AppState, TSite } from "@/types";
-import { generateUniqueId } from "@/lib/utils/function";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import SiteApi from '@/lib/api/site-api';
+import { AppState, TSite } from '@/types';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import { RootState } from '..';
 
 const persistConfig = {
-  key: "site",
+  key: 'site',
   storage,
 };
 
@@ -22,7 +21,7 @@ type TInitialState = {
 };
 
 const initialSite: AppState = {
-  id: "",
+  id: '',
   generate: {
     progress: 0,
     generating: false,
@@ -30,9 +29,9 @@ const initialSite: AppState = {
   },
   openedSlide: null,
   focusedField: null,
-  selectedFont: "",
-  subdomain: "",
-  status: "Loading",
+  selectedFont: '',
+  subdomain: '',
+  status: 'Loading',
   iPosts: { limit: 20, show: true, list: [], showHash: true },
   aiContent: {
     cta: null,
@@ -47,81 +46,82 @@ const initialSite: AppState = {
     team: null,
     testimonialsSection: null,
     contact: {
-      title: "",
-      description: "",
+      title: '',
+      description: '',
       address: {
-        label: "",
-        value: "",
+        label: '',
+        value: '',
       },
       telephone: {
-        label: "",
-        value: "",
+        label: '',
+        value: '',
       },
       email: {
-        label: "",
-        value: "",
+        label: '',
+        value: '',
       },
     },
     blog: {
-      title: "",
-      description: "",
+      title: '',
+      description: '',
       posts: [],
     },
     partners: {
-      description: "",
+      description: '',
       list: [],
       show: true,
-      title: "",
+      title: '',
     },
     gallery: {
       show: true,
       list: [],
     },
     banner: {
-      businessName: "",
+      businessName: '',
       button: { show: true, list: [] },
       logo: {
-        link: "",
-        alt: "",
+        link: '',
+        alt: '',
         show: true,
       },
     },
     hero: {
       image: {
-        heroImagePrompt: "",
-        imageId: "",
-        imageUrl: "",
-        alt: "",
+        heroImagePrompt: '',
+        imageId: '',
+        imageUrl: '',
+        alt: '',
         show: true,
       },
       button: { show: true, list: [] },
-      heading: "",
+      heading: '',
 
-      subheading: "",
+      subheading: '',
     },
     colors: {
-      primary: "",
-      secondary: "",
+      primary: '',
+      secondary: '',
     },
     services: {
       show: true,
-      description: "",
+      description: '',
       list: [],
-      title: "",
+      title: '',
     },
     testimonials: {
       show: true,
       list: [],
     },
-    businessType: "",
-    location: "",
+    businessType: '',
+    location: '',
   },
-  view: "Desktop",
+  view: 'Desktop',
   editable: true,
   meta: {
-    title: "",
-    description: "",
+    title: '',
+    description: '',
   },
+  templateId: '',
 };
 
 const initialState: TInitialState = {
@@ -138,42 +138,42 @@ const initialState: TInitialState = {
 
 //fetch Sites by domain
 const fetchSitesByDomain = createAsyncThunk(
-  "site/fetchDomainSites",
+  'site/fetchDomainSites',
   async ({ subdomain }: { subdomain: string }, thunkApi) => {
     try {
       return thunkApi.fulfillWithValue(await SiteApi.getBySubDomain(subdomain));
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
-  },
+  }
 );
 
 const fetchSiteById = createAsyncThunk(
-  "site/fetchSiteById",
+  'site/fetchSiteById',
   async ({ id }: { id: string }, thunkApi) => {
     try {
       return thunkApi.fulfillWithValue(await SiteApi.getSiteById(id));
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
-  },
+  }
 );
 
 //fetch Sites by user
 const fetchSitesByUser = createAsyncThunk(
-  "site/fetchUserSites",
+  'site/fetchUserSites',
   async (_, thunkApi) => {
     try {
       return thunkApi.fulfillWithValue(await SiteApi.getByUserId());
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
-  },
+  }
 );
 
 //update site
 const updateSite = createAsyncThunk(
-  "site/update",
+  'site/update',
   async (
     {
       subdomain,
@@ -186,40 +186,40 @@ const updateSite = createAsyncThunk(
       };
       keys: string[];
     },
-    thunkApi,
+    thunkApi
   ) => {
     try {
-      console.log("hi");
+      console.log('hi');
       return thunkApi.fulfillWithValue(
-        await SiteApi.update(subdomain, data, keys),
+        await SiteApi.update(subdomain, data, keys)
       );
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
-  },
+  }
 );
 
 //delete site
 const deleteSite = createAsyncThunk(
-  "site/delete",
+  'site/delete',
   async (
     {
       id,
     }: {
       id: string;
     },
-    thunkApi,
+    thunkApi
   ) => {
     try {
       return thunkApi.fulfillWithValue(await SiteApi.deleteSiteById(id));
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
-  },
+  }
 );
 
 const siteSlice = createSlice({
-  name: "site",
+  name: 'site',
   initialState,
   reducers: {
     updateAppState(state, action) {
@@ -238,9 +238,9 @@ const siteSlice = createSlice({
       ) {
         hasRequiredFields = true;
       }
-      console.log("hasRequiredFields", hasRequiredFields);
-      if (isStateDifferent && present.status === "Done" && hasRequiredFields) {
-        console.log("hello", current(present.aiContent), newState.aiContent);
+      console.log('hasRequiredFields', hasRequiredFields);
+      if (isStateDifferent && present.status === 'Done' && hasRequiredFields) {
+        console.log('hello', current(present.aiContent), newState.aiContent);
         past.push(present);
 
         // Ensure not to exceed the maximum history length
@@ -277,25 +277,25 @@ const siteSlice = createSlice({
     });
     builder.addCase(fetchSitesByDomain.fulfilled, (state, action) => {
       state.loading = false;
-      console.log("history", action.payload?.posts);
-      state.sites.domain.present.view = "Desktop";
+      console.log('history', action.payload?.posts);
+      state.sites.domain.present.view = 'Desktop';
       if (action.payload?.id) {
         state.sites.domain.present.id = action.payload?.id;
       }
       state.sites.domain.present.meta = {
-        title: action.payload?.title ?? "",
-        description: action.payload?.description ?? "",
+        title: action.payload?.title ?? '',
+        description: action.payload?.description ?? '',
       };
-      state.sites.domain.present.subdomain = action.payload?.subdomain ?? "";
+      state.sites.domain.present.subdomain = action.payload?.subdomain ?? '';
 
-      state.sites.domain.present.status = "Done";
+      state.sites.domain.present.status = 'Done';
       if (action?.payload?.posts) {
         state.sites.domain.present.iPosts = JSON.parse(
-          action.payload?.posts ?? "",
+          action.payload?.posts ?? ''
         );
       }
       state.sites.domain.present.aiContent = JSON.parse(
-        action.payload?.aiResult ?? "",
+        action.payload?.aiResult ?? ''
       );
     });
     builder.addCase(fetchSitesByDomain.rejected, (state) => {
@@ -311,26 +311,27 @@ const siteSlice = createSlice({
       state.sites.domain.present.generate.generating = false;
       state.sites.domain.present.generate.progress = 0;
 
-      console.log("history", action.payload?.posts);
+      state.sites.domain.present.templateId = action.payload?.templateId ?? '';
+      console.log('history', action.payload?.posts);
       state.sites.domain.present.editable = true;
-      state.sites.domain.present.view = "Desktop";
+      state.sites.domain.present.view = 'Desktop';
       state.sites.domain.present.meta = {
-        title: action.payload?.title ?? "",
-        description: action.payload?.description ?? "",
+        title: action.payload?.title ?? '',
+        description: action.payload?.description ?? '',
       };
       if (action.payload?.id) {
         state.sites.domain.present.id = action.payload?.id;
       }
-      state.sites.domain.present.subdomain = action.payload?.subdomain ?? "";
+      state.sites.domain.present.subdomain = action.payload?.subdomain ?? '';
 
-      state.sites.domain.present.status = "Done";
+      state.sites.domain.present.status = 'Done';
       if (action?.payload?.posts) {
         state.sites.domain.present.iPosts = JSON.parse(
-          action.payload?.posts ?? "",
+          action.payload?.posts ?? ''
         );
       }
       state.sites.domain.present.aiContent = JSON.parse(
-        action.payload?.aiResult ?? "",
+        action.payload?.aiResult ?? ''
       );
     });
     builder.addCase(fetchSiteById.rejected, (state) => {
@@ -351,7 +352,7 @@ const siteSlice = createSlice({
     });
     builder.addCase(updateSite.fulfilled, (state, action) => {
       state.loading = false;
-      console.log("action.payload", action.payload);
+      console.log('action.payload', action.payload);
       state.sites.user?.forEach((site, index) => {
         if (site.id === action?.payload?.id) {
           if (state.sites.user) {
@@ -368,9 +369,9 @@ const siteSlice = createSlice({
     });
     builder.addCase(deleteSite.fulfilled, (state, action) => {
       state.loading = false;
-      console.log("action.payload", action.payload);
+      console.log('action.payload', action.payload);
       const updatedData = state.sites.user?.filter(
-        (site) => site.id !== action.meta.arg.id,
+        (site) => site.id !== action.meta.arg.id
       );
       if (updatedData) {
         state.sites.user = updatedData;
@@ -384,11 +385,11 @@ const siteSlice = createSlice({
 
 //export async thunks
 export {
-  fetchSitesByDomain,
-  updateSite,
-  fetchSitesByUser,
   deleteSite,
   fetchSiteById,
+  fetchSitesByDomain,
+  fetchSitesByUser,
+  updateSite,
 };
 export const { updateAppState, undo, redo, clearPastAndFuture } =
   siteSlice.actions;

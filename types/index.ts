@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import { SVGProps } from 'react';
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -6,7 +6,7 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 
 export type FormField = {
   name: string;
-  type: "text" | "email" | "image" | "textarea" | "color" | "button";
+  type: 'text' | 'email' | 'image' | 'textarea' | 'color' | 'button';
   label?: string;
   alt?: string;
   defaultValue?: string;
@@ -21,7 +21,7 @@ export type FormField = {
   show?: boolean;
   children?: Array<{
     name: string;
-    type: "External" | "Section";
+    type: 'External' | 'Section';
     label: string;
     defaultValue: string;
     placeholder: string;
@@ -37,37 +37,37 @@ export type FormField = {
 };
 
 export type TSection =
-  | "Hero"
-  | "Banner"
-  | "Services"
-  | "Posts"
-  | "Gallery"
-  | "Features"
-  | "Description"
-  | "Title"
-  | "Image Gallery"
-  | "Partners"
-  | "Testimonials"
+  | 'Hero'
+  | 'Banner'
+  | 'Services'
+  | 'Posts'
+  | 'Gallery'
+  | 'Features'
+  | 'Description'
+  | 'Title'
+  | 'Image Gallery'
+  | 'Partners'
+  | 'Testimonials'
   | any;
 
 export type TFields =
-  | "logo"
-  | "businessName"
-  | "ctaLink"
-  | "imageUrl"
-  | "heading"
-  | "subheading"
-  | "cta"
-  | "title"
-  | "primary"
-  | "secondary"
-  | "name"
-  | "avatar"
-  | "email"
-  | "description"
-  | "price"
-  | "featureTitle"
-  | "featureDescription"
+  | 'logo'
+  | 'businessName'
+  | 'ctaLink'
+  | 'imageUrl'
+  | 'heading'
+  | 'subheading'
+  | 'cta'
+  | 'title'
+  | 'primary'
+  | 'secondary'
+  | 'name'
+  | 'avatar'
+  | 'email'
+  | 'description'
+  | 'price'
+  | 'featureTitle'
+  | 'featureDescription'
   | string
   | null;
 
@@ -76,13 +76,13 @@ export type TMeta = {
   description: string;
 };
 
-export type TTabs = "General" | "Security";
+export type TTabs = 'General' | 'Security';
 
 export type TTemplateName =
-  | "Basic template"
-  | "Blue-Based template"
-  | "Post-Based template"
-  | "General template";
+  | 'Basic template'
+  | 'Blue-Based template'
+  | 'Post-Based template'
+  | 'General template';
 
 export interface AppState {
   id: string;
@@ -91,12 +91,12 @@ export interface AppState {
     generating: boolean;
     field: TFields | null;
   };
-  openedSlide: "Customize" | "Font" | null;
+  openedSlide: 'Customize' | 'Font' | null;
   selectedFont: string;
   focusedField: TFields | null;
   subdomain: string;
   status: string;
-  view: "Mobile" | "Tablet" | "Desktop";
+  view: 'Mobile' | 'Tablet' | 'Desktop';
   iPosts: TPosts;
   aiContent: TAiContent;
 
@@ -105,6 +105,7 @@ export interface AppState {
     title: string;
     description: string;
   };
+  templateId: string;
 }
 
 export type TAiContent = {
@@ -136,7 +137,6 @@ export type TAiContent = {
       avatar: string;
       content: string;
       gender: string;
-
     }>;
   };
   partners: {
@@ -254,7 +254,7 @@ export type TBanner = {
     show: boolean;
     list: Array<{
       name: string;
-      type: "External" | "Section";
+      type: 'External' | 'Section';
       link: string;
       label: string;
     }>;
@@ -278,7 +278,7 @@ export type THero = {
     show: boolean;
     list: Array<{
       name: string;
-      type: "External" | "Section";
+      type: 'External' | 'Section';
       link: string;
       label: string;
     }>;
@@ -344,7 +344,7 @@ export type TSite = {
   updatedAt: Date;
 };
 
-export type TSiteType = "Instagram" | "Custom" | "Amazon";
+export type TSiteType = 'Instagram' | 'Custom' | 'Amazon';
 export interface TSectionsType {
   id: string;
   title: string;
