@@ -1,13 +1,14 @@
-import AddSectionButtons from "@/components/add-section/buttons";
-import CustomContent from "@/lib/content/custom";
-import { TFields, TSection, TSectionsType } from "@/types";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { appState as AS, updateAppState } from "@/lib/store/slices/site-slice";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import AddSectionButtons from '@/components/add-section/buttons';
+import CustomContent from '@/lib/content/custom';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+import { TFields, TSection } from '@/types';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 // Import the Skeleton component
-import { Skeleton } from "@/components/ui/skeleton";
-import EditComponent from "@/components/edit-component";
+import EditComponent from '@/components/edit-component';
+import { Skeleton } from '@/components/ui/skeleton';
+import { sectionsData as SD } from '@/lib/store/slices/section-slice';
 
 type TProps = {
   editable?: boolean;
@@ -35,12 +36,12 @@ type TProps = {
 
 const people = [
   {
-    name: "Lindsay Walton",
-    role: "Front-end Developer",
+    name: 'Lindsay Walton',
+    role: 'Front-end Developer',
     imageUrl:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-    xUrl: "#",
-    linkedinUrl: "#",
+      'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80',
+    xUrl: '#',
+    linkedinUrl: '#',
   },
   // More people...
 ];
@@ -64,16 +65,16 @@ export default function TeamSection(props: TProps) {
 
   const handleClick = (field?: TFields) => {
     if (editable && setIsOpen && setSection) {
-      setSection("Team");
+      setSection('Team');
       setIsOpen(true);
 
-      setShowForm({ form: "", edit: "", show: false });
+      setShowForm({ form: '', edit: '', show: false });
       dispatch(
         updateAppState({
           ...appState,
           focusedField: field,
-          openedSlide: "Customize",
-        }),
+          openedSlide: 'Customize',
+        })
       );
     }
   };
@@ -83,22 +84,78 @@ export default function TeamSection(props: TProps) {
     CustomContent.getTeam({
       data: {
         businessName: appState.aiContent.banner.businessName,
-        businessType: appState.aiContent.businessType ?? "",
-        location: appState.aiContent.location ?? "",
+        businessType: appState.aiContent.businessType ?? '',
+        location: appState.aiContent.location ?? '',
       },
-      fieldName: "team",
+      fieldName: 'team',
       individual: false,
-      type: "list",
+      type: 'list',
     }).then(() => {
       setLoading(false); // Set loading to false when data fetch completes
     });
   }, []);
 
+  const sections = useAppSelector(SD);
+
+  // Find the section by ID and get the variation
+  const section = sections.find((section) => section.id === id);
+  const variation = section?.variation || 1;
+
+  const styles: {
+    [key: number]: {
+      container: string;
+      listContainer: string;
+      listCard: string;
+      contentContainer: string;
+    };
+  } = {
+    1: {
+      container: 'mx-auto max-w-7xl px-6 lg:px-8',
+      listContainer:
+        'mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3',
+      listCard: 'flex flex-col items-center',
+      contentContainer: 'text-left ',
+    },
+    2: {
+      container: 'mx-auto max-w-7xl px-6 lg:px-8',
+      listContainer:
+        'mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3',
+      listCard: 'flex flex-col items-center',
+      contentContainer: 'text-center ',
+    },
+    3: {
+      container: 'mx-auto max-w-7xl px-6 lg:px-8',
+      listContainer:
+        'mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3',
+      listCard: 'flex flex-col items-center',
+      contentContainer: 'text-right ',
+    },
+    4: {
+      container:
+        'mx-auto max-w-7xl flex justify-between items-center gap-5 px-6 lg:px-8',
+      listContainer:
+        'mx-auto mt-20 flex flex-wrap max-w-2xl  gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none ',
+      listCard: 'flex max-w-52 flex-col items-center',
+      contentContainer: 'mx-auto max-w-2xl lg:mx-0',
+    },
+    5: {
+      container:
+        'mx-auto max-w-7xl flex flex-row-reverse justify-between items-center gap-5 px-6 lg:px-8',
+      listContainer:
+        'mx-auto mt-20 flex flex-wrap max-w-2xl  gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none ',
+      listCard: 'flex max-w-52 flex-col items-center',
+      contentContainer: 'mx-auto max-w-2xl lg:mx-0',
+    },
+  };
+
+  const { container, listContainer, listCard, contentContainer } =
+    styles[variation];
+
   return (
     <button
       className={`group relative w-full bg-white py-24 text-left sm:py-32 ${
         editable &&
-        "rounded border-2 border-transparent hover:border-indigo-500"
+        'rounded border-2 border-transparent hover:border-indigo-500'
       }`}
       onClick={() => handleClick()}
     >
@@ -108,45 +165,42 @@ export default function TeamSection(props: TProps) {
         setSectionModal={setSectionModal}
         setTriggerSection={setTriggerSection}
       />
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0">
+      <div className={container}>
+        <div className={contentContainer}>
           <h2
             className={`text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl ${
               editable &&
-              "rounded border-2 border-transparent hover:border-indigo-500"
+              'rounded border-2 border-transparent hover:border-indigo-500'
             }`}
             onClick={(e) => {
               e.stopPropagation();
-              handleClick("title");
+              handleClick('title');
             }}
           >
             {isLoading ? (
               <Skeleton className="h-12 w-64" />
             ) : (
-              appState.aiContent?.team?.title ?? ""
+              appState.aiContent?.team?.title ?? ''
             )}
           </h2>
           <p
             className={`mt-6 text-lg leading-8 text-gray-600 ${
               editable &&
-              "rounded border-2 border-transparent hover:border-indigo-500"
+              'rounded border-2 border-transparent hover:border-indigo-500'
             }`}
             onClick={(e) => {
               e.stopPropagation();
-              handleClick("description");
+              handleClick('description');
             }}
           >
             {isLoading ? (
               <Skeleton className="h-6 w-96" />
             ) : (
-              appState.aiContent?.team?.description ?? ""
+              appState.aiContent?.team?.description ?? ''
             )}
           </p>
         </div>
-        <ul
-          role="list"
-          className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
-        >
+        <ul role="list" className={listContainer}>
           {isLoading || appState.aiContent?.team?.list?.length === 0
             ? Array.from({ length: 3 }).map((_, idx) => (
                 <li key={idx} className="flex flex-col items-center">
@@ -156,19 +210,19 @@ export default function TeamSection(props: TProps) {
                 </li>
               ))
             : appState.aiContent?.team?.list.map((person: any) => (
-                <li key={person.id} className="flex flex-col items-center">
+                <li key={person.id} className={listCard}>
                   <img
                     alt=""
                     src={person.imageUrl}
                     className={`aspect-[3/2] w-full rounded-2xl object-cover ${
                       editable &&
-                      "rounded border-2 border-transparent hover:border-indigo-500"
+                      'rounded border-2 border-transparent hover:border-indigo-500'
                     }`}
                   />
                   <h3
                     className={`mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900 ${
                       editable &&
-                      "rounded border-2 border-transparent hover:border-indigo-500"
+                      'rounded border-2 border-transparent hover:border-indigo-500'
                     }`}
                   >
                     {person.name}
@@ -176,7 +230,7 @@ export default function TeamSection(props: TProps) {
                   <p
                     className={`text-base leading-7 text-gray-600 ${
                       editable &&
-                      "rounded border-2 border-transparent hover:border-indigo-500"
+                      'rounded border-2 border-transparent hover:border-indigo-500'
                     }`}
                   >
                     {person.role}

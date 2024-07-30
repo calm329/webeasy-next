@@ -1,15 +1,14 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { useSearchParams } from "next/navigation";
-import { getSiteDataById } from "@/lib/fetchers";
-import Loader from "@/components/ui/loader";
-import ProductTemplate from "@/templates/product-template/product-template-csr";
+'use client';
+import Loader from '@/components/ui/loader';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import {
-  fetchSiteById,
   appState as AS,
+  fetchSiteById,
   loading as LD,
-} from "@/lib/store/slices/site-slice";
+} from '@/lib/store/slices/site-slice';
+import ProductTemplate from '@/templates/product-template/index';
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 const PreviewAmazon = () => {
   const appState = useAppSelector(AS);
@@ -17,9 +16,9 @@ const PreviewAmazon = () => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector(LD);
   useEffect(() => {
-    if (searchParams.get("preview_site")) {
+    if (searchParams.get('preview_site')) {
       // setLoading(true)
-      dispatch(fetchSiteById({ id: searchParams.get("preview_site") ?? "" }));
+      dispatch(fetchSiteById({ id: searchParams.get('preview_site') ?? '' }));
       // getSiteDataById(searchParams.get('preview_site') as string).then((data)=>
       // {
 
@@ -34,7 +33,7 @@ const PreviewAmazon = () => {
   return (
     <div className="bg-white">
       {loading && <Loader text="Loading" />}
-      <ProductTemplate />
+      <ProductTemplate data={appState.aiContent} />
     </div>
   );
 };

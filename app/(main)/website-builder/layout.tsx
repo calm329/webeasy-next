@@ -1,7 +1,6 @@
-"use client";
-import SiteHeader from "@/components/header";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+'use client';
+import SiteHeader from '@/components/header';
+import { usePathname } from 'next/navigation';
 
 type TSectionObject = Array<{
   link: string;
@@ -11,19 +10,19 @@ type TSectionObject = Array<{
 
 const sections: TSectionObject = [
   {
-    link: "/website-builder",
-    text: "Build a website from scratch",
-    shortText: "Scratch",
+    link: '/website-builder',
+    text: 'Build a website from scratch',
+    shortText: 'Scratch',
   },
   {
-    link: "/website-builder/instagram",
-    text: "Build a website from Instagram",
-    shortText: "Instagram",
+    link: '/website-builder/instagram',
+    text: 'Build a website from Instagram',
+    shortText: 'Instagram',
   },
   {
-    link: "/website-builder/amazon",
-    text: "Build an Amazon landing page",
-    shortText: "Amazon",
+    link: '/website-builder/amazon',
+    text: 'Build an Amazon landing page',
+    shortText: 'Amazon',
   },
 ];
 
@@ -34,10 +33,10 @@ export default function Layout({
 }>) {
   const pathname = usePathname();
   return (
-    <div className="mx-auto max-w-7xl">
+    <div>
       <SiteHeader showNavigation={true} />
 
-      <div>{children}</div>
+      <div className="mx-auto max-w-7xl">{children}</div>
     </div>
   );
 }

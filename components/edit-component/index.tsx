@@ -1,24 +1,23 @@
-import React, { Dispatch, Fragment, useState } from "react";
-import { FaArrowDownLong, FaArrowUpLong } from "react-icons/fa6";
-import { VscLayoutSidebarLeft, VscLayoutSidebarRight } from "react-icons/vsc";
-import { BsThreeDots } from "react-icons/bs";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import {
-  moveSection,
+  changeVariation,
   duplicateSection,
+  moveSection,
   removeSection,
   sectionsData as SD,
-  changeVariation,
-} from "@/lib/store/slices/section-slice";
+} from '@/lib/store/slices/section-slice';
 import {
   Menu,
   MenuButton,
   MenuItem,
   MenuItems,
   Transition,
-} from "@headlessui/react";
-import { generateUniqueId } from "@/lib/utils/function";
-import { FaCopy, FaTrash } from "react-icons/fa";
+} from '@headlessui/react';
+import { Fragment, useState } from 'react';
+import { BsThreeDots } from 'react-icons/bs';
+import { FaCopy, FaTrash } from 'react-icons/fa';
+import { FaArrowDownLong, FaArrowUpLong } from 'react-icons/fa6';
+import { VscLayoutSidebarLeft, VscLayoutSidebarRight } from 'react-icons/vsc';
 
 type TProps = {
   id: string;
@@ -30,7 +29,7 @@ const EditComponent = (props: TProps) => {
   const dispatch = useAppDispatch();
   const [isRightSide, setIsRightSide] = useState(true);
 
-  const handleMoveSection = (direction: "up" | "down") => {
+  const handleMoveSection = (direction: 'up' | 'down') => {
     dispatch(moveSection({ id, direction }));
   };
 
@@ -44,24 +43,27 @@ const EditComponent = (props: TProps) => {
 
   const handleRestyleSection = () => {
     const variation = Math.floor(Math.random() * 5) + 1;
+    console.log('variation: ' + variation);
     dispatch(changeVariation({ id, variation }));
   };
 
   return (
     <div
-      className={`${isRightSide ? "right-10" : "left-10"} absolute -top-8 z-10 hidden gap-5 rounded-xl border bg-white p-5 shadow group-hover:flex`}
+      className={`${isRightSide ? 'right-10' : 'left-10'} absolute -top-8 z-10 hidden gap-5 rounded-xl border bg-white p-5 shadow group-hover:flex`}
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
-      <button onClick={handleRestyleSection}>Restyle</button>
+      <button type="button" onClick={handleRestyleSection}>
+        Restyle
+      </button>
       <FaArrowUpLong
         className="cursor-pointer"
-        onClick={() => handleMoveSection("up")}
+        onClick={() => handleMoveSection('up')}
       />
       <FaArrowDownLong
         className="cursor-pointer"
-        onClick={() => handleMoveSection("down")}
+        onClick={() => handleMoveSection('down')}
       />
       {isRightSide ? (
         <VscLayoutSidebarLeft
