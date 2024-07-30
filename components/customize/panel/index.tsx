@@ -1,16 +1,15 @@
-import { FormField, TFields, TSection } from "@/types";
-import React, { Dispatch, SetStateAction, useState } from "react";
-import CustomButton from "@/components/ui/form/custom-button";
-import { DebouncedState } from "use-debounce";
-import CustomService from "@/components/ui/form/custom-service";
-import CustomFeature from "@/components/ui/form/custom-feature";
-import CustomTestimonial from "@/components/ui/form/custom-testimonial";
-import CustomFaq from "@/components/ui/form/custom-faq";
-import CustomHeader from "@/components/ui/form/custom-header";
-import CustomStats from "@/components/ui/form/custom-stats";
-import CustomTeam from "@/components/ui/form/custom-team";
-import CustomPrice from "@/components/ui/form/custom-price";
-import CustomPartnerLogo from "@/components/ui/form/custom-logo";
+import CustomButton from '@/components/ui/form/custom-button';
+import CustomFaq from '@/components/ui/form/custom-faq';
+import CustomFeature from '@/components/ui/form/custom-feature';
+import CustomHeader from '@/components/ui/form/custom-header';
+import CustomPartnerLogo from '@/components/ui/form/custom-logo';
+import CustomPrice from '@/components/ui/form/custom-price';
+import CustomService from '@/components/ui/form/custom-service';
+import CustomStats from '@/components/ui/form/custom-stats';
+import CustomTeam from '@/components/ui/form/custom-team';
+import CustomTestimonial from '@/components/ui/form/custom-testimonial';
+import { TSection } from '@/types';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
 type TProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -44,10 +43,10 @@ const CustomizePanel = (props: TProps) => {
     handleChange,
   } = props;
   const [isContent, setIsContent] = useState(true);
-  console.log("showForm.form", showForm.form);
+  console.log('showForm.form', showForm.form);
   return showForm.show ? (
     <>
-      {showForm.form === "Button" && (
+      {showForm.form === 'Button' && (
         <CustomButton
           section={section}
           setIsOpen={setIsOpen}
@@ -57,7 +56,7 @@ const CustomizePanel = (props: TProps) => {
         />
       )}
 
-      {showForm.form === "PartnerLogo" && (
+      {showForm.form === 'PartnerLogo' && (
         <CustomPartnerLogo
           section={section}
           setIsOpen={setIsOpen}
@@ -67,7 +66,7 @@ const CustomizePanel = (props: TProps) => {
         />
       )}
 
-      {showForm.form === "Service" && (
+      {showForm.form === 'Service' && (
         <CustomService
           handleChange={handleChange}
           section={section}
@@ -76,7 +75,7 @@ const CustomizePanel = (props: TProps) => {
           showForm={showForm}
         />
       )}
-      {showForm.form === "Feature" && (
+      {showForm.form === 'Feature' && (
         <CustomFeature
           handleChange={handleChange}
           section={section}
@@ -85,7 +84,7 @@ const CustomizePanel = (props: TProps) => {
           showForm={showForm}
         />
       )}
-      {showForm.form === "Testimonial" && (
+      {showForm.form === 'Testimonial' && (
         <CustomTestimonial
           handleChange={handleChange}
           section={section}
@@ -95,7 +94,7 @@ const CustomizePanel = (props: TProps) => {
         />
       )}
 
-      {showForm.form === "FAQ" && (
+      {showForm.form === 'FAQ' && (
         <CustomFaq
           handleChange={handleChange}
           section={section}
@@ -105,7 +104,7 @@ const CustomizePanel = (props: TProps) => {
         />
       )}
 
-      {showForm.form === "Card" && (
+      {showForm.form === 'Card' && (
         <CustomHeader
           handleChange={handleChange}
           section={section}
@@ -115,7 +114,7 @@ const CustomizePanel = (props: TProps) => {
         />
       )}
 
-      {showForm.form === "Stats" && (
+      {showForm.form === 'Stats' && (
         <CustomStats
           handleChange={handleChange}
           section={section}
@@ -125,7 +124,7 @@ const CustomizePanel = (props: TProps) => {
         />
       )}
 
-      {showForm.form === "Team" && (
+      {showForm.form === 'Team' && (
         <CustomTeam
           handleChange={handleChange}
           section={section}
@@ -135,7 +134,7 @@ const CustomizePanel = (props: TProps) => {
         />
       )}
 
-      {showForm.form === "Price" && (
+      {showForm.form === 'Price' && (
         <CustomPrice
           handleChange={handleChange}
           section={section}
@@ -155,7 +154,7 @@ const CustomizePanel = (props: TProps) => {
                 className="text-base font-semibold leading-6 "
                 id="slide-over-title"
               >
-                {section === "Partners" ? "Logo Settings" : section}
+                {section === 'Partners' ? 'Logos Settings' : section}
               </h2>
               <div className="ml-3 flex h-7 items-center">
                 <button
@@ -189,7 +188,7 @@ const CustomizePanel = (props: TProps) => {
                 <nav className=" flex " aria-label="Tabs">
                   <div
                     onClick={() => setIsContent(true)}
-                    className={`group inline-flex items-center border-b-2  px-1 py-4 text-sm font-medium ${isContent ? "border-indigo-500 text-indigo-600" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} w-1/2 justify-center`}
+                    className={`group inline-flex items-center border-b-2  px-1 py-4 text-sm font-medium ${isContent ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} w-1/2 justify-center`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -199,7 +198,7 @@ const CustomizePanel = (props: TProps) => {
                       width="24"
                       height="24"
                       aria-hidden="true"
-                      className={`-ml-0.5 mr-2 h-5 w-5 ${isContent ? "text-indigo-500" : "text-gray-400 group-hover:text-gray-500"}`}
+                      className={`-ml-0.5 mr-2 h-5 w-5 ${isContent ? 'text-indigo-500' : 'text-gray-400 group-hover:text-gray-500'}`}
                     >
                       <rect
                         width="7"
@@ -225,7 +224,7 @@ const CustomizePanel = (props: TProps) => {
 
                   <div
                     onClick={() => setIsContent(false)}
-                    className={`group inline-flex items-center border-b-2 ${!isContent ? "border-indigo-500 text-indigo-600" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"} w-1/2 justify-center px-1 py-4  text-sm font-medium`}
+                    className={`group inline-flex items-center border-b-2 ${!isContent ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} w-1/2 justify-center px-1 py-4  text-sm font-medium`}
                     aria-current="page"
                   >
                     <svg
@@ -234,7 +233,7 @@ const CustomizePanel = (props: TProps) => {
                       viewBox="0 0 16 16"
                       width="24"
                       height="24"
-                      className={`-ml-0.5 mr-2 h-5 w-5 ${!isContent ? "text-indigo-500" : "text-gray-400 group-hover:text-gray-500"}`}
+                      className={`-ml-0.5 mr-2 h-5 w-5 ${!isContent ? 'text-indigo-500' : 'text-gray-400 group-hover:text-gray-500'}`}
                       aria-hidden="true"
                     >
                       <path d="M12.4632 14.7277c.3088.3149.6854.4723 1.13.4723.4446 0 .8236-.1574 1.1369-.4723.3133-.3148.47-.7006.47-1.1574 0-.3568-.07-.6939-.21-1.0111-.14-.3173-.31-.6117-.51-.8833l-.52-.6926c-.0933-.1222-.2133-.1833-.36-.1833s-.2667.0611-.36.1833l-.52.6926c-.2133.2716-.3867.566-.52.8833-.1333.3172-.2.6543-.2 1.0111 0 .4568.1544.8426.4631 1.1574Z"></path>
@@ -253,7 +252,7 @@ const CustomizePanel = (props: TProps) => {
         </>
       )}
       <div className="flex flex-1 flex-col justify-between">
-        <div className={`divide-y divide-gray-200 ${!isContent && "hidden"}`}>
+        <div className={`divide-y divide-gray-200 ${!isContent && 'hidden'}`}>
           {children}
         </div>
       </div>

@@ -1,8 +1,8 @@
-"use client";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
+'use client';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 type TProps = {
   defaultValue?: string | null;
@@ -14,14 +14,16 @@ type TProps = {
 };
 
 export const isImage = (url: string) => {
-  const imageFormats = ["jpg", "jpeg", "png"];
-  console.log("url: " + imageFormats.some((format) => url?.includes(format)));
+  const imageFormats = ['jpg', 'jpeg', 'png'];
+  console.log('url: ' + imageFormats.some((format) => url?.includes(format)));
   return imageFormats.some((format) => url?.includes(format));
 };
 
 export default function Uploader(props: TProps) {
   const { defaultValue, name, label, onChange, contain, multimedia } = props;
-  const aspectRatio = "aspect-video"; // Since both images and videos can use this aspect ratio
+  console.log('contain: ' + contain);
+
+  const aspectRatio = 'aspect-video'; // Since both images and videos can use this aspect ratio
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [data, setData] = useState({
@@ -33,24 +35,24 @@ export default function Uploader(props: TProps) {
   const handleUpload = (file: File | null) => {
     if (file) {
       if (file.size / 1024 / 1024 > 100) {
-        toast.error("File size too big (max 100MB)");
+        toast.error('File size too big (max 100MB)');
       } else if (
-        !file.type.includes("png") &&
-        !file.type.includes("jpg") &&
-        !file.type.includes("jpeg") &&
+        !file.type.includes('png') &&
+        !file.type.includes('jpg') &&
+        !file.type.includes('jpeg') &&
         (!multimedia ||
-          (!file.type.includes("mp4") &&
-            !file.type.includes("avi") &&
-            !file.type.includes("mov")))
+          (!file.type.includes('mp4') &&
+            !file.type.includes('avi') &&
+            !file.type.includes('mov')))
       ) {
         toast.error(
-          "Invalid file type (must be .png, .jpg, .jpeg" +
-            (multimedia ? ", .mp4, .avi, or .mov)" : ")"),
+          'Invalid file type (must be .png, .jpg, .jpeg' +
+            (multimedia ? ', .mp4, .avi, or .mov)' : ')')
         );
       } else {
-        fetch("/api/upload", {
-          method: "POST",
-          headers: { "content-type": file?.type || "application/octet-stream" },
+        fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'content-type': file?.type || 'application/octet-stream' },
           body: file,
         }).then(async (res) => {
           if (res.status === 200) {
@@ -69,7 +71,7 @@ export default function Uploader(props: TProps) {
   };
 
   useEffect(() => {
-    console.log("Upload", data[name]);
+    console.log('Upload', data[name]);
     if (defaultValue) {
       setData((prev) => ({ ...prev, [name]: defaultValue }));
     }
@@ -81,12 +83,12 @@ export default function Uploader(props: TProps) {
       <label
         htmlFor={`${name}-upload`}
         className={cn(
-          "group relative mx-auto mt-2 flex size-44 cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50",
+          'group relative mx-auto mt-2 flex size-44 cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50',
           aspectRatio,
           {
-            "max-w-screen-md": aspectRatio === "aspect-video",
+            'max-w-screen-md': aspectRatio === 'aspect-video',
             // "max-w-xs": aspectRatio === "aspect-square",
-          },
+          }
         )}
       >
         <div
@@ -118,16 +120,16 @@ export default function Uploader(props: TProps) {
         />
         <div
           className={`${
-            dragActive ? "border-2 border-black" : ""
+            dragActive ? 'border-2 border-black' : ''
           } absolute z-[3] flex h-full w-full flex-col items-center justify-center rounded-md px-10 transition-all ${
             data[name]
-              ? "bg-white/80 opacity-0 hover:opacity-100 hover:backdrop-blur-md"
-              : "bg-white opacity-100 hover:bg-gray-50"
+              ? 'bg-white/80 opacity-0 hover:opacity-100 hover:backdrop-blur-md'
+              : 'bg-white opacity-100 hover:bg-gray-50'
           }`}
         >
           <svg
             className={`${
-              dragActive ? "scale-110" : "scale-100"
+              dragActive ? 'scale-110' : 'scale-100'
             } h-7 w-7 text-gray-500 transition-all duration-75 group-hover:scale-110 group-active:scale-95`}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -151,22 +153,12 @@ export default function Uploader(props: TProps) {
           </p>
           <span className="sr-only">Upload</span>
         </div>
-        {data[name] && !multimedia ? (
+        {(data[name] && !multimedia) || isImage(data[name] as string) ? (
           <Image
             src={data[name] as string}
             alt="Preview"
-            className={`h-full w-full rounded-md ${
-              contain ? "object-contain" : "object-cover"
-            }`}
-            height={400}
-            width={400}
-          />
-        ) : isImage(data[name] as string) ? (
-          <Image
-            src={data[name] as string}
-            alt="Preview"
-            className={`h-full w-full rounded-md ${
-              contain ? "object-contain" : "object-cover"
+            className={`max-w-[90%] h-90 w-90 rounded-md ${
+              contain ? 'object-contain' : 'object-cover'
             }`}
             height={400}
             width={400}
@@ -176,7 +168,7 @@ export default function Uploader(props: TProps) {
             src={data[name] as string}
             controls
             className={`h-full w-full rounded-md ${
-              contain ? "object-contain" : "object-cover"
+              contain ? 'object-contain' : 'object-cover'
             }`}
             height={400}
             width={400}
@@ -190,7 +182,7 @@ export default function Uploader(props: TProps) {
           ref={inputRef}
           name={name}
           type="file"
-          accept={multimedia ? "image/*,video/*" : "image/*"}
+          accept={multimedia ? 'image/*,video/*' : 'image/*'}
           className="sr-only"
           onChange={(e) => {
             const file = e.currentTarget.files && e.currentTarget.files[0];

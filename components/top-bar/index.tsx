@@ -1,13 +1,13 @@
-import Link from "next/link";
-import CTA from "../cta";
-import { Dispatch, SetStateAction } from "react";
-import { TBanner, TColors, TFields, TSection } from "@/types";
-import Image from "next/image";
-import { updateAppState, appState as AS } from "@/lib/store/slices/site-slice";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { Skeleton } from "../ui/skeleton";
-import TypewriterEffect from "../typewriter-effect";
-import { BROKEN_IMAGE } from "@/lib/utils/common-constant";
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { appState as AS, updateAppState } from '@/lib/store/slices/site-slice';
+import { BROKEN_IMAGE } from '@/lib/utils/common-constant';
+import { TBanner, TColors, TFields, TSection } from '@/types';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Dispatch, SetStateAction } from 'react';
+import CTA from '../cta';
+import TypewriterEffect from '../typewriter-effect';
+import { Skeleton } from '../ui/skeleton';
 
 type TopBarProps = {
   banner: TBanner;
@@ -42,7 +42,7 @@ export default function TopBar(props: TopBarProps) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-5 rounded-full border border-gray-100 bg-gray-100 px-6 py-3.5 max-sm:flex-col max-sm:gap-5">
       <div
-        className={`w-auto max-sm:mx-auto ${appState.view === "Mobile" && "mx-auto"}`}
+        className={`w-auto max-sm:mx-auto ${appState.view === 'Mobile' && 'mx-auto'}`}
       >
         <div className="flex flex-wrap items-center">
           <div
@@ -56,7 +56,7 @@ export default function TopBar(props: TopBarProps) {
                   <Image
                     src={appState.aiContent?.banner?.logo?.link || BROKEN_IMAGE}
                     alt={appState.aiContent?.banner?.logo?.alt}
-                    className={`h-8 w-8 ${editable && "border-2 border-transparent hover:border-indigo-500 "} `}
+                    className={`h-8 w-14  ${editable && 'border-2 border-transparent hover:border-indigo-500 object-contain '} `}
                     onClick={() => {
                       if (
                         setIsOpen &&
@@ -64,12 +64,12 @@ export default function TopBar(props: TopBarProps) {
                         setFocusedField &&
                         setShowForm
                       ) {
-                        setSection("Banner");
+                        setSection('Banner');
                         setIsOpen(true);
-                        setFocusedField("logo");
+                        setFocusedField('logo');
                         setShowForm({
-                          form: "",
-                          edit: "",
+                          form: '',
+                          edit: '',
                           show: false,
                         });
                       }
@@ -96,7 +96,7 @@ export default function TopBar(props: TopBarProps) {
             {appState.aiContent?.banner?.businessName !== undefined ? (
               editable ? (
                 <button
-                  className={` ${editable && "rounded border-2 border-transparent hover:border-indigo-500"}`}
+                  className={` ${editable && 'rounded border-2 border-transparent hover:border-indigo-500'}`}
                   onClick={(e) => {
                     e.stopPropagation();
                     if (
@@ -105,19 +105,19 @@ export default function TopBar(props: TopBarProps) {
                       setFocusedField &&
                       setShowForm
                     ) {
-                      setSection("Banner");
+                      setSection('Banner');
                       setIsOpen(true);
                       setShowForm({
-                        form: "",
-                        edit: "",
+                        form: '',
+                        edit: '',
                         show: false,
                       });
                       dispatch(
                         updateAppState({
                           ...appState,
-                          focusedField: "businessName",
-                          openedSlide: "Customize",
-                        }),
+                          focusedField: 'businessName',
+                          openedSlide: 'Customize',
+                        })
                       );
                     }
                   }}
@@ -128,7 +128,7 @@ export default function TopBar(props: TopBarProps) {
                 <Link href="#">
                   {appState?.generate?.generating ? (
                     <TypewriterEffect
-                      text={appState.aiContent?.banner.businessName ?? ""}
+                      text={appState.aiContent?.banner.businessName ?? ''}
                     />
                   ) : (
                     appState.aiContent?.banner?.businessName
@@ -142,7 +142,7 @@ export default function TopBar(props: TopBarProps) {
         </div>
       </div>
       <div
-        className={`w-auto max-sm:mx-auto ${appState.view === "Mobile" && "mx-auto"}`}
+        className={`w-auto max-sm:mx-auto ${appState.view === 'Mobile' && 'mx-auto'}`}
       >
         <div className="flex flex-wrap items-center">
           <div className="w-auto lg:block">
@@ -151,12 +151,12 @@ export default function TopBar(props: TopBarProps) {
                 editable ? (
                   appState.aiContent?.banner.button.show && (
                     <div
-                      className={`w-full p-2 md:w-auto ${editable && "flex gap-5 rounded border-2 border-transparent hover:border-indigo-500"}`}
+                      className={`w-full p-2 md:w-auto ${editable && 'flex gap-5 rounded border-2 border-transparent hover:border-indigo-500'}`}
                       onClick={() => {
                         if (setIsOpen && setSection && setFocusedField) {
-                          setSection("Banner");
+                          setSection('Banner');
                           setIsOpen(true);
-                          setFocusedField("cta");
+                          setFocusedField('cta');
                         }
                       }}
                     >
@@ -166,7 +166,7 @@ export default function TopBar(props: TopBarProps) {
                           onClick={() =>
                             setShowForm &&
                             setShowForm({
-                              form: "Button",
+                              form: 'Button',
                               edit: data.name,
                               show: true,
                             })
@@ -175,9 +175,9 @@ export default function TopBar(props: TopBarProps) {
                           <CTA
                             text={data.label}
                             bgColor={colors?.secondary}
-                            link={editable ? "#" : data.link}
+                            link={editable ? '#' : data.link}
                             external={
-                              editable ? false : data.type === "External"
+                              editable ? false : data.type === 'External'
                             }
                             appState={appState}
                             type={data.type}
@@ -193,8 +193,8 @@ export default function TopBar(props: TopBarProps) {
                         <CTA
                           text={data.label}
                           bgColor={colors?.secondary}
-                          link={editable ? "#" : data.link ?? ""}
-                          external={data.type === "External"}
+                          link={editable ? '#' : data.link ?? ''}
+                          external={data.type === 'External'}
                           type={data.type}
                         />
                       </div>
