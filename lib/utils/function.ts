@@ -1,25 +1,19 @@
-import { AppState, FormField, TData } from "@/types";
-import { ReadonlyURLSearchParams } from "next/navigation";
-import { Dispatch, SetStateAction } from "react";
-import { checkSiteAvailability, createNewSite, updateSite } from "../actions";
-import { getSiteData } from "../fetchers";
-import { fetchData, getUsernameFromPosts } from "../utils";
+import { AppState } from '@/types';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { ReadonlyURLSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
+import { TFeature } from '../../types/index';
+import { checkSiteAvailability, createNewSite } from '../actions';
+import AmazonContent from '../content/amazon';
+import CustomContent from '../content/custom';
+import { getSiteData } from '../fetchers';
+import { store } from '../store';
 import {
   updateAppState,
   updateSite as updateStateSite,
-} from "../store/slices/site-slice";
-import { toast } from "sonner";
-import { prompt } from "./common-constant";
-import { appState } from "../store/slices/site-slice";
-import Search from "../../components/ui/search/index";
-import App from "next/app";
-import { store } from "../store";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import AmazonContent from "../content/amazon";
-import { TFeature } from "../../types/index";
-import CustomContent from "../content/custom";
+} from '../store/slices/site-slice';
+import { fetchData, getUsernameFromPosts } from '../utils';
 // import { selectedTemplate } from "../store/slices/template-slice";
-import CustomizeMeta from "../../components/customize/meta/index";
 
 type TParams = {
   regenerate?: boolean;
@@ -33,7 +27,7 @@ export const getContent = async (
   mediaCaption?: string,
   fieldName?: string,
   type?: string,
-  appState?: AppState,
+  appState?: AppState
 ) => {
   try {
     // Create a URL object
@@ -41,42 +35,42 @@ export const getContent = async (
 
     // Use URLSearchParams to extract the 'subdomain' parameter
     const params = new URLSearchParams(urlObj.search);
-    const custom = params.get("id");
+    const custom = params.get('id');
     let data;
 
     let response;
-    if (custom && fieldName !== "image" && fieldName !== "logo") {
-      response = await fetch("/api/content/custom", {
-        method: "POST",
+    if (custom && fieldName !== 'image' && fieldName !== 'logo') {
+      response = await fetch('/api/content/custom', {
+        method: 'POST',
         body: JSON.stringify({
           data: {
             businessType: appState?.aiContent?.businessType,
             location: appState?.aiContent?.location,
             businessName: appState?.aiContent?.banner?.businessName,
           },
-          fieldName: fieldName?.split(".")
-            ? fieldName?.split(".")[0]
-            : fieldName ?? "",
-          type: type ?? "",
+          fieldName: fieldName?.split('.')
+            ? fieldName?.split('.')[0]
+            : fieldName ?? '',
+          type: type ?? '',
           services: appState?.aiContent?.services,
           testimonials: appState?.aiContent?.testimonials?.list,
         }),
       });
     } else {
-      response = await fetch("/api/content", {
-        method: "POST",
+      response = await fetch('/api/content', {
+        method: 'POST',
         body: JSON.stringify({
           mediaCaption,
-          fieldName: fieldName?.split(".")
-            ? fieldName?.split(".")[0]
-            : fieldName ?? "",
-          type: type ?? "",
+          fieldName: fieldName?.split('.')
+            ? fieldName?.split('.')[0]
+            : fieldName ?? '',
+          type: type ?? '',
           services: appState?.aiContent.services,
         }),
       });
     }
 
-    let content = "";
+    let content = '';
     const reader = response.body?.getReader();
     if (!reader) return;
 
@@ -87,97 +81,97 @@ export const getContent = async (
       done = doneReading;
       const chunkValue = decoder.decode(value);
 
-      if (chunkValue && chunkValue !== "###") content += chunkValue;
+      if (chunkValue && chunkValue !== '###') content += chunkValue;
     }
     data = JSON.parse(content);
 
-    console.log("appStateWhileGenerating:", appState, data);
+    console.log('appStateWhileGenerating:', appState, data);
     if (custom) {
       // console.log("subdomain: " + subdomain);
-      if (fieldName === "image" && appState?.aiContent.businessType) {
+      if (fieldName === 'image' && appState?.aiContent.businessType) {
         data = {
           hero: {
             image: {
-              imageUrl: appState?.aiContent.hero.image ?? "",
+              imageUrl: appState?.aiContent.hero.image ?? '',
             },
           },
         };
-        const res = await fetch("/api/image", {
-          method: "POST",
+        const res = await fetch('/api/image', {
+          method: 'POST',
           body: JSON.stringify({
-            prompt: appState?.aiContent.businessType ?? "",
+            prompt: appState?.aiContent.businessType ?? '',
           }),
         });
         const image = await res.json();
-        data["hero"]["image"]["imageUrl"] = image;
+        data['hero']['image']['imageUrl'] = image;
       } else if (appState?.aiContent.businessType && !fieldName) {
-        const res = await fetch("/api/image", {
-          method: "POST",
+        const res = await fetch('/api/image', {
+          method: 'POST',
           body: JSON.stringify({
-            prompt: appState?.aiContent.businessType ?? "",
+            prompt: appState?.aiContent.businessType ?? '',
           }),
         });
         const image = await res.json();
-        data["hero"]["image"]["imageUrl"] = image;
+        data['hero']['image']['imageUrl'] = image;
       }
     }
 
-    if (fieldName === "logo") {
+    if (fieldName === 'logo') {
       data = {
         banner: {
           logo: {
-            link: appState?.aiContent.banner.logo.link ?? "",
+            link: appState?.aiContent.banner.logo.link ?? '',
           },
         },
       };
-      const res = await fetch("/api/image", {
-        method: "POST",
+      const res = await fetch('/api/image', {
+        method: 'POST',
         body: JSON.stringify({
           prompt:
-            "generate logo for " +
-            (appState?.aiContent.banner.businessName ?? "") +
+            'generate logo for ' +
+            (appState?.aiContent.banner.businessName ?? '') +
             " but don't add living things in it",
         }),
       });
       const image = await res.json();
-      data["banner"]["logo"]["link"] = image;
+      data['banner']['logo']['link'] = image;
     } else if (data?.banner?.businessName && !fieldName) {
-      const res = await fetch("/api/image", {
-        method: "POST",
+      const res = await fetch('/api/image', {
+        method: 'POST',
         body: JSON.stringify({
           prompt:
-            "generate logo for " +
-            (data.banner.businessName ?? "") +
+            'generate logo for ' +
+            (data.banner.businessName ?? '') +
             " but don't add living things in it",
         }),
       });
       const image = await res.json();
-      data["banner"]["logo"]["link"] = image;
+      data['banner']['logo']['link'] = image;
     }
-    console.log("generated-data", data);
+    console.log('generated-data', data);
     return data;
   } catch (error) {
-    console.log("error", error);
+    console.log('error', error);
   }
 };
 
 export const getColors = async (imageUrl: string) => {
   try {
-    const { colors } = await fetchData("/api/color", {
-      method: "POST",
+    const { colors } = await fetchData('/api/color', {
+      method: 'POST',
       body: JSON.stringify({
         imageUrl,
       }),
     });
     return JSON.parse(colors);
   } catch (error) {
-    console.log("errors");
+    console.log('errors');
   }
 };
 
 export const getInstagramDetails = async (
   userId: string,
-  accessToken: string,
+  accessToken: string
 ) => {
   try {
     const {
@@ -185,16 +179,16 @@ export const getInstagramDetails = async (
       imageIds: _imageIds,
       posts: _posts,
     } = await fetchData(
-      `/api/instagram/media?access_token=${accessToken}&user_id=${userId}`,
+      `/api/instagram/media?access_token=${accessToken}&user_id=${userId}`
     );
 
     return {
-      mediaCaption: _mediaCaption ?? "",
+      mediaCaption: _mediaCaption ?? '',
       imageIds: _imageIds ?? {},
       iPosts: _posts ?? [],
     };
   } catch (error) {
-    console.log("getInstagramDetails", error);
+    console.log('getInstagramDetails', error);
   }
 };
 
@@ -242,14 +236,14 @@ const updateQueue = new UpdateQueue();
 
 export const regenerateIndividual = async (params: TRParams) => {
   const { fieldName, searchParams, dispatch, type } = params;
-  const userId = searchParams.get("user_id") ?? "";
-  const accessToken = searchParams.get("access_token") ?? "";
-  const amazon = searchParams.get("site_id") ?? "";
+  const userId = searchParams.get('user_id') ?? '';
+  const accessToken = searchParams.get('access_token') ?? '';
+  const amazon = searchParams.get('site_id') ?? '';
   try {
     // Create a URL object
     const urlObj = new URL(window.location.href);
     const params = new URLSearchParams(urlObj.search);
-    const custom = params.get("id");
+    const custom = params.get('id');
     const instagramDetails = await getInstagramDetails(userId, accessToken);
 
     if (instagramDetails) {
@@ -261,55 +255,55 @@ export const regenerateIndividual = async (params: TRParams) => {
           instagramDetails.mediaCaption,
           fieldName,
           type,
-          getAppState(), // Fetch the latest app state
+          getAppState() // Fetch the latest app state
         );
       }
 
-      console.log("content: " + JSON.stringify(content));
+      console.log('content: ' + JSON.stringify(content));
 
-      if (fieldName?.split(".") && !fieldName?.split(".")[1]) {
-        switch (fieldName?.split(".")[0]) {
-          case "serviceName":
+      if (fieldName?.split('.') && !fieldName?.split('.')[1]) {
+        switch (fieldName?.split('.')[0]) {
+          case 'serviceName':
             return {
-              id: "",
+              id: '',
               name: content.services.list[0].name,
-              image: "",
-              description: "",
+              image: '',
+              description: '',
             };
-          case "serviceDescription":
+          case 'serviceDescription':
             return {
-              id: "",
-              name: "",
-              image: "",
+              id: '',
+              name: '',
+              image: '',
               description: content.services.list[0].description,
             };
 
-          case "testimonialName":
+          case 'testimonialName':
             return {
-              id: "",
+              id: '',
               name: content.testimonials[0].name,
-              avatar: "",
-              content: "",
+              avatar: '',
+              content: '',
             };
-          case "testimonialContent":
+          case 'testimonialContent':
             return {
-              id: "",
-              name: "",
-              avatar: "",
+              id: '',
+              name: '',
+              avatar: '',
               content: content.testimonials[0].content,
             };
-          case "featureTitle":
+          case 'featureTitle':
             return {
-              id: "",
+              id: '',
               title: content.features[0].title,
-              image: "",
-              description: "",
+              image: '',
+              description: '',
             };
-          case "featureDescription":
+          case 'featureDescription':
             return {
-              id: "",
-              title: "",
-              image: "",
+              id: '',
+              title: '',
+              image: '',
               description: content.features[0].description,
             };
         }
@@ -319,9 +313,9 @@ export const regenerateIndividual = async (params: TRParams) => {
         const currentAppState = getAppState(); // Ensure we are using the latest app state
         return new Promise<void>((resolve) => {
           switch (
-            fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName
+            fieldName?.split('.') ? fieldName?.split('.')[0] : fieldName
           ) {
-            case "amazonDescription":
+            case 'amazonDescription':
               dispatch(
                 updateAppState({
                   ...currentAppState,
@@ -329,10 +323,10 @@ export const regenerateIndividual = async (params: TRParams) => {
                     ...currentAppState.aiContent,
                     description: content.description,
                   },
-                }),
+                })
               );
               break;
-            case "businessName":
+            case 'businessName':
               dispatch(
                 updateAppState({
                   ...currentAppState,
@@ -343,10 +337,10 @@ export const regenerateIndividual = async (params: TRParams) => {
                       businessName: content.banner.businessName,
                     },
                   },
-                }),
+                })
               );
               break;
-            case "logo":
+            case 'logo':
               dispatch(
                 updateAppState({
                   ...currentAppState,
@@ -360,10 +354,10 @@ export const regenerateIndividual = async (params: TRParams) => {
                       },
                     },
                   },
-                }),
+                })
               );
               break;
-            case "image":
+            case 'image':
               dispatch(
                 updateAppState({
                   ...currentAppState,
@@ -374,17 +368,17 @@ export const regenerateIndividual = async (params: TRParams) => {
                       image: {
                         ...currentAppState.aiContent.hero.image,
                         imageUrl: custom
-                          ? content["hero"]["image"]["imageUrl"]
+                          ? content['hero']['image']['imageUrl']
                           : instagramDetails.imageIds[
-                              content["hero"]["image"]["imageId"]
+                              content['hero']['image']['imageId']
                             ],
                       },
                     },
                   },
-                }),
+                })
               );
               break;
-            case "heading":
+            case 'heading':
               dispatch(
                 updateAppState({
                   ...currentAppState,
@@ -395,10 +389,10 @@ export const regenerateIndividual = async (params: TRParams) => {
                       heading: content.hero.heading,
                     },
                   },
-                }),
+                })
               );
               break;
-            case "subheading":
+            case 'subheading':
               dispatch(
                 updateAppState({
                   ...currentAppState,
@@ -409,11 +403,11 @@ export const regenerateIndividual = async (params: TRParams) => {
                       subheading: content.hero.subheading,
                     },
                   },
-                }),
+                })
               );
               break;
-            case "serviceName":
-              if (fieldName?.split(".")[1]) {
+            case 'serviceName':
+              if (fieldName?.split('.')[1]) {
                 dispatch(
                   updateAppState({
                     ...currentAppState,
@@ -423,7 +417,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                         ...currentAppState.aiContent.services,
                         list: currentAppState.aiContent.services.list.map(
                           (service) => {
-                            if (service.id === fieldName?.split(".")[1]) {
+                            if (service.id === fieldName?.split('.')[1]) {
                               return {
                                 ...service,
                                 name: content.services.list[0].name,
@@ -431,19 +425,19 @@ export const regenerateIndividual = async (params: TRParams) => {
                             } else {
                               return service;
                             }
-                          },
+                          }
                         ),
                       },
                     },
-                  }),
+                  })
                 );
               } else {
                 resolve();
                 return;
               }
               break;
-            case "serviceDescription":
-              if (fieldName?.split(".")[1]) {
+            case 'serviceDescription':
+              if (fieldName?.split('.')[1]) {
                 dispatch(
                   updateAppState({
                     ...currentAppState,
@@ -453,7 +447,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                         ...currentAppState.aiContent.services,
                         list: currentAppState.aiContent.services.list.map(
                           (service) => {
-                            if (service.id === fieldName?.split(".")[1]) {
+                            if (service.id === fieldName?.split('.')[1]) {
                               return {
                                 ...service,
                                 description:
@@ -462,20 +456,20 @@ export const regenerateIndividual = async (params: TRParams) => {
                             } else {
                               return service;
                             }
-                          },
+                          }
                         ),
                       },
                     },
-                  }),
+                  })
                 );
               } else {
                 resolve();
                 return;
               }
               break;
-            case "testimonialName":
-              if (fieldName?.split(".")[1]) {
-                console.log("testimonialName", content.testimonials[0].name);
+            case 'testimonialName':
+              if (fieldName?.split('.')[1]) {
+                console.log('testimonialName', content.testimonials[0].name);
                 dispatch(
                   updateAppState({
                     ...currentAppState,
@@ -485,7 +479,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                         ...currentAppState.aiContent.testimonials,
                         list: currentAppState.aiContent.testimonials.list.map(
                           (testimonial) => {
-                            if (testimonial.id === fieldName?.split(".")[1]) {
+                            if (testimonial.id === fieldName?.split('.')[1]) {
                               return {
                                 ...testimonial,
                                 name: content.testimonials[0].name,
@@ -493,19 +487,19 @@ export const regenerateIndividual = async (params: TRParams) => {
                             } else {
                               return testimonial;
                             }
-                          },
+                          }
                         ),
                       },
                     },
-                  }),
+                  })
                 );
               } else {
                 resolve();
                 return;
               }
               break;
-            case "testimonialContent":
-              if (fieldName?.split(".")[1]) {
+            case 'testimonialContent':
+              if (fieldName?.split('.')[1]) {
                 dispatch(
                   updateAppState({
                     ...currentAppState,
@@ -515,7 +509,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                         ...currentAppState.aiContent.testimonials,
                         list: currentAppState.aiContent.testimonials.list.map(
                           (testimonial) => {
-                            if (testimonial.id === fieldName?.split(".")[1]) {
+                            if (testimonial.id === fieldName?.split('.')[1]) {
                               return {
                                 ...testimonial,
                                 content: content.testimonials[0].content,
@@ -523,19 +517,19 @@ export const regenerateIndividual = async (params: TRParams) => {
                             } else {
                               return testimonial;
                             }
-                          },
+                          }
                         ),
                       },
                     },
-                  }),
+                  })
                 );
               } else {
                 resolve();
                 return;
               }
               break;
-            case "featureTitle":
-              if (fieldName?.split(".")[1]) {
+            case 'featureTitle':
+              if (fieldName?.split('.')[1]) {
                 dispatch(
                   updateAppState({
                     ...currentAppState,
@@ -543,7 +537,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                       ...currentAppState.aiContent,
                       features: currentAppState.aiContent.features?.map(
                         (feature) => {
-                          if (feature.id === fieldName?.split(".")[1]) {
+                          if (feature.id === fieldName?.split('.')[1]) {
                             return {
                               ...feature,
                               title: content.features[0].title,
@@ -551,18 +545,18 @@ export const regenerateIndividual = async (params: TRParams) => {
                           } else {
                             return feature;
                           }
-                        },
+                        }
                       ),
                     },
-                  }),
+                  })
                 );
               } else {
                 resolve();
                 return;
               }
               break;
-            case "featureDescription":
-              if (fieldName?.split(".")[1]) {
+            case 'featureDescription':
+              if (fieldName?.split('.')[1]) {
                 dispatch(
                   updateAppState({
                     ...currentAppState,
@@ -570,7 +564,7 @@ export const regenerateIndividual = async (params: TRParams) => {
                       ...currentAppState.aiContent,
                       features: currentAppState.aiContent.features?.map(
                         (feature) => {
-                          if (feature.id === fieldName?.split(".")[1]) {
+                          if (feature.id === fieldName?.split('.')[1]) {
                             return {
                               ...feature,
                               description: content.features[0].description,
@@ -578,10 +572,10 @@ export const regenerateIndividual = async (params: TRParams) => {
                           } else {
                             return feature;
                           }
-                        },
+                        }
                       ),
                     },
-                  }),
+                  })
                 );
               } else {
                 resolve();
@@ -602,39 +596,39 @@ export const regenerateIndividual = async (params: TRParams) => {
 
 export const regenerateText = async (params: TParams) => {
   const { searchParams, dispatch, appState } = params;
-  const userId = searchParams.get("user_id") ?? "";
-  const accessToken = searchParams.get("access_token") ?? "";
+  const userId = searchParams.get('user_id') ?? '';
+  const accessToken = searchParams.get('access_token') ?? '';
   try {
     const instagramDetails = await getInstagramDetails(userId, accessToken);
     if (instagramDetails) {
       dispatch(
         updateAppState({
           ...appState,
-          status: "Generating Content",
-        }),
+          status: 'Generating Content',
+        })
       );
 
       const content = await getContent(
         instagramDetails.mediaCaption,
-        "",
-        "",
-        appState,
+        '',
+        '',
+        appState
       );
 
       if (content) {
-        console.log("content", content);
-        content["hero"]["image"]["imageUrl"] = appState.aiContent.hero.image;
-        content["banner"]["logo"]["link"] = appState.aiContent.banner.logo.link;
+        console.log('content', content);
+        content['hero']['image']['imageUrl'] = appState.aiContent.hero.image;
+        content['banner']['logo']['link'] = appState.aiContent.banner.logo.link;
 
-        content["colors"] = appState.aiContent.colors;
+        content['colors'] = appState.aiContent.colors;
         dispatch(
           updateAppState({
             ...appState,
             aiContent: Object.keys(content).length
               ? { ...appState.aiContent, ...content }
               : appState.aiContent,
-            status: "Done",
-          }),
+            status: 'Done',
+          })
         );
       }
     }
@@ -643,28 +637,28 @@ export const regenerateText = async (params: TParams) => {
 
 export const regenerateImage = async (params: TParams) => {
   const { searchParams, dispatch, appState } = params;
-  const userId = searchParams.get("user_id") ?? "";
-  const accessToken = searchParams.get("access_token") ?? "";
+  const userId = searchParams.get('user_id') ?? '';
+  const accessToken = searchParams.get('access_token') ?? '';
   try {
     const urlObj = new URL(window.location.href);
 
     // Use URLSearchParams to extract the 'subdomain' parameter
     const params = new URLSearchParams(urlObj.search);
-    const custom = params.get("id");
+    const custom = params.get('id');
     const instagramDetails = await getInstagramDetails(userId, accessToken);
     if (instagramDetails) {
       dispatch(
         updateAppState({
           ...appState,
-          status: "Generating Images",
-        }),
+          status: 'Generating Images',
+        })
       );
 
       let content = await getContent(
         instagramDetails.mediaCaption,
-        "",
-        "",
-        appState,
+        '',
+        '',
+        appState
       );
 
       if (content) {
@@ -677,41 +671,41 @@ export const regenerateImage = async (params: TParams) => {
                 ...appState.aiContent.banner,
                 logo: {
                   ...appState.aiContent.banner.logo,
-                  link: content["banner"]["logo"]["link"],
+                  link: content['banner']['logo']['link'],
                 },
               },
               hero: {
                 ...appState.aiContent.hero,
                 image: {
-                  ...content["hero"]["image"],
+                  ...content['hero']['image'],
                   imageUrl: custom
-                    ? content["hero"]["image"]["imageUrl"]
+                    ? content['hero']['image']['imageUrl']
                     : instagramDetails.imageIds[
-                        content["hero"]["image"]["imageId"]
+                        content['hero']['image']['imageId']
                       ],
                 },
               },
             },
-            status: "Done",
-          }),
+            status: 'Done',
+          })
         );
       }
     }
   } catch (error) {
-    console.log("error", error);
+    console.log('error', error);
   }
 };
 
 export const getInstagramData = async (params: TParams) => {
   const { regenerate, searchParams, dispatch, appState } = params;
-  const userId = searchParams.get("user_id") ?? "";
-  const accessToken = searchParams.get("access_token") ?? "";
-  const custom = searchParams.get("id") ?? "";
+  const userId = searchParams.get('user_id') ?? '';
+  const accessToken = searchParams.get('access_token') ?? '';
+  const custom = searchParams.get('id') ?? '';
   dispatch(
     updateAppState({
       ...appState,
-      status: "Loading",
-    }),
+      status: 'Loading',
+    })
   );
   const { subdomain: siteAvailable, editable } = await checkSiteAvailability({
     userId,
@@ -720,11 +714,11 @@ export const getInstagramData = async (params: TParams) => {
     updateAppState({
       ...appState,
       subdomain: siteAvailable,
-      status: "Loading",
+      status: 'Loading',
       editable,
-    }),
+    })
   );
-  console.log("siteAvailable", siteAvailable);
+  console.log('siteAvailable', siteAvailable);
   if (siteAvailable && !regenerate) {
     const siteData = await getSiteData(siteAvailable);
 
@@ -732,20 +726,20 @@ export const getInstagramData = async (params: TParams) => {
       return;
     }
     const aiContent = JSON.parse(siteData.aiResult);
-    console.log("siteData", siteData);
-    console.log("aiContent", aiContent);
+    console.log('siteData', siteData);
+    console.log('aiContent', aiContent);
     dispatch(
       updateAppState({
         ...appState,
         id: siteData?.id,
         selectedFont: siteData.font,
         subdomain: siteAvailable,
-        status: "Done",
+        status: 'Done',
         aiContent: { ...appState.aiContent, ...aiContent },
-        iPosts: JSON.parse(siteData?.posts ?? ""),
+        iPosts: JSON.parse(siteData?.posts ?? ''),
         meta: { title: siteData.title, description: siteData.description },
         editable,
-      }),
+      })
     );
   } else {
     const instagramDetails = await getInstagramDetails(userId, accessToken);
@@ -754,32 +748,32 @@ export const getInstagramData = async (params: TParams) => {
       dispatch(
         updateAppState({
           ...appState,
-          status: "Generating Content",
-        }),
+          status: 'Generating Content',
+        })
       );
 
       const content = await getContent(
         instagramDetails.mediaCaption,
-        "",
-        "",
-        appState,
+        '',
+        '',
+        appState
       );
       if (content) {
-        console.log("content", content);
+        console.log('content', content);
         if (!custom) {
-          content["hero"]["image"]["imageUrl"] =
-            instagramDetails.imageIds[content["hero"]["image"]["imageId"]];
+          content['hero']['image']['imageUrl'] =
+            instagramDetails.imageIds[content['hero']['image']['imageId']];
         }
 
         dispatch(
           updateAppState({
             ...appState,
-            status: "Choosing Colors",
-          }),
+            status: 'Choosing Colors',
+          })
         );
-        if (content["hero"]["image"]["imageUrl"]) {
-          const colors = await getColors(content["hero"]["image"]["imageUrl"]);
-          content["colors"] = colors;
+        if (content['hero']['image']['imageUrl']) {
+          const colors = await getColors(content['hero']['image']['imageUrl']);
+          content['colors'] = colors;
         }
         let businessName;
         if (custom) {
@@ -789,7 +783,7 @@ export const getInstagramData = async (params: TParams) => {
             businessName = appState.aiContent.banner.businessName;
           } else {
             businessName = getUsernameFromPosts(
-              JSON.stringify(instagramDetails.iPosts),
+              JSON.stringify(instagramDetails.iPosts)
             );
           }
         }
@@ -797,7 +791,7 @@ export const getInstagramData = async (params: TParams) => {
         if (!regenerate) {
           const response = await createNewSite({
             subdomain: getUsernameFromPosts(
-              JSON.stringify(instagramDetails.iPosts),
+              JSON.stringify(instagramDetails.iPosts)
             ),
             aiResult: JSON.stringify(content),
             posts: JSON.stringify({
@@ -806,9 +800,9 @@ export const getInstagramData = async (params: TParams) => {
               list: instagramDetails.iPosts,
               showHash: true,
             }),
-            accessToken: searchParams.get("access_token") || "",
-            userId: searchParams.get("user_id") || "",
-            type: "Instagram",
+            accessToken: searchParams.get('access_token') || '',
+            userId: searchParams.get('user_id') || '',
+            type: 'Instagram',
           });
           id = response?.id;
         }
@@ -829,23 +823,23 @@ export const getInstagramData = async (params: TParams) => {
                 }
               : appState.aiContent,
             iPosts: { ...appState.iPosts, list: instagramDetails.iPosts },
-            status: "Done",
-          }),
+            status: 'Done',
+          })
         );
       } else {
         dispatch(
           updateAppState({
             ...appState,
-            status: "Done",
-          }),
+            status: 'Done',
+          })
         );
       }
     } else {
       dispatch(
         updateAppState({
           ...appState,
-          status: "Done",
-        }),
+          status: 'Done',
+        })
       );
     }
   }
@@ -855,11 +849,11 @@ export const handleChangeAppState = (
   dispatch: any,
   appState: AppState,
   name: string,
-  value: string,
+  value: string
 ) => {
-  if ((value as any)["fieldType"] === "button") {
-    switch ((value as any)["section"]) {
-      case "Banner":
+  if ((value as any)['fieldType'] === 'button') {
+    switch ((value as any)['section']) {
+      case 'Banner':
         dispatch(
           updateAppState({
             ...appState,
@@ -873,9 +867,9 @@ export const handleChangeAppState = (
                     if (data.name === name) {
                       return {
                         name: name,
-                        label: (value as any)["label"],
-                        type: (value as any)["type"],
-                        link: (value as any)["link"],
+                        label: (value as any)['label'],
+                        type: (value as any)['type'],
+                        link: (value as any)['link'],
                       };
                     } else {
                       return data;
@@ -884,10 +878,10 @@ export const handleChangeAppState = (
                 },
               },
             },
-          }),
+          })
         );
         break;
-      case "Hero":
+      case 'Hero':
         dispatch(
           updateAppState({
             ...appState,
@@ -901,9 +895,9 @@ export const handleChangeAppState = (
                     if (data.name === name) {
                       return {
                         name: name,
-                        label: (value as any)["label"],
-                        type: (value as any)["type"],
-                        link: (value as any)["link"],
+                        label: (value as any)['label'],
+                        type: (value as any)['type'],
+                        link: (value as any)['link'],
                       };
                     } else {
                       return data;
@@ -912,12 +906,12 @@ export const handleChangeAppState = (
                 },
               },
             },
-          }),
+          })
         );
         break;
     }
-  } else if ((value as any)["section"] === "Services") {
-    console.log("i came here", name, value);
+  } else if ((value as any)['section'] === 'Services') {
+    console.log('i came here', name, value);
     dispatch(
       updateAppState({
         ...appState,
@@ -930,8 +924,8 @@ export const handleChangeAppState = (
                 return {
                   id: service.id,
                   image: service.image,
-                  description: (value as any)["description"],
-                  name: (value as any)["name"],
+                  description: (value as any)['description'],
+                  name: (value as any)['name'],
                 };
               } else {
                 return service;
@@ -939,10 +933,10 @@ export const handleChangeAppState = (
             }),
           },
         },
-      }),
+      })
     );
-  } else if ((value as any)["section"] === "Features") {
-    console.log("i came here", name, value);
+  } else if ((value as any)['section'] === 'Features') {
+    console.log('i came here', name, value);
     dispatch(
       updateAppState({
         ...appState,
@@ -952,20 +946,20 @@ export const handleChangeAppState = (
             if (feature.id === name) {
               return {
                 id: feature.id,
-                image: (value as any)["image"],
-                description: (value as any)["description"],
-                title: (value as any)["title"],
+                image: (value as any)['image'],
+                description: (value as any)['description'],
+                title: (value as any)['title'],
               };
             } else {
               return feature;
             }
           }),
         },
-      }),
+      })
     );
   } else {
     switch (name) {
-      case "alt":
+      case 'alt':
         dispatch(
           updateAppState({
             ...appState,
@@ -973,10 +967,10 @@ export const handleChangeAppState = (
               ...appState.aiContent.banner.logo,
               alt: value,
             },
-          }),
+          })
         );
         break;
-      case "logo":
+      case 'logo':
         dispatch(
           updateAppState({
             ...appState,
@@ -984,10 +978,10 @@ export const handleChangeAppState = (
               ...appState.aiContent.banner.logo,
               link: value,
             },
-          }),
+          })
         );
         break;
-      case "businessName":
+      case 'businessName':
         dispatch(
           updateAppState({
             ...appState,
@@ -998,94 +992,94 @@ export const handleChangeAppState = (
                 businessName: value,
               },
             },
-          }),
+          })
         );
         break;
-      case "ctaLink":
+      case 'ctaLink':
         dispatch(
           updateAppState({
             ...appState,
             aiContent: {
               ...appState.aiContent,
-              ["hero"]: {
-                ...appState.aiContent["hero"],
-                ["ctaLink"]: value,
+              ['hero']: {
+                ...appState.aiContent['hero'],
+                ['ctaLink']: value,
               },
             },
-          }),
+          })
         );
         break;
-      case "heading":
+      case 'heading':
         dispatch(
           updateAppState({
             ...appState,
             aiContent: {
               ...appState.aiContent,
-              ["hero"]: {
-                ...appState.aiContent["hero"],
-                ["heading"]: value,
+              ['hero']: {
+                ...appState.aiContent['hero'],
+                ['heading']: value,
               },
             },
-          }),
+          })
         );
         break;
-      case "subheading":
+      case 'subheading':
         dispatch(
           updateAppState({
             ...appState,
             aiContent: {
               ...appState.aiContent,
-              ["hero"]: {
-                ...appState.aiContent["hero"],
-                ["subheading"]: value,
+              ['hero']: {
+                ...appState.aiContent['hero'],
+                ['subheading']: value,
               },
             },
-          }),
+          })
         );
         break;
-      case "imageUrl":
+      case 'imageUrl':
         dispatch(
           updateAppState({
             ...appState,
             aiContent: {
               ...appState.aiContent,
-              ["hero"]: {
-                ...appState.aiContent["hero"],
-                ["imageUrl"]: value,
+              ['hero']: {
+                ...appState.aiContent['hero'],
+                ['imageUrl']: value,
               },
             },
-          }),
+          })
         );
         break;
-      case "cta":
+      case 'cta':
         dispatch(
           updateAppState({
             ...appState,
             aiContent: {
               ...appState.aiContent,
-              ["hero"]: {
-                ...appState.aiContent["hero"],
-                ["cta"]: value,
+              ['hero']: {
+                ...appState.aiContent['hero'],
+                ['cta']: value,
               },
             },
-          }),
+          })
         );
         break;
-      case "primary":
+      case 'primary':
         dispatch(
           updateAppState({
             ...appState,
             aiContent: {
               ...appState.aiContent,
-              ["colors"]: {
-                ...appState.aiContent["colors"],
-                ["primary"]: value,
+              ['colors']: {
+                ...appState.aiContent['colors'],
+                ['primary']: value,
               },
             },
-          }),
+          })
         );
         break;
-      case "colors":
+      case 'colors':
         dispatch(
           updateAppState({
             ...appState,
@@ -1093,10 +1087,10 @@ export const handleChangeAppState = (
               ...appState.aiContent,
               colors: value,
             },
-          }),
+          })
         );
         break;
-      case "title":
+      case 'title':
         dispatch(
           updateAppState({
             ...appState,
@@ -1104,10 +1098,10 @@ export const handleChangeAppState = (
               ...appState.meta,
               title: value,
             },
-          }),
+          })
         );
         break;
-      case "description":
+      case 'description':
         dispatch(
           updateAppState({
             ...appState,
@@ -1115,24 +1109,24 @@ export const handleChangeAppState = (
               ...appState.meta,
               description: value,
             },
-          }),
+          })
         );
         break;
-      case "secondary":
+      case 'secondary':
         dispatch(
           updateAppState({
             ...appState,
             aiContent: {
               ...appState.aiContent,
-              ["colors"]: {
-                ...appState.aiContent["colors"],
-                ["secondary"]: value,
+              ['colors']: {
+                ...appState.aiContent['colors'],
+                ['secondary']: value,
               },
             },
-          }),
+          })
         );
         break;
-      case "primaryImage":
+      case 'primaryImage':
         dispatch(
           updateAppState({
             ...appState,
@@ -1149,10 +1143,10 @@ export const handleChangeAppState = (
                 },
               },
             },
-          }),
+          })
         );
         break;
-      case "image1":
+      case 'image1':
         dispatch(
           updateAppState({
             ...appState,
@@ -1175,11 +1169,11 @@ export const handleChangeAppState = (
                 }),
               },
             },
-          }),
+          })
         );
 
         break;
-      case "image2":
+      case 'image2':
         dispatch(
           updateAppState({
             ...appState,
@@ -1202,10 +1196,10 @@ export const handleChangeAppState = (
                 }),
               },
             },
-          }),
+          })
         );
         break;
-      case "image3":
+      case 'image3':
         dispatch(
           updateAppState({
             ...appState,
@@ -1228,10 +1222,10 @@ export const handleChangeAppState = (
                 }),
               },
             },
-          }),
+          })
         );
         break;
-      case "image4":
+      case 'image4':
         dispatch(
           updateAppState({
             ...appState,
@@ -1254,7 +1248,7 @@ export const handleChangeAppState = (
                 }),
               },
             },
-          }),
+          })
         );
         break;
       default:
@@ -1280,17 +1274,17 @@ export async function saveState(
   appState: AppState,
   dispatch: any,
   templateId: string,
-  sections: any,
+  sections: any
 ) {
   try {
-    const isCustom = location.pathname?.split("/")[1] === "custom";
+    const isCustom = location.pathname?.split('/')[1] === 'custom';
     let data: any;
     const simplifiedSections = sections.map((section: any) => ({
       id: section.id,
       title: section.title,
     }));
 
-    console.log("sections12", sections);
+    console.log('sections12', sections);
     if (isCustom) {
       data = {
         aiResult: appState.aiContent,
@@ -1307,16 +1301,16 @@ export async function saveState(
         sections: JSON.stringify(simplifiedSections),
       };
     }
-    console.log("Saved state", data);
+    console.log('Saved state', data);
     const res = await dispatch(
       updateStateSite({
         subdomain: appState.subdomain,
         data,
         keys: Object.keys(data),
-      }),
+      })
     ).unwrap();
-    console.log("res", res);
-    toast.success("Data saved successfully");
+    console.log('res', res);
+    toast.success('Data saved successfully');
   } catch (error) {
     console.log(error);
   }
@@ -1333,8 +1327,8 @@ export async function generateUniqueHash(inputString: string) {
   // Helper function to convert ArrayBuffer to hex string
   function bufferToHex(buffer: any) {
     return Array.prototype.map
-      .call(new Uint8Array(buffer), (x) => ("00" + x.toString(16)).slice(-2))
-      .join("");
+      .call(new Uint8Array(buffer), (x) => ('00' + x.toString(16)).slice(-2))
+      .join('');
   }
 
   // Generate a random salt
@@ -1349,7 +1343,7 @@ export async function generateUniqueHash(inputString: string) {
   const data = encoder.encode(saltedInput);
 
   // Hash the salted input using SHA-256
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashHex = bufferToHex(hashBuffer);
 
   // Combine the salt and the hash to ensure uniqueness and randomness
@@ -1359,21 +1353,21 @@ export async function generateUniqueHash(inputString: string) {
 export async function getAmazonData(
   appState: AppState,
   fieldName?: string,
-  type?: string,
+  type?: string
 ) {
   try {
-    const response = await fetch("/api/content/amazon", {
-      method: "POST",
+    const response = await fetch('/api/content/amazon', {
+      method: 'POST',
       body: JSON.stringify({
         productTitle: appState?.aiContent?.title,
-        fieldName: fieldName?.split(".")
-          ? fieldName?.split(".")[0]
-          : fieldName ?? "",
-        type: type ?? "",
+        fieldName: fieldName?.split('.')
+          ? fieldName?.split('.')[0]
+          : fieldName ?? '',
+        type: type ?? '',
         features: appState?.aiContent?.features,
       }),
     });
-    let content = "";
+    let content = '';
     const reader = response.body?.getReader();
     if (!reader) return;
 
@@ -1384,7 +1378,7 @@ export async function getAmazonData(
       done = doneReading;
       const chunkValue = decoder.decode(value);
 
-      if (chunkValue && chunkValue !== "###") content += chunkValue;
+      if (chunkValue && chunkValue !== '###') content += chunkValue;
     }
     const data = JSON.parse(content);
     return data;
@@ -1392,12 +1386,12 @@ export async function getAmazonData(
 }
 
 export function isSiteBuilderPage(pathname: string): boolean {
-  const tempPathname = pathname.split("/")[1];
-  console.log("isSiteBuilderPage", tempPathname);
+  const tempPathname = pathname.split('/')[1];
+  console.log('isSiteBuilderPage', tempPathname);
   if (
-    tempPathname === "auth" ||
-    tempPathname === "custom" ||
-    tempPathname === "amazon"
+    tempPathname === 'auth' ||
+    tempPathname === 'custom' ||
+    tempPathname === 'amazon'
   ) {
     return true;
   } else {
@@ -1407,17 +1401,17 @@ export function isSiteBuilderPage(pathname: string): boolean {
 
 export const createNewAmazonSite = async (
   amazonData: any,
-  router: AppRouterInstance,
+  router: AppRouterInstance
 ) => {
   try {
     const startContentFetch = performance.now();
-    const response = await fetch("/api/content/amazon", {
-      method: "POST",
+    const response = await fetch('/api/content/amazon', {
+      method: 'POST',
       body: JSON.stringify({
         productTitle: amazonData.ItemInfo.Title.DisplayValue,
       }),
     });
-    let content = "";
+    let content = '';
     const reader = response.body?.getReader();
     if (!reader) return;
 
@@ -1428,7 +1422,7 @@ export const createNewAmazonSite = async (
       done = doneReading;
       const chunkValue = decoder.decode(value);
 
-      if (chunkValue && chunkValue !== "###") content += chunkValue;
+      if (chunkValue && chunkValue !== '###') content += chunkValue;
     }
     const endContentFetch = performance.now();
     console.log(`Content fetch took ${endContentFetch - startContentFetch} ms`);
@@ -1441,13 +1435,13 @@ export const createNewAmazonSite = async (
         primary: amazonData?.Images?.Primary,
         variant: amazonData?.Images?.Variants,
       },
-      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? '',
       title: amazonData?.ItemInfo?.Title?.DisplayValue,
       features: data.features.map((feature: any, i: any) => {
         if (i === 0) {
           return {
             ...feature,
-            image: amazonData?.Images?.Primary?.Large?.URL ?? "",
+            image: amazonData?.Images?.Primary?.Large?.URL ?? '',
           };
         } else if (i === 1 || i === 2 || i === 3) {
           return {
@@ -1455,7 +1449,7 @@ export const createNewAmazonSite = async (
             image:
               amazonData?.Images?.Variants[i - 1]?.Large?.URL ??
               amazonData?.Images?.Primary?.Large?.URL ??
-              "",
+              '',
           };
         }
       }),
@@ -1467,7 +1461,7 @@ export const createNewAmazonSite = async (
     // dispatch(updateAmazonSite(finalData));
     // router.push("/amazon?site_id=" + responseSite.id);
   } catch (error) {
-    console.log("errorAmazonGeneration", error);
+    console.log('errorAmazonGeneration', error);
   }
 };
 
@@ -1485,17 +1479,17 @@ export const getAmazonDataUsingASIN = async (product: string) => {
           generating: true,
           progress: 0,
         },
-      }),
+      })
     );
 
-    const url = "/api/amazon";
+    const url = '/api/amazon';
     const requestData = { itemIds: [product] };
 
     const responseStartTime = performance.now();
     const response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestData),
     });
@@ -1505,7 +1499,7 @@ export const getAmazonDataUsingASIN = async (product: string) => {
     console.log(`Time taken by fetch call: ${responseTimeTaken} milliseconds`);
 
     if (!response.ok) {
-      throw new Error("Network response was not ok " + response.statusText);
+      throw new Error('Network response was not ok ' + response.statusText);
     }
 
     const data = await response.json();
@@ -1522,11 +1516,11 @@ export const getAmazonDataUsingASIN = async (product: string) => {
         primary: amazonData?.Images?.Primary,
         variant: amazonData?.Images?.Variants,
       },
-      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? '',
       title: amazonData?.ItemInfo?.Title?.DisplayValue,
       colors,
       features: [],
-      description: "",
+      description: '',
     };
 
     store.dispatch(
@@ -1540,15 +1534,15 @@ export const getAmazonDataUsingASIN = async (product: string) => {
           ...getAppState().generate,
           progress: getAppState().generate.progress + 40,
         },
-      }),
+      })
     );
 
     // Parallel execution of getFeatures and getDescription
     const [features, description] = await Promise.all([
       AmazonContent.getFeatures({
         individual: false,
-        type: "",
-        fieldName: "",
+        type: '',
+        fieldName: '',
       }),
       AmazonContent.getDescription(),
     ]);
@@ -1561,7 +1555,7 @@ export const getAmazonDataUsingASIN = async (product: string) => {
 
     console.log(`Time taken by getFeatures: ${featuresTimeTaken} milliseconds`);
     console.log(
-      `Time taken by getDescription: ${descriptionTimeTaken} milliseconds`,
+      `Time taken by getDescription: ${descriptionTimeTaken} milliseconds`
     );
 
     store.dispatch(
@@ -1572,7 +1566,7 @@ export const getAmazonDataUsingASIN = async (product: string) => {
           progress: 100,
           generating: true,
         },
-      }),
+      })
     );
 
     const finalData = {
@@ -1587,13 +1581,13 @@ export const getAmazonDataUsingASIN = async (product: string) => {
 
     return finalData;
   } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
+    console.error('There was a problem with the fetch operation:', error);
   }
 };
 
 export const getLatestAmazonData = async (
   product: string,
-  router: AppRouterInstance,
+  router: AppRouterInstance
 ) => {
   try {
     store.dispatch(
@@ -1601,28 +1595,28 @@ export const getLatestAmazonData = async (
         ...getAppState(),
         aiContent: {
           ...getAppState().aiContent,
-          images: "",
-          price: "",
-          title: "",
+          images: '',
+          price: '',
+          title: '',
         },
-      }),
+      })
     );
-    const url = "/api/amazon";
+    const url = '/api/amazon';
 
     const requestData = {
       itemIds: [product],
     };
 
     const response = await fetch(url, {
-      method: "POST", // Assuming this is a POST request
+      method: 'POST', // Assuming this is a POST request
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestData),
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok " + response.statusText);
+      throw new Error('Network response was not ok ' + response.statusText);
     }
     const data = await response.json();
     const amazonData = data.ItemsResult.Items[0];
@@ -1632,7 +1626,7 @@ export const getLatestAmazonData = async (
         primary: amazonData?.Images?.Primary,
         variant: amazonData?.Images?.Variants,
       },
-      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? '',
       title: amazonData?.ItemInfo?.Title?.DisplayValue,
     };
     store.dispatch(
@@ -1642,16 +1636,16 @@ export const getLatestAmazonData = async (
           ...getAppState().aiContent,
           ...initialData,
         },
-      }),
+      })
     );
   } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
+    console.error('There was a problem with the fetch operation:', error);
   }
 };
 
 export const getNewAiDataForAmazon = async (
   product: string,
-  router: AppRouterInstance,
+  router: AppRouterInstance
 ) => {
   try {
     store.dispatch(
@@ -1662,24 +1656,24 @@ export const getNewAiDataForAmazon = async (
           ...getAppState().generate,
           progress: 0,
         },
-      }),
+      })
     );
-    const url = "/api/amazon";
+    const url = '/api/amazon';
 
     const requestData = {
       itemIds: [product],
     };
 
     const response = await fetch(url, {
-      method: "POST", // Assuming this is a POST request
+      method: 'POST', // Assuming this is a POST request
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestData),
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok " + response.statusText);
+      throw new Error('Network response was not ok ' + response.statusText);
     }
     const data = await response.json();
     const amazonData = data.ItemsResult.Items[0];
@@ -1694,7 +1688,7 @@ export const getNewAiDataForAmazon = async (
           ...getAppState().generate,
           progress: 10,
         },
-      }),
+      })
     );
 
     const initialData = {
@@ -1702,11 +1696,11 @@ export const getNewAiDataForAmazon = async (
         primary: amazonData?.Images?.Primary,
         variant: amazonData?.Images?.Variants,
       },
-      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? "",
+      price: amazonData?.Offers?.Listings[0]?.Price?.DisplayAmount ?? '',
       title: amazonData?.ItemInfo?.Title?.DisplayValue,
       colors,
       features: [],
-      description: "",
+      description: '',
     };
     store.dispatch(
       updateAppState({
@@ -1719,13 +1713,13 @@ export const getNewAiDataForAmazon = async (
           ...getAppState().generate,
           progress: getAppState().generate.progress + 40,
         },
-      }),
+      })
     );
-    console.log("appState", getAppState());
+    console.log('appState', getAppState());
     const features = await AmazonContent.getFeatures({
       individual: false,
-      type: "",
-      fieldName: "",
+      type: '',
+      fieldName: '',
     });
     const description = await AmazonContent.getDescription();
 
@@ -1736,20 +1730,20 @@ export const getNewAiDataForAmazon = async (
     };
     return finalData;
   } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
+    console.error('There was a problem with the fetch operation:', error);
   }
 };
 
 export const findClosingBracketIndex = (
   text: string,
-  startIndex: number,
+  startIndex: number
 ): number => {
   let openBrackets = 0;
 
   for (let i = startIndex; i < text.length; i++) {
-    if (text[i] === "{") {
+    if (text[i] === '{') {
       openBrackets++;
-    } else if (text[i] === "}") {
+    } else if (text[i] === '}') {
       openBrackets--;
       if (openBrackets === 0) {
         return i;
@@ -1771,9 +1765,9 @@ export async function generateIndividualFeature({
     const featureData = await AmazonContent.getFeatures({
       individual: true,
       type: type,
-      fieldName: fieldName?.split(".") && fieldName?.split(".")[0],
+      fieldName: fieldName?.split('.') && fieldName?.split('.')[0],
     });
-    console.log("featureData", featureData);
+    console.log('featureData', featureData);
     let feature: TFeature;
 
     if (Array.isArray(featureData)) {
@@ -1781,20 +1775,20 @@ export async function generateIndividualFeature({
     } else {
       feature = featureData;
     }
-    if (fieldName?.split(".") && !fieldName?.split(".")[1]) {
-      switch (fieldName?.split(".")[0]) {
-        case "featureTitle":
+    if (fieldName?.split('.') && !fieldName?.split('.')[1]) {
+      switch (fieldName?.split('.')[0]) {
+        case 'featureTitle':
           return {
-            id: "",
+            id: '',
             title: feature.title,
-            image: "",
-            description: "",
+            image: '',
+            description: '',
           };
-        case "featureDescription":
+        case 'featureDescription':
           return {
-            id: "",
-            title: "",
-            image: "",
+            id: '',
+            title: '',
+            image: '',
             description: feature.description,
           };
       }
@@ -1803,9 +1797,9 @@ export async function generateIndividualFeature({
     const updateState = async (fieldName: string, content: any) => {
       const currentAppState = getAppState(); // Ensure we are using the latest app state
       return new Promise<void>((resolve) => {
-        switch (fieldName?.split(".") ? fieldName?.split(".")[0] : fieldName) {
-          case "featureTitle":
-            if (fieldName?.split(".")[1]) {
+        switch (fieldName?.split('.') ? fieldName?.split('.')[0] : fieldName) {
+          case 'featureTitle':
+            if (fieldName?.split('.')[1]) {
               store.dispatch(
                 updateAppState({
                   ...currentAppState,
@@ -1813,7 +1807,7 @@ export async function generateIndividualFeature({
                     ...currentAppState.aiContent,
                     features: currentAppState.aiContent.features?.map(
                       (feature) => {
-                        if (feature.id === fieldName?.split(".")[1]) {
+                        if (feature.id === fieldName?.split('.')[1]) {
                           return {
                             ...feature,
                             title: content.title,
@@ -1821,22 +1815,22 @@ export async function generateIndividualFeature({
                         } else {
                           return feature;
                         }
-                      },
+                      }
                     ),
                   },
                   generate: {
                     ...currentAppState.generate,
                     field: fieldName,
                   },
-                }),
+                })
               );
             } else {
               resolve();
               return;
             }
             break;
-          case "featureDescription":
-            if (fieldName?.split(".")[1]) {
+          case 'featureDescription':
+            if (fieldName?.split('.')[1]) {
               store.dispatch(
                 updateAppState({
                   ...currentAppState,
@@ -1844,7 +1838,7 @@ export async function generateIndividualFeature({
                     ...currentAppState.aiContent,
                     features: currentAppState.aiContent.features?.map(
                       (feature) => {
-                        if (feature.id === fieldName?.split(".")[1]) {
+                        if (feature.id === fieldName?.split('.')[1]) {
                           return {
                             ...feature,
                             description: content.description,
@@ -1852,14 +1846,14 @@ export async function generateIndividualFeature({
                         } else {
                           return feature;
                         }
-                      },
+                      }
                     ),
                   },
                   generate: {
                     ...currentAppState.generate,
                     field: fieldName,
                   },
-                }),
+                })
               );
             } else {
               resolve();
@@ -1893,7 +1887,7 @@ export async function generateNewCustomSite(data: {
           generating: true,
           progress: 0,
         },
-      }),
+      })
     );
 
     const startTime = performance.now();
@@ -1910,20 +1904,20 @@ export async function generateNewCustomSite(data: {
           ...getAppState().generate,
           progress: 10,
         },
-      }),
+      })
     );
 
     const endImagesTime = performance.now();
     const timeImagesTaken = endImagesTime - startImagesTime;
     console.log(
-      `Total time taken by Image Api Calls: ${timeImagesTaken} milliseconds`,
+      `Total time taken by Image Api Calls: ${timeImagesTaken} milliseconds`
     );
     const startColorTime = performance.now();
     const colors = await getColors(heroImage);
     const endColorTime = performance.now();
     const timeColorTaken = endColorTime - startColorTime;
     console.log(
-      `Total time taken by Colors Api Calls: ${timeColorTaken} milliseconds`,
+      `Total time taken by Colors Api Calls: ${timeColorTaken} milliseconds`
     );
 
     const initialData = {
@@ -1950,7 +1944,7 @@ export async function generateNewCustomSite(data: {
           ...getAppState().generate,
           progress: getAppState().generate.progress + 10,
         },
-      }),
+      })
     );
     const startTextTime = performance.now();
     const [hero, banner, services, logo, testimonials, gallery, partners] =
@@ -1958,124 +1952,124 @@ export async function generateNewCustomSite(data: {
         CustomContent.getHero({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getBanner({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getServices({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
 
         getLogo(data),
         CustomContent.getTestimonials({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         getPhotosFromUnsplash(data.businessType),
         CustomContent.getPartners({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getCTA({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getContact({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getFAQ({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getFooter({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getHeader({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getHeroSection({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getLogoClouds({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getNewsLetter({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getPricing({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getStats({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getTeam({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
         CustomContent.getTestimonialsSection({
           data,
           individual: false,
-          fieldName: "",
-          type: "",
+          fieldName: '',
+          type: '',
         }),
       ]);
 
     const endTextTime = performance.now();
     const timeTextTaken = endTextTime - startTextTime;
     console.log(
-      `Total time taken by Text and logo Api Calls: ${timeTextTaken} milliseconds`,
+      `Total time taken by Text and logo Api Calls: ${timeTextTaken} milliseconds`
     );
 
     const endTime = performance.now();
     const timeTaken = endTime - startTime;
 
-    console.log("heroImage", heroImage);
-    console.log("colors", colors);
-    console.log("logo", logo);
+    console.log('heroImage', heroImage);
+    console.log('colors', colors);
+    console.log('logo', logo);
     console.log(`Total time taken by all API calls: ${timeTaken} milliseconds`);
-    console.log("services", services, hero, banner);
+    console.log('services', services, hero, banner);
 
     if (logo) {
       store.dispatch(
@@ -2096,7 +2090,7 @@ export async function generateNewCustomSite(data: {
             generating: false,
             progress: 100,
           },
-        }),
+        })
       );
     }
 
@@ -2132,7 +2126,7 @@ export async function generateNewCustomSite(data: {
 
     return finalData;
   } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
+    console.error('There was a problem with the fetch operation:', error);
   }
 }
 
@@ -2153,22 +2147,22 @@ export async function generateImagesForCustom(data: {
             logo: {
               ...getAppState().aiContent.banner.logo,
               show: true,
-              link: "",
+              link: '',
             },
           },
           hero: {
             ...getAppState().aiContent.hero,
-            image: "",
+            image: '',
           },
-          gallery: "",
-          testimonials: "",
-          partners: "",
+          gallery: '',
+          testimonials: '',
+          partners: '',
         },
         generate: {
           ...getAppState().generate,
           generating: true,
         },
-      }),
+      })
     );
 
     const startTime = performance.now();
@@ -2180,9 +2174,9 @@ export async function generateImagesForCustom(data: {
       getPhotosFromUnsplash(data.businessType),
       CustomContent.getTestimonials({
         data: data,
-        fieldName: "",
+        fieldName: '',
         individual: false,
-        type: "",
+        type: '',
       }),
     ]);
 
@@ -2213,10 +2207,10 @@ export async function generateImagesForCustom(data: {
           generating: false,
           progress: 0,
         },
-      }),
+      })
     );
   } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
+    console.error('There was a problem with the fetch operation:', error);
   }
 }
 
@@ -2235,35 +2229,35 @@ export async function generateTextForCustom(data: {
           ...getAppState().aiContent,
           banner: {
             ...getAppState().aiContent.banner,
-            businessName: "",
-            button: "",
+            businessName: '',
+            button: '',
           },
           hero: {
             ...getAppState().aiContent.hero,
-            button: "",
-            heading: "",
-            subheading: "",
+            button: '',
+            heading: '',
+            subheading: '',
           },
-          services: "",
-          testimonials: "",
-          testimonialsSection: "",
-          partners: "",
-          cta: "",
-          faq: "",
-          footer: "",
-          header: "",
-          heroSection: "",
-          logoClouds: "",
-          newsletter: "",
-          pricing: "",
-          stats: "",
-          team: "",
+          services: '',
+          testimonials: '',
+          testimonialsSection: '',
+          partners: '',
+          cta: '',
+          faq: '',
+          footer: '',
+          header: '',
+          heroSection: '',
+          logoClouds: '',
+          newsletter: '',
+          pricing: '',
+          stats: '',
+          team: '',
         },
         generate: {
           generating: true,
           progress: 0,
         },
-      }),
+      })
     );
 
     const startTextTime = performance.now();
@@ -2271,110 +2265,110 @@ export async function generateTextForCustom(data: {
       CustomContent.getHero({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getBanner({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getServices({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getCTA({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getContact({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getFAQ({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getFooter({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getHeader({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getHero({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getHeroSection({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getLogoClouds({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getNewsLetter({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getPartners({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getPricing({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getStats({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getTeam({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getTestimonials({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
       CustomContent.getTestimonialsSection({
         data,
         individual: false,
-        fieldName: "",
-        type: "",
+        fieldName: '',
+        type: '',
       }),
     ]);
 
@@ -2402,16 +2396,16 @@ export async function generateTextForCustom(data: {
           generating: false,
           progress: 0,
         },
-      }),
+      })
     );
 
     const endTextTime = performance.now();
     const timeTextTaken = endTextTime - startTextTime;
     console.log(
-      `Total time taken by Text Api Calls: ${timeTextTaken} milliseconds`,
+      `Total time taken by Text Api Calls: ${timeTextTaken} milliseconds`
     );
   } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
+    console.error('There was a problem with the fetch operation:', error);
   }
 }
 
@@ -2419,10 +2413,10 @@ export async function getRandomImageFromUnsplash(prompt: string) {
   try {
     const startTime = performance.now();
     const res1 = await fetch(
-      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=5`,
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=5`
     );
     const resUnsplash = await res1.json();
-    console.log("resUnsplash", resUnsplash);
+    console.log('resUnsplash', resUnsplash);
     const data = resUnsplash;
 
     const dataToBeFiltered = data.map((obj: any) => {
@@ -2430,8 +2424,8 @@ export async function getRandomImageFromUnsplash(prompt: string) {
         description: obj.alt_description,
       };
     });
-    const response = await fetch("/api/content/image", {
-      method: "POST",
+    const response = await fetch('/api/content/image', {
+      method: 'POST',
       body: JSON.stringify({
         data: dataToBeFiltered,
         businessType: prompt,
@@ -2440,13 +2434,26 @@ export async function getRandomImageFromUnsplash(prompt: string) {
     const index = await response.json();
     const endTime = performance.now();
     console.log(
-      `Image Generation using ai+unplash took ${endTime - startTime} ms`,
+      `Image Generation using ai+unplash took ${endTime - startTime} ms`
     );
     // console.log("response",res)
-    console.log("dataofimages", data, parseInt(index));
+    console.log('dataofimages', data, parseInt(index));
     return data[parseInt(index)].urls.small;
   } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
+    console.error('There was a problem with the fetch operation:', error);
+  }
+}
+
+export async function getRandomImageFromUnsplashWithoutAi(prompt: string) {
+  try {
+    const startTime = performance.now();
+    const res = await fetch(
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}`
+    );
+    const data = await res.json();
+    return data.urls.small;
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
   }
 }
 
@@ -2456,8 +2463,8 @@ export async function getLogo(req: {
   location: string;
 }) {
   try {
-    const res = await fetch("/api/image", {
-      method: "POST",
+    const res = await fetch('/api/image', {
+      method: 'POST',
       body: JSON.stringify({
         prompt: `generate logo for business name ${req.businessName} and businessType ${req.businessType} but don't add living things in it.`,
       }),
@@ -2469,8 +2476,8 @@ export async function getLogo(req: {
 
 export async function getAiHeroImageForCustom() {
   try {
-    const res = await fetch("/api/image", {
-      method: "POST",
+    const res = await fetch('/api/image', {
+      method: 'POST',
       body: JSON.stringify({
         prompt: `generate hero image for ${getAppState().aiContent.businessType}`,
       }),
@@ -2482,11 +2489,11 @@ export async function getAiHeroImageForCustom() {
 
 export async function regenerateHeroImage(type: string) {
   try {
-    let image = "";
-    console.log("type", type);
-    if (type === "Stored Image") {
+    let image = '';
+    console.log('type', type);
+    if (type === 'Stored Image') {
       image = await getRandomImageFromUnsplash(
-        getAppState().aiContent?.businessType ?? "",
+        getAppState().aiContent?.businessType ?? ''
       );
     } else {
       image = await getAiHeroImageForCustom();
@@ -2510,7 +2517,7 @@ export async function generateCustomServiceTAndD({
     const response = await CustomContent.getServiceTAndD({
       data,
       fieldName,
-      type: "",
+      type: '',
       individual: true,
     });
 
@@ -2518,7 +2525,7 @@ export async function generateCustomServiceTAndD({
       const currentAppState = getAppState(); // Ensure we are using the latest app state
       return new Promise<void>((resolve) => {
         switch (fieldName) {
-          case "title":
+          case 'title':
             store.dispatch(
               updateAppState({
                 ...currentAppState,
@@ -2529,11 +2536,11 @@ export async function generateCustomServiceTAndD({
                     title: content.title,
                   },
                 },
-              }),
+              })
             );
 
             break;
-          case "description":
+          case 'description':
             store.dispatch(
               updateAppState({
                 ...currentAppState,
@@ -2544,7 +2551,7 @@ export async function generateCustomServiceTAndD({
                     description: content.description,
                   },
                 },
-              }),
+              })
             );
             break;
         }
@@ -2571,7 +2578,7 @@ export async function generatePartnersTAndD({
     const response = await CustomContent.getPartnersTAndD({
       data,
       fieldName,
-      type: "",
+      type: '',
       individual: true,
     });
 
@@ -2579,7 +2586,7 @@ export async function generatePartnersTAndD({
       const currentAppState = getAppState(); // Ensure we are using the latest app state
       return new Promise<void>((resolve) => {
         switch (fieldName) {
-          case "partnersTitle":
+          case 'partnersTitle':
             store.dispatch(
               updateAppState({
                 ...currentAppState,
@@ -2590,11 +2597,11 @@ export async function generatePartnersTAndD({
                     title: content.title,
                   },
                 },
-              }),
+              })
             );
 
             break;
-          case "partnersDescription":
+          case 'partnersDescription':
             store.dispatch(
               updateAppState({
                 ...currentAppState,
@@ -2605,7 +2612,7 @@ export async function generatePartnersTAndD({
                     description: content.description,
                   },
                 },
-              }),
+              })
             );
             break;
         }
@@ -2619,25 +2626,25 @@ export async function generatePartnersTAndD({
 
 export const validateURL = (url: string) => {
   const urlPattern = new RegExp(
-    "^(https?:\\/\\/)" + // protocol
-      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-      "(\\#[-a-z\\d_]*)?$",
-    "i", // fragment locator
+    '^(https?:\\/\\/)' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$',
+    'i' // fragment locator
   );
   return !!urlPattern.test(url);
 };
 
 export const getPhotosFromUnsplash = async (prompt: string) => {
   try {
-    console.log("prompt", prompt);
+    console.log('prompt', prompt);
     const res = await fetch(
-      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=6`,
+      `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=6`
     );
     const data = await res.json();
-    console.log("actualimage", data);
+    console.log('actualimage', data);
     const fullUrls = data.map((photo: any) => photo.urls.full);
     store.dispatch(
       updateAppState({
@@ -2650,7 +2657,7 @@ export const getPhotosFromUnsplash = async (prompt: string) => {
             list: fullUrls,
           },
         },
-      }),
+      })
     );
     return fullUrls;
   } catch (error) {}
@@ -2658,7 +2665,7 @@ export const getPhotosFromUnsplash = async (prompt: string) => {
 
 export const getAllUnsplashImages = async (prompt: string) => {
   const res = await fetch(
-    `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=100`,
+    `https://api.unsplash.com/photos/random?client_id=-lFN4fpaSIrPO3IsWyqGOd8D5etHth-rVXY7fx77X_E&query=${prompt}&count=100`
   );
   const data = await res.json();
 
